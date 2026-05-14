@@ -1,58 +1,167 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# IO Manager
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación de gestión de dispositivos IO con modo local y modo colaborativo.
 
-## About Laravel
+## Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Backend:** Laravel 13
+- **Frontend:** React + Inertia.js v2
+- **Estilos:** Tailwind CSS
+- **Base de datos:** MySQL (Sail) 
+- **Entorno de desarrollo:** Laravel Sail (Docker)
+- **App de escritorio:** Tauri
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Arquitectura
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+resources/js/
+├── Components/          # Componentes genéricos reutilizables
+├── Features/
+│   └── Auth/
+│       ├── LoginForm.jsx
+│       └── RegisterForm.jsx
+├── Layouts/
+│   ├── AppLayout.jsx    # Layout principal (adapta según usuario autenticado o no)
+│   ├── AuthenticatedLayout.jsx
+│   └── GuestLayout.jsx
+└── Pages/
+    ├── Landing.jsx
+    ├── About.jsx
+    ├── Dashboard.jsx
+    ├── IO/
+    │   ├── Control.jsx
+    │   ├── Presets.jsx
+    │   └── Firmware.jsx
+    └── Profile/
+        └── Edit.jsx
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Modos de uso
 
-## Contributing
+### Modo Local
+Acceso sin autenticación. El usuario entra directamente a `/local` sin necesidad de cuenta.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Modo Colaborativo
+Acceso con autenticación completa. Permite compartir presets y configuraciones con otros usuarios.
 
-## Code of Conduct
+## Rutas
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Ruta | Nombre | Auth | Descripción |
+|------|--------|------|-------------|
+| `/` | `landing` | No | Página de inicio con login y registro |
+| `/local` | `local` | No | Acceso en modo local |
+| `/io/control` | `io.control` | No* | Panel de control |
+| `/io/presets` | `io.presets` | No* | Gestión de presets |
+| `/io/firmware` | `io.firmware` | No* | Gestión de firmware |
+| `/about` | `about` | No | Información de la app |
+| `/profile` | `profile.edit` | Sí | Perfil de usuario |
 
-## Security Vulnerabilities
+*Se añadirá middleware `auth` cuando sea necesario.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Autenticación
 
-## License
+Implementada con **Laravel Breeze** e **Inertia React**:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- ✅ Login / Logout
+- ✅ Registro de usuarios
+- ✅ Recuperación de contraseña (Mailpit en desarrollo)
+- ✅ Verificación de email
+- ✅ Remember me
+- ✅ Rate limiting (5 intentos por email+IP)
+- ✅ Política de contraseñas (mínimo 8 caracteres, mayúsculas, números y símbolos)
+- ✅ Logs de auditoría de intentos fallidos
+- ✅ Sesiones en base de datos (120 minutos de inactividad)
+
+## Seguridad
+
+- ✅ Protección CSRF automática via Inertia
+- ✅ Hashing de contraseñas con bcrypt (12 rounds)
+- ✅ Protección SQL injection via Eloquent
+- ✅ Protección XSS via React
+- ✅ HTTP Only cookies
+- ✅ Same-site lax
+- ✅ Sanctum configurado para sesiones con cookies
+- ⬜ HTTPS (configurar en producción)
+- ⬜ 2FA (pendiente)
+
+## Entorno de desarrollo
+
+### Requisitos
+- Docker Desktop
+- Node.js
+- Rust (para Tauri)
+
+### Arrancar el entorno
+
+```bash
+./vendor/bin/sail up -d
+./vendor/bin/sail npm run dev
+```
+
+O usando la app de Automator configurada en el proyecto.
+
+### Parar el entorno
+
+```bash
+./vendor/bin/sail stop
+```
+
+### Comandos útiles
+
+```bash
+# Migraciones
+./vendor/bin/sail artisan migrate
+
+# Logs en tiempo real
+./vendor/bin/sail artisan pail
+
+# Crear modelo con migración
+./vendor/bin/sail artisan make:model NombreModelo -m
+```
+
+## App de escritorio (Tauri)
+
+### Desarrollo
+
+```bash
+npx tauri dev
+```
+
+### Build para distribución
+
+```bash
+npx tauri build
+```
+
+Genera instaladores para macOS (.dmg), Windows (.exe) y Linux.
+
+## Variables de entorno relevantes
+
+```env
+APP_URL=http://localhost
+DB_CONNECTION=mysql
+SESSION_DRIVER=database
+SESSION_LIFETIME=120
+MAIL_MAILER=smtp
+MAIL_HOST=mailpit        # En desarrollo
+MAIL_PORT=1025
+```
+
+## Mailpit (emails en desarrollo)
+
+Acceder a la bandeja de entrada de desarrollo en:
+
+```
+http://localhost:8025
+```
+
+## Pendiente
+
+- [ ] Diseño con Tailwind CSS
+- [ ] Lógica de Control (IO/Control)
+- [ ] Gestión de Presets
+- [ ] Gestión de Firmware
+- [ ] API REST para modo colaborativo
+- [ ] HTTPS en producción
+- [ ] 2FA
+- [ ] Deploy
