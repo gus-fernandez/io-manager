@@ -35,4 +35,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-// Forzando cambio para testear git
