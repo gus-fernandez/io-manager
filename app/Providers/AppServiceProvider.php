@@ -4,6 +4,11 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
+
+use Illuminate\Auth\Events\Failed;
+use App\Listeners\LogFailedLogin;
+use Illuminate\Support\Facades\Event;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,5 +26,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Vite::prefetch(concurrency: 3);
+        
+        Password::defaults(function () {
+            return Password::min(8)
+                ->letters()
+                ->mixedCase()
+                ->numbers()
+                ->symbols();
+                //->uncompromised(); // prod
+        });
+        
+        Event::listen(Failed::class, LogFailedLogin::class);
     }
+
 }
