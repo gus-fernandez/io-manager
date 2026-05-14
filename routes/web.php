@@ -5,15 +5,25 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// 1. Landing Page (Sustituimos la Welcome de Breeze por la tuya)
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Landing', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
+})->name('landing');
+
+// 2. Grupo IO (Secciones de la App)
+// Puedes añadir middleware 'auth' aquí más adelante si quieres protegerlas
+Route::prefix('io')->group(function () {
+    Route::get('/ui', fn() => Inertia::render('IO/UI'))->name('io.ui');
+    Route::get('/presets', fn() => Inertia::render('IO/Presets'))->name('io.presets');
+    Route::get('/firmware', fn() => Inertia::render('IO/Firmware'))->name('io.firmware');
 });
 
+Route::get('/about', fn() => Inertia::render('About'))->name('about');
+
+// 3. Rutas de Breeze (Dashboard y Perfil)
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
