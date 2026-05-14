@@ -33,6 +33,17 @@ export default function LoginForm() {
             />
             {errors.password && <span>{errors.password}</span>}
 
+            <label>
+                <input
+                    type="checkbox"
+                    checked={data.remember}
+                    onChange={e => setData('remember', e.target.checked)}
+                />
+                Recuérdame
+            </label>
+
+            <a href={route('password.request')}>¿Olvidaste tu contraseña?</a>
+
             <button type="button" disabled={processing} onClick={handleLogin}>
                 {processing ? 'Entrando...' : 'Login'}
             </button>
