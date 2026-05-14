@@ -8,21 +8,23 @@ export default function LoginForm() {
         remember: false,
     });
 
-    const handleLogin = (e) => {
-        e.preventDefault();
+    const handleLogin = () => {
         post(route('login'));
     };
 
     return (
-        <form onSubmit={handleLogin}>
+        <div>
+            {errors.general && <p>{errors.general}</p>}
+
             <input
                 type="email"
                 placeholder="Email"
                 autoComplete="email"
                 value={data.email}
                 onChange={e => setData('email', e.target.value)}
+                disabled={processing}
             />
-            {errors.email && <span>{errors.email}</span>}
+            {errors.email && <p>{errors.email}</p>}
 
             <input
                 type="password"
@@ -30,14 +32,16 @@ export default function LoginForm() {
                 autoComplete="current-password"
                 value={data.password}
                 onChange={e => setData('password', e.target.value)}
+                disabled={processing}
             />
-            {errors.password && <span>{errors.password}</span>}
+            {errors.password && <p>{errors.password}</p>}
 
             <label>
                 <input
                     type="checkbox"
                     checked={data.remember}
                     onChange={e => setData('remember', e.target.checked)}
+                    disabled={processing}
                 />
                 Recuérdame
             </label>
@@ -47,6 +51,6 @@ export default function LoginForm() {
             <button type="button" disabled={processing} onClick={handleLogin}>
                 {processing ? 'Entrando...' : 'Login'}
             </button>
-        </form>
+        </div>
     );
 }

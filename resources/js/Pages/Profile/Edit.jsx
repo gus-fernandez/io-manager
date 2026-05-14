@@ -9,9 +9,6 @@ export default function Edit({ mustVerifyEmail, status }) {
     return (
         <AppLayout>
             <Head title="Profile" />
-            <button onClick={() => router.visit(route('dashboard'))}>
-                ← Volver
-            </button>
             <div>
                 <UpdateProfileInformationForm
                     mustVerifyEmail={mustVerifyEmail}

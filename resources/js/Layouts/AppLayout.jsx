@@ -10,7 +10,7 @@ export default function AppLayout({ children }) {
         <div className="app-container">
             <nav>
                 <ul style={{ display: 'flex', gap: '15px', listStyle: 'none' }}>
-                    <li><Link href={route('io.ui')}>IO-UI</Link></li>
+                    <li><Link href={route('io.control')}>IO-Control</Link></li>
                     <li><Link href={route('io.presets')}>IO-Presets</Link></li>
                     <li><Link href={route('io.firmware')}>IO-Firmware</Link></li>
                     <li><Link href={route('about')}>About</Link></li>
