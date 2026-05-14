@@ -14,7 +14,7 @@ export default function Landing() {
 
             <div>
                 <h3>Modo Local</h3>
-                <button onClick={() => router.visit(route('io.ui'))}>
+                <button onClick={() => router.visit(route('local'))}>
                     Entrar sin Login
                 </button>
             </div>

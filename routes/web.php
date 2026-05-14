@@ -1,11 +1,10 @@
 <?php
-
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// 1. Landing Page (Sustituimos la Welcome de Breeze por la tuya)
+// 1. Landing Page
 Route::get('/', function () {
     return Inertia::render('Landing', [
         'canLogin' => Route::has('login'),
@@ -13,8 +12,10 @@ Route::get('/', function () {
     ]);
 })->name('landing');
 
-// 2. Grupo IO (Secciones de la App)
-// Puedes añadir middleware 'auth' aquí más adelante si quieres protegerlas
+// 2. Modo Local (sin auth)
+Route::get('/local', fn() => Inertia::render('Dashboard'))->name('local');
+
+// 3. Grupo IO
 Route::prefix('io')->group(function () {
     Route::get('/ui', fn() => Inertia::render('IO/UI'))->name('io.ui');
     Route::get('/presets', fn() => Inertia::render('IO/Presets'))->name('io.presets');
@@ -23,11 +24,12 @@ Route::prefix('io')->group(function () {
 
 Route::get('/about', fn() => Inertia::render('About'))->name('about');
 
-// 3. Rutas de Breeze (Dashboard y Perfil)
+// 4. Dashboard (auth)
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// 5. Perfil (auth)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
