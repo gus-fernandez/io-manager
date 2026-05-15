@@ -1,20 +1,12 @@
 // resources/js/Features/Device/useSerial.js
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 export default function useSerial() {
     const [port, setPort] = useState(null);
-    const [ports, setPorts] = useState([]);
     const [connected, setConnected] = useState(false);
     const [error, setError] = useState(null);
-
-    const getPorts = useCallback(async () => {
-        try {
-            const available = await navigator.serial.getPorts();
-            setPorts(available);
-        } catch (err) {
-            setError('No se pueden listar los puertos: ' + err.message);
-        }
-    }, []);
+    const [log, setLog] = useState([]);
+    const readerRef = useRef(null);
 
     const connect = useCallback(async () => {
         try {
@@ -23,16 +15,55 @@ export default function useSerial() {
             setPort(selected);
             setConnected(true);
             setError(null);
+
+            // Arrancar lectura continua
+            const reader = selected.readable.getReader();
+            readerRef.current = reader;
+            const decoder = new TextDecoder();
+
+            let buffer = '';
+
+            const read = async () => {
+                try {
+                    while (true) {
+                        const { value, done } = await reader.read();
+                        //console.log(JSON.stringify(decoder.decode(value))); // Console debug
+                        if (done) break;
+                        buffer += decoder.decode(value, { stream: true });
+                        const lines = buffer.split('\n');
+                        buffer = lines.pop(); // lo que queda sin \n
+                        if (lines.length > 0) {
+                            setLog(prev => [...prev, ...lines]);
+                        }
+                    }
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        setError('Error de lectura: ' + err.message);
+                    }
+                }
+            };
+
+            read();
+
         } catch (err) {
             setError('Error al conectar: ' + err.message);
         }
     }, []);
 
     const disconnect = useCallback(async () => {
-        if (port) {
-            await port.close();
-            setPort(null);
-            setConnected(false);
+        try {
+            if (readerRef.current) {
+                await readerRef.current.cancel();
+                readerRef.current = null;
+            }
+            if (port) {
+                await port.close();
+                setPort(null);
+                setConnected(false);
+                setLog([]);
+            }
+        } catch (err) {
+            setError('Error al desconectar: ' + err.message);
         }
     }, [port]);
 
@@ -43,5 +74,7 @@ export default function useSerial() {
         writer.releaseLock();
     }, [port]);
 
-    return { ports, port, connected, error, getPorts, connect, disconnect, send };
+    const clearLog = useCallback(() => setLog([]), []);
+
+    return { port, connected, error, log, connect, disconnect, send, clearLog };
 }
