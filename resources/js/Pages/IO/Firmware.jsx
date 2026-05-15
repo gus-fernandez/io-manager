@@ -1,4 +1,3 @@
-// resources/js/Pages/IO/Firmware.jsx
 import { useState } from 'react';
 import AppLayout from '@/Layouts/AppLayout';
 import useSerial from '@/Features/Device/useSerial';
@@ -6,17 +5,30 @@ import SerialMonitor from '@/Features/Device/SerialMonitor';
 import FlashFirmware from '@/Features/Device/FlashFirmware';
 
 export default function Firmware() {
-    const { port, connected, error, log, connect, disconnect, clearLog } = useSerial();
+    // Extraemos autoReconnect del hook modificado
+    const { port, connected, error, log, connect, disconnect, clearLog, autoReconnect } = useSerial();
     const [flashing, setFlashing] = useState(false);
     const [flashCompleted, setFlashCompleted] = useState(false);
 
     const showComponents = connected || flashing;
 
-    const handleFlashEnd = () => {
+    const handleFlashEnd = async (hasError = false) => {
         setFlashing(false);
-        setFlashCompleted(true);
-        // Mostrar mensaje por 5 segundos
-        setTimeout(() => setFlashCompleted(false), 5000);
+        
+        if (!hasError) {
+            setFlashCompleted(true);
+            
+            // Esperar a que la ESP32 reinicie y reconectar automáticamente
+            setTimeout(async () => {
+                const reconnected = await autoReconnect();
+                if (reconnected) {
+                    setFlashCompleted(false); // Ocultar mensaje si conectó con éxito
+                }
+            }, 1500);
+
+            // Respaldo: ocultar el mensaje a los 5s si no logró reconectar
+            setTimeout(() => setFlashCompleted(false), 5000);
+        }
     };
 
     return (
@@ -28,7 +40,9 @@ export default function Firmware() {
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 
                 {flashCompleted && !connected && (
-                    <p>Flash completado. Haz click en "Conectar dispositivo".</p>
+                    <p style={{ color: 'green' }}>
+                        ¡Flash completado! Reiniciando y reconectando dispositivo...
+                    </p>
                 )}
                 
                 {!connected && !flashing
