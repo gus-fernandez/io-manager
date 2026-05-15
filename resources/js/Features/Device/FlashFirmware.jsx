@@ -14,9 +14,9 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
         }
     }, [flashLog]);
 
-    const performManualReset = async (transport) => {
+    const performReset = async (transport) => {
         try {
-            setFlashLog(prev => [...prev, 'Ejecutando reset manual...']);
+            setFlashLog(prev => [...prev, 'Ejecutando reset...']);
             
             await transport.setDTR(false);
             await transport.setRTS(true);
@@ -30,9 +30,9 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
             
             await transport.setDTR(false);
             
-            setFlashLog(prev => [...prev, 'Reset manual completado']);
+            setFlashLog(prev => [...prev, 'Reset completado']);
         } catch (err) {
-            setFlashLog(prev => [...prev, `Error en reset manual: ${err.message}`]);
+            setFlashLog(prev => [...prev, `Error en reset: ${err.message}`]);
             throw err;
         }
     };
@@ -82,13 +82,9 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
             };
 
             await esploader.writeFlash(flashOptions);
-            
-            await performManualReset(transport);
-            
-            setFlashLog(prev => [...prev, 'Tarjeta flasheada correctamente']);
-            
-            // Pequeña pausa para que el usuario vea el mensaje
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await performReset(transport);
+            setFlashLog(prev => [...prev, 'Tarjeta flasheada correctamente']);            
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
         } catch (err) {
             setFlashLog(prev => [...prev, 'Error: ' + err.message]);
