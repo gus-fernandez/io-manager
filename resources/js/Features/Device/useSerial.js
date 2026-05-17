@@ -1,63 +1,66 @@
+// resources/js/Features/Device/useSerial.js
 import { useState, useCallback, useRef, useEffect } from 'react';
 
+const MAX_LOG_LINES = 500;
+
 export default function useSerial() {
-    const [port, setPort] = useState(null);
+    const [port, setPort]           = useState(null);
     const [connected, setConnected] = useState(false);
-    const [error, setError] = useState(null);
-    const [log, setLog] = useState([]);
-    
-    const readerRef = useRef(null);
-    const isReadingRef = useRef(false);
-    const activePortRef = useRef(null); 
-    const isClosingRef = useRef(false); // Evita que autoReconnect pise un cierre en curso
+    const [error, setError]         = useState(null);
+    const [log, setLog]             = useState([]);
 
-    // Función auxiliar síncrona y asíncrona para limpiar el puerto de forma atómica
+    const readerRef      = useRef(null);
+    const isReadingRef   = useRef(false);
+    const activePortRef  = useRef(null);
+    const closingPromise = useRef(null);    // FIX: sustituye el flag booleano
+    const logIdRef       = useRef(0);       // FIX: ids estables para keys del log
+
+    // ── Cierre atómico ────────────────────────────────────────────────────────
     const cleanExistingPort = useCallback(async () => {
-        if (isClosingRef.current) return;
-        isClosingRef.current = true;
-        isReadingRef.current = false;
+        // Si ya hay un cierre en curso, esperamos a que termine en lugar de ignorarlo
+        if (closingPromise.current) return closingPromise.current;
 
-        try {
+        closingPromise.current = (async () => {
+            isReadingRef.current = false;
+
             if (readerRef.current) {
                 await readerRef.current.cancel().catch(() => {});
-                try { readerRef.current.releaseLock(); } catch(_) {}
+                try { readerRef.current.releaseLock(); } catch (_) {}
                 readerRef.current = null;
             }
+
             if (activePortRef.current) {
                 await activePortRef.current.close().catch(() => {});
                 activePortRef.current = null;
             }
-        } catch (err) {
-            console.warn("Error en limpieza:", err);
-        } finally {
-            isClosingRef.current = false;
-        }
+        })().finally(() => {
+            closingPromise.current = null;
+        });
+
+        return closingPromise.current;
     }, []);
 
+    // ── Inicialización ────────────────────────────────────────────────────────
     const initPort = useCallback(async (selectedPort) => {
-        // 1. Esperar si se está cerrando aún el puerto anterior
-        while (isClosingRef.current) {
-            await new Promise(resolve => setTimeout(resolve, 50));
+        if (closingPromise.current) await closingPromise.current;
+
+        if (activePortRef.current || selectedPort.readable) {
+            await cleanExistingPort();
         }
 
         try {
-            // 2. Si el puerto que entra ya está abierto o guardado, limpiamos concienzudamente
-            if (selectedPort.readable || activePortRef.current) {
-                await cleanExistingPort();
-            }
-
             activePortRef.current = selectedPort;
             await selectedPort.open({ baudRate: 115200 });
-            
+
             setPort(selectedPort);
             setConnected(true);
             setError(null);
 
-            const reader = selectedPort.readable.getReader();
+            const reader  = selectedPort.readable.getReader();
             readerRef.current = reader;
             const decoder = new TextDecoder();
-            let buffer = '';
-            
+            let buffer    = '';
+
             isReadingRef.current = true;
 
             const read = async () => {
@@ -65,12 +68,16 @@ export default function useSerial() {
                     while (isReadingRef.current) {
                         const { value, done } = await reader.read();
                         if (done || !isReadingRef.current) break;
-                        
+
                         buffer += decoder.decode(value, { stream: true });
                         const lines = buffer.split('\n');
                         buffer = lines.pop();
                         if (lines.length > 0) {
-                            setLog(prev => [...prev, ...lines]);
+                            // FIX: límite de líneas + ids estables
+                            setLog(prev => [
+                                ...prev,
+                                ...lines.map(text => ({ id: logIdRef.current++, text })),
+                            ].slice(-MAX_LOG_LINES));
                         }
                     }
                 } catch (err) {
@@ -81,7 +88,7 @@ export default function useSerial() {
                     setPort(null);
                 } finally {
                     if (readerRef.current === reader) {
-                        try { reader.releaseLock(); } catch(_) {}
+                        try { reader.releaseLock(); } catch (_) {}
                         readerRef.current = null;
                     }
                 }
@@ -89,22 +96,25 @@ export default function useSerial() {
 
             read();
         } catch (err) {
+            activePortRef.current = null;
             setError('Error al abrir el puerto: ' + err.message);
         }
     }, [cleanExistingPort]);
 
+    // ── API pública ───────────────────────────────────────────────────────────
     const connect = useCallback(async () => {
         try {
             const selected = await navigator.serial.requestPort();
             await initPort(selected);
         } catch (err) {
-            setError('Error al conectar: ' + err.message);
+            if (err.name !== 'NotFoundError') {     // usuario canceló el diálogo
+                setError('Error al conectar: ' + err.message);
+            }
         }
     }, [initPort]);
 
     const autoReconnect = useCallback(async () => {
-        // Si se está cerrando el puerto debido al cambio de pestaña, esperamos un momento
-        if (isClosingRef.current) return false;
+        if (closingPromise.current) return false;
         try {
             const ports = await navigator.serial.getPorts();
             if (ports.length > 0) {
@@ -117,17 +127,6 @@ export default function useSerial() {
         return false;
     }, [initPort]);
 
-    useEffect(() => {
-        autoReconnect();
-    }, [autoReconnect]);
-
-    // Limpieza estricta cuando el hook se destruye al cambiar de pestaña/página en Inertia
-    useEffect(() => {
-        return () => {
-            cleanExistingPort();
-        };
-    }, [cleanExistingPort]);
-
     const disconnect = useCallback(async () => {
         await cleanExistingPort();
         setPort(null);
@@ -135,14 +134,30 @@ export default function useSerial() {
         setLog([]);
     }, [cleanExistingPort]);
 
+    // FIX: try/catch en send
     const send = useCallback(async (data) => {
-        if (!port?.writable) return;
-        const writer = port.writable.getWriter();
-        await writer.write(data);
-        writer.releaseLock();
-    }, [port]);
+        if (!activePortRef.current?.writable) return;
+        try {
+            const writer = activePortRef.current.writable.getWriter();
+            await writer.write(data);
+            writer.releaseLock();
+        } catch (err) {
+            setError('Error al enviar: ' + err.message);
+        }
+    }, []);
 
     const clearLog = useCallback(() => setLog([]), []);
+
+    // FIX: [] explícito — autoReconnect solo al montar, no en cada render
+    useEffect(() => {
+        autoReconnect();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        return () => { cleanExistingPort(); };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return { port, connected, error, log, connect, disconnect, send, clearLog, autoReconnect };
 }

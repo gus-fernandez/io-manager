@@ -28,8 +28,8 @@ export default function SerialMonitor({ log, clearLog }) {
                     fontSize: '12px',
                 }}
             >
-                {log.map((line, i) => (
-                    <div key={i}>{line}</div>
+                {log.map(({ id, text }) => (
+                    <div key={id}>{text}</div>
                 ))}
             </div>
         </div>

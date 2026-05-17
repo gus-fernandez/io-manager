@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { ESPLoader, Transport } from 'esptool-js';
 
 export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashEnd }) {
-    const [binFile, setBinFile] = useState(null);
+    const [binFile, setBinFile]   = useState(null);
     const [flashing, setFlashing] = useState(false);
     const [flashLog, setFlashLog] = useState([]);
     const logRef = useRef(null);
@@ -14,27 +14,32 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
         }
     }, [flashLog]);
 
+    const appendLog = (line) =>
+        setFlashLog(prev => [...prev, line]);
+
+    // FIX: actualiza la última línea en lugar de añadir una por cada tick
+    const updateProgress = (line) =>
+        setFlashLog(prev => {
+            const next = [...prev];
+            if (next.at(-1)?.startsWith('Progreso:')) {
+                next[next.length - 1] = line;
+            } else {
+                next.push(line);
+            }
+            return next;
+        });
+
     const performReset = async (transport) => {
-        try {
-            setFlashLog(prev => [...prev, 'Ejecutando reset...']);
-            
-            await transport.setDTR(false);
-            await transport.setRTS(true);
-            await new Promise(resolve => setTimeout(resolve, 100));
-            
-            await transport.setDTR(true);
-            await new Promise(resolve => setTimeout(resolve, 50));
-            
-            await transport.setRTS(false);
-            await new Promise(resolve => setTimeout(resolve, 50));
-            
-            await transport.setDTR(false);
-            
-            setFlashLog(prev => [...prev, 'Reset completado']);
-        } catch (err) {
-            setFlashLog(prev => [...prev, `Error en reset: ${err.message}`]);
-            throw err;
-        }
+        appendLog('Ejecutando reset...');
+        await transport.setDTR(false);
+        await transport.setRTS(true);
+        await new Promise(r => setTimeout(r, 100));
+        await transport.setDTR(true);
+        await new Promise(r => setTimeout(r, 50));
+        await transport.setRTS(false);
+        await new Promise(r => setTimeout(r, 50));
+        await transport.setDTR(false);
+        appendLog('Reset completado');
     };
 
     const handleFlash = async () => {
@@ -45,70 +50,68 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
         onFlashStart();
 
         let transport = null;
-        let esploader = null;
+        let hasError  = false;  // FIX: rastrear error para propagarlo siempre
 
         try {
             await disconnect();
 
             const terminal = {
-                clean: () => setFlashLog([]),
-                writeLine: (data) => setFlashLog(prev => [...prev, data]),
-                write: (data) => setFlashLog(prev => [...prev, data]),
+                clean:     ()     => setFlashLog([]),
+                writeLine: (data) => appendLog(data),
+                write:     (data) => appendLog(data),
             };
 
             transport = new Transport(port, true);
-            esploader = new ESPLoader({
-                transport,
-                baudrate: 921600,
-                terminal,
-            });
+            const esploader = new ESPLoader({ transport, baudrate: 921600, terminal });
 
             const chipName = await esploader.main();
-            setFlashLog(prev => [...prev, `Conectado a: ${chipName}`]);
+            appendLog(`Conectado a: ${chipName}`);
 
             const firmwareData = new Uint8Array(await binFile.arrayBuffer());
 
-            const flashOptions = {
+            await esploader.writeFlash({
                 fileArray: [{ data: firmwareData, address: 0x0 }],
                 flashMode: 'qio',
                 flashFreq: '80m',
                 flashSize: '4MB',
-                eraseAll: true,
-                compress: true,
-                reportProgress: (fileIndex, written, total) => {
-                    const percent = ((written / total) * 100).toFixed(1);
-                    setFlashLog(prev => [...prev, `Progreso: ${percent}%`]);
+                eraseAll:  true,
+                compress:  true,
+                reportProgress: (_idx, written, total) => {
+                    const pct = ((written / total) * 100).toFixed(1);
+                    updateProgress(`Progreso: ${pct}%`);
                 },
-            };
+            });
 
-            await esploader.writeFlash(flashOptions);
             await performReset(transport);
-            setFlashLog(prev => [...prev, 'Tarjeta flasheada correctamente']);            
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            appendLog('✓ Tarjeta flasheada correctamente');
+            await new Promise(r => setTimeout(r, 1000));
 
         } catch (err) {
-            setFlashLog(prev => [...prev, 'Error: ' + err.message]);
+            hasError = true;
+            appendLog('✗ Error: ' + err.message);
         } finally {
             if (transport) {
                 try {
                     await transport.disconnect();
                 } catch (err) {
                     if (err.name !== 'InvalidStateError') {
-                        console.warn('Error al desconectar:', err);
+                        console.warn('Error al desconectar transport:', err);
                     }
                 }
             }
-            
             setFlashing(false);
-            onFlashEnd();
+            onFlashEnd(hasError);   // FIX: siempre propaga si hubo error o no
         }
     };
 
     return (
         <div>
             <h3>Flash Firmware</h3>
-            <input type="file" accept=".bin" onChange={e => setBinFile(e.target.files[0])} />
-            
+            <input
+                type="file"
+                accept=".bin"
+                onChange={e => setBinFile(e.target.files[0])}
+            />
             <button onClick={handleFlash} disabled={!port || !binFile || flashing}>
                 {flashing ? 'Flasheando...' : 'Flashear'}
             </button>
@@ -117,19 +120,13 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
                 <div
                     ref={logRef}
                     style={{
-                        height: '150px',
-                        overflowY: 'auto',
-                        background: '#000',
-                        color: '#ff0',
-                        fontFamily: 'monospace',
-                        padding: '8px',
-                        fontSize: '12px',
-                        marginTop: '10px'
+                        height: '150px', overflowY: 'auto',
+                        background: '#000', color: '#ff0',
+                        fontFamily: 'monospace', padding: '8px',
+                        fontSize: '12px', marginTop: '10px',
                     }}
                 >
-                    {flashLog.map((line, i) => (
-                        <div key={i}>{line}</div>
-                    ))}
+                    {flashLog.map((line, i) => <div key={i}>{line}</div>)}
                 </div>
             )}
         </div>
