@@ -15,7 +15,7 @@ export default function useSerial() {
     const closingPromise = useRef(null);    // FIX: sustituye el flag booleano
     const logIdRef       = useRef(0);       // FIX: ids estables para keys del log
 
-    // ── Cierre atómico ────────────────────────────────────────────────────────
+    // Cierre atómico
     const cleanExistingPort = useCallback(async () => {
         // Si ya hay un cierre en curso, esperamos a que termine en lugar de ignorarlo
         if (closingPromise.current) return closingPromise.current;
@@ -40,7 +40,7 @@ export default function useSerial() {
         return closingPromise.current;
     }, []);
 
-    // ── Inicialización ────────────────────────────────────────────────────────
+    // Inicialización
     const initPort = useCallback(async (selectedPort) => {
         if (closingPromise.current) await closingPromise.current;
 
@@ -101,7 +101,7 @@ export default function useSerial() {
         }
     }, [cleanExistingPort]);
 
-    // ── API pública ───────────────────────────────────────────────────────────
+    // API pública
     const connect = useCallback(async () => {
         try {
             const selected = await navigator.serial.requestPort();

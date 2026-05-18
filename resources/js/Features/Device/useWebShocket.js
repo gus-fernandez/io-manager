@@ -1,19 +1,13 @@
-// resources/js/Features/Device/WsTest.jsx
 import { useState, useRef, useEffect } from 'react';
 
 const ESP32_IP = '192.168.8.132';
 const WS_URL = `ws://${ESP32_IP}/ws`;
 
-const NOTE_ON = 0x90;
-const NOTE_OFF = 0x80;
-const A4 = 69;
-const VELOCITY = 100;
 const MSG_AUTH = 0xFF;   // debe coincidir con el #define en ws_receiver.h
 
-export default function WsTest() {
+export default function useWebShocket() {
     const ws = useRef(null);
     const [status, setStatus] = useState('Desconectado');
-    const [testing, setTesting] = useState(false);
     const [log, setLog] = useState([]);
 
     const appendLog = (msg) =>
@@ -108,65 +102,12 @@ export default function WsTest() {
         appendLog('Desconectado manualmente');
     };
 
-    const testNote = async () => {
-        if (testing) return;
-        setTesting(true);
-
-        if (send([NOTE_ON, A4, VELOCITY])) {
-            appendLog(`TX NOTE ON  — note: ${A4} (A4), vel: ${VELOCITY}`);
-        }
-
-        await new Promise(r => setTimeout(r, 1000));
-
-        if (send([NOTE_OFF, A4, 0x00])) {
-            appendLog(`TX NOTE OFF — note: ${A4} (A4)`);
-        }
-
-        setTesting(false);
+    return {
+        status,
+        log,
+        connect,
+        disconnect,
+        send,
+        appendLog
     };
-
-    const statusColor = {
-        'Autenticado': '#0f0',
-        'Conectado': '#ff0',
-        'Error': 'red',
-    }[status] ?? '#aaa';
-
-    return (
-        <div style={{ fontFamily: 'monospace' }}>
-            <h3>WebSocket Test</h3>
-
-            <div style={{ marginBottom: '12px' }}>
-                <span>Estado: </span>
-                <strong style={{ color: statusColor }}>{status}</strong>
-                {status === 'Desconectado' || status === 'Error' ? (
-                    <button onClick={connect} style={{ marginLeft: '12px' }}>
-                        Conectar
-                    </button>
-                ) : (
-                    <button onClick={disconnect} style={{ marginLeft: '12px' }}>
-                        Desconectar
-                    </button>
-                )}
-            </div>
-
-            <button
-                onClick={testNote}
-                disabled={status !== 'Autenticado' || testing}
-                style={{ marginBottom: '12px' }}
-            >
-                {testing ? 'Enviando...' : '▶ Test A4 (Note On → 1s → Note Off)'}
-            </button>
-
-            <div style={{
-                height: '180px', overflowY: 'auto',
-                background: '#000', color: '#0f0',
-                padding: '8px', fontSize: '12px',
-            }}>
-                {log.length === 0
-                    ? <span style={{ color: '#555' }}>Sin actividad</span>
-                    : log.map((line, i) => <div key={i}>{line}</div>)
-                }
-            </div>
-        </div>
-    );
 }
