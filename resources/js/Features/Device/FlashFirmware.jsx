@@ -12,7 +12,7 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
     const [flashLog, setFlashLog]   = useState([]);
     const logRef = useRef(null);
 
-    // ── Cargar versiones disponibles al montar ────────────────────────────────
+    // Cargar versiones disponibles al montar
     useEffect(() => {
         fetch(`/api/firmware/list?instrument=${INSTRUMENT}`)
             .then(r => r.json())
@@ -27,7 +27,7 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
             .finally(() => setLoadingFw(false));
     }, []);
 
-    // ── Auto-scroll del log ───────────────────────────────────────────────────
+    // Auto-scroll del log
     useEffect(() => {
         if (logRef.current) {
             logRef.current.scrollTop = logRef.current.scrollHeight;
@@ -61,7 +61,7 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
         appendLog('Reset completado');
     };
 
-    // ── Descarga el .bin en memoria y flashea ─────────────────────────────────
+    // Descarga el .bin en memoria y flashea
     const handleFlash = async () => {
         if (!port || !selected) return;
 
@@ -129,7 +129,7 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
         }
     };
 
-    // ── Render ────────────────────────────────────────────────────────────────
+    // Render
 
     const channels = ['stable', 'nightly'];
 

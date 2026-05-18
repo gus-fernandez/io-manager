@@ -5,13 +5,16 @@ const WS_URL = `ws://${ESP32_IP}/ws`;
 
 const MSG_AUTH = 0xFF;   // debe coincidir con el #define en ws_receiver.h
 
-export default function useWebShocket() {
+export default function useWebSocket() {
     const ws = useRef(null);
     const [status, setStatus] = useState('Desconectado');
     const [log, setLog] = useState([]);
 
     const appendLog = (msg) =>
-        setLog(prev => [...prev, `${new Date().toLocaleTimeString()} — ${msg}`]);
+        setLog(prev => {
+            const next = [...prev, `${new Date().toLocaleTimeString()} — ${msg}`];
+            return next.slice(-500);
+    });
     
     useEffect(() => {
         connect();

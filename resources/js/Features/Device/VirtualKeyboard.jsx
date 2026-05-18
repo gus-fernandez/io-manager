@@ -5,8 +5,32 @@ const NOTE_ON = 0x90;
 const NOTE_OFF = 0x80;
 
 const KEY_MAP = {
-    'z': [0, 0],  's': [1, 0],  'x': [2, 0],  'd': [3, 0],  'c': [4, 0], 'v': [5, 0],  'g': [6, 0],  'b': [7, 0],  'h': [8, 0],  'n': [9, 0], 'j': [10, 0], 'm': [11, 0],
-    'q': [0, 1],  '2': [1, 1],  'w': [2, 1],  '3': [3, 1],  'e': [4, 1], 'r': [5, 1],  't': [6, 1],  'y': [7, 1],  '6': [8, 1],  'u': [9, 1], '7': [10, 1], 'i': [11, 1]
+    'z': [0, 0],
+        's': [1, 0],
+    'x': [2, 0],
+        'd': [3, 0],
+    'c': [4, 0],
+    'v': [5, 0],
+        'g': [6, 0],
+    'b': [7, 0],
+        'h': [8, 0],
+    'n': [9, 0],
+        'j': [10, 0],
+    'm': [11, 0],
+
+    'q': [0, 1],
+        '2': [1, 1],
+    'w': [2, 1],
+        '3': [3, 1],
+    'e': [4, 1],
+    'r': [5, 1],
+        '5': [6, 1],
+    't': [7, 1],
+        '6': [8, 1],
+    'y': [9, 1],
+        '7': [10, 1],
+    'u': [11, 1],
+    'i': [12, 1]
 };
 
 export default function VirtualKeyboard({ send, appendLog, isAuthenticated }) {
@@ -25,6 +49,35 @@ export default function VirtualKeyboard({ send, appendLog, isAuthenticated }) {
         stateRef.current = { octave, velocity, active, send };
     }, [octave, velocity, active, send]);
 
+    // Función para apagar absolutamente todas las notas activas
+    const clearAllNotes = () => {
+        const { send: sendFn } = stateRef.current;
+        if (!sendFn || activeNotes.current.size === 0) return;
+
+        activeNotes.current.forEach((midiNote) => {
+            sendFn([NOTE_OFF, midiNote, 0x00]);
+            appendLog(`TX NOTE OFF (Reset) — Nota: ${midiNote}`);
+        });
+        activeNotes.current.clear();
+    };
+
+    // 1. Apagar notas al cambiar de octava o al desactivar el teclado
+    useEffect(() => {
+        clearAllNotes();
+    }, [octave, active]);
+
+    // 2. Apagar notas si el usuario cambia de pestaña o pincha fuera (pérdida de foco)
+    useEffect(() => {
+        const handleBlur = () => {
+            if (stateRef.current.active) {
+                clearAllNotes();
+            }
+        };
+
+        window.addEventListener('blur', handleBlur);
+        return () => window.removeEventListener('blur', handleBlur);
+    }, []);
+
     useEffect(() => {
         const handleKeyDown = (e) => {
             const { octave: currentOct, velocity: currentVel, active: isActive, send: sendFn } = stateRef.current;
@@ -33,8 +86,14 @@ export default function VirtualKeyboard({ send, appendLog, isAuthenticated }) {
             const key = e.key.toLowerCase();
             if (e.key === "'") { setOctave(prev => Math.max(0, prev - 1)); return; }
             if (e.key === '¡') { setOctave(prev => Math.min(8, prev + 1)); return; }
-            if (e.key === '`') { setVelocity(prev => Math.max(10, prev - 10)); return; }
-            if (e.key === '+') { setVelocity(prev => Math.min(127, prev + 10)); return; }
+            if (e.key === '9') { 
+                setVelocity(prev => {
+                    if (prev === 127) return 120;
+                    return Math.max(10, prev - 10);
+                }); 
+                return; 
+            }
+            if (e.key === '0') { setVelocity(prev => Math.min(127, prev + 10)); return; }
 
             if (KEY_MAP[key]) {
                 const [semitone, octaveOffset] = KEY_MAP[key];
@@ -79,19 +138,13 @@ export default function VirtualKeyboard({ send, appendLog, isAuthenticated }) {
             <button
                 onClick={() => setActive(!active)}
                 disabled={!isAuthenticated}
-                style={{ 
-                    marginBottom: '10px', 
-                    background: active ? '#0f0' : '#fff',
-                    color: active ? '#000' : '#000',
-                    fontWeight: active ? 'bold' : 'normal'
-                }}
             >
-                {active ? 'Desactivar Teclado PC' : 'Activar Teclado PC'}
+                {active ? 'Desactivar V-Keyboard' : 'Activar V-Keyboard'}
             </button>
 
             {active && (
                 <div>
-                    <span>Teclado QWERTY Activo</span> | 
+                    <span>Virtual Keyboard Active</span> | 
                     Octava base: <strong>C{octave}</strong> ('/¡) | 
                     Velocidad: <strong>{velocity}</strong> (`/+)
                 </div>

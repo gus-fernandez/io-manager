@@ -1,9 +1,15 @@
-// resources/js/Features/Device/WebShockets.jsx
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function WsConnection({ ws }) {
-    // Extraemos de la prop exactamente lo que el componente necesita para pintar la UI
     const { status, log, connect, disconnect } = ws;
+    const logRef = useRef(null); // ← Referencia para el contenedor del log
+
+    // Auto-scroll cada vez que entran nuevas líneas al log
+    useEffect(() => {
+        if (logRef.current) {
+            logRef.current.scrollTop = logRef.current.scrollHeight;
+        }
+    }, [log]);
 
     const statusColor = {
         'Autenticado': '#0f0',
@@ -13,8 +19,6 @@ export default function WsConnection({ ws }) {
 
     return (
         <div style={{ fontFamily: 'monospace' }}>
-            <h3>WebSocket Test</h3>
-
             <div style={{ marginBottom: '12px' }}>
                 <span>Estado: </span>
                 <strong style={{ color: statusColor }}>{status}</strong>
@@ -28,12 +32,14 @@ export default function WsConnection({ ws }) {
                     </button>
                 )}
             </div>
-
-            <div style={{
-                height: '180px', overflowY: 'auto',
-                background: '#000', color: '#0f0',
-                padding: '8px', fontSize: '12px',
-            }}>
+            <div 
+                ref={logRef} 
+                style={{
+                    height: '180px', overflowY: 'auto',
+                    background: '#000', color: '#0f0',
+                    padding: '8px', fontSize: '12px',
+                }}
+            >
                 {log.length === 0
                     ? <span style={{ color: '#555' }}>Sin actividad</span>
                     : log.map((line, i) => <div key={i}>{line}</div>)

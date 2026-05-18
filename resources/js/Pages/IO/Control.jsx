@@ -1,12 +1,12 @@
 // resources/js/Pages/IO/Control.jsx
 import AppLayout from '@/Layouts/AppLayout';
-import useWebShocket from '@/Features/Device/useWebShocket'; // Importamos el hook
-import WsConnection from '@/Features/Device/WebShockets';
+import useWebSocket from '@/Features/Device/useWebSocket'; // Importamos el hook
+import WsConnection from '@/Features/Device/WebSockets';
 import VirtualKeyboard from '@/Features/Device/VirtualKeyboard'; // Importamos tu nuevo teclado
 
 export default function Control() {
     // Inicializamos el hook que controla el WebSocket en segundo plano
-    const ws = useWebShocket();
+    const ws = useWebSocket();
 
     return (
         <AppLayout>
