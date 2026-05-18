@@ -18,12 +18,12 @@ export default function WsTest() {
 
     const appendLog = (msg) =>
         setLog(prev => [...prev, `${new Date().toLocaleTimeString()} — ${msg}`]);
-    /*
+    
     useEffect(() => {
         connect();
         return () => ws.current?.close();
     }, []);
-    */
+    
     const connectingRef = useRef(false);
 
     const connect = async () => {
@@ -52,8 +52,6 @@ export default function WsTest() {
 
         socket.onopen = () => {
             connectingRef.current = false;
-            console.log('onopen fired, token:', token);
-            console.log('socket state:', socket.readyState);
             appendLog('Conectado, autenticando...');
 
             const tokenBytes = new TextEncoder().encode(token); // token garantizado aquí
