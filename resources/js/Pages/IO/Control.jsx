@@ -1,21 +1,24 @@
 // resources/js/Pages/IO/Control.jsx
 import AppLayout from '@/Layouts/AppLayout';
-import useWebSocket from '@/Features/Device/useWebSocket'; // Importamos el hook
+import useWebSocket from '@/Features/Device/useWebSocket';
 import WsConnection from '@/Features/Device/WebSockets';
-import VirtualKeyboard from '@/Features/Device/VirtualKeyboard'; // Importamos tu nuevo teclado
+import VirtualKeyboard from '@/Features/Device/VirtualKeyboard';
+import ControlPanel from '@/Features/Device/ControlPanel';
 
 export default function Control() {
-    // Inicializamos el hook que controla el WebSocket en segundo plano
     const ws = useWebSocket();
 
     return (
         <AppLayout>
             <h1>IO Control</h1>
-            
-            {/* Le inyectamos todo el estado y funciones de red al gestor del socket */}
-            <WsConnection ws={ws} />
+            <WsConnection ws={ws}>
 
-            {/* Hookeamos el teclado al mismo nivel, pasándole lo estrictamente necesario */}
+                <ControlPanel 
+                    send={ws.send} 
+                    appendLog={ws.appendLog} 
+                    isAuthenticated={ws.status === 'Autenticado'} 
+                />
+            </WsConnection>
             <VirtualKeyboard 
                 send={ws.send} 
                 appendLog={ws.appendLog} 

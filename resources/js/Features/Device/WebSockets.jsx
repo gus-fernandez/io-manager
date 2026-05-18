@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export default function WsConnection({ ws }) {
+export default function WsConnection({ ws, children }) {
     const { status, log, connect, disconnect } = ws;
     const logRef = useRef(null); // ← Referencia para el contenedor del log
 
@@ -31,6 +31,9 @@ export default function WsConnection({ ws }) {
                         Desconectar
                     </button>
                 )}
+            </div>
+            <div>
+                {children}
             </div>
             <div 
                 ref={logRef} 

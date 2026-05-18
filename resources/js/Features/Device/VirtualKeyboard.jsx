@@ -1,4 +1,5 @@
 // resources/js/Features/Device/VirtualKeyboard.jsx
+
 import { useEffect, useState, useRef } from 'react';
 
 const NOTE_ON = 0x90;
@@ -39,7 +40,6 @@ export default function VirtualKeyboard({ send, appendLog, isAuthenticated }) {
     const [velocity, setVelocity] = useState(100);
     const activeNotes = useRef(new Set());
 
-    // Si se desconecta el WS, apagamos el teclado
     useEffect(() => {
         if (!isAuthenticated) setActive(false);
     }, [isAuthenticated]);
@@ -49,7 +49,6 @@ export default function VirtualKeyboard({ send, appendLog, isAuthenticated }) {
         stateRef.current = { octave, velocity, active, send };
     }, [octave, velocity, active, send]);
 
-    // Función para apagar absolutamente todas las notas activas
     const clearAllNotes = () => {
         const { send: sendFn } = stateRef.current;
         if (!sendFn || activeNotes.current.size === 0) return;
@@ -61,12 +60,10 @@ export default function VirtualKeyboard({ send, appendLog, isAuthenticated }) {
         activeNotes.current.clear();
     };
 
-    // 1. Apagar notas al cambiar de octava o al desactivar el teclado
     useEffect(() => {
         clearAllNotes();
     }, [octave, active]);
 
-    // 2. Apagar notas si el usuario cambia de pestaña o pincha fuera (pérdida de foco)
     useEffect(() => {
         const handleBlur = () => {
             if (stateRef.current.active) {
@@ -132,8 +129,11 @@ export default function VirtualKeyboard({ send, appendLog, isAuthenticated }) {
             window.removeEventListener('keyup', handleKeyUp);
         };
     }, [appendLog]);
+    
+    if (!isAuthenticated) return null;
 
     return (
+        
         <div style={{ marginTop: '12px' }}>
             <button
                 onClick={() => setActive(!active)}
