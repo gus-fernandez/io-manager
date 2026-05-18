@@ -34,5 +34,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    
+    'esp32' => [
+        'ws_token' => env('ESP32_WS_TOKEN'),
+    ],
 ];
