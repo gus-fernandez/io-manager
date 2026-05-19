@@ -1,4 +1,5 @@
 // resources/js/Pages/IO/Control.jsx
+
 import AppLayout from '@/Layouts/AppLayout';
 import useWebSocket from '@/Features/Device/useWebSocket';
 import WsConnection from '@/Features/Device/WebSockets';

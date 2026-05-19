@@ -1,3 +1,5 @@
+// resources/js/Features/Device/WebSockets.jsx
+
 import { useEffect, useRef } from 'react';
 
 export default function WsConnection({ ws, children }) {

@@ -1,3 +1,5 @@
+// resources/js/Features/Device/ControlPanel.jsx
+
 import IoButton from '@/Components/IoButton';
 import IoKnob from '@/Components/IoKnob';
 import IoSlider from '@/Components/IoSlider';

@@ -1,3 +1,5 @@
+// resources/js/Components/IoSlider.jsx
+
 import { useState, useRef } from 'react';
 
 export default function IoSlider({ label, initialValue = 0, send, appendLog }) {

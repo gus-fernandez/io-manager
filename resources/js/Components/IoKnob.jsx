@@ -1,3 +1,5 @@
+// resources/js/Components/IoKnob.jsx
+
 import { useState, useRef } from 'react';
 
 export default function IoKnob({ label, initialValue = 0, send, appendLog }) {

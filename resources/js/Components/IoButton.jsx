@@ -1,3 +1,5 @@
+// resources/js/Components/IoButton.jsx
+
 import { useState } from 'react';
 
 export default function IoButton({ label, initialOn = false, send, appendLog }) {
