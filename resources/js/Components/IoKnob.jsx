@@ -36,11 +36,16 @@ export default function IoKnob({ label, cc, initialValue = 0, send, appendLog })
         t.centerY = rect.top + rect.height / 2;
 
         const updateValue = (clientX, clientY, isFinal = false) => {
-            if (clientY > t.centerY && (t.currentValue === 127 || t.currentValue === 0)) return;
+            //if (clientY > t.centerY && (t.currentValue === 127 || t.currentValue === 0)) return;
 
             let angle = getPointerAngle(clientX, clientY, t.centerX, t.centerY) + 90;
             if (angle > 180)  angle -= 360;
             if (angle < -180) angle += 360;
+
+            if (clientY > t.centerY) {
+                if (t.currentValue === 0 && angle > 0) return;
+                if (t.currentValue === 127 && angle < 0) return;
+            }
 
             const clamped    = Math.min(maxAngle, Math.max(minAngle, angle));
             const midiValue  = Math.round(((clamped - minAngle) / (maxAngle - minAngle)) * 127);
