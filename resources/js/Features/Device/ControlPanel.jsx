@@ -1,32 +1,21 @@
 // resources/js/Features/Device/ControlPanel.jsx
 
 import IoButton from '@/Components/IoButton';
-import IoKnob from '@/Components/IoKnob';
+import IoKnob   from '@/Components/IoKnob';
 import IoSlider from '@/Components/IoSlider';
 
 export default function ControlPanel({ send, appendLog, isAuthenticated }) {
     if (!isAuthenticated) return null;
 
     return (
-        <div style={{
-            background: '#000',
-            padding: '12px',
-            margin: '12px 0',
-            borderRadius: '6px',
-            display: 'inline-block',
-            border: '1px solid #222'
-        }}>
-            <div style={{ textTransform: 'uppercase', fontSize: '12px', letterSpacing: '1px', marginBottom: '16px', color: '#888', textAlign: 'center' }}>
+        <div className="inline-block bg-black border border-neutral-800 rounded-md p-3 my-3">
+            <div className="uppercase text-[11px] tracking-widest text-neutral-500 text-center mb-4">
                 IO-8 Test Panel
             </div>
 
-            <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(3, 40px)',
-                gap: '10px 16px',
-                justifyItems: 'center',
-                alignItems: 'end'
-            }}>
+            <div className="grid gap-x-4 gap-y-2.5 justify-items-center items-end"
+                 style={{ gridTemplateColumns: 'repeat(3, 40px)' }}>
+
                 <IoButton label="Play" cc={102} initialOn={false} send={send} appendLog={appendLog} />
                 <IoButton label="Stop" cc={103} initialOn={false} send={send} appendLog={appendLog} />
                 <IoButton label="Rec"  cc={104} initialOn={true}  send={send} appendLog={appendLog} />

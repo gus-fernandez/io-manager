@@ -5,8 +5,8 @@ const ESP32_IP        = '192.168.8.132';
 const WS_URL          = `ws://${ESP32_IP}/ws`;
 const MSG_AUTH        = 0xFF;
 const MSG_PING        = 0xFE;
-const PING_TIMEOUT_MS = 2500;
-const CONN_TIMEOUT_MS = 2500;
+const PING_TIMEOUT_MS = 3000;
+const CONN_TIMEOUT_MS = 3000;
 
 export default function useWebSocket() {
     const ws                = useRef(null);
@@ -18,7 +18,7 @@ export default function useWebSocket() {
     const [log, setLog]       = useState([]);
 
     const appendLog = (msg) =>
-        setLog(prev => [...prev, `${new Date().toLocaleTimeString()} — ${msg}`].slice(-500));
+        setLog(prev => [...prev, `${new Date().toLocaleTimeString()} — ${msg}`].slice(-100));
 
     const resetPingTimer = () => {
         clearTimeout(pingTimerRef.current);

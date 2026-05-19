@@ -1,46 +1,31 @@
 // resources/js/Components/IoButton.jsx
-
 import { useState } from 'react';
 
-export default function IoButton({ label, initialOn = false, send, appendLog }) {
+export default function IoButton({ label, cc, initialOn = false, send, appendLog }) {
     const [isOn, setIsOn] = useState(initialOn);
 
     const handleToggle = () => {
         const nextState = !isOn;
         setIsOn(nextState);
         if (send) {
-            const midiValue = nextState ? 127 : 0;
-            send([0xB0, 0x03, midiValue]);
+            send([0xB0, cc, nextState ? 127 : 0]);
             appendLog(`TX BUTTON — ${label}: ${nextState ? 'ON' : 'OFF'}`);
         }
     };
 
-return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '40px', fontSize: '11px', color: '#fff', userSelect: 'none' }}>
-            <div 
+    return (
+        <div className="flex flex-col items-center w-10 text-[11px] text-white select-none">
+            <div
                 onClick={handleToggle}
-                style={{
-                    width: '40px', 
-                    height: '40px', 
-                    background: '#000',
-                    border: '1px solid #fff', 
-                    borderRadius: '4px',
-                    position: 'relative', 
-                    cursor: 'pointer',
-                    boxSizing: 'border-box'
-                }}
+                className="w-10 h-10 bg-black border border-white rounded relative cursor-pointer box-border"
             >
-                <div style={{
-                    position: 'absolute', top: '4px', left: '50%',
-                    width: '12px', height: '4px', borderRadius: '1px',
-                    transform: 'translateX(-50%)', transition: 'background .2s',
-                    background: isOn ? 'red' : '#333'
-                }} />
+                <div className={`
+                    absolute top-1 left-1/2 -translate-x-1/2
+                    w-3 h-1 rounded-sm transition-colors duration-200
+                    ${isOn ? 'bg-red-500' : 'bg-neutral-700'}
+                `} />
             </div>
-            
-            <div style={{ marginTop: '4px', whiteSpace: 'nowrap' }}>
-                {label}
-            </div>
+            <div className="mt-1 whitespace-nowrap">{label}</div>
         </div>
     );
 }
