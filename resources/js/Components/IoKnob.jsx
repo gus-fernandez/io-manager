@@ -36,8 +36,6 @@ export default function IoKnob({ label, cc, initialValue = 0, send, appendLog })
         t.centerY = rect.top + rect.height / 2;
 
         const updateValue = (clientX, clientY, isFinal = false) => {
-            //if (clientY > t.centerY && (t.currentValue === 127 || t.currentValue === 0)) return;
-
             let angle = getPointerAngle(clientX, clientY, t.centerX, t.centerY) + 90;
             if (angle > 180)  angle -= 360;
             if (angle < -180) angle += 360;

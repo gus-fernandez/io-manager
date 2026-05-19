@@ -1,167 +1,92 @@
-# IO Manager
+# IO-Manager
 
-Aplicación de gestión de dispositivos IO con modo local y modo colaborativo.
+Sistema de gestión, control y actualización de firmware para instrumentos IO-X basados en ESP32 mediante una aplicación híbrida de escritorio (Tauri + React) y un backend en Laravel.
 
-## Stack
+---
 
-- **Backend:** Laravel 13
-- **Frontend:** React + Inertia.js v2
-- **Estilos:** Tailwind CSS
-- **Base de datos:** MySQL (Sail) 
-- **Entorno de desarrollo:** Laravel Sail (Docker)
-- **App de escritorio:** Tauri
+## Estado del Proyecto (Roadmap & TODO)
 
-## Arquitectura
+### Entorno de Desarrollo
+- [x] Configurar Docker / Laravel Sail
+- [x] Estructura base del proyecto (Laravel 13, Inertia.js, React, Tauri)
+- [x] Control de versiones (Git y vinculación con GitHub)
+- [x] Automatización de inicio/cierre de sesión local (Apple Automator)
+- [x] Configuración de entorno remoto de desarrollo (SSH, VNC, SMB)
 
-```
-resources/js/
-├── Components/          # Componentes genéricos reutilizables
-├── Features/
-│   └── Auth/
-│       ├── LoginForm.jsx
-│       └── RegisterForm.jsx
-├── Layouts/
-│   ├── AppLayout.jsx    # Layout principal (adapta según usuario autenticado o no)
-│   ├── AuthenticatedLayout.jsx
-│   └── GuestLayout.jsx
-└── Pages/
-    ├── Landing.jsx
-    ├── About.jsx
-    ├── Dashboard.jsx
-    ├── IO/
-    │   ├── Control.jsx
-    │   ├── Presets.jsx
-    │   └── Firmware.jsx
-    └── Profile/
-        └── Edit.jsx
-```
+### ESP32 & Firmware
+- [x] Conexión por puerto serie (USB Serial Connection)
+- [x] Monitor de puerto serie integrado (USB Serial Monitor)
+- [x] Quemador de firmware (Firmware Burner)
+- [x] Historial y logs de versiones de firmware en Base de Datos
+- [x] Implementación de actualizaciones OTA (Over-The-Air) básica
+- [x] Servidor de WebSockets funcional en el firmware
+- [ ] Panel de administración (Dashboard para subir archivos binarios de firmware y formularios)
+- [ ] Implementación de configuración WiFi via interfaz web (Formulario de aprovisionamiento)
 
-## Modos de uso
+### Aplicación Web & Landing Page (Panel de Control)
+- [x] Arquitectura e infraestructura Local / Colaborativa
+- [x] Sistema de Roles (Admin / User)
+- [x] Autenticación completa (Laravel Breeze)
+  - [x] Login / Logout
+  - [x] Registro de usuarios
+  - [x] Recuperación y reajuste de contraseña (Forgot / Reset password)
+  - [x] Edición y eliminación de perfil de usuario
+  - [x] Recordar sesión (Remember me)
+  - [x] Verificación de correo electrónico
+- [ ] Módulo de Presets (Gestión en Base de Datos)
 
-### Modo Local
-Acceso sin autenticación. El usuario entra directamente a `/local` sin necesidad de cuenta.
+### App de Escritorio & UI General
+- [x] Esqueleto de la aplicación y maquetación base
+- [x] Integración de Tauri: Primer test de entorno de escritorio
+- [ ] Integración de Tauri: Generar primer ejecutable nativo (Build)
+- [ ] Estilos globales y consistencia de UI con Tailwind CSS
+- [ ] Accesibilidad web (Atributos ARIA, navegación por teclado, etc.)
+- [ ] Soporte multi-idioma / Traducción *(Por evaluar)*
 
-### Modo Colaborativo
-Acceso con autenticación completa. Permite compartir presets y configuraciones con otros usuarios.
+### Módulo de Control (Dashboard en tiempo real)
+- [x] Establecimiento y gestión de conexiones vía WebSockets
+- [x] Teclado virtual integrado (Virtual Keyboard)
+- [ ] Interfaz gráfica de control de parámetros (Knobs, Sliders, Buttons)
+- [ ] Visualizador de Presets cargados en tiempo real
+- [ ] Parser de ajustes preestablecidos (Preset Parse)
 
-## Rutas
+### Seguridad
+- [x] Protección CSRF (Gestionado nativamente por Inertia)
+- [x] Hasheo seguro de contraseñas (Bcrypt por defecto)
+- [x] Protección contra Inyección SQL (Uso de Prepared Statements en Eloquent)
+- [x] Mitigación de ataques XSS (Escapado automático en React)
+- [x] Configuración estricta de cookies de sesión con Laravel Sanctum
+- [x] Limitación de peticiones / Rate limiting (Login, Registro, Recuperación con Breeze)
+- [x] Expiración de sesión por inactividad (Configurado a 120 minutos)
+- [x] Logs de auditoría (Registro de intentos fallidos de autenticación)
+- [x] Políticas de complejidad de contraseñas
+- [x] Seguridad en el túnel de WebSockets (Token de autenticación en Handshake + Validación de origen)
+- [ ] Forzar tráfico HTTPS en entorno de producción
+- [ ] Implementación de doble factor de autenticación (2FA) *(Por evaluar)*
+- [ ] Auditoría y revisión de seguridad del Firmware del ESP32
+- [ ] Auditoría y revisión de la seguridad de la conexión WiFi del ESP32
 
-| Ruta | Nombre | Auth | Descripción |
-|------|--------|------|-------------|
-| `/` | `landing` | No | Página de inicio con login y registro |
-| `/local` | `local` | No | Acceso en modo local |
-| `/io/control` | `io.control` | No* | Panel de control |
-| `/io/presets` | `io.presets` | No* | Gestión de presets |
-| `/io/firmware` | `io.firmware` | No* | Gestión de firmware |
-| `/about` | `about` | No | Información de la app |
-| `/profile` | `profile.edit` | Sí | Perfil de usuario |
+### Documentación
+- [x] Redacción del Preproyecto
+- [x] Cuaderno de bitácora y seguimiento diario
+- [x] Estrategia y flujo de ramas en Git
+- [x] Actualización del archivo README (v1)
+- [ ] Manual de usuario final
+- [ ] Memoria técnica del proyecto
 
-*Se añadirá middleware `auth` cuando sea necesario.
+---
 
-## Autenticación
+## Stack Tecnológico
 
-Implementada con **Laravel Breeze** e **Inertia React**:
+*   **Backend:** Laravel 13 (PHP) + Sail (Docker)
+*   **Frontend:** React, Inertia.js, Tailwind CSS
+*   **Desktop Wrapper:** Tauri (Rust)
+*   **Hardware / Firmware:** ESP32 (C++/Arduino framework), WebSockets, OTA Core.
 
-- ✅ Login / Logout
-- ✅ Registro de usuarios
-- ✅ Recuperación de contraseña (Mailpit en desarrollo)
-- ✅ Verificación de email
-- ✅ Remember me
-- ✅ Rate limiting (5 intentos por email+IP)
-- ✅ Política de contraseñas (mínimo 8 caracteres, mayúsculas, números y símbolos)
-- ✅ Logs de auditoría de intentos fallidos
-- ✅ Sesiones en base de datos (120 minutos de inactividad)
+---
 
-## Seguridad
+## Requisitos Previos
 
-- ✅ Protección CSRF automática via Inertia
-- ✅ Hashing de contraseñas con bcrypt (12 rounds)
-- ✅ Protección SQL injection via Eloquent
-- ✅ Protección XSS via React
-- ✅ HTTP Only cookies
-- ✅ Same-site lax
-- ✅ Sanctum configurado para sesiones con cookies
-- ⬜ HTTPS (configurar en producción)
-- ⬜ 2FA (pendiente)
-
-## Entorno de desarrollo
-
-### Requisitos
-- Docker Desktop
-- Node.js
-- Rust (para Tauri)
-
-### Arrancar el entorno
-
-```bash
-./vendor/bin/sail up -d
-./vendor/bin/sail npm run dev
-```
-
-O usando la app de Automator configurada en el proyecto.
-
-### Parar el entorno
-
-```bash
-./vendor/bin/sail stop
-```
-
-### Comandos útiles
-
-```bash
-# Migraciones
-./vendor/bin/sail artisan migrate
-
-# Logs en tiempo real
-./vendor/bin/sail artisan pail
-
-# Crear modelo con migración
-./vendor/bin/sail artisan make:model NombreModelo -m
-```
-
-## App de escritorio (Tauri)
-
-### Desarrollo
-
-```bash
-npx tauri dev
-```
-
-### Build para distribución
-
-```bash
-npx tauri build
-```
-
-Genera instaladores para macOS (.dmg), Windows (.exe) y Linux.
-
-## Variables de entorno relevantes
-
-```env
-APP_URL=http://localhost
-DB_CONNECTION=mysql
-SESSION_DRIVER=database
-SESSION_LIFETIME=120
-MAIL_MAILER=smtp
-MAIL_HOST=mailpit        # En desarrollo
-MAIL_PORT=1025
-```
-
-## Mailpit (emails en desarrollo)
-
-Acceder a la bandeja de entrada de desarrollo en:
-
-```
-http://localhost:8025
-```
-
-## Pendiente
-
-- [ ] Diseño con Tailwind CSS
-- [ ] Lógica de Control (IO/Control)
-- [ ] Gestión de Presets
-- [ ] Gestión de Firmware
-- [ ] API REST para modo colaborativo
-- [ ] HTTPS en producción
-- [ ] 2FA
-- [ ] Deploy
+*   Docker y Docker Compose
+*   Node.js
+*   Rust (para compilación con Tauri)

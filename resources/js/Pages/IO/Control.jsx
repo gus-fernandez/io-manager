@@ -9,7 +9,7 @@ import ModuleGrid from '@/Features/Device/ModuleGrid';
 import OscModule from '@/Features/Device/modules/OscModule';
 // import LfoModule    from '@/Features/Device/modules/LfoModule';
 // import ModModule    from '@/Features/Device/modules/ModModule';
-// import MasterModule from '@/Features/Device/modules/MasterModule';
+import MasterModule from '@/Features/Device/modules/MasterModule';
 // import AdsrModule   from '@/Features/Device/modules/AdsrModule';
 // import FxModule     from '@/Features/Device/modules/FxModule';
 // import ArpModule    from '@/Features/Device/modules/ArpModule';
@@ -18,7 +18,7 @@ const MODULE_COMPONENTS = {
     osc: OscModule,
     // lfo:     LfoModule,
     // mod:     ModModule,
-    // master:  MasterModule,
+    master:  MasterModule,
     // adsr:    AdsrModule,
     // fx:      FxModule,
     // arp:     ArpModule,

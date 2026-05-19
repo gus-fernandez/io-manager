@@ -34,7 +34,7 @@ function OscSection({ prefix, label, hasHardsync = false, hasPhase = false, send
                 {hasPhase ? (
                     <IoKnob label="Phase" cc={getCC('PHASE')} initialValue={0} send={send} appendLog={appendLog} />
                 ) : (
-                    <div className="w-10 h-10" />
+                    <IoKnob label="Ring" cc={CC.RING_AMOUNT} initialValue={0} send={send} appendLog={appendLog} />
                 )}
             </div>
 
