@@ -6,10 +6,10 @@ import VirtualKeyboard from '@/Features/Device/VirtualKeyboard';
 import ModuleGrid from '@/Features/Device/ModuleGrid';
 
 // Módulos disponibles
-import OscModule from '@/Features/Device/modules/OscModule';
+import OscModule from '@/Features/Device/Modules/oscModule';
 // import LfoModule    from '@/Features/Device/modules/LfoModule';
 // import ModModule    from '@/Features/Device/modules/ModModule';
-import MasterModule from '@/Features/Device/modules/MasterModule';
+import MasterModule from '@/Features/Device/Modules/masterModule';
 // import AdsrModule   from '@/Features/Device/modules/AdsrModule';
 // import FxModule     from '@/Features/Device/modules/FxModule';
 // import ArpModule    from '@/Features/Device/modules/ArpModule';

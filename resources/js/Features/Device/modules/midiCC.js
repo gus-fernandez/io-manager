@@ -121,3 +121,7 @@ export const CC = {
     ARP_LEN           : 102,
     ARP_STEPS         : 103
 };
+
+if (import.meta.hot) {
+    import.meta.hot.accept();
+}

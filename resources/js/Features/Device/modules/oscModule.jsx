@@ -1,8 +1,8 @@
-// resources/js/Features/Device/modules/OscModule.jsx
+// resources/js/Features/Device/Modules/oscModule.jsx
 import Module from '@/Features/Device/Module';
 import IoButton from '@/Components/IoButton';
 import IoKnob   from '@/Components/IoKnob';
-import { CC } from '@/Constants/midiCC';
+import { CC } from '@/Features/Device/Modules/midiCC';
 
 function OscSection({ prefix, label, hasHardsync = false, hasPhase = false, send, appendLog }) {
     // Helper para buscar el CC dinámicamente en objeto global

@@ -1,8 +1,8 @@
-// resources/js/Features/Device/modules/MasterModule.jsx
+// resources/js/Features/Device/Modules/masterModule.jsx
 import Module from '@/Features/Device/Module';
 import IoButton from '@/Components/IoButton';
 import IoKnob   from '@/Components/IoKnob';
-import { CC } from '@/Constants/midiCC';
+import { CC } from '@/Features/Device/Modules/midiCC';
 
 export default function MasterModule({ id, send, appendLog }) {
     return (
