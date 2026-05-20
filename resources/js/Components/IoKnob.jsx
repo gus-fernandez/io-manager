@@ -92,7 +92,7 @@ export default function IoKnob({ label, cc, initialValue = 0, send, appendLog })
     const currentAngle = minAngle + (value / 127) * (maxAngle - minAngle);
 
     return (
-        <div className="flex flex-col items-center w-10 text-[11px] text-white select-none">
+        <div className="flex flex-col items-center w-10 text-[10px] text-white select-none">
             <div
                 onMouseDown={handleStart}
                 onTouchStart={handleStart}

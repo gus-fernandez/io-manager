@@ -6,20 +6,20 @@ import VirtualKeyboard from '@/Features/Device/VirtualKeyboard';
 import ModuleGrid from '@/Features/Device/ModuleGrid';
 
 // Módulos disponibles
-import OscModule from '@/Features/Device/Modules/oscModule';
-// import LfoModule    from '@/Features/Device/modules/LfoModule';
-// import ModModule    from '@/Features/Device/modules/ModModule';
-import MasterModule from '@/Features/Device/Modules/masterModule';
-// import AdsrModule   from '@/Features/Device/modules/AdsrModule';
-// import FxModule     from '@/Features/Device/modules/FxModule';
-// import ArpModule    from '@/Features/Device/modules/ArpModule';
+import OscModule from '@/Features/Device/modules/oscModule';
+// import LfoModule    from '@/Features/Device/Modules/LfoModule';
+// import ModModule    from '@/Features/Device/Modules/ModModule';
+import MasterModule from '@/Features/Device/modules/masterModule';
+import AdsrModule   from '@/Features/Device/modules/adsrModule';
+// import FxModule     from '@/Features/Device/Modules/FxModule';
+// import ArpModule    from '@/Features/Device/Modules/ArpModule';
 
 const MODULE_COMPONENTS = {
     osc: OscModule,
     // lfo:     LfoModule,
     // mod:     ModModule,
     master:  MasterModule,
-    // adsr:    AdsrModule,
+    adsr:    AdsrModule,
     // fx:      FxModule,
     // arp:     ArpModule,
 };

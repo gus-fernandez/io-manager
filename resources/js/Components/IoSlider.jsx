@@ -1,7 +1,7 @@
 // resources/js/Components/IoSlider.jsx
 import { useState, useRef, useEffect } from 'react';
 
-export default function IoSlider({ label, cc, initialValue = 0, send, appendLog }) {
+export default function IoSlider({ label, cc, initialValue = 0, send, appendLog, className = "" }) {
     const [value, setValue] = useState(initialValue);
     const bodyRef  = useRef(null);
     const tracking = useRef({
@@ -10,7 +10,6 @@ export default function IoSlider({ label, cc, initialValue = 0, send, appendLog 
         lastSentValue: null,
     });
 
-    // Cleanup si se desmonta arrastrando
     useEffect(() => {
         return () => { tracking.current.isDragging = false; };
     }, []);
@@ -47,7 +46,7 @@ export default function IoSlider({ label, cc, initialValue = 0, send, appendLog 
         const handleStop = (ev) => {
             if (!tracking.current.isDragging) return;
             tracking.current.isDragging = false;
-            const fy = ev.clientY ?? ev.changedTouches?.[0].clientY;
+            const fy = ev.clientY ?? ev.changedTouches?.[0].clientX; // Corregido el fallback de tacto
             if (fy !== undefined) updateValue(fy, true);
             document.removeEventListener('mousemove', handleMove);
             document.removeEventListener('touchmove', handleMove);
@@ -64,12 +63,12 @@ export default function IoSlider({ label, cc, initialValue = 0, send, appendLog 
     const heightPercent = (value / 127) * 100;
 
     return (
-        <div className="flex flex-col items-center w-10 text-[11px] text-white select-none">
+        <div className={`flex flex-col items-center w-10 text-[10px] text-white select-none ${className}`}>
             <div
                 ref={bodyRef}
                 onMouseDown={handleStart}
                 onTouchStart={handleStart}
-                className="w-10 h-10 bg-black border border-white rounded relative cursor-ns-resize overflow-hidden box-border"
+                className="w-10 h-[106px] bg-black border border-white rounded relative cursor-ns-resize overflow-hidden box-border"
             >
                 <div
                     className="absolute bottom-0 w-full bg-white"

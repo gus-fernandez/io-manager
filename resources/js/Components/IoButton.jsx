@@ -14,7 +14,7 @@ export default function IoButton({ label, cc, initialOn = false, send, appendLog
     };
 
     return (
-        <div className="flex flex-col items-center w-10 text-[11px] text-white select-none">
+        <div className="flex flex-col items-center w-10 text-[10px] text-white select-none">
             <div
                 onClick={handleToggle}
                 className="w-10 h-10 bg-black border border-white rounded relative cursor-pointer box-border"
