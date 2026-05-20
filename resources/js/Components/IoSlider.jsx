@@ -68,7 +68,7 @@ export default function IoSlider({ label, cc, initialValue = 0, send, appendLog,
                 ref={bodyRef}
                 onMouseDown={handleStart}
                 onTouchStart={handleStart}
-                className="w-10 h-[106px] bg-black border border-white rounded relative cursor-ns-resize overflow-hidden box-border"
+                className="w-10 h-[123px] bg-black border border-white rounded relative cursor-ns-resize overflow-hidden box-border"
             >
                 <div
                     className="absolute bottom-0 w-full bg-white"

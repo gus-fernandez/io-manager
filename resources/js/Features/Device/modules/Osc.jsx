@@ -1,56 +1,81 @@
 // resources/js/Features/Device/Modules/Osc.jsx
 
 import Module from '@/Features/Device/Module';
-import ModuleSection from '@/Features/Device/moduleSection';
+import ModuleDivider from '@/Features/Device/ModuleDivider';
 import IoButton from '@/Components/IoButton';
 import IoKnob   from '@/Components/IoKnob';
+import IoSelector   from '@/Components/IoSelector';
 import { CC } from '@/Features/Device/Modules/midiCC';
+import { WaveIcons } from '@/Features/Device/Modules/waveIcons';
 
-function OscSection({ prefix, label, hasHardsync = false, hasPhase = false, send, appendLog }) {
+const OscWaves = {
+    "SIN": WaveIcons.OSC_SIN,
+    "TRI": WaveIcons.OSC_TRI,
+    "SAW": WaveIcons.OSC_SAW,
+    "SQR": WaveIcons.OSC_SQR,
+    "PLS": WaveIcons.OSC_PLS
+};
+
+const OscWavesMaster = {
+    "SIN": WaveIcons.OSC_SIN,
+    "TRI": WaveIcons.OSC_TRI,
+    "SAW": WaveIcons.OSC_SAW,
+    "SQR": WaveIcons.OSC_SQR,
+    "NZ":  WaveIcons.OSC_NZ
+};
+
+function OscSection({ prefix, label, isMaster = false, send, appendLog }) {
     const getCC = (suffix) => CC[`${prefix}_${suffix}`];
 
     return (
-        <ModuleSection label={label}>
-            {/* Fila 1: LFO, AD, [Hardsync] */}
-            <div className="grid gap-x-3 gap-y-2 justify-items-center items-end"
+        <div>
+            <ModuleDivider label={label} className='col-span-3' />
+            <div className="grid gap-x-4 gap-y-2 justify-items-center items-end"
                  style={{ gridTemplateColumns: 'repeat(3, 40px)' }}>
                 <IoButton label="LFO" cc={getCC('LFO_ACTIVE')} initialOn={false} send={send} appendLog={appendLog} />
                 <IoButton label="AD"  cc={getCC('AD_ACTIVE')}  initialOn={false} send={send} appendLog={appendLog} />
-                {hasHardsync
-                    ? <IoButton label="Hardsync" cc={getCC('HARDSYNC')} initialOn={false} send={send} appendLog={appendLog} />
-                    : <div className="w-10 h-10" />
+                {isMaster
+                    ? <div className="w-10 h-10" />
+                    : <IoButton label="Hardsync" cc={getCC('HARDSYNC')} initialOn={false} send={send} appendLog={appendLog} />
                 }
             </div>
 
-            {/* Fila 2: Wave, Vol, [Phase|Ring] */}
-            <div className="grid gap-x-3 gap-y-2 justify-items-center items-end"
+            <ModuleDivider/>
+            <div className="grid gap-x-4 gap-y-2 justify-items-center items-end"
                  style={{ gridTemplateColumns: 'repeat(3, 40px)' }}>
-                <IoKnob label="Wave" cc={getCC('WAVEFORM')} initialValue={0}  send={send} appendLog={appendLog} />
+                <IoSelector   
+                    label="Wave" 
+                    cc={getCC('WAVEFORM')} 
+                    options={isMaster ? OscWavesMaster : OscWaves } 
+                    initialIndex={0} 
+                    send={send} 
+                    appendLog={appendLog} 
+                />
                 <IoKnob label="Vol"  cc={getCC('VOLUME')}   initialValue={64} send={send} appendLog={appendLog} />
-                {hasPhase
-                    ? <IoKnob label="Phase" cc={getCC('PHASE')}   initialValue={0}  send={send} appendLog={appendLog} />
-                    : <IoKnob label="Ring"  cc={CC.RING_AMOUNT}   initialValue={0}  send={send} appendLog={appendLog} />
+                {isMaster
+                    ? <IoKnob label="Ring"  cc={CC.RING_AMOUNT}   initialValue={0}  send={send} appendLog={appendLog} />
+                    : <IoKnob label="Phase" cc={getCC('PHASE')}   initialValue={0}  send={send} appendLog={appendLog} />
                 }
             </div>
 
-            {/* Fila 3: Oct, Tune, Fine */}
-            <div className="grid gap-x-3 gap-y-2 justify-items-center items-end"
+            <ModuleDivider/>
+            <div className="grid gap-x-4 gap-y-2 justify-items-center items-end"
                  style={{ gridTemplateColumns: 'repeat(3, 40px)' }}>
                 <IoKnob label="Oct"  cc={getCC('OCT')}  initialValue={64} send={send} appendLog={appendLog} />
                 <IoKnob label="Tune" cc={getCC('TUNE')} initialValue={64} send={send} appendLog={appendLog} />
                 <IoKnob label="Fine" cc={getCC('FINE')} initialValue={64} send={send} appendLog={appendLog} />
             </div>
-        </ModuleSection>
+        </div>
     );
 }
 
 export default function OscModule({ id, send, appendLog }) {
     return (
         <Module id={id} title="OSC">
-            <div className="flex gap-6 justify-center">
-                <OscSection prefix="OSC1" label="OSC 1" hasHardsync hasPhase send={send} appendLog={appendLog} />
-                <OscSection prefix="OSC2" label="OSC 2" hasHardsync hasPhase send={send} appendLog={appendLog} />
-                <OscSection prefix="OSC3" label="OSC 3"                      send={send} appendLog={appendLog} />
+            <div className="flex gap-8 justify-center">
+                <OscSection prefix="OSC1" label="OSC 1" send={send} appendLog={appendLog} />
+                <OscSection prefix="OSC2" label="OSC 2" send={send} appendLog={appendLog} />
+                <OscSection prefix="OSC3" label="OSC 3" isMaster send={send} appendLog={appendLog} />
             </div>
         </Module>
     );

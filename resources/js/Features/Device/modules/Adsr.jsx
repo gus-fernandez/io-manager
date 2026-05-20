@@ -1,59 +1,93 @@
 // resources/js/Features/Device/Modules/Adsr.jsx
 
 import Module from '@/Features/Device/Module';
-import ModuleSection from '@/Features/Device/moduleSection';
+import ModuleDivider from '@/Features/Device/ModuleDivider';
 import IoSlider from '@/Components/IoSlider';
 import IoKnob from '@/Components/IoKnob';
 import IoButton from '@/Components/IoButton';
+import IoSelector from '@/Components/IoSelector';
 import { CC } from '@/Features/Device/Modules/midiCC';
+
+const VcfType = {
+    "LPF\n24dB": 0,
+    "HPF\n24dB": 1,
+    "BPF\n24dB": 2,
+    "NPF\n24dB": 3,
+    "LPF\n12dB": 4,
+    "HPF\n12dB": 5,
+    "BPF\n12dB": 6,
+    "NPF\n12dB": 7
+};
+
+const AdDest = {
+    "NONE": 0,
+    "OSC\nVOL": 1,
+    "OSC\nFREQ": 2,
+    "OSC\nPHASE": 3,
+    "RING": 4,
+    "SPREAD": 5,
+    "LFO\nRATE": 6,
+    "LFO\nAMOUNT": 7
+};
 
 export default function AdsrModule({ id, send, appendLog }) {
     return (
         <Module id={id} title="ADSR">
-            <div className="flex gap-6 justify-center">
-                <ModuleSection label="VCF">
-                    <div className="grid gap-x-3 gap-y-2 justify-items-center items-end"
+            <div className="flex gap-8 justify-center">
+                    <div className="grid gap-x-4 justify-items-center items-end"
                         style={{ gridTemplateColumns: 'repeat(4, 40px)' }}>
-                        
-                        {/* Fila 1 y 2: Sliders */}
+                        <ModuleDivider label="VCF" className='col-span-4' />
                         <IoSlider label="A" cc={CC.VCF_A} className="row-span-2" send={send} appendLog={appendLog} />
                         <IoSlider label="D" cc={CC.VCF_D} className="row-span-2" send={send} appendLog={appendLog} />
                         <IoSlider label="S" cc={CC.VCF_S} className="row-span-2" send={send} appendLog={appendLog} />
                         <IoSlider label="R" cc={CC.VCF_R} className="row-span-2" send={send} appendLog={appendLog} />
-
-                        {/* Fila 3: Knobs */}
-                        <IoKnob label="Type"  cc={CC.VCF_FILTER_TYPE} initialValue={64} send={send} appendLog={appendLog} />
+                        
+                        <ModuleDivider className='col-span-4' />
+                        <IoSelector   
+                            label="Type" 
+                            cc={CC.VCF_FILTER_TYPE} 
+                            options={VcfType} 
+                            initialIndex={0} 
+                            send={send} 
+                            appendLog={appendLog} 
+                        />
                         <IoKnob label="Reso"  cc={CC.VCF_RESONANCE}   initialValue={127} send={send} appendLog={appendLog} />
                         <IoKnob label="Cut"  cc={CC.VCF_CUTOFF}   initialValue={127} send={send} appendLog={appendLog} />
                         <IoKnob label="KeyFollow"  cc={CC.VCF_KEYFOLLOW}   initialValue={127} send={send} appendLog={appendLog} />
                     </div>
-                </ModuleSection>
-                <ModuleSection>
-                    <div className="grid gap-x-3 gap-y-2 justify-items-center items-end"
-                        style={{ gridTemplateColumns: 'repeat(1, 40px)' }}>
 
-                        <IoButton label="AD-Sync" cc={CC.AD_SYNC}    initialOn={false} send={send} appendLog={appendLog} />                    
-                        <IoButton label="AD-Reset" cc={CC.AD_RESET}  initialOn={false} send={send} appendLog={appendLog} />
-                        <IoKnob label="Dest"  cc={CC.VCF_ENV}   initialValue={127} send={send} appendLog={appendLog} />
+                    <div className="grid gap-x-4 justify-items-center items-end"
+                        style={{ gridTemplateColumns: 'repeat(1, 40px)' }}>
+                        <ModuleDivider/>
+                        <IoButton label="AD Sync" cc={CC.AD_SYNC}    initialOn={false} send={send} appendLog={appendLog} />
+                        <ModuleDivider/>               
+                        <IoButton label="AD Reset" cc={CC.AD_RESET}  initialOn={false} send={send} appendLog={appendLog} />
+                        <ModuleDivider label="line" />
+                        <IoKnob label="Env"  cc={CC.VCF_ENV}   initialValue={127} send={send} appendLog={appendLog} />
                     </div>
-                </ModuleSection>
-                <ModuleSection label="AMP">
-                    <div className="grid gap-x-3 gap-y-2 justify-items-center items-end"
+       
+                    <div className="grid gap-x-4 justify-items-center items-end"
                         style={{ gridTemplateColumns: 'repeat(4, 40px)' }}>
                         
-                        {/* Fila 1 y 2: Sliders */}
+                        <ModuleDivider label="AMP" className='col-span-4' />
                         <IoSlider label="A" cc={CC.AMP_A} className="row-span-2" send={send} appendLog={appendLog} />
                         <IoSlider label="D" cc={CC.AMP_D} className="row-span-2" send={send} appendLog={appendLog} />
                         <IoSlider label="S" cc={CC.AMP_S} className="row-span-2" send={send} appendLog={appendLog} />
                         <IoSlider label="R" cc={CC.AMP_R} className="row-span-2" send={send} appendLog={appendLog} />
 
-                        {/* Fila 3: Knobs */}
-                        <IoKnob label="AD-A"  cc={CC.VCF_FILTER_TYPE} initialValue={64} send={send} appendLog={appendLog} />
-                        <IoKnob label="AD-D"  cc={CC.VCF_RESONANCE}   initialValue={127} send={send} appendLog={appendLog} />
-                        <IoKnob label="AD-Am"  cc={CC.VCF_CUTOFF}   initialValue={127} send={send} appendLog={appendLog} />
-                        <IoKnob label="Dest"  cc={CC.VCF_CUTOFF}   initialValue={127} send={send} appendLog={appendLog} />
+                        <ModuleDivider label="AD" className='col-span-4' />
+                        <IoKnob label="A" cc={CC.AD_ATTACK} initialValue={64} send={send} appendLog={appendLog} />
+                        <IoKnob label="D" cc={CC.AD_DECAY} initialValue={127} send={send} appendLog={appendLog} />
+                        <IoKnob label="Amount" cc={CC.AD_AMOUNT} initialValue={127} send={send} appendLog={appendLog} />
+                        <IoSelector   
+                            label="Dest" 
+                            cc={CC.AD_DEST} 
+                            options={AdDest} 
+                            initialIndex={0} 
+                            send={send} 
+                            appendLog={appendLog} 
+                        />
                     </div>
-                </ModuleSection>
             </div>
         </Module>
     );

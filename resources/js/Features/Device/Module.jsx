@@ -35,7 +35,7 @@ export default function Module({ id, title, colSpan = 1, children }) {
                     flex items-center justify-center
                     text-neutral-600 hover:text-neutral-300
                     cursor-grab active:cursor-grabbing
-                    rounded transition-colors duration-150
+                    rounded transition-colors duration-75
                     touch-none
                 "
                 tabIndex={-1}
@@ -57,7 +57,7 @@ export default function Module({ id, title, colSpan = 1, children }) {
 
             {/* Título del módulo */}
             {title && (
-                <div className="uppercase text-[12px] tracking-widest text-neutral-500 text-center mb-3 pr-4">
+                <div className="uppercase text-[12px] tracking-widest text-neutral-500 text-center px-4">
                     {title}
                 </div>
             )}

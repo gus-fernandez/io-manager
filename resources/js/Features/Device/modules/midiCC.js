@@ -1,4 +1,4 @@
-// resources/js/Constants/midiCC.js
+// resources/js/Device/Modules/midiCC.js
 
 export const CC = {
     MODWHEEL        : 1,  // 0.0f to 1.0f
