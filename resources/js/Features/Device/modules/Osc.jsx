@@ -1,5 +1,6 @@
 // resources/js/Features/Device/Modules/Osc.jsx
 
+import { useState } from 'react';
 import Module from '@/Features/Device/Module';
 import ModuleDivider from '@/Features/Device/ModuleDivider';
 import IoButton from '@/Components/IoButton';
@@ -26,6 +27,8 @@ const OscWavesMaster = {
 
 function OscSection({ prefix, label, isMaster = false, send, appendLog }) {
     const getCC = (suffix) => CC[`${prefix}_${suffix}`];
+    const [activeWave, setActiveWave] = useState("SIN");
+    const isNoise = isMaster && activeWave === "NZ";
 
     return (
         <div>
@@ -50,6 +53,7 @@ function OscSection({ prefix, label, isMaster = false, send, appendLog }) {
                     initialIndex={0} 
                     send={send} 
                     appendLog={appendLog} 
+                    onChange={setActiveWave}
                 />
                 <IoKnob label="Vol"  cc={getCC('VOLUME')}   initialValue={64} send={send} appendLog={appendLog} />
                 {isMaster
@@ -61,9 +65,9 @@ function OscSection({ prefix, label, isMaster = false, send, appendLog }) {
             <ModuleDivider/>
             <div className="grid gap-x-4 gap-y-2 justify-items-center items-end"
                  style={{ gridTemplateColumns: 'repeat(3, 40px)' }}>
-                <IoKnob label="Oct"  cc={getCC('OCT')}  initialValue={64} send={send} appendLog={appendLog} />
-                <IoKnob label="Tune" cc={getCC('TUNE')} initialValue={64} send={send} appendLog={appendLog} />
-                <IoKnob label="Fine" cc={getCC('FINE')} initialValue={64} send={send} appendLog={appendLog} />
+                <IoKnob label={isNoise ? "Color" : "Oct"}  cc={getCC('OCT')}  initialValue={64} send={send} appendLog={appendLog} />
+                <IoKnob label={isNoise ? "Rate" : "Tune"} cc={getCC('TUNE')} initialValue={64} send={send} appendLog={appendLog} />
+                <IoKnob label={isNoise ? "Reso" : "Fine"} cc={getCC('FINE')} initialValue={64} send={send} appendLog={appendLog} />
             </div>
         </div>
     );

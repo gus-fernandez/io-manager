@@ -62,7 +62,3 @@ export const WaveIcons = {
         </svg>
     )
 };
-
-if (import.meta.hot) {
-    import.meta.hot.accept();
-}

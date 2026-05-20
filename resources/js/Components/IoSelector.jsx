@@ -1,7 +1,7 @@
 // resources/js/Components/IoSelector.jsx
 import { useState } from 'react';
 
-export default function IoSelector({ label, cc, options, initialIndex = 0, send, appendLog, className = '' }) {
+export default function IoSelector({ label, cc, options, initialIndex = 0, send, appendLog, onChange, className = '' }) {
     const keys = Object.keys(options);
     const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
@@ -16,9 +16,12 @@ export default function IoSelector({ label, cc, options, initialIndex = 0, send,
             midiValue = Math.round((nextIndex / (keys.length - 1)) * 127);
         }
 
+        if (onChange) {
+            onChange(keys[nextIndex]);
+        }
+
         if (send) {
             send([0xB0, cc, midiValue]);
-            // Limpiamos los saltos de línea para el log de texto si existen
             const logText = keys[nextIndex].replace(/\n/g, '');
             appendLog(`TX SELECTOR — ${label}: ${logText} (${midiValue})`);
         }
@@ -26,8 +29,6 @@ export default function IoSelector({ label, cc, options, initialIndex = 0, send,
 
     const currentKey = keys[currentIndex];
     const currentValue = options[currentKey];
-    
-    // Si el valor dentro del objeto es una función, asumimos que es un SVG/Componente
     const isSvg = typeof currentValue === 'function';
     const SvgComponent = isSvg ? currentValue : null;
 
