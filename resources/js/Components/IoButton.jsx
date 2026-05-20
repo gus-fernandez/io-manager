@@ -1,15 +1,27 @@
 // resources/js/Components/IoButton.jsx
 import { useState } from 'react';
 
-export default function IoButton({ label, cc, initialOn = false, send, appendLog }) {
-    const [isOn, setIsOn] = useState(initialOn);
+export default function IoButton({ label, cc, initialOn = false, send, appendLog, activeCc, setActiveCc }) {
+    const isGrouped = activeCc !== undefined;
+    const [localIsOn, setLocalIsOn] = useState(initialOn);
+    const isOn = isGrouped ? activeCc === cc : localIsOn;
 
-    const handleToggle = () => {
-        const nextState = !isOn;
-        setIsOn(nextState);
-        if (send) {
-            send([0xB0, cc, nextState ? 127 : 0]);
-            appendLog(`TX BUTTON — ${label}: ${nextState ? 'ON' : 'OFF'}`);
+const handleToggle = () => {
+        if (isGrouped) {
+            if (!isOn) {
+                setActiveCc(cc);
+                if (send) {
+                    send([0xB0, cc, 127]);
+                    appendLog(`TX BUTTON — ${label}: ON`);
+                }
+            }
+        } else {
+            const nextState = !localIsOn;
+            setLocalIsOn(nextState);
+            if (send) {
+                send([0xB0, cc, nextState ? 127 : 0]);
+                appendLog(`TX BUTTON — ${label}: ${nextState ? 'ON' : 'OFF'}`);
+            }
         }
     };
 
