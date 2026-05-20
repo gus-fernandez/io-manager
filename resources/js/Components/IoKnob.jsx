@@ -1,11 +1,13 @@
 // resources/js/Components/IoKnob.jsx
 import { useState, useRef, useEffect } from 'react';
 
-export default function IoKnob({ label, cc, initialValue = 0, send, appendLog }) {
+export default function IoKnob({ label, cc, initialValue = 0, type = 'unipolar', send, appendLog }) {
     const [value, setValue] = useState(initialValue);
 
     const minAngle = -135;
     const maxAngle = 135;
+
+    const notchAngle = type === 'bipolar' ? 0 : minAngle;
 
     const tracking = useRef({
         centerX:       0,
@@ -100,19 +102,28 @@ export default function IoKnob({ label, cc, initialValue = 0, send, appendLog })
             >
                 {/* Knob body */}
                 <div
-                    className="w-10 h-10 bg-white rounded-full cursor-grab relative"
+                    className="w-10 h-10 bg-neutral-200 rounded-full cursor-grab relative"
                     style={{ transform: `rotate(${currentAngle}deg)` }}
                 >
                     {/* Indicator line */}
-                    <div className="absolute w-2.5 h-10 bg-black top-0 left-1/2 -translate-x-1/2 rounded-sm" />
+                    <div className="absolute w-2.5 h-10 bg-neutral-950 top-0 left-1/2 -translate-x-1/2 rounded-sm" />
+                    {/* Dot */}
+                    <div className="absolute w-[2px] h-[7px] bg-neutral-200 top-[3px] left-1/2 -translate-x-1/2 z-10" />
                     {/* Center cap */}
-                    <div className="absolute w-5 h-5 bg-black rounded-full top-2.5 left-2.5" />
+                    <div className="absolute w-5 h-5 bg-neutral-950 rounded-full top-2.5 left-2.5" />
                 </div>
 
-                {/* Ring */}
-                <div className="absolute inset-0 border border-white rounded-full pointer-events-none box-border" />
+                <div className="absolute inset-0 border border-neutral-200 rounded-full pointer-events-none box-border" />
+
+                <div className="absolute w-1 h-1 bg-neutral-600 rounded-full pointer-events-none"
+                    style={{
+                        transform: `rotate(${notchAngle}deg) translateY(-26px)` 
+                        /* El translateY negativo empuja el punto justo al borde exterior del anillo */
+                    }}
+                />
+                
             </div>
-            <div className="mt-1 whitespace-nowrap">{label}:{value}</div>
+            <div className="mt-1 whitespace-nowrap">{label}</div>
         </div>
     );
 }

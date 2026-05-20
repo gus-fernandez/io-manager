@@ -19,14 +19,13 @@ const STORAGE_KEY = 'io8-module-order';
 
 // Definición de módulos — colSpan en unidades de grid (1 unidad = ~120px)
 const DEFAULT_MODULES = [
-    { id: 'osc',    colSpan: 3 },
-    { id: 'lfo',    colSpan: 1 },
-    { id: 'mod',    colSpan: 1 },
-    { id: 'master', colSpan: 2 },
-    { id: 'adsr',   colSpan: 3 },
-    { id: 'fx',     colSpan: 1 },
-    { id: 'arp',    colSpan: 1 },
-    { id: 'display',colSpan: 1 },
+    { id: 'osc' },
+    { id: 'lfo' },
+    { id: 'mod' },
+    { id: 'master' },
+    { id: 'adsr' },
+    { id: 'fx' },
+    { id: 'arp' }
 ];
 
 const loadOrder = () => {
@@ -34,7 +33,6 @@ const loadOrder = () => {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (!saved) return DEFAULT_MODULES;
         const savedIds = JSON.parse(saved);
-        // Mantener módulos nuevos que no estén en el orden guardado
         const savedModules = savedIds
             .map(id => DEFAULT_MODULES.find(m => m.id === id))
             .filter(Boolean);
@@ -56,24 +54,28 @@ export default function ModuleGrid({ moduleComponents, send, appendLog, isAuthen
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
-            // Activar drag solo desde el handle — requiere 0px de movimiento
-            activationConstraint: { distance: 0 },
+            activationConstraint: { distance: 50 },
         }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         }),
     );
 
-    const handleDragEnd = useCallback((event) => {
+    const handleDragOver = useCallback((event) => {
         const { active, over } = event;
         if (!over || active.id === over.id) return;
 
         setModules(prev => {
             const oldIndex = prev.findIndex(m => m.id === active.id);
             const newIndex = prev.findIndex(m => m.id === over.id);
-            const next = arrayMove(prev, oldIndex, newIndex);
-            saveOrder(next);
-            return next;
+            return arrayMove(prev, oldIndex, newIndex);
+        });
+    }, []);
+
+    const handleDragEnd = useCallback(() => {
+        setModules(prev => {
+            saveOrder(prev);
+            return prev;
         });
     }, []);
 
@@ -81,13 +83,14 @@ export default function ModuleGrid({ moduleComponents, send, appendLog, isAuthen
         <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
+            onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
         >
             <SortableContext
                 items={modules.map(m => m.id)}
                 strategy={rectSortingStrategy}
             >
-            <div className="flex flex-wrap gap-3 p-4">
+            <div className="flex flex-wrap gap-2 p-2">
                     {modules.map(({ id, colSpan }) => {
                         const Component = moduleComponents[id];
                         if (!Component) return null;

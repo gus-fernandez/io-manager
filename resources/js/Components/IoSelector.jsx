@@ -33,10 +33,10 @@ export default function IoSelector({ label, cc, options, initialIndex = 0, send,
     const SvgComponent = isSvg ? currentValue : null;
 
     return (
-        <div className={`flex flex-col items-center w-10 text-[10px] text-white select-none ${className}`}>
+        <div className={`flex flex-col items-center w-10 text-[10px] text--neutral-200 select-none ${className}`}>
             <div
                 onClick={handleNext}
-                className="w-10 h-10 bg-black border border-white rounded cursor-pointer box-border flex items-center justify-center px-0.5"
+                className="w-10 h-10 bg-neutral-950 border border--neutral-200 rounded cursor-pointer box-border flex items-center justify-center px-0.5"
             >
                 {isSvg ? (
                     <div className="text-neutral-200 flex items-center justify-center w-full h-full p-1.5">

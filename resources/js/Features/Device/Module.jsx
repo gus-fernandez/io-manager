@@ -2,7 +2,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-export default function Module({ id, title, colSpan = 1, children }) {
+export default function Module({ id, title, children }) {
     const {
         attributes,
         listeners,
@@ -13,7 +13,7 @@ export default function Module({ id, title, colSpan = 1, children }) {
     } = useSortable({ id });
 
     const style = {
-        transform:  CSS.Transform.toString(transform),
+        transform:  CSS.Translate.toString(transform),
         transition,
     };
     
@@ -22,8 +22,8 @@ export default function Module({ id, title, colSpan = 1, children }) {
             ref={setNodeRef}
             style={style}
             className={`
-                relative bg-[#0a0a0f] border border-neutral-800 rounded-lg p-3
-                ${isDragging ? 'opacity-50 z-50 shadow-2xl shadow-black' : ''}
+                relative bg-neutral-900 rounded-lg p-3
+                ${isDragging ? 'z-50' : ''}
             `}
         >
             {/* Drag handle — esquina superior derecha */}
@@ -33,7 +33,7 @@ export default function Module({ id, title, colSpan = 1, children }) {
                 className="
                     absolute top-2 right-2 w-5 h-5
                     flex items-center justify-center
-                    text-neutral-600 hover:text-neutral-300
+                    text-neutral-500 hover:text-neutral-300
                     cursor-grab active:cursor-grabbing
                     rounded transition-colors duration-75
                     touch-none
@@ -57,7 +57,7 @@ export default function Module({ id, title, colSpan = 1, children }) {
 
             {/* Título del módulo */}
             {title && (
-                <div className="uppercase text-[12px] tracking-widest text-neutral-500 text-center px-4">
+                <div className="uppercase text-[12px] tracking-widest text-neutral-400 text-center px-4">
                     {title}
                 </div>
             )}

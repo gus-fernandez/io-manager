@@ -51,19 +51,19 @@ export default function AdsrModule({ id, send, appendLog }) {
                             send={send} 
                             appendLog={appendLog} 
                         />
-                        <IoKnob label="Reso"  cc={CC.VCF_RESONANCE}   initialValue={127} send={send} appendLog={appendLog} />
-                        <IoKnob label="Cut"  cc={CC.VCF_CUTOFF}   initialValue={127} send={send} appendLog={appendLog} />
-                        <IoKnob label="KeyFollow"  cc={CC.VCF_KEYFOLLOW}   initialValue={127} send={send} appendLog={appendLog} />
+                        <IoKnob label="Reso" cc={CC.VCF_RESONANCE} initialValue={127} send={send} appendLog={appendLog} />
+                        <IoKnob label="Cut" cc={CC.VCF_CUTOFF} initialValue={127} send={send} appendLog={appendLog} />
+                        <IoKnob label="KeyFollow"  cc={CC.VCF_KEYFOLLOW} initialValue={127} send={send} appendLog={appendLog} />
                     </div>
 
                     <div className="grid gap-x-4 justify-items-center items-end"
                         style={{ gridTemplateColumns: 'repeat(1, 40px)' }}>
                         <ModuleDivider/>
-                        <IoButton label="AD Sync" cc={CC.AD_SYNC}    initialOn={false} send={send} appendLog={appendLog} />
+                        <IoButton label="AD Sync" cc={CC.AD_SYNC} initialOn={false} send={send} appendLog={appendLog} />
                         <ModuleDivider/>               
-                        <IoButton label="AD Reset" cc={CC.AD_RESET}  initialOn={false} send={send} appendLog={appendLog} />
+                        <IoButton label="AD Reset" cc={CC.AD_RESET} initialOn={false} send={send} appendLog={appendLog} />
                         <ModuleDivider label="line" />
-                        <IoKnob label="Env"  cc={CC.VCF_ENV}   initialValue={127} send={send} appendLog={appendLog} />
+                        <IoKnob label="Env" cc={CC.VCF_ENV} type="bipolar" initialValue={127} send={send} appendLog={appendLog} />
                     </div>
        
                     <div className="grid gap-x-4 justify-items-center items-end"
@@ -78,7 +78,7 @@ export default function AdsrModule({ id, send, appendLog }) {
                         <ModuleDivider label="AD" className='col-span-4' />
                         <IoKnob label="A" cc={CC.AD_ATTACK} initialValue={64} send={send} appendLog={appendLog} />
                         <IoKnob label="D" cc={CC.AD_DECAY} initialValue={127} send={send} appendLog={appendLog} />
-                        <IoKnob label="Amount" cc={CC.AD_AMOUNT} initialValue={127} send={send} appendLog={appendLog} />
+                        <IoKnob label="Amount" cc={CC.AD_AMOUNT} type="bipolar" initialValue={127} send={send} appendLog={appendLog} />
                         <IoSelector   
                             label="Dest" 
                             cc={CC.AD_DEST} 

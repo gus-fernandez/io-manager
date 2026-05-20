@@ -1,8 +1,9 @@
-// resources/js/Components/IoSlider.jsx
+// resources/js/Components/IoBend.jsx
 import { useState, useRef, useEffect } from 'react';
 
-export default function IoSlider({ label, cc, initialValue = 0, send, appendLog, className = "" }) {
-    const [value, setValue] = useState(initialValue);
+export default function IoBend({ label = "PITCH", channel = 0, send, appendLog, className = "" }) {
+    // El centro exacto de 14 bits (0 a 16383) es 8192
+    const [value, setValue] = useState(8192);
     const bodyRef  = useRef(null);
     const tracking = useRef({
         isDragging:    false,
@@ -18,16 +19,23 @@ export default function IoSlider({ label, cc, initialValue = 0, send, appendLog,
         if (!bodyRef.current) return;
         const rect       = bodyRef.current.getBoundingClientRect();
         const pct        = Math.min(100, Math.max(0, 100 - ((clientY - rect.top) / rect.height) * 100));
-        const midiValue  = Math.round((pct / 100) * 127);
+        
+        // Resolución de 14 bits: 0 a 16383
+        const midiValue  = isFinal ? 8192 : Math.round((pct / 100) * 16383);
 
         setValue(midiValue);
 
         const now = performance.now();
         const t   = tracking.current;
-        if ((isFinal || now - t.lastSentTime >= 33) && midiValue !== t.lastSentValue) {
+        if ((isFinal || now - t.lastSentTime >= 16) && midiValue !== t.lastSentValue) { // Reducido a 16ms para mayor suavidad a 14 bits
             if (send) {
-                send([0xB0, cc, midiValue]);
-                appendLog(`TX FADER — ${label}: ${midiValue}`);
+                // Desglose en LSB (7 bits bajos) y MSB (7 bits altos)
+                const lsb = midiValue & 0x7F;
+                const msb = (midiValue >> 7) & 0x7F;
+
+                // Mensaje MIDI Pitch Bend: 0xE0 combinando el canal (0-15)
+                send([0xE0 | channel, lsb, msb]);
+                appendLog(`TX BEND — ${label}: ${midiValue}`);
             }
             t.lastSentTime  = now;
             t.lastSentValue = midiValue;
@@ -43,11 +51,13 @@ export default function IoSlider({ label, cc, initialValue = 0, send, appendLog,
             updateValue(ev.clientY ?? ev.touches?.[0].clientY);
         };
 
-        const handleStop = (ev) => {
+        const handleStop = () => {
             if (!tracking.current.isDragging) return;
             tracking.current.isDragging = false;
-            const fy = ev.clientY ?? ev.changedTouches?.[0].clientX; // Corregido el fallback de tacto
-            if (fy !== undefined) updateValue(fy, true);
+            
+            // Forzar el retorno elástico al centro
+            updateValue(0, true); 
+
             document.removeEventListener('mousemove', handleMove);
             document.removeEventListener('touchmove', handleMove);
             document.removeEventListener('mouseup',   handleStop);
@@ -60,19 +70,23 @@ export default function IoSlider({ label, cc, initialValue = 0, send, appendLog,
         document.addEventListener('touchend',  handleStop);
     };
 
-    const heightPercent = (value / 127) * 100;
+    const heightPercent = (value / 16383) * 100;
 
     return (
-        <div className={`flex flex-col items-center w-10 text-[10px] text-neutral-200 select-none ${className}`}>
+        <div className={`flex flex-col items-center w-10 text-[10px] text-white select-none ${className}`}>
             <div
                 ref={bodyRef}
                 onMouseDown={handleStart}
                 onTouchStart={handleStart}
-                className="w-10 h-[123px] bg-neutral-950 border border-neutral-200 rounded relative cursor-ns-resize overflow-hidden box-border"
+                className="w-10 h-[123px] bg-neutral-950 border border-neutral-200 rounded relative cursor-ns-resize overflow-hidden box-border flex items-center justify-center"
             >
+                <div className="absolute w-full h-[1px] bg-zinc-700 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <div
-                    className="absolute bottom-0 w-full bg-neutral-200"
-                    style={{ height: `${heightPercent}%` }}
+                    className="absolute w-full bg-neutral-200 opacity-85"
+                    style={{ 
+                        height: '12px', 
+                        bottom: `calc(${heightPercent}% - 3px)` 
+                    }}
                 />
             </div>
             <div className="mt-1 whitespace-nowrap">{label}</div>

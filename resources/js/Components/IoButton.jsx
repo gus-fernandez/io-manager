@@ -14,14 +14,14 @@ export default function IoButton({ label, cc, initialOn = false, send, appendLog
     };
 
     return (
-        <div className="flex flex-col items-center w-10 text-[10px] text-white select-none">
+        <div className="flex flex-col items-center w-10 text-[10px] text-neutral-200 select-none">
             <div
                 onClick={handleToggle}
-                className="w-10 h-10 bg-black border border-white rounded relative cursor-pointer box-border"
+                className="w-10 h-10 bg-neutral-950 border border-neutral-200 rounded relative cursor-pointer box-border"
             >
                 <div className={`
                     absolute top-1 left-1/2 -translate-x-1/2
-                    w-3 h-1 rounded-sm transition-colors duration-200
+                    w-3 h-1 rounded-sm transition-colors duration-100
                     ${isOn ? 'bg-red-500' : 'bg-neutral-700'}
                 `} />
             </div>

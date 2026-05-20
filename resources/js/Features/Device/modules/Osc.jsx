@@ -57,17 +57,20 @@ function OscSection({ prefix, label, isMaster = false, send, appendLog }) {
                 />
                 <IoKnob label="Vol"  cc={getCC('VOLUME')}   initialValue={64} send={send} appendLog={appendLog} />
                 {isMaster
-                    ? <IoKnob label="Ring"  cc={CC.RING_AMOUNT}   initialValue={0}  send={send} appendLog={appendLog} />
-                    : <IoKnob label="Phase" cc={getCC('PHASE')}   initialValue={0}  send={send} appendLog={appendLog} />
+                    ? <IoKnob label="Ring" cc={CC.RING_AMOUNT} initialValue={0} send={send} appendLog={appendLog} />
+                    : <IoKnob label="Phase" cc={getCC('PHASE')} type="bipolar" initialValue={64} send={send} appendLog={appendLog} />
                 }
             </div>
 
             <ModuleDivider/>
             <div className="grid gap-x-4 gap-y-2 justify-items-center items-end"
                  style={{ gridTemplateColumns: 'repeat(3, 40px)' }}>
-                <IoKnob label={isNoise ? "Color" : "Oct"}  cc={getCC('OCT')}  initialValue={64} send={send} appendLog={appendLog} />
-                <IoKnob label={isNoise ? "Rate" : "Tune"} cc={getCC('TUNE')} initialValue={64} send={send} appendLog={appendLog} />
-                <IoKnob label={isNoise ? "Reso" : "Fine"} cc={getCC('FINE')} initialValue={64} send={send} appendLog={appendLog} />
+                <IoKnob label={isNoise ? "Color" : "Oct"} cc={getCC('OCT')}
+                        type={isNoise ? "unipolar" : "bipolar"} initialValue={64} send={send} appendLog={appendLog} />
+                <IoKnob label={isNoise ? "Rate" : "Tune"} cc={getCC('TUNE')}
+                        type={isNoise ? "unipolar" : "bipolar"} initialValue={64} send={send} appendLog={appendLog} />
+                <IoKnob label={isNoise ? "Reso" : "Fine"} cc={getCC('FINE')}
+                        type={isNoise ? "unipolar" : "bipolar"} initialValue={64} send={send} appendLog={appendLog} />
             </div>
         </div>
     );

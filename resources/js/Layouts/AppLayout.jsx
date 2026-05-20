@@ -7,7 +7,7 @@ export default function AppLayout({ children }) {
     const user = usePage().props.auth?.user;
 
     return (
-        <div className="app-container">
+        <div className="app-container min-h-screen bg-neutral-950 text-neutral-200">
             <nav>
                 <ul style={{ display: 'flex', gap: '15px', listStyle: 'none' }}>
                     <li><Link href={route('io.control')}>IO-Control</Link></li>
