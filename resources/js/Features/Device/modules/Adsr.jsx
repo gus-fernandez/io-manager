@@ -1,10 +1,11 @@
-// resources/js/Features/Device/Modules/adsrModule.jsx
+// resources/js/Features/Device/Modules/Adsr.jsx
+
 import Module from '@/Features/Device/Module';
 import ModuleSection from '@/Features/Device/moduleSection';
 import IoSlider from '@/Components/IoSlider';
 import IoKnob from '@/Components/IoKnob';
 import IoButton from '@/Components/IoButton';
-import { CC } from '@/Features/Device/modules/midiCC';
+import { CC } from '@/Features/Device/Modules/midiCC';
 
 export default function AdsrModule({ id, send, appendLog }) {
     return (

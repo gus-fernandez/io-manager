@@ -5,23 +5,23 @@ import WsConnection from '@/Features/Device/WebSockets';
 import VirtualKeyboard from '@/Features/Device/VirtualKeyboard';
 import ModuleGrid from '@/Features/Device/ModuleGrid';
 
-// Módulos disponibles
-import OscModule from '@/Features/Device/modules/oscModule';
-// import LfoModule    from '@/Features/Device/Modules/LfoModule';
-// import ModModule    from '@/Features/Device/Modules/ModModule';
-import MasterModule from '@/Features/Device/modules/masterModule';
-import AdsrModule   from '@/Features/Device/modules/adsrModule';
-// import FxModule     from '@/Features/Device/Modules/FxModule';
-// import ArpModule    from '@/Features/Device/Modules/ArpModule';
+// Modules
+import OscModule from '@/Features/Device/Modules/Osc';
+import LfoModule    from '@/Features/Device/Modules/Lfo';
+import ModModule    from '@/Features/Device/Modules/Mod';
+import MasterModule from '@/Features/Device/Modules/Master';
+import AdsrModule   from '@/Features/Device/Modules/Adsr';
+import FxModule     from '@/Features/Device/Modules/Fx';
+import ArpModule    from '@/Features/Device/Modules/Arp';
 
 const MODULE_COMPONENTS = {
     osc: OscModule,
-    // lfo:     LfoModule,
-    // mod:     ModModule,
+    lfo:     LfoModule,
+    mod:     ModModule,
     master:  MasterModule,
     adsr:    AdsrModule,
-    // fx:      FxModule,
-    // arp:     ArpModule,
+    fx:      FxModule,
+    arp:     ArpModule
 };
 
 export default function Control() {

@@ -1,9 +1,10 @@
-// resources/js/Features/Device/Modules/oscModule.jsx
+// resources/js/Features/Device/Modules/Osc.jsx
+
 import Module from '@/Features/Device/Module';
 import ModuleSection from '@/Features/Device/moduleSection';
 import IoButton from '@/Components/IoButton';
 import IoKnob   from '@/Components/IoKnob';
-import { CC } from '@/Features/Device/modules/midiCC';
+import { CC } from '@/Features/Device/Modules/midiCC';
 
 function OscSection({ prefix, label, hasHardsync = false, hasPhase = false, send, appendLog }) {
     const getCC = (suffix) => CC[`${prefix}_${suffix}`];
