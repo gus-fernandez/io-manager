@@ -14,7 +14,7 @@ export default function WsConnection({ ws, children }) {
     }, [log]);
 
     const statusColor = {
-        'Autenticado': '#0f0',
+        'Autenticado': 'rgb(81, 171, 81)',
         'Conectado': '#ff0',
         'Error': 'red',
     }[status] ?? '#aaa';
@@ -40,8 +40,8 @@ export default function WsConnection({ ws, children }) {
             <div 
                 ref={logRef} 
                 style={{
-                    height: '180px', overflowY: 'auto',
-                    background: '#000', color: '#0f0',
+                    height: '40px', overflowY: 'auto',
+                    background: '#000', color: 'rgb(202, 202, 202)',
                     padding: '8px', fontSize: '12px',
                 }}
             >

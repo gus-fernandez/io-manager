@@ -1,10 +1,10 @@
-// useWebSocket.js (versión limpia)
 import { useState, useRef, useEffect, useCallback } from 'react';
 
 const ESP32_IP        = '192.168.8.132';
 const WS_URL          = `ws://${ESP32_IP}/ws`;
 const MSG_AUTH        = 0xFF;
 const CONN_TIMEOUT_MS = 3000;
+const WATCHDOG_MS     = 5000;
 const MAX_RETRIES     = 3;
 const RETRY_DELAY_MS  = 3000;
 
@@ -15,18 +15,22 @@ export default function useWebSocket() {
     const retryTimerRef    = useRef(null);
     const retriesRef       = useRef(0);
     const manualDisconnect = useRef(false);
+    const watchdogRef      = useRef(null);
+    const connectRef       = useRef(null);
+    const feedWatchdogRef  = useRef(null);
 
     const [status, setStatus] = useState('Desconectado');
     const [log, setLog]       = useState([]);
 
-    const appendLog = useCallback((msg) =>
-        setLog(prev => [...prev, `${new Date().toLocaleTimeString()} — ${msg}`].slice(-100)),
-    []);
+    const appendLog = useCallback((msg) => {
+        setLog([`${new Date().toLocaleTimeString()} — ${msg}`]);
+    }, []);
 
     const scheduleRetry = useCallback(() => {
         if (manualDisconnect.current) return;
         if (retriesRef.current >= MAX_RETRIES) {
             retriesRef.current = 0;
+            manualDisconnect.current = true;
             setStatus('Desconectado');
             appendLog('Sin conexión tras 3 intentos');
             return;
@@ -36,21 +40,20 @@ export default function useWebSocket() {
         appendLog(`Reintentando en ${RETRY_DELAY_MS / 1000}s... (${retriesRef.current}/${MAX_RETRIES})`);
         retryTimerRef.current = setTimeout(() => {
             connectingRef.current = false;
-            connect();
+            connectRef.current();
         }, RETRY_DELAY_MS);
     }, [appendLog]);
 
-    // Limpieza al desmontar
-    useEffect(() => {
-        connect();
-        return () => {
+    const feedWatchdog = useCallback(() => {
+        clearTimeout(watchdogRef.current);
+        watchdogRef.current = setTimeout(() => {
+            appendLog('ESP32 no responde (watchdog)');
+            manualDisconnect.current = false;
             ws.current?.close();
-            clearTimeout(connTimeoutRef.current);
-            clearTimeout(retryTimerRef.current);
-        };
-    }, []);
+        }, WATCHDOG_MS);
+    }, [appendLog]);
 
-    const connect = async () => {
+    const connect = useCallback(async () => {
         if (ws.current?.readyState === WebSocket.OPEN) return;
         if (connectingRef.current) return;
         connectingRef.current = true;
@@ -96,6 +99,7 @@ export default function useWebSocket() {
 
         socket.onclose = () => {
             clearTimeout(connTimeoutRef.current);
+            clearTimeout(watchdogRef.current);
             connectingRef.current = false;
             appendLog('WebSocket desconectado');
             scheduleRetry();
@@ -110,19 +114,36 @@ export default function useWebSocket() {
         socket.onmessage = (e) => {
             const data = new Uint8Array(e.data);
 
-            // Respuesta de autenticación (ACK)
-            if (data[0] === MSG_AUTH && data[1] === 0x01) {
-                setStatus('Autenticado');
-                appendLog('Auth OK');
+            if (data[0] === 0xFE) {
+                feedWatchdogRef.current();
                 return;
             }
 
-            // Cualquier otro dato binario (ej. MIDI)
+            if (data[0] === MSG_AUTH && data[1] === 0x01) {
+                setStatus('Autenticado');
+                appendLog('Auth OK');
+                feedWatchdogRef.current();
+                return;
+            }
+
             appendLog(`RX: [${Array.from(data).map(b => '0x' + b.toString(16).padStart(2, '0')).join(', ')}]`);
         };
 
         ws.current = socket;
-    };
+    }, [appendLog, scheduleRetry]);
+
+    connectRef.current = connect;
+    feedWatchdogRef.current = feedWatchdog;
+
+    useEffect(() => {
+        connectRef.current();
+        return () => {
+            ws.current?.close();
+            clearTimeout(connTimeoutRef.current);
+            clearTimeout(retryTimerRef.current);
+            clearTimeout(watchdogRef.current);
+        };
+    }, []);
 
     const send = useCallback((bytes) => {
         if (ws.current?.readyState !== WebSocket.OPEN) {
@@ -137,6 +158,7 @@ export default function useWebSocket() {
         manualDisconnect.current = true;
         clearTimeout(connTimeoutRef.current);
         clearTimeout(retryTimerRef.current);
+        clearTimeout(watchdogRef.current);
         ws.current?.close();
         ws.current = null;
         setStatus('Desconectado');
@@ -148,7 +170,7 @@ export default function useWebSocket() {
         retriesRef.current = 0;
         connectingRef.current = false;
         clearTimeout(retryTimerRef.current);
-        connect();
+        connectRef.current();
     }, []);
 
     return { status, log, connect: reconnect, disconnect, send, appendLog };
