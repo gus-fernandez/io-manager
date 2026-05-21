@@ -1,44 +1,30 @@
-// resources/js/Features/Device/useWebSocket.js
+// useWebSocket.js (versión limpia)
 import { useState, useRef, useEffect, useCallback } from 'react';
 
 const ESP32_IP        = '192.168.8.132';
 const WS_URL          = `ws://${ESP32_IP}/ws`;
 const MSG_AUTH        = 0xFF;
-const MSG_PING        = 0xFE;
-const PING_TIMEOUT_MS = 3000;
 const CONN_TIMEOUT_MS = 3000;
 const MAX_RETRIES     = 3;
-const RETRY_DELAY_MS  = 2000;
+const RETRY_DELAY_MS  = 3000;
 
 export default function useWebSocket() {
-    const ws             = useRef(null);
-    const connectingRef  = useRef(false);
-    const pingTimerRef   = useRef(null);
-    const connTimeoutRef = useRef(null);
-    const retryTimerRef  = useRef(null);
-    const retriesRef     = useRef(0);
-    const manualDisconnectRef = useRef(false);
+    const ws               = useRef(null);
+    const connectingRef    = useRef(false);
+    const connTimeoutRef   = useRef(null);
+    const retryTimerRef    = useRef(null);
+    const retriesRef       = useRef(0);
+    const manualDisconnect = useRef(false);
 
     const [status, setStatus] = useState('Desconectado');
     const [log, setLog]       = useState([]);
 
-    const appendLog = (msg) =>
-        setLog(prev => [...prev, `${new Date().toLocaleTimeString()} — ${msg}`].slice(-100));
+    const appendLog = useCallback((msg) =>
+        setLog(prev => [...prev, `${new Date().toLocaleTimeString()} — ${msg}`].slice(-100)),
+    []);
 
-    const resetPingTimer = useCallback(() => {
-        clearTimeout(pingTimerRef.current);
-        pingTimerRef.current = setTimeout(() => {
-            appendLog('Conexión perdida');
-            ws.current?.close();
-            ws.current = null;
-            // No seteamos Desconectado aquí. Lo gestiona scheduleRetry
-        }, PING_TIMEOUT_MS);
-    }, []);
-
-    // Reconexión automática
     const scheduleRetry = useCallback(() => {
-        if (manualDisconnectRef.current) return;
-
+        if (manualDisconnect.current) return;
         if (retriesRef.current >= MAX_RETRIES) {
             retriesRef.current = 0;
             setStatus('Desconectado');
@@ -48,34 +34,17 @@ export default function useWebSocket() {
         retriesRef.current += 1;
         setStatus(`Reconectando (${retriesRef.current}/${MAX_RETRIES})...`);
         appendLog(`Reintentando en ${RETRY_DELAY_MS / 1000}s... (${retriesRef.current}/${MAX_RETRIES})`);
-
         retryTimerRef.current = setTimeout(() => {
-            connectingRef.current = false;  // permitir nuevo intento
+            connectingRef.current = false;
             connect();
         }, RETRY_DELAY_MS);
-    }, []);
+    }, [appendLog]);
 
-    // Pausar/reanudar timer al cambiar visibilidad
-    useEffect(() => {
-        const handleVisibilityChange = () => {
-            if (document.hidden) {
-                clearTimeout(pingTimerRef.current);
-            } else {
-                if (ws.current?.readyState === WebSocket.OPEN) {
-                    resetPingTimer();
-                }
-            }
-        };
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-    }, [resetPingTimer]);
-
-    // Conectar al montar
+    // Limpieza al desmontar
     useEffect(() => {
         connect();
         return () => {
             ws.current?.close();
-            clearTimeout(pingTimerRef.current);
             clearTimeout(connTimeoutRef.current);
             clearTimeout(retryTimerRef.current);
         };
@@ -86,7 +55,6 @@ export default function useWebSocket() {
         if (connectingRef.current) return;
         connectingRef.current = true;
 
-        // Solo mostrar "Conectando..." en el primer intento
         if (retriesRef.current === 0) setStatus('Conectando...');
 
         let token = null;
@@ -108,7 +76,7 @@ export default function useWebSocket() {
             if (socket.readyState !== WebSocket.OPEN) {
                 socket.close();
                 connectingRef.current = false;
-                appendLog('Timeout');
+                appendLog('Timeout de conexión');
                 scheduleRetry();
             }
         }, CONN_TIMEOUT_MS);
@@ -116,11 +84,10 @@ export default function useWebSocket() {
         socket.onopen = () => {
             clearTimeout(connTimeoutRef.current);
             connectingRef.current = false;
-            retriesRef.current = 0;         // reset contador al conectar
+            retriesRef.current = 0;
             appendLog('Conectado, autenticando...');
-
             const tokenBytes = new TextEncoder().encode(token);
-            const msg        = new Uint8Array(2 + tokenBytes.length);
+            const msg = new Uint8Array(2 + tokenBytes.length);
             msg[0] = MSG_AUTH;
             msg[1] = tokenBytes.length;
             msg.set(tokenBytes, 2);
@@ -129,7 +96,6 @@ export default function useWebSocket() {
 
         socket.onclose = () => {
             clearTimeout(connTimeoutRef.current);
-            clearTimeout(pingTimerRef.current);
             connectingRef.current = false;
             appendLog('WebSocket desconectado');
             scheduleRetry();
@@ -137,27 +103,21 @@ export default function useWebSocket() {
 
         socket.onerror = () => {
             clearTimeout(connTimeoutRef.current);
-            clearTimeout(pingTimerRef.current);
             connectingRef.current = false;
             appendLog('Error de conexión');
-            // onclose se dispara después de onerror — scheduleRetry se llama ahí
         };
 
         socket.onmessage = (e) => {
             const data = new Uint8Array(e.data);
 
-            if (data[0] === MSG_PING) {
-                resetPingTimer();
-                return;
-            }
-
+            // Respuesta de autenticación (ACK)
             if (data[0] === MSG_AUTH && data[1] === 0x01) {
                 setStatus('Autenticado');
                 appendLog('Auth OK');
-                resetPingTimer();
                 return;
             }
 
+            // Cualquier otro dato binario (ej. MIDI)
             appendLog(`RX: [${Array.from(data).map(b => '0x' + b.toString(16).padStart(2, '0')).join(', ')}]`);
         };
 
@@ -171,24 +131,20 @@ export default function useWebSocket() {
         }
         ws.current.send(new Uint8Array(bytes).buffer);
         return true;
-    }, []);
+    }, [appendLog]);
 
-    // Desconexión manual — cancela reintentos
     const disconnect = useCallback(() => {
-        manualDisconnectRef.current = true;
-        retriesRef.current = MAX_RETRIES;   // bloquear reintentos
-        clearTimeout(pingTimerRef.current);
+        manualDisconnect.current = true;
         clearTimeout(connTimeoutRef.current);
         clearTimeout(retryTimerRef.current);
         ws.current?.close();
         ws.current = null;
         setStatus('Desconectado');
         appendLog('Desconectado manualmente');
-    }, []);
+    }, [appendLog]);
 
-    // Reconexión manual — resetea el contador
     const reconnect = useCallback(() => {
-        manualDisconnectRef.current = false;
+        manualDisconnect.current = false;
         retriesRef.current = 0;
         connectingRef.current = false;
         clearTimeout(retryTimerRef.current);

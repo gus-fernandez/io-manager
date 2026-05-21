@@ -41,7 +41,7 @@ export default function VirtualKeyboard({ send, appendLog, isAuthenticated }) {
     const activeNotes = useRef(new Set());
 
     useEffect(() => {
-        if (!isAuthenticated) setActive(false);
+        setActive(isAuthenticated);
     }, [isAuthenticated]);
 
     const stateRef = useRef({ octave, velocity, active, send });
@@ -139,14 +139,14 @@ export default function VirtualKeyboard({ send, appendLog, isAuthenticated }) {
                 onClick={() => setActive(!active)}
                 disabled={!isAuthenticated}
             >
-                {active ? 'Desactivar V-Keyboard' : 'Activar V-Keyboard'}
+                {active ? 'V-Keyboard On: Desactivar' : 'Activar V-Keyboard'}
             </button>
 
             {active && (
                 <div>
                     <span>Virtual Keyboard Active</span> | 
-                    Octava base: <strong>C{octave}</strong> ('/¡) | 
-                    Velocidad: <strong>{velocity}</strong> (`/+)
+                    Oct: <strong>C{octave}</strong> | 
+                    Vel: <strong>{velocity}</strong>
                 </div>
             )}
         </div>
