@@ -17,7 +17,6 @@ import {
 
 const STORAGE_KEY = 'io8-module-order';
 
-// Definición de módulos — colSpan en unidades de grid (1 unidad = ~120px)
 const DEFAULT_MODULES = [
     { id: 'osc' },
     { id: 'lfo' },

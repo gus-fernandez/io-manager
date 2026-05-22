@@ -1,7 +1,7 @@
 // resources/js/Features/Device/useSerial.js
 import { useState, useCallback, useRef, useEffect } from 'react';
 
-const MAX_LOG_LINES = 500;
+const MAX_LOG_LINES = 100;
 
 export default function useSerial() {
     const [port, setPort]           = useState(null);

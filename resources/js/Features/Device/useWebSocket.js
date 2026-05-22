@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 
-const ESP32_IP        = '192.168.8.132';
-const WS_URL          = `ws://${ESP32_IP}/ws`;
+//const ESP32_IP        = '192.168.8.132';
+const WS_URL          = `ws://io-8.local/ws`;
 const MSG_ESP32_WDT   = 0xFE;
 const MSG_ESP32_READY = 0xFD;
 const MSG_AUTH        = 0xFF;
