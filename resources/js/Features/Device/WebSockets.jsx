@@ -1,17 +1,7 @@
 // resources/js/Features/Device/WebSockets.jsx
 
-import { useEffect, useRef } from 'react';
-
 export default function WsConnection({ ws, children }) {
-    const { status, log, connect, disconnect } = ws;
-    const logRef = useRef(null); // ← Referencia para el contenedor del log
-
-    // Auto-scroll cada vez que entran nuevas líneas al log
-    useEffect(() => {
-        if (logRef.current) {
-            logRef.current.scrollTop = logRef.current.scrollHeight;
-        }
-    }, [log]);
+    const { status, logConn, logMidi, connect, disconnect, appendLogMidi } = ws;
 
     const statusColor = {
         'Autenticado': 'rgb(81, 171, 81)',
@@ -34,21 +24,33 @@ export default function WsConnection({ ws, children }) {
                     </button>
                 )}
             </div>
-            <div>
-                {children}
-            </div>
+
             <div 
-                ref={logRef} 
                 style={{
                     height: '40px', overflowY: 'auto',
                     background: '#000', color: 'rgb(202, 202, 202)',
                     padding: '8px', fontSize: '12px',
                 }}
             >
-                {log.length === 0
+                {!logConn
                     ? <span style={{ color: '#555' }}>Sin actividad</span>
-                    : log.map((line, i) => <div key={i}>{line}</div>)
+                    : <div>{logConn}</div>
                 }
+            </div>
+            <div 
+                style={{
+                    height: '40px', overflowY: 'auto',
+                    background: '#000', color: 'rgb(202, 202, 202)',
+                    padding: '8px', fontSize: '12px',
+                }}
+            >
+                {!logMidi 
+                    ? <span style={{ color: '#555' }}>Sin actividad</span>
+                    : <div>{logMidi}</div>
+                }
+            </div>
+            <div>
+                {children}
             </div>
         </div>
     );

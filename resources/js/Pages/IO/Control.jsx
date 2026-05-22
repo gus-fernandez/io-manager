@@ -35,13 +35,13 @@ export default function Control() {
                 <ModuleGrid
                     moduleComponents={MODULE_COMPONENTS}
                     send={ws.send}
-                    appendLog={ws.appendLog}
+                    appendLog={ws.appendLogMidi}
                     isAuthenticated={isAuthenticated}
                 />
             </WsConnection>
             <VirtualKeyboard
                 send={ws.send}
-                appendLog={ws.appendLog}
+                appendLog={ws.appendLogMidi}
                 isAuthenticated={isAuthenticated}
             />
         </AppLayout>
