@@ -161,7 +161,7 @@ const flushBuffer = useCallback(() => {
 
         socket.onmessage = (e) => {
             const data = new Uint8Array(e.data);
-            //console.log('RX:', data[0].toString(16)); <-debug
+            //console.log('RX:', data[0].toString(16)); <-debugging
 
             if (data[0] === MSG_ESP32_WDT) {
                 feedWatchdogRef.current();
