@@ -26,6 +26,22 @@ class FirmwareSeeder extends Seeder
                 'filename'      => 'IO-8_v0.6.1.bin',
                 'description'   => 'Alpha: WiFi, OTA & Webshockets implemented',
             ],
+            [
+                'instrument'    => 'IO-8',
+                'version'       => '0.6.2',
+                'channel'       => 'stable',
+                'compatibility' => 'ESP32-WROOM-32',
+                'filename'      => 'IO-8_v0.6.2.bin',
+                'description'   => 'Alpha: mDNS, WS stable',
+            ],
+            [
+                'instrument'    => 'IO-8',
+                'version'       => '0.6.3',
+                'channel'       => 'nightly',
+                'compatibility' => 'ESP32-WROOM-32',
+                'filename'      => 'IO-8_v0.6.3.bin',
+                'description'   => 'Alpha: Preset System Impl.',
+            ],
         ];
 
         foreach ($firmwares as $data) {
