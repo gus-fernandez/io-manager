@@ -48,7 +48,7 @@ const saveOrder = (modules) => {
     } catch {}
 };
 
-export default function ModuleGrid({ moduleComponents, send, appendLog, isAuthenticated }) {
+export default function ModuleGrid({ moduleComponents, send, appendLog, isAuthenticated, values = {} }) {
     const [modules, setModules] = useState(loadOrder);
 
     const sensors = useSensors(
@@ -101,6 +101,7 @@ export default function ModuleGrid({ moduleComponents, send, appendLog, isAuthen
                                 send={send}
                                 appendLog={appendLog}
                                 isAuthenticated={isAuthenticated}
+                                values={values}
                             />
                         );
                     })}

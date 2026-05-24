@@ -1,14 +1,21 @@
 // resources/js/Components/IoSlider.jsx
 import { useState, useRef, useEffect } from 'react';
 
-export default function IoSlider({ label, cc, initialValue = 0, send, appendLog, className = "" }) {
-    const [value, setValue] = useState(initialValue);
+export default function IoSlider({ label, cc, value = 0, send, appendLog, className = "" }) {
+    const [valueState, setValueState] = useState(value);
     const bodyRef  = useRef(null);
     const tracking = useRef({
         isDragging:    false,
         lastSentTime:  0,
         lastSentValue: null,
     });
+
+    // Sincronización con el preset automatizado
+    useEffect(() => {
+        if (value !== undefined) {
+            setValueState(value);
+        }
+    }, [value]);
 
     useEffect(() => {
         return () => { tracking.current.isDragging = false; };
@@ -20,7 +27,7 @@ export default function IoSlider({ label, cc, initialValue = 0, send, appendLog,
         const pct        = Math.min(100, Math.max(0, 100 - ((clientY - rect.top) / rect.height) * 100));
         const midiValue  = Math.round((pct / 100) * 127);
 
-        setValue(midiValue);
+        setValueState(midiValue);
 
         const now = performance.now();
         const t   = tracking.current;
@@ -46,7 +53,7 @@ export default function IoSlider({ label, cc, initialValue = 0, send, appendLog,
         const handleStop = (ev) => {
             if (!tracking.current.isDragging) return;
             tracking.current.isDragging = false;
-            const fy = ev.clientY ?? ev.changedTouches?.[0].clientX; // Corregido el fallback de tacto
+            const fy = ev.clientY ?? ev.changedTouches?.[0].clientY;
             if (fy !== undefined) updateValue(fy, true);
             document.removeEventListener('mousemove', handleMove);
             document.removeEventListener('touchmove', handleMove);
@@ -60,7 +67,7 @@ export default function IoSlider({ label, cc, initialValue = 0, send, appendLog,
         document.addEventListener('touchend',  handleStop);
     };
 
-    const heightPercent = (value / 127) * 100;
+    const heightPercent = (valueState / 127) * 100;
 
     return (
         <div className={`flex flex-col items-center w-10 text-[10px] text-neutral-200 select-none ${className}`}>

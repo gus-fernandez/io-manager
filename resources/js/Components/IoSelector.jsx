@@ -1,9 +1,24 @@
 // resources/js/Components/IoSelector.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function IoSelector({ label, cc, options, initialIndex = 0, send, appendLog, onChange, className = '' }) {
+export default function IoSelector({ label, cc, options, value = 0, send, appendLog, onChange, className = '' }) {
     const keys = Object.keys(options);
-    const [currentIndex, setCurrentIndex] = useState(initialIndex);
+    
+    // Función helper para calcular qué índice del array corresponde al valor MIDI
+    const getIndexFromMidi = (midiVal) => {
+        if (keys.length <= 1) return 0;
+        const step = 127 / (keys.length - 1);
+        return Math.min(keys.length - 1, Math.round(midiVal / step));
+    };
+
+    const [currentIndex, setCurrentIndex] = useState(getIndexFromMidi(value));
+
+    // Sincronización con el preset automatizado
+    useEffect(() => {
+        if (value !== undefined) {
+            setCurrentIndex(getIndexFromMidi(value));
+        }
+    }, [value, options]);
 
     const handleNext = () => {
         if (keys.length === 0) return;
@@ -33,10 +48,10 @@ export default function IoSelector({ label, cc, options, initialIndex = 0, send,
     const SvgComponent = isSvg ? currentValue : null;
 
     return (
-        <div className={`flex flex-col items-center w-10 text-[10px] text--neutral-200 select-none ${className}`}>
+        <div className={`flex flex-col items-center w-10 text-[10px] text-neutral-200 select-none ${className}`}>
             <div
                 onClick={handleNext}
-                className="w-10 h-10 bg-neutral-950 border border--neutral-200 rounded cursor-pointer box-border flex items-center justify-center px-0.5"
+                className="w-10 h-10 bg-neutral-950 border border-neutral-200 rounded cursor-pointer box-border flex items-center justify-center px-0.5"
             >
                 {isSvg ? (
                     <div className="text-neutral-200 flex items-center justify-center w-full h-full p-1.5">

@@ -1,12 +1,19 @@
 // resources/js/Components/IoButton.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function IoButton({ label, cc, initialOn = false, send, appendLog, activeCc, setActiveCc }) {
+export default function IoButton({ label, cc, value, send, appendLog, activeCc, setActiveCc }) {
     const isGrouped = activeCc !== undefined;
-    const [localIsOn, setLocalIsOn] = useState(initialOn);
+    
+    const [localIsOn, setLocalIsOn] = useState(value !== undefined ? value >= 64 : false);
     const isOn = isGrouped ? activeCc === cc : localIsOn;
 
-const handleToggle = () => {
+    useEffect(() => {
+        if (value !== undefined && !isGrouped) {
+            setLocalIsOn(value >= 64);
+        }
+    }, [value, isGrouped]);
+
+    const handleToggle = () => {
         if (isGrouped) {
             if (!isOn) {
                 setActiveCc(cc);

@@ -34,8 +34,9 @@ export default function Control() {
             <h1>IO Control</h1>
             <WsConnection ws={ws}>
                 <PresetsControl 
-                    presets={ws.presets} 
-                    send={ws.send} 
+                    presets={ws.presets}
+                    currentPreset={ws.currentPreset}
+                    sendSavePacket={ws.sendSavePacket}
                     isAuthenticated={isAuthenticated} 
                 />
                 <ModuleGrid
@@ -43,6 +44,7 @@ export default function Control() {
                     send={ws.send}
                     appendLog={ws.appendLogMidi}
                     isAuthenticated={isAuthenticated}
+                    values={ws.presetData}
                 />
             </WsConnection>
             <VirtualKeyboard

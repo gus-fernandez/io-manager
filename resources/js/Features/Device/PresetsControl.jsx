@@ -1,62 +1,175 @@
 // resources/js/Features/Device/PresetsControl.jsx
 
-export default function PresetsControl({ presets = [] }) {
+import { useState, useEffect } from 'react';
+
+const MSG_SAVE = 0xFA;
+
+export default function PresetsControl({ presets = [], currentPreset, sendSavePacket, isAuthenticated = true }) {    const [isOpen, setIsOpen] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [newName, setNewName] = useState('');
+    
+    // Diccionario local para guardar los nombres modificados en la sesión web { id: "NUEVO_NOMBRE" }
+    const [localNames, setLocalNames] = useState({});
+
+    const activePresetData = presets.find(p => p.id === currentPreset);
+    const activePresetName = localNames[currentPreset] || (activePresetData ? activePresetData.name : 'LOADING...');
+    const hasPresets = presets.length > 0;
+
+    useEffect(() => {
+        setNewName(activePresetName);
+    }, [currentPreset, presets, localNames]);
+
+    const handleConfirmLocalRename = (e) => {
+        e.stopPropagation();
+        if (!newName.trim()) return;
+
+        const cleanName = newName.trim().toUpperCase().substring(0, 16);
+        
+        setLocalNames(prev => ({
+            ...prev,
+            [currentPreset]: cleanName
+        }));
+
+        setIsEditing(false);
+    };
+
+    const handlePhysicalSave = (e) => {
+        e.stopPropagation(); 
+        if (!sendSavePacket || currentPreset === null || isSaving) return;
+
+        setIsSaving(true);
+
+        const finalName = activePresetName.toUpperCase().padEnd(16, ' ').substring(0, 16);
+        const encoder = new TextEncoder();
+        const nameBytes = encoder.encode(finalName);
+
+        sendSavePacket(nameBytes);
+
+        setTimeout(() => {
+            setIsSaving(false);
+        }, 800);
+    };
+
+    const handleStartEdit = (e) => {
+        e.stopPropagation();
+        if (!hasPresets) return;
+        setNewName(activePresetName);
+        setIsEditing(true);
+    };
+
+    const handleCancelEdit = (e) => {
+        e.stopPropagation();
+        setIsEditing(false);
+        setNewName(activePresetName);
+    };
+
     return (
-        <div 
-            style={{ 
-                fontFamily: 'monospace', 
-                marginTop: '16px',
-                borderTop: '1px solid #333',
-                paddingTop: '12px'
-            }}
-        >
-            <div style={{ marginBottom: '8px', fontWeight: 'bold', color: '#aaa' }}>
-                CATÁLOGO DE PRESETS:
+        <div className="font-mono mt-4 bg-neutral-950/40 border border-neutral-800 rounded p-2">
+            <div 
+                onClick={() => hasPresets && !isEditing && setIsOpen(!isOpen)}
+                className={`flex items-center justify-between w-full h-7 select-none px-1 ${
+                    hasPresets && !isEditing ? 'cursor-pointer hover:bg-neutral-900/30' : 'cursor-default'
+                } rounded-sm`}
+            >
+                <div className="flex items-center uppercase text-xs tracking-widest text-neutral-500 font-bold leading-none flex-1 mr-2">
+                    <span className="whitespace-nowrap mr-2">PRESETS: LOADED ➔</span>
+                    
+                    {isEditing ? (
+                        <input
+                            type="text"
+                            value={newName}
+                            onChange={(e) => setNewName(e.target.value.toUpperCase())}
+                            onClick={(e) => e.stopPropagation()}
+                            maxLength={16}
+                            className="bg-neutral-900 border border-neutral-700 text-neutral-200 px-1 py-0.5 text-xs font-mono rounded outline-none focus:border-neutral-500 w-48 h-5"
+                            autoFocus
+                        />
+                    ) : (
+                        <span className={hasPresets ? 'text-neutral-300' : 'text-neutral-600'}>
+                            {hasPresets ? activePresetName.toUpperCase() : 'WAITING DEVICE...'}
+                        </span>
+                    )}
+                </div>
+                
+                {hasPresets && (
+                    <div className="flex items-center gap-4 uppercase text-xs tracking-widest whitespace-nowrap leading-none">
+                        {/* Controles de edición local */}
+                        {isAuthenticated && (
+                            isEditing ? (
+                                <div className="flex gap-2">
+                                    <button onClick={handleConfirmLocalRename} className="text-emerald-400 hover:text-emerald-300 font-bold">
+                                        [OK]
+                                    </button>
+                                    <button onClick={handleCancelEdit} className="text-rose-500 hover:text-rose-400">
+                                        [X]
+                                    </button>
+                                </div>
+                            ) : (
+                                <button onClick={handleStartEdit} className="text-neutral-500 hover:text-neutral-300">
+                                    [CHANGE NAME]
+                                </button>
+                            )
+                        )}
+
+                        {/* Botón de SAVE (Envía el nombre de la copia local + knobs a la ESP32) */}
+                        {isAuthenticated && !isEditing && (
+                            <button
+                                onClick={handlePhysicalSave}
+                                disabled={isSaving}
+                                className={`font-mono font-normal transition-colors duration-150 ${
+                                    isSaving 
+                                        ? 'text-emerald-500 animate-pulse font-bold' 
+                                        : 'text-neutral-500 hover:text-emerald-400'
+                                }`}
+                            >
+                                {isSaving ? '[SAVING...]' : '[SAVE]'}
+                            </button>
+                        )}
+
+                        {/* Botón OPEN / CLOSE */}
+                        {!isEditing && (
+                            <span className="text-neutral-600">
+                                {isOpen ? '[CLOSE]' : '[OPEN]'}
+                            </span>
+                        )}
+                    </div>
+                )}
             </div>
 
-            <div 
-                style={{
-                    maxHeight: '200px', 
-                    overflowY: 'auto',
-                    background: '#111', 
-                    padding: '4px',
-                    border: '1px solid #222'
-                }}
-            >
-                {presets.length === 0 ? (
-                    <span style={{ color: '#555', padding: '4px', display: 'block' }}>
-                        Esperando metadata del dispositivo...
-                    </span>
-                ) : (
-                    presets.map((preset) => {
-                        // Estilos dinámicos según el estado del slot
-                        const itemColor = preset.isEmpty ? '#555' : '#ccc';
+            {/* Listado de Presets desplegable */}
+            {isOpen && hasPresets && !isEditing && (
+                <div className="max-h-48 overflow-y-auto border-t border-neutral-900 mt-2 pt-1 divide-y divide-neutral-900/40">
+                    {presets.map((preset) => {
+                        const isActive = preset.id === currentPreset;
+                        
+                        // Muestra el nombre modificado localmente en la lista si existe
+                        const displayName = localNames[preset.id] || preset.name;
+                        
+                        let textColor = 'text-neutral-400';
+                        if (preset.isEmpty) textColor = 'text-neutral-700';
+                        if (isActive) textColor = 'text-neutral-200 font-bold';
 
                         return (
                             <div
                                 key={preset.id}
-                                style={{
-                                    padding: '4px 8px',
-                                    color: itemColor,
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    fontSize: '13px',
-                                    borderBottom: '1px solid #1a1a1a'
-                                }}
+                                className={`flex justify-between items-center px-1 py-1 text-xs tracking-widest uppercase transition-colors ${textColor} ${
+                                    isActive ? 'bg-neutral-900/60' : 'hover:bg-neutral-900/20'
+                                }`}
                             >
-                                <span>
-                                    {String(preset.id).padStart(3, '0')} : {preset.name}
+                                <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                                    {String(preset.id).padStart(3, '0')} : {displayName}
+                                    {isActive && <span className="ml-2 text-neutral-500 font-normal">◄</span>}
                                 </span>
-                                
-                                <span style={{ fontSize: '11px', color: '#444' }}>
+                                <span className="text-xs tracking-widest text-neutral-600 ml-4 whitespace-nowrap font-normal">
                                     {preset.isFav ? '★ ' : ''}
                                     {preset.category !== 'Undef' ? `[${preset.category}]` : ''}
                                 </span>
                             </div>
                         );
-                    })
-                )}
-            </div>
+                    })}
+                </div>
+            )}
         </div>
     );
 }

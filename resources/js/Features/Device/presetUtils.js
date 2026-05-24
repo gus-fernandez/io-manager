@@ -1,5 +1,7 @@
 // js/Features/Device/presetUtils.js
 
+import { CC } from '@/Features/Device/Modules/midiCC';
+
 export const IOP_NUM = 128;
 export const PRESET_META_SIZE = 17;
 
@@ -75,4 +77,16 @@ export function parseMetadata(rawBuffer) {
         presets.push({ id: i, name, ...flags });
     }
     return presets;
+}
+
+export function parsePresetParams(rawBuffer) {
+    const mappedValues = {};
+    const paramsBuffer = rawBuffer.subarray(Slot.Params, Slot.Crc);
+    Object.entries(CC).forEach(([key, ccNumber]) => {
+        if (ccNumber < paramsBuffer.length) {
+            mappedValues[key] = paramsBuffer[ccNumber];
+        }
+    });
+
+    return mappedValues;
 }

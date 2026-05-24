@@ -1,12 +1,11 @@
 // resources/js/Components/IoKnob.jsx
 import { useState, useRef, useEffect } from 'react';
 
-export default function IoKnob({ label, cc, initialValue = 0, type = 'unipolar', send, appendLog }) {
-    const [value, setValue] = useState(initialValue);
+export default function IoKnob({ label, cc, value = 0, type = 'unipolar', send, appendLog }) {
+    const [valueState, setValueState] = useState(value);
 
     const minAngle = -135;
     const maxAngle = 135;
-
     const notchAngle = type === 'bipolar' ? 0 : minAngle;
 
     const tracking = useRef({
@@ -15,10 +14,17 @@ export default function IoKnob({ label, cc, initialValue = 0, type = 'unipolar',
         isDragging:    false,
         lastSentTime:  0,
         lastSentValue: null,
-        currentValue:  initialValue,
+        currentValue:  value,
     });
 
-    // Cleanup si se desmonta arrastrando
+    // Sincronización con el preset automatizado
+    useEffect(() => {
+        if (value !== undefined) {
+            setValueState(value);
+            tracking.current.currentValue = value;
+        }
+    }, [value]);
+
     useEffect(() => {
         return () => { tracking.current.isDragging = false; };
     }, []);
@@ -51,7 +57,7 @@ export default function IoKnob({ label, cc, initialValue = 0, type = 'unipolar',
             const midiValue  = Math.round(((clamped - minAngle) / (maxAngle - minAngle)) * 127);
 
             t.currentValue = midiValue;
-            setValue(midiValue);
+            setValueState(midiValue);
 
             const now = performance.now();
             if ((isFinal || now - t.lastSentTime >= 33) && midiValue !== t.lastSentValue) {
@@ -91,7 +97,7 @@ export default function IoKnob({ label, cc, initialValue = 0, type = 'unipolar',
         document.addEventListener('touchend',  handleStop);
     };
 
-    const currentAngle = minAngle + (value / 127) * (maxAngle - minAngle);
+    const currentAngle = minAngle + (valueState / 127) * (maxAngle - minAngle);
 
     return (
         <div className="flex flex-col items-center w-10 text-[10px] text-white select-none">
@@ -100,28 +106,18 @@ export default function IoKnob({ label, cc, initialValue = 0, type = 'unipolar',
                 onTouchStart={handleStart}
                 className="w-10 h-10 bg-black rounded-full flex items-center justify-center relative box-border"
             >
-                {/* Knob body */}
                 <div
                     className="w-10 h-10 bg-neutral-200 rounded-full cursor-grab relative"
                     style={{ transform: `rotate(${currentAngle}deg)` }}
                 >
-                    {/* Indicator line */}
                     <div className="absolute w-2.5 h-10 bg-neutral-950 top-0 left-1/2 -translate-x-1/2 rounded-sm" />
-                    {/* Dot */}
                     <div className="absolute w-[2px] h-[7px] bg-neutral-200 top-[3px] left-1/2 -translate-x-1/2 z-10" />
-                    {/* Center cap */}
                     <div className="absolute w-5 h-5 bg-neutral-950 rounded-full top-2.5 left-2.5" />
                 </div>
-
                 <div className="absolute inset-0 border border-neutral-200 rounded-full pointer-events-none box-border" />
-
                 <div className="absolute w-1 h-1 bg-neutral-600 rounded-full pointer-events-none"
-                    style={{
-                        transform: `rotate(${notchAngle}deg) translateY(-26px)` 
-                        /* El translateY negativo empuja el punto justo al borde exterior del anillo */
-                    }}
+                    style={{ transform: `rotate(${notchAngle}deg) translateY(-26px)` }}
                 />
-                
             </div>
             <div className="mt-1 whitespace-nowrap">{label}</div>
         </div>
