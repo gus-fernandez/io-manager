@@ -4,6 +4,7 @@ import useWebSocket from '@/Features/Device/useWebSocket';
 import WsConnection from '@/Features/Device/WebSockets';
 import VirtualKeyboard from '@/Features/Device/VirtualKeyboard';
 import ModuleGrid from '@/Features/Device/ModuleGrid';
+import PresetsControl from '@/Features/Device/PresetsControl';
 
 // Modules
 import OscModule from '@/Features/Device/Modules/Osc';
@@ -32,6 +33,11 @@ export default function Control() {
         <AppLayout>
             <h1>IO Control</h1>
             <WsConnection ws={ws}>
+                <PresetsControl 
+                    presets={ws.presets} 
+                    send={ws.send} 
+                    isAuthenticated={isAuthenticated} 
+                />
                 <ModuleGrid
                     moduleComponents={MODULE_COMPONENTS}
                     send={ws.send}

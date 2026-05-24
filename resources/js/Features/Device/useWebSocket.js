@@ -1,12 +1,18 @@
 // resources/js/Features/Device/useWebSocket.js
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { parseMetadata, IOP_NUM, PRESET_META_SIZE } from '@/Features/Device/presetUtils';
 
 //const ESP32_IP        = '192.168.8.132';
 const WS_URL          = `ws://io-8.local/ws`;
-const MSG_ESP32_WDT   = 0xFE;
+
+const MSG_METADATA    = 0xFC;
 const MSG_ESP32_READY = 0xFD;
+const MSG_ESP32_WDT   = 0xFE;
 const MSG_AUTH        = 0xFF;
+
+const METADATA_LEN    = IOP_NUM * PRESET_META_SIZE;
+
 const CONN_TIMEOUT_MS = 3000;
 const WATCHDOG_MS     = 5000;
 const MAX_RETRIES     = 3;
@@ -30,6 +36,9 @@ export default function useWebSocket() {
     const [status, setStatus] = useState('Desconectado');
     const [logMidi, setLogM]       = useState("");
     const [logConn, setLogC]       = useState("");
+    const [presets, setPresets] = useState([]);
+    const [currentPreset, setCurrentPreset] = useState(0);
+    const metaBufferRef = useRef([])
 
     const appendLogMidi = useCallback((msg) => {
         setLogM(`${new Date().toLocaleTimeString()} — ${msg}`);
@@ -161,7 +170,7 @@ const flushBuffer = useCallback(() => {
 
         socket.onmessage = (e) => {
             const data = new Uint8Array(e.data);
-            //console.log('RX:', data[0].toString(16)); <-debugging
+            console.log('RX:', data[0].toString(16)); // <-debugging
 
             if (data[0] === MSG_ESP32_WDT) {
                 feedWatchdogRef.current();
@@ -174,10 +183,27 @@ const flushBuffer = useCallback(() => {
                 feedWatchdogRef.current();
                 return;
             }
-
+            
             if (data[0] === MSG_ESP32_READY) {
                 espReadyRef.current = true;
                 flushBuffer();
+                return;
+            }
+
+            if (data[0] === MSG_METADATA) {
+                const payload = data.subarray(1);
+                
+                if (metaBufferRef.current.length === 0 && payload.length === 1) {
+                    setCurrentPreset(payload[0]);
+                    return;
+                }
+                
+                metaBufferRef.current.push(...payload);
+                if (metaBufferRef.current.length >= METADATA_LEN) {
+                    const parsed = parseMetadata(new Uint8Array(metaBufferRef.current));
+                    setPresets(parsed);
+                    metaBufferRef.current = [];
+                }
                 return;
             }
 
@@ -236,5 +262,5 @@ const flushBuffer = useCallback(() => {
         connectRef.current();
     }, []);
 
-    return { status, logMidi, logConn, connect: reconnect, disconnect, send, appendLogMidi };
+    return { status, logMidi, logConn, presets, currentPreset, connect: reconnect, disconnect, send, appendLogMidi };
 }
