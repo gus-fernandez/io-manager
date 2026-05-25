@@ -38,10 +38,10 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     }, []);
 
     const send = useCallback((data) => {
-        if (ws.current?.readyState === WebSocket.OPEN) {
-            ws.current.send(new Uint8Array(data));
-        }
-    }, []);
+    if (ws.current?.readyState === WebSocket.OPEN) {
+        ws.current.send(new Uint8Array(data));
+    }
+}, []);
 
     const disconnect = useCallback(() => {
         cleanTimers();

@@ -42,6 +42,14 @@ class FirmwareSeeder extends Seeder
                 'filename'      => 'IO-8_v0.6.3.bin',
                 'description'   => 'Alpha: Preset System Impl.',
             ],
+            [
+                'instrument'    => 'IO-8',
+                'version'       => '0.7.0',
+                'channel'       => 'stable',
+                'compatibility' => 'ESP32-WROOM-32',
+                'filename'      => 'IO-8_v0.7.0.bin',
+                'description'   => 'Alpha: Complete Preset System',
+            ],
         ];
 
         foreach ($firmwares as $data) {

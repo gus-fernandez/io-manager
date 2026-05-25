@@ -27,7 +27,7 @@ export default function IoBend({ label = "PITCH", channel = 0, send, appendLog, 
 
         const now = performance.now();
         const t   = tracking.current;
-        if ((isFinal || now - t.lastSentTime >= 16) && midiValue !== t.lastSentValue) { // Reducido a 16ms para mayor suavidad a 14 bits
+        if ((isFinal || now - t.lastSentTime >= 33) && midiValue !== t.lastSentValue) { // Reducido a 33ms para mayor suavidad a 14 bits
             if (send) {
                 // Desglose en LSB (7 bits bajos) y MSB (7 bits altos)
                 const lsb = midiValue & 0x7F;

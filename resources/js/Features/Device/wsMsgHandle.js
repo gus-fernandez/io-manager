@@ -4,9 +4,7 @@ import { parseMetadata, parsePresetParams, parseCurrentId, IOP_NUM, PRESET_META_
 
 const MSG_HEARTBEAT   = 0xFF;
 const MSG_DATA        = 0xFC;
-
-const MSG_ESP32_READY = 0xFE;
-const MSG_PRESET      = 0xFB;
+const MSG_LOAD        = 0xFB;
 const MSG_SAVE        = 0xFA;
 
 const EXPECTED_META   = IOP_NUM * PRESET_META_SIZE; // 2176 bytes
@@ -16,17 +14,20 @@ const TOTAL_RAW_DATA  = EXPECTED_META + EXPECTED_PRESET; // 2304 bytes
 let rawDataBuffer = new Uint8Array(TOTAL_RAW_DATA);
 let totalBytesReceived = 0;
 
+let presetBuffer = new Uint8Array(EXPECTED_PRESET);
+let presetBytesReceived = 0;
+
 export function resetDataStream() {
     totalBytesReceived = 0;
+    presetBytesReceived = 0;
     rawDataBuffer = new Uint8Array(TOTAL_RAW_DATA);
+    presetBuffer = new Uint8Array(EXPECTED_PRESET);
 }
 
 export function handleMsg(event, wsState) {
     if (!(event.data instanceof ArrayBuffer)) return;
 
     const buffer = event.data;
-    if (buffer.byteLength !== 32) return; 
-
     const view = new DataView(buffer);
     const opcode = view.getUint8(0);
 
@@ -36,8 +37,12 @@ export function handleMsg(event, wsState) {
 
         case MSG_DATA:
             processDataStream(buffer, wsState);
-
-        break;
+            break;
+        
+        case MSG_LOAD:
+            console.log("Entrando en Load");
+            processPresetStream(buffer, wsState);
+            break;
 
         default:
             console.warn(`Unknown opcode: 0x${opcode.toString(16).toUpperCase()}`);
@@ -45,11 +50,7 @@ export function handleMsg(event, wsState) {
 }
 
 function processDataStream(buffer, wsState) {
-
-    //const full = new Uint8Array(buffer);
-    //const hex = Array.from(full).map(b => b.toString(16).padStart(2, '0')).join(' ');
-    //console.log(`Pkt #${Math.floor(totalBytesReceived/31)} | offset: ${totalBytesReceived} | ${hex}`);
-    const chunkData = new Uint8Array(buffer, 1, 31);
+    const chunkData = new Uint8Array(buffer, 1); // Saltamos opcode
     const remainingBytes = TOTAL_RAW_DATA - totalBytesReceived;
     const bytesToCopy = Math.min(chunkData.length, remainingBytes);
 
@@ -57,19 +58,79 @@ function processDataStream(buffer, wsState) {
     totalBytesReceived += bytesToCopy;
 
     if (totalBytesReceived >= TOTAL_RAW_DATA) {
-        parseBuffer(rawDataBuffer.buffer, wsState);
-        totalBytesReceived = 0;
-        rawDataBuffer = new Uint8Array(TOTAL_RAW_DATA);
+        const cleanMetaBuffer = new Uint8Array(rawDataBuffer.buffer, 0, EXPECTED_META);
+        const cleanPresetBuffer = new Uint8Array(rawDataBuffer.buffer, EXPECTED_META, EXPECTED_PRESET);
+        
+        parseMeta(cleanMetaBuffer, wsState);
+        parsePreset(cleanPresetBuffer, wsState, true);
+
+        resetDataStream();
     }
 }
 
-function parseBuffer(fullBuffer, wsState) {
-    const cleanMetaBuffer = new Uint8Array(fullBuffer, 0, EXPECTED_META);
-    const cleanPresetBuffer = new Uint8Array(fullBuffer, EXPECTED_META, EXPECTED_PRESET);
-    const metadata = parseMetadata(cleanMetaBuffer);
-    const currentId = parseCurrentId(cleanPresetBuffer);
-    const presetParams = parsePresetParams(cleanPresetBuffer);
-    console.log("Init: Ok");
-    wsState.onParsed?.({ metadata, currentId, presetParams });
+function processPresetStream(buffer, wsState) {
+    const chunkData = new Uint8Array(buffer, 1);
+    const remainingBytes = EXPECTED_PRESET - presetBytesReceived;
+    const bytesToCopy = Math.min(chunkData.length, remainingBytes);
+
+    presetBuffer.set(chunkData.subarray(0, bytesToCopy), presetBytesReceived);
+    presetBytesReceived += bytesToCopy;
+
+    if (presetBytesReceived >= EXPECTED_PRESET) {
+        parsePreset(presetBuffer, wsState, false);
+        
+        presetBytesReceived = 0;
+        presetBuffer = new Uint8Array(EXPECTED_PRESET);
+    }
 }
 
+
+function parseMeta(metaBuf, wsState) {
+    const metadata = parseMetadata(metaBuf);
+    console.log("Metadata Parse: Ok");
+    wsState.tempMetadata = metadata; 
+}
+
+function parsePreset(presetBuf, wsState, isInitStream) {
+    const currentId = parseCurrentId(presetBuf);
+    const presetParams = parsePresetParams(presetBuf);
+    
+    if (isInitStream) {
+        console.log("Init Stream Completo: Ok");
+        wsState.onParsed?.({ 
+            metadata: wsState.tempMetadata || null, 
+            currentId, 
+            presetParams 
+        });
+        delete wsState.tempMetadata;
+    } else {
+        console.log("Load Preset Stream: Ok");
+        wsState.onParsed?.({ 
+            metadata: null,
+            currentId, 
+            presetParams 
+        });
+    }
+}
+
+export function sendSavePacket(sendFn, name, flags = 0) {
+    if (!sendFn) return;
+
+    const finalName = name.toUpperCase().padEnd(16, ' ').substring(0, 16);
+    const encoder = new TextEncoder();
+    const nameBytes = encoder.encode(finalName);
+
+    const payload = new Uint8Array(18);
+    payload[0] = MSG_SAVE;
+    payload.set(nameBytes, 1);
+    payload[17] = flags;
+
+    sendFn(payload.buffer);
+}
+
+export function sendLoadPacket(sendFn, presetId) {
+    if (!sendFn) return;
+
+    const payload = new Uint8Array([MSG_LOAD, presetId]);
+    sendFn(payload.buffer);
+}

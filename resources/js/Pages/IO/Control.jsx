@@ -2,7 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout';
 import useWebSocket from '@/Features/Device/useWebSocket';
 import useMidi from '@/Features/Device/useMidi';
-import { handleMsg } from '@/Features/Device/wsMsgHandle';
+import { handleMsg, sendSavePacket, sendLoadPacket } from '@/Features/Device/wsMsgHandle';
 import WsConnection from '@/Features/Device/WsConnection';
 import VirtualKeyboard from '@/Features/Device/VirtualKeyboard';
 import ModuleGrid from '@/Features/Device/ModuleGrid';
@@ -45,7 +45,8 @@ export default function Control() {
                 <PresetsControl 
                     presets={metadata}
                     currentPreset={currentId}
-                    sendSavePacket={ws.sendSavePacket}
+                    sendSavePacket={(name, flags) => sendSavePacket(ws.send, name, flags)}
+                    sendLoadPacket={(id) => sendLoadPacket(ws.send, id)}
                     isConnected={isConnected}
                 />
                  )}

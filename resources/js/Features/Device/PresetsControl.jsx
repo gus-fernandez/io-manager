@@ -1,10 +1,15 @@
-// resources/js/Features/Device/PresetsControl.jsx
+// @resources/js/Features/Device/PresetsControl.jsx
 
 import { useState, useEffect } from 'react';
 
-const MSG_SAVE = 0xFA;
-
-export default function PresetsControl({ presets = [], currentPreset, sendSavePacket, isConnected = true }) {    const [isOpen, setIsOpen] = useState(false);
+export default function PresetsControl({ 
+    presets = [], 
+    currentPreset, 
+    sendSavePacket, // Recibe la función empaquetadora del wsMsgHandle
+    sendLoadPacket, // Recibe la función empaquetadora del wsMsgHandle
+    isConnected = true 
+}) {    
+    const [isOpen, setIsOpen] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState('');
@@ -40,15 +45,19 @@ export default function PresetsControl({ presets = [], currentPreset, sendSavePa
 
         setIsSaving(true);
 
-        const finalName = activePresetName.toUpperCase().padEnd(16, ' ').substring(0, 16);
-        const encoder = new TextEncoder();
-        const nameBytes = encoder.encode(finalName);
-
-        sendSavePacket(nameBytes);
+        // Pasamos el nombre limpio; el empaquetador se encarga de los bytes y los flags (0)
+        sendSavePacket(activePresetName, 0);
 
         setTimeout(() => {
             setIsSaving(false);
         }, 800);
+    };
+
+    const handleSelectPreset = (presetId) => {
+        if (!sendLoadPacket || !isConnected || isSaving) return;
+        
+        // El empaquetador externo se encarga de inyectar el opcode MSG_LOAD
+        sendLoadPacket(presetId);
     };
 
     const handleStartEdit = (e) => {
@@ -94,7 +103,6 @@ export default function PresetsControl({ presets = [], currentPreset, sendSavePa
                 
                 {hasPresets && (
                     <div className="flex items-center gap-4 uppercase text-xs tracking-widest whitespace-nowrap leading-none">
-                        {/* Controles de edición local */}
                         {isConnected && (
                             isEditing ? (
                                 <div className="flex gap-2">
@@ -112,7 +120,6 @@ export default function PresetsControl({ presets = [], currentPreset, sendSavePa
                             )
                         )}
 
-                        {/* Botón de SAVE (Envía el nombre de la copia local + knobs a la ESP32) */}
                         {isConnected && !isEditing && (
                             <button
                                 onClick={handlePhysicalSave}
@@ -127,7 +134,6 @@ export default function PresetsControl({ presets = [], currentPreset, sendSavePa
                             </button>
                         )}
 
-                        {/* Botón OPEN / CLOSE */}
                         {!isEditing && (
                             <span className="text-neutral-600">
                                 {isOpen ? '[CLOSE]' : '[OPEN]'}
@@ -137,13 +143,10 @@ export default function PresetsControl({ presets = [], currentPreset, sendSavePa
                 )}
             </div>
 
-            {/* Listado de Presets desplegable */}
             {isOpen && hasPresets && !isEditing && (
                 <div className="max-h-48 overflow-y-auto border-t border-neutral-900 mt-2 pt-1 divide-y divide-neutral-900/40">
                     {presets.map((preset) => {
                         const isActive = preset.id === currentPreset;
-                        
-                        // Muestra el nombre modificado localmente en la lista si existe
                         const displayName = localNames[preset.id] || preset.name;
                         
                         let textColor = 'text-neutral-400';
@@ -153,15 +156,16 @@ export default function PresetsControl({ presets = [], currentPreset, sendSavePa
                         return (
                             <div
                                 key={preset.id}
-                                className={`flex justify-between items-center px-1 py-1 text-xs tracking-widest uppercase transition-colors ${textColor} ${
+                                onClick={() => handleSelectPreset(preset.id)}
+                                className={`flex justify-between items-center px-1 py-1 text-xs tracking-widest uppercase transition-colors cursor-pointer ${textColor} ${
                                     isActive ? 'bg-neutral-900/60' : 'hover:bg-neutral-900/20'
                                 }`}
                             >
-                                <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                                <span className="whitespace-nowrap overflow-hidden text-ellipsis pointer-events-none">
                                     {String(preset.id).padStart(3, '0')} : {displayName}
                                     {isActive && <span className="ml-2 text-neutral-500 font-normal">◄</span>}
                                 </span>
-                                <span className="text-xs tracking-widest text-neutral-600 ml-4 whitespace-nowrap font-normal">
+                                <span className="text-xs tracking-widest text-neutral-600 ml-4 whitespace-nowrap font-normal pointer-events-none">
                                     {preset.isFav ? '★ ' : ''}
                                     {preset.category !== 'Undef' ? `[${preset.category}]` : ''}
                                 </span>
