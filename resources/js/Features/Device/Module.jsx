@@ -1,4 +1,4 @@
-// resources/js/Features/Device/Module.jsx
+// @resources/js/Features/Device/Module.jsx
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 

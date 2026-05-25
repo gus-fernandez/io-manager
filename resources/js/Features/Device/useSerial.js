@@ -101,13 +101,12 @@ export default function useSerial() {
         }
     }, [cleanExistingPort]);
 
-    // API pública
     const connect = useCallback(async () => {
         try {
             const selected = await navigator.serial.requestPort();
             await initPort(selected);
         } catch (err) {
-            if (err.name !== 'NotFoundError') {     // usuario canceló el diálogo
+            if (err.name !== 'NotFoundError') {
                 setError('Error al conectar: ' + err.message);
             }
         }

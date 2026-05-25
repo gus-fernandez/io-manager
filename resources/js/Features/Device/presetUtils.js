@@ -1,4 +1,4 @@
-// js/Features/Device/presetUtils.js
+// @js/Features/Device/presetUtils.js
 
 import { CC } from '@/Features/Device/Modules/midiCC';
 
@@ -89,4 +89,8 @@ export function parsePresetParams(rawBuffer) {
     });
 
     return mappedValues;
+}
+
+export function parseCurrentId(rawBuffer) {
+    return rawBuffer[Slot.Id];
 }

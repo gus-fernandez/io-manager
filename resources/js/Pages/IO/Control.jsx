@@ -1,7 +1,9 @@
 // resources/js/Pages/IO/Control.jsx
 import AppLayout from '@/Layouts/AppLayout';
 import useWebSocket from '@/Features/Device/useWebSocket';
-import WsConnection from '@/Features/Device/WebSockets';
+import useMidi from '@/Features/Device/useMidi';
+import { handleMsg } from '@/Features/Device/wsMsgHandle';
+import WsConnection from '@/Features/Device/WsConnection';
 import VirtualKeyboard from '@/Features/Device/VirtualKeyboard';
 import ModuleGrid from '@/Features/Device/ModuleGrid';
 import PresetsControl from '@/Features/Device/PresetsControl';
@@ -26,31 +28,41 @@ const MODULE_COMPONENTS = {
 };
 
 export default function Control() {
-    const ws = useWebSocket();
-    const isAuthenticated = ws.status === 'Autenticado';
+    const ws = useWebSocket({
+        onMessage: (event) => {
+            handleMsg(event, ws); 
+        }
+    });
+    const midi = useMidi(ws.send);
+    const { metadata, currentId, presetParams } = ws;
+    const isConnected = ws.status === 'Connected';
 
     return (
         <AppLayout>
             <h1>IO Control</h1>
             <WsConnection ws={ws}>
+                {metadata && (
                 <PresetsControl 
-                    presets={ws.presets}
-                    currentPreset={ws.currentPreset}
+                    presets={metadata}
+                    currentPreset={currentId}
                     sendSavePacket={ws.sendSavePacket}
-                    isAuthenticated={isAuthenticated} 
+                    isConnected={isConnected}
                 />
+                 )}
+                 {presetParams && (
                 <ModuleGrid
                     moduleComponents={MODULE_COMPONENTS}
                     send={ws.send}
-                    appendLog={ws.appendLogMidi}
-                    isAuthenticated={isAuthenticated}
-                    values={ws.presetData}
+                    appendLog={midi.appendLogMidi}
+                    values={presetParams}
+                    isConnected={isConnected}
                 />
+                )}
             </WsConnection>
             <VirtualKeyboard
-                send={ws.send}
-                appendLog={ws.appendLogMidi}
-                isAuthenticated={isAuthenticated}
+                midi={midi}
+                appendLog={midi.appendLogMidi}
+                isConnected={isConnected}
             />
         </AppLayout>
     );

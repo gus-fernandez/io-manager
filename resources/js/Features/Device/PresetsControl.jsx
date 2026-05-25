@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 const MSG_SAVE = 0xFA;
 
-export default function PresetsControl({ presets = [], currentPreset, sendSavePacket, isAuthenticated = true }) {    const [isOpen, setIsOpen] = useState(false);
+export default function PresetsControl({ presets = [], currentPreset, sendSavePacket, isConnected = true }) {    const [isOpen, setIsOpen] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState('');
@@ -95,7 +95,7 @@ export default function PresetsControl({ presets = [], currentPreset, sendSavePa
                 {hasPresets && (
                     <div className="flex items-center gap-4 uppercase text-xs tracking-widest whitespace-nowrap leading-none">
                         {/* Controles de edición local */}
-                        {isAuthenticated && (
+                        {isConnected && (
                             isEditing ? (
                                 <div className="flex gap-2">
                                     <button onClick={handleConfirmLocalRename} className="text-emerald-400 hover:text-emerald-300 font-bold">
@@ -113,7 +113,7 @@ export default function PresetsControl({ presets = [], currentPreset, sendSavePa
                         )}
 
                         {/* Botón de SAVE (Envía el nombre de la copia local + knobs a la ESP32) */}
-                        {isAuthenticated && !isEditing && (
+                        {isConnected && !isEditing && (
                             <button
                                 onClick={handlePhysicalSave}
                                 disabled={isSaving}

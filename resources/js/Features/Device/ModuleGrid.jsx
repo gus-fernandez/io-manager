@@ -1,4 +1,5 @@
-// resources/js/Features/Device/ModuleGrid.jsx
+// @resources/js/Features/Device/ModuleGrid.jsx
+
 import { useState, useCallback } from 'react';
 import {
     DndContext,
@@ -48,7 +49,7 @@ const saveOrder = (modules) => {
     } catch {}
 };
 
-export default function ModuleGrid({ moduleComponents, send, appendLog, isAuthenticated, values = {} }) {
+export default function ModuleGrid({ moduleComponents, send, appendLog, isConnected, values = {} }) {
     const [modules, setModules] = useState(loadOrder);
 
     const sensors = useSensors(
@@ -100,7 +101,7 @@ export default function ModuleGrid({ moduleComponents, send, appendLog, isAuthen
                                 colSpan={colSpan}
                                 send={send}
                                 appendLog={appendLog}
-                                isAuthenticated={isAuthenticated}
+                                isConnected={isConnected}
                                 values={values}
                             />
                         );
