@@ -23,7 +23,7 @@ export default function Module({ id, title, children }) {
             ref={setNodeRef}
             style={style}
             className={`
-                relative bg-neutral-900 rounded-lg p-3
+                relative bg-neutral-900 rounded-lg p-2 px-3
                 ${isDragging ? 'z-50' : ''}
             `}
         >
@@ -32,7 +32,7 @@ export default function Module({ id, title, children }) {
                 {...attributes}
                 {...listeners}
                 className="
-                    absolute top-2 right-2 w-5 h-5
+                    absolute top-2 right-2 w-4 h-4
                     flex items-center justify-center
                     text-neutral-500 hover:text-neutral-300
                     cursor-grab active:cursor-grabbing
@@ -40,10 +40,10 @@ export default function Module({ id, title, children }) {
                     touch-none
                 "
                 tabIndex={-1}
-                aria-label="Mover módulo"
+                aria-label="Move module"
             >
                 {/* Grip icon */}
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+                <svg width="12" height="12" viewBox="0 0 10 10" fill="currentColor">
                     <circle cx="2" cy="2" r="1" />
                     <circle cx="5" cy="2" r="1" />
                     <circle cx="8" cy="2" r="1" />
