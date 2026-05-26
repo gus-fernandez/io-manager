@@ -16,13 +16,13 @@ Route::get('/', function () {
 })->name('landing');
 
 // Modo Local (sin auth)
-Route::get('/local', fn() => Inertia::render('IO/Control'))->name('local');
+Route::get('/local', fn() => Inertia::render('Control'))->name('local');
 
 // Grupo IO (público)
 Route::prefix('io')->group(function () {
-    Route::get('/control', fn() => Inertia::render('IO/Control'))->name('io.control');
-    Route::get('/presets', fn() => Inertia::render('IO/Presets'))->name('io.presets');
-    Route::get('/firmware', fn() => Inertia::render('IO/Firmware'))->name('io.firmware');
+    Route::get('/control', fn() => Inertia::render('Control'))->name('io.control');
+    Route::get('/presets', fn() => Inertia::render('Presets'))->name('io.presets');
+    Route::get('/firmware', fn() => Inertia::render('Firmware'))->name('io.firmware');
     Route::get('/about', fn() => Inertia::render('About'))->name('about');
 });
 
@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Seguridad WS
-Route::get('/api/ws-token', [WsTokenController::class, 'index']);
+//Route::get('/api/ws-token', [WsTokenController::class, 'index']);
 
 
 require __DIR__.'/auth.php';

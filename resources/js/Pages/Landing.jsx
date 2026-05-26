@@ -1,4 +1,5 @@
-// resources/js/Pages/Landing.jsx
+// @/Pages/Landing.jsx
+
 import React, { useState } from 'react';
 import { router } from '@inertiajs/react';
 import LoginForm from '@/Features/Auth/LoginForm';

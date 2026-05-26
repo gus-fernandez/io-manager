@@ -1,11 +1,11 @@
-// @/Pages/About.jsx
+// @/Pages/Presets.jsx
 
 import AppLayout from '@/Layouts/AppLayout';
 
-export default function About() {
+export default function Presets() {
     return (
         <AppLayout>
-            <h1>About</h1>
+            <h1>IO Presets</h1>
         </AppLayout>
     );
 }

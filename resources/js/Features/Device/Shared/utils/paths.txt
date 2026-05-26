@@ -1,0 +1,80 @@
+PATHS
+
+js/
+├── Components/
+├── Features/
+│   ├── Auth/
+│   └── Device/
+│       ├── Control/
+│       │   ├ components/
+│       │   │ ├── layout/
+│       │   │ ├── modules/
+│       │   │ └── ui/
+│       │   ├ hooks/
+│       │   └ utils/
+│       ├── Firmware/
+│       │   ├ components/
+│       │   ├ hooks/
+│       │   └ utils/
+│       ├── Presets/
+│       │   ├ components/
+│       │   ├ hooks/
+│       │   └ utils/
+│       └── Shared/
+│           ├ components/
+│           ├ hooks/
+│           └ utils/
+├── Layouts/
+└── Pages/
+    ├── Auth/
+    └── Profile/
+        └── Partials/
+
+PAGES
+@/Pages/Landing.jsx
+@/Pages/About.jsx
+@/Pages/Control.jsx
+@/Pages/Firmware.jsx
+@/Pages/Presets.jsx
+
+SHARED
+@/Features/Device/Shared/components/WsConnection.jsx
+@/Features/Device/Shared/hooks/useWebSocket.js
+@/Features/Device/Shared/utils/Icons.jsx
+
+PRESETS
+
+FIRMWARE
+@/Features/Device/Firmware/components/FlashFirmware.jsx
+@/Features/Device/Firmware/components/SerialMonitor.jsx
+@/Features/Device/Firmware/hooks/useSerial.js
+
+CONTROL
+
+@/Features/Device/Control/components/PresetsControl.jsx
+@/Features/Device/Control/components/VirtualKeyboard.jsx
+
+@/Features/Device/Control/components/layout/Module.jsx
+@/Features/Device/Control/components/layout/ModuleDivider.jsx
+@/Features/Device/Control/components/layout/ModuleGrid.jsx
+
+@/Features/Device/Control/components/modules/AdsrModule.jsx
+@/Features/Device/Control/components/modules/ArpModule.jsx
+@/Features/Device/Control/components/modules/FxModule.jsx
+@/Features/Device/Control/components/modules/LfoModule.jsx
+@/Features/Device/Control/components/modules/MasterModule.jsx
+@/Features/Device/Control/components/modules/ModModule.jsx
+@/Features/Device/Control/components/modules/OscModule.jsx
+
+@/Features/Device/Control/components/ui/IoBend.jsx
+@/Features/Device/Control/components/ui/IoButton.jsx
+@/Features/Device/Control/components/ui/IoKnob.jsx
+@/Features/Device/Control/components/ui/IoSelector.jsx
+@/Features/Device/Control/components/ui/IoSlider.jsx
+
+@/Features/Device/Control/hooks/useMidi.js
+
+@/Features/Device/Control/utils/midiCC.js
+@/Features/Device/Control/utils/presetUtils.js
+@/Features/Device/Control/utils/waveIcons.jsx
+@/Features/Device/Control/utils/wsMsgHandle.js

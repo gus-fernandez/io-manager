@@ -1,0 +1,145 @@
+// @/Features/Device/Shared/hooks/useWebSocket.js
+
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { resetDataStream } from '@/Features/Device/Control/utils/wsMsgHandle';
+
+const WS_URL         = `ws://io-8.local/ws`;
+const CONN_TIMEOUT_MS = 8000;
+const HEARTBEAT_INTERVAL = 1000;
+const HEARTBEAT_TIMEOUT  = 1000;
+
+export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {}) {
+    const ws               = useRef(null);
+    const connTimeoutRef   = useRef(null);
+    const heartbeatIntervalRef = useRef(null);
+    const heartbeatTimeoutRef  = useRef(null);
+    const hasRetriedRef    = useRef(false);
+
+    const [status, setStatus] = useState('Disconnected');
+    const [metadata,    setMetadata]    = useState(null);
+    const [currentId,   setCurrentId]   = useState(null);
+    const [presetParams, setPresetParams] = useState(null);
+
+    const refs = useRef({ onOpen, onClose, onError, onMessage });
+    useEffect(() => {
+        refs.current = { onOpen, onClose, onError, onMessage };
+    }, [onOpen, onClose, onError, onMessage]);
+
+    const onParsed = useCallback(({ metadata, currentId, presetParams }) => {
+        setMetadata(metadata);
+        setCurrentId(currentId);
+        setPresetParams(presetParams);
+    }, []);
+
+    const cleanTimers = useCallback(() => {
+        clearTimeout(connTimeoutRef.current);
+        clearInterval(heartbeatIntervalRef.current);
+        clearTimeout(heartbeatTimeoutRef.current);
+    }, []);
+
+    const send = useCallback((data) => {
+    if (ws.current?.readyState === WebSocket.OPEN) {
+        ws.current.send(new Uint8Array(data));
+    }
+}, []);
+
+    const disconnect = useCallback(() => {
+        cleanTimers();
+        hasRetriedRef.current = false;
+        if (ws.current) {
+            ws.current.onclose = null;
+            ws.current.close();
+            ws.current = null;
+        }
+        setStatus('Disconnected');
+    }, [cleanTimers]);
+
+    const startHeartbeat = useCallback((socket) => {
+        clearInterval(heartbeatIntervalRef.current);
+        
+        heartbeatIntervalRef.current = setInterval(() => {
+            if (socket.readyState !== WebSocket.OPEN) return;
+
+            const heartbeatBuffer = new Uint8Array([0xFF]).buffer;
+            socket.send(heartbeatBuffer); 
+
+            clearTimeout(heartbeatTimeoutRef.current);
+            heartbeatTimeoutRef.current = setTimeout(() => {
+                console.warn('Connection lost, trying to reconnect.');
+                cleanTimers();
+                setStatus('Disconnected');
+                socket.close();
+            }, HEARTBEAT_TIMEOUT);
+
+        }, HEARTBEAT_INTERVAL);
+    }, [cleanTimers]);
+
+    const connect = useCallback(() => {
+        if (ws.current?.readyState === WebSocket.OPEN || ws.current?.readyState === WebSocket.CONNECTING) return;
+        
+        cleanTimers();
+        setStatus('Connecting...');
+
+        const socket = new WebSocket(WS_URL);
+        socket.binaryType = 'arraybuffer';
+        ws.current = socket;
+
+        connTimeoutRef.current = setTimeout(() => {
+            if (socket.readyState !== WebSocket.OPEN) {
+                socket.close();
+            }
+        }, CONN_TIMEOUT_MS);
+
+        socket.onopen = () => {
+            clearTimeout(connTimeoutRef.current);
+            hasRetriedRef.current = false;
+            resetDataStream();
+            setStatus('Connected');
+            startHeartbeat(socket);
+            refs.current.onOpen?.(socket);
+        };
+
+        socket.onmessage = (e) => {
+            //const dataView = new Uint8Array(e.data);
+            //console.log("Raw WebSocket message received:", dataView);
+            clearTimeout(heartbeatTimeoutRef.current);
+            refs.current.onMessage?.(e);
+        };
+
+        socket.onclose = () => {
+            cleanTimers();
+            if (ws.current === socket) {
+                ws.current = null;
+            }
+
+            if (!hasRetriedRef.current) {
+                hasRetriedRef.current = true;
+                console.log('Connection lost, Trying to reconnect');
+                connect(); 
+            } else {
+                setStatus('Disconnected');
+                refs.current.onClose?.();
+            }
+        };
+
+        socket.onerror = () => {
+            cleanTimers();
+            if (ws.current === socket) {
+                ws.current = null;
+            }
+            refs.current.onError?.();
+        };
+
+    }, [startHeartbeat, cleanTimers]);
+
+    useEffect(() => {
+        return () => cleanTimers();
+    }, [cleanTimers]);
+
+    useEffect(() => {
+        connect();
+        return () => disconnect();
+    }, [connect, disconnect]);
+
+    return { status, connect, disconnect, ws, send, onParsed, metadata, currentId, presetParams };
+}
