@@ -24,7 +24,7 @@ export default function PresetsControl(props) {
     } = usePresetsControl(props);
 
     return (
-        <div className="font-mono mt-4 bg-neutral-950/40 border border-neutral-800 rounded p-2">
+        <div className="mt-4 bg-neutral-950/40 border border-neutral-800 rounded p-2">
             <div 
                 onClick={toggleOpen}
                 className={`flex items-center justify-between w-full h-7 select-none px-1 ${
@@ -41,7 +41,7 @@ export default function PresetsControl(props) {
                             onChange={(e) => setNewName(e.target.value.toUpperCase())}
                             onClick={(e) => e.stopPropagation()}
                             maxLength={16}
-                            className="bg-neutral-900 border border-neutral-700 text-neutral-200 px-1 py-0.5 text-xs font-mono rounded outline-none focus:border-neutral-500 w-48 h-5"
+                            className="bg-neutral-900 border border-neutral-700 text-neutral-200 px-1 py-0.5 text-xs rounded outline-none focus:border-neutral-500 w-48 h-5"
                             autoFocus
                         />
                     ) : (
@@ -74,7 +74,7 @@ export default function PresetsControl(props) {
                             <button
                                 onClick={handlePhysicalSave}
                                 disabled={isSaving}
-                                className={`font-mono font-normal transition-colors duration-150 ${
+                                className={`transition-colors duration-150 ${
                                     isSaving 
                                         ? 'text-emerald-500 animate-pulse font-bold' 
                                         : 'text-neutral-500 hover:text-emerald-400'

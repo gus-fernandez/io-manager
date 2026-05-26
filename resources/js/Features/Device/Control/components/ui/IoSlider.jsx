@@ -71,7 +71,7 @@ export default function IoSlider({ label, cc, value = 0, send, appendLog, classN
     const heightPercent = (valueState / 127) * 100;
 
     return (
-        <div className={`flex flex-col items-center w-10 text-[10px] text-neutral-200 select-none ${className}`}>
+        <div className={`flex flex-col items-center w-10 text-[12px] text-neutral-200 select-none ${className}`}>
             <div
                 ref={bodyRef}
                 onMouseDown={handleStart}

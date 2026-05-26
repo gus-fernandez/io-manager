@@ -74,7 +74,7 @@ export default function IoBend({ label = "PITCH", channel = 0, send, appendLog, 
     const heightPercent = (value / 16383) * 100;
 
     return (
-        <div className={`flex flex-col items-center w-10 text-[10px] text-white select-none ${className}`}>
+        <div className={`flex flex-col items-center w-10 text-[12px] text-white select-none ${className}`}>
             <div
                 ref={bodyRef}
                 onMouseDown={handleStart}

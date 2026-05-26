@@ -58,7 +58,7 @@ export default function Module({ id, title, children }) {
 
             {/* Título del módulo */}
             {title && (
-                <div className="uppercase text-[12px] tracking-widest text-neutral-400 text-center px-4">
+                <div className="uppercase text-[14px] tracking-widest text-neutral-400 text-center px-4">
                     {title}
                 </div>
             )}

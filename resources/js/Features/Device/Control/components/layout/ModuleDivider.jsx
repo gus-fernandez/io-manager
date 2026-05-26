@@ -15,7 +15,7 @@ export default function ModuleDivider({ label, className = '' }) {
         <div className={`flex items-center gap-2 w-full h-6 ${className}`}>
             <div className="flex-1 h-px bg-neutral-800" />
             {label && (
-                <span className="uppercase text-[10px] tracking-widest text-neutral-500 whitespace-nowrap leading-none">
+                <span className="uppercase text-[12px] tracking-widest text-neutral-500 whitespace-nowrap leading-none">
                     {label}
                 </span>
             )}

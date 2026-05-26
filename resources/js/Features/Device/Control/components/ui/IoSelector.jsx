@@ -49,7 +49,7 @@ export default function IoSelector({ label, cc, options, value = 0, send, append
     const SvgComponent = isSvg ? currentValue : null;
 
     return (
-        <div className={`flex flex-col items-center w-10 text-[10px] text-neutral-200 select-none ${className}`}>
+        <div className={`flex flex-col items-center w-10 text-[12px] text-neutral-200 select-none ${className}`}>
             <div
                 onClick={handleNext}
                 className="w-10 h-10 bg-neutral-950 border border-neutral-200 rounded cursor-pointer box-border flex items-center justify-center px-0.5"
@@ -59,7 +59,7 @@ export default function IoSelector({ label, cc, options, value = 0, send, append
                         <SvgComponent />
                     </div>
                 ) : (
-                    <div className="text-[10px] font-mono whitespace-pre leading-[9px] w-full text-center text-neutral-200">
+                    <div className="text-[10px] whitespace-pre leading-[9px] w-full text-center text-neutral-200">
                         {currentKey || '---'}
                     </div>
                 )}

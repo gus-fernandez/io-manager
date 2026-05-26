@@ -10,21 +10,19 @@ export default function VirtualKeyboard({ midi, appendLog, isConnected }) {
     if (!isConnected) return null;
 
     return (
-        <div style={{ marginTop: '12px' }}>
+        <div>
             <button
                 onClick={toggleActive}
                 disabled={!isConnected}
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                className="inline-flex items-center gap-2 bg-transparent border-0 p-0 text-xs text-white disabled:opacity-50 disabled:cursor-not-allowed select-none"
             >
-                <span style={{ 
-                    width: '20px', 
-                    height: '20px',
-                    display: 'inline-block', 
-                    color: active ? 'rgb(81, 171, 81)' : '#ffffff' 
-                }}>
+                <span 
+                    className="w-5 h-5 inline-block transition-colors duration-150"
+                    style={{ color: active ? 'rgb(81, 171, 81)' : '#ffffff' }}
+                >
                     <KeyboardIcon.KEYBOARD />
                 </span>
-                {active ? 'V-Keyboard: On' : 'V-Keyboard: Off'}
+                <span>{active ? 'V-Keyboard: On' : 'V-Keyboard: Off'}</span>
             </button>
         </div>
     );
