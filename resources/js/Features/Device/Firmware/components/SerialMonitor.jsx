@@ -1,16 +1,7 @@
 // @/Features/Device/Firmware/components/SerialMonitor.jsx
+import React from 'react';
 
-import { useRef, useEffect } from 'react';
-
-export default function SerialMonitor({ log, clearLog }) {
-    const logRef = useRef(null);
-
-    useEffect(() => {
-        if (logRef.current) {
-            logRef.current.scrollTop = logRef.current.scrollHeight;
-        }
-    }, [log]);
-
+export default function SerialMonitor({ log, clearLog, logRef }) {
     return (
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>

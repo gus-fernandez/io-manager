@@ -1,4 +1,4 @@
-// @/Features/Device/Control/utils/waveIcons.jsx
+// @/Features/Device/Control/components/waveIcons.jsx
 
 export const WaveIcons = {
     OSC_SIN: () => (

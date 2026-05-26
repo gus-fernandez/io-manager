@@ -10,15 +10,21 @@ export default function useSerial() {
     const [error, setError]         = useState(null);
     const [log, setLog]             = useState([]);
 
+    const logRef         = useRef(null);
     const readerRef      = useRef(null);
     const isReadingRef   = useRef(false);
     const activePortRef  = useRef(null);
-    const closingPromise = useRef(null);    // FIX: sustituye el flag booleano
-    const logIdRef       = useRef(0);       // FIX: ids estables para keys del log
+    const closingPromise = useRef(null);    
+    const logIdRef       = useRef(0);       
+
+    useEffect(() => {
+        if (logRef.current) {
+            logRef.current.scrollTop = logRef.current.scrollHeight;
+        }
+    }, [log]);
 
     // Cierre atómico
     const cleanExistingPort = useCallback(async () => {
-        // Si ya hay un cierre en curso, esperamos a que termine en lugar de ignorarlo
         if (closingPromise.current) return closingPromise.current;
 
         closingPromise.current = (async () => {
@@ -74,7 +80,6 @@ export default function useSerial() {
                         const lines = buffer.split('\n');
                         buffer = lines.pop();
                         if (lines.length > 0) {
-                            // FIX: límite de líneas + ids estables
                             setLog(prev => [
                                 ...prev,
                                 ...lines.map(text => ({ id: logIdRef.current++, text })),
@@ -134,7 +139,6 @@ export default function useSerial() {
         setLog([]);
     }, [cleanExistingPort]);
 
-    // FIX: try/catch en send
     const send = useCallback(async (data) => {
         if (!activePortRef.current?.writable) return;
         try {
@@ -148,7 +152,6 @@ export default function useSerial() {
 
     const clearLog = useCallback(() => setLog([]), []);
 
-    // FIX: [] explícito — autoReconnect solo al montar, no en cada render
     useEffect(() => {
         autoReconnect();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -159,5 +162,16 @@ export default function useSerial() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return { port, connected, error, log, connect, disconnect, send, clearLog, autoReconnect };
+    return { 
+        port, 
+        connected, 
+        error, 
+        log, 
+        logRef, // NUEVO: Se expone la referencia para engancharla en el DOM
+        connect, 
+        disconnect, 
+        send, 
+        clearLog, 
+        autoReconnect 
+    };
 }

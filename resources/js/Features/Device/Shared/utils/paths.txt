@@ -38,9 +38,9 @@ PAGES
 @/Pages/Presets.jsx
 
 SHARED
+@/Features/Device/Shared/components/Icons.jsx
 @/Features/Device/Shared/components/WsConnection.jsx
 @/Features/Device/Shared/hooks/useWebSocket.js
-@/Features/Device/Shared/utils/Icons.jsx
 
 PRESETS
 
@@ -48,11 +48,10 @@ FIRMWARE
 @/Features/Device/Firmware/components/FlashFirmware.jsx
 @/Features/Device/Firmware/components/SerialMonitor.jsx
 @/Features/Device/Firmware/hooks/useSerial.js
+@/Features/Device/Firmware/hooks/useFlashFirmware.js
+@/Features/Device/Firmware/hooks/useFirmware.js
 
 CONTROL
-
-@/Features/Device/Control/components/PresetsControl.jsx
-@/Features/Device/Control/components/VirtualKeyboard.jsx
 
 @/Features/Device/Control/components/layout/Module.jsx
 @/Features/Device/Control/components/layout/ModuleDivider.jsx
@@ -72,9 +71,15 @@ CONTROL
 @/Features/Device/Control/components/ui/IoSelector.jsx
 @/Features/Device/Control/components/ui/IoSlider.jsx
 
+@/Features/Device/Control/components/PresetsControl.jsx
+@/Features/Device/Control/components/VirtualKeyboard.jsx
+@/Features/Device/Control/components/WaveIcons.jsx
+
 @/Features/Device/Control/hooks/useMidi.js
+@/Features/Device/Control/hooks/useVirtualKeyboard.js
+@/Features/Device/Control/hooks/usePresetsControl.js
+@/Features/Device/Control/hooks/useModuleGrid.js
 
 @/Features/Device/Control/utils/midiCC.js
 @/Features/Device/Control/utils/presetUtils.js
-@/Features/Device/Control/utils/waveIcons.jsx
 @/Features/Device/Control/utils/wsMsgHandle.js

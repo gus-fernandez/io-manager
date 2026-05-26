@@ -1,75 +1,32 @@
 // @/Features/Device/Control/components/PresetsControl.jsx
 
-import { useState, useEffect } from 'react';
+import React from 'react';
+import { usePresetsControl } from '@/Features/Device/Control/hooks/usePresetsControl.js';
 
-export default function PresetsControl({ 
-    presets = [], 
-    currentPreset, 
-    sendSavePacket,
-    sendLoadPacket,
-    isConnected = true 
-}) {    
-    const [isOpen, setIsOpen] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
-    const [newName, setNewName] = useState('');
-    const [localNames, setLocalNames] = useState({});
-
-    const activePresetData = presets.find(p => p.id === currentPreset);
-    const activePresetName = localNames[currentPreset] || (activePresetData ? activePresetData.name : 'LOADING...');
-    const hasPresets = presets.length > 0;
-
-    useEffect(() => {
-        setNewName(activePresetName);
-    }, [currentPreset, presets, localNames]);
-
-    const handleConfirmLocalRename = (e) => {
-        e.stopPropagation();
-        if (!newName.trim()) return;
-
-        const cleanName = newName.trim().toUpperCase().substring(0, 16);
-        
-        setLocalNames(prev => ({
-            ...prev,
-            [currentPreset]: cleanName
-        }));
-
-        setIsEditing(false);
-    };
-
-    const handlePhysicalSave = (e) => {
-        e.stopPropagation(); 
-        if (!sendSavePacket || currentPreset === null || isSaving) return;
-
-        setIsSaving(true);
-        sendSavePacket(activePresetName, 0);
-        setTimeout(() => {
-            setIsSaving(false);
-        }, 800);
-    };
-
-    const handleSelectPreset = (presetId) => {
-        if (!sendLoadPacket || !isConnected || isSaving) return;
-        sendLoadPacket(presetId);
-    };
-
-    const handleStartEdit = (e) => {
-        e.stopPropagation();
-        if (!hasPresets) return;
-        setNewName(activePresetName);
-        setIsEditing(true);
-    };
-
-    const handleCancelEdit = (e) => {
-        e.stopPropagation();
-        setIsEditing(false);
-        setNewName(activePresetName);
-    };
+export default function PresetsControl(props) {    
+    const { presets = [], currentPreset, isConnected = true } = props;
+    
+    const {
+        isOpen,
+        isSaving,
+        isEditing,
+        newName,
+        setNewName,
+        localNames,
+        activePresetName,
+        hasPresets,
+        handleConfirmLocalRename,
+        handlePhysicalSave,
+        handleSelectPreset,
+        handleStartEdit,
+        handleCancelEdit,
+        toggleOpen
+    } = usePresetsControl(props);
 
     return (
         <div className="font-mono mt-4 bg-neutral-950/40 border border-neutral-800 rounded p-2">
             <div 
-                onClick={() => hasPresets && !isEditing && setIsOpen(!isOpen)}
+                onClick={toggleOpen}
                 className={`flex items-center justify-between w-full h-7 select-none px-1 ${
                     hasPresets && !isEditing ? 'cursor-pointer hover:bg-neutral-900/30' : 'cursor-default'
                 } rounded-sm`}

@@ -96,7 +96,7 @@ function parsePreset(presetBuf, wsState, isInitStream) {
     const presetParams = parsePresetParams(presetBuf);
     
     if (isInitStream) {
-        console.log("Init Stream Completo: Ok");
+        console.log("Init Stream: Ok");
         wsState.onParsed?.({ 
             metadata: wsState.tempMetadata || null, 
             currentId, 

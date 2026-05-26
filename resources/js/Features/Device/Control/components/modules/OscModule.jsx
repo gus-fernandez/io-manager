@@ -7,7 +7,7 @@ import IoButton from '@/Features/Device/Control/components/ui/IoButton';
 import IoKnob from '@/Features/Device/Control/components/ui/IoKnob';
 import IoSelector from '@/Features/Device/Control/components/ui/IoSelector';
 import { CC } from '@/Features/Device/Control/utils/midiCC';
-import { WaveIcons } from '@/Features/Device/Control/utils/WaveIcons.jsx';
+import { WaveIcons } from '@/Features/Device/Control/components/WaveIcons.jsx';
 
 const OscWaves = { "SIN": WaveIcons.OSC_SIN, "TRI": WaveIcons.OSC_TRI, "SAW": WaveIcons.OSC_SAW, "SQR": WaveIcons.OSC_SQR, "PLS": WaveIcons.OSC_PLS };
 const OscWavesMaster = { "SIN": WaveIcons.OSC_SIN, "TRI": WaveIcons.OSC_TRI, "SAW": WaveIcons.OSC_SAW, "SQR": WaveIcons.OSC_SQR, "NZ": WaveIcons.OSC_NZ };
