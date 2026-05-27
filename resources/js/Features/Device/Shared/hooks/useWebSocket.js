@@ -31,6 +31,8 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         setCurrentId(currentId);
         setPresetParams(presetParams);
         setPresetModified(false);
+        console.table(metadata);
+        //console.log("currentId recibido:", currentId, "Tipo de dato:", typeof currentId);
     }, []);
 
     const cleanTimers = useCallback(() => {

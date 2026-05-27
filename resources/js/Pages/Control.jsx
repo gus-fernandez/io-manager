@@ -40,10 +40,6 @@ export default function Control() {
     const { presetParams } = ws;
     const isConnected = ws.status === 'Connected';
 
-    useEffect(() => {
-        console.log("¿Preset modificado?:", ws.presetModified);
-    }, [ws.presetModified]);
-
     return (
         <AppLayout>
             <h1>IO Control</h1>

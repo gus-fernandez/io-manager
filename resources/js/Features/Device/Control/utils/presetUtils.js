@@ -101,5 +101,6 @@ export function parsePresetParams(rawBuffer) {
 }
 
 export function parseCurrentId(rawBuffer) {
+    //console.log(rawBuffer); //debug
     return rawBuffer[Slot.Id];
 }

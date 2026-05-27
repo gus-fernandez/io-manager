@@ -8,8 +8,10 @@ const MSG_LOAD        = 0xFB;
 const MSG_SAVE        = 0xFA;
 
 const EXPECTED_META   = IOP_NUM * PRESET_META_SIZE; // 2176 bytes
+const PADDING         = 25;
 const EXPECTED_PRESET = 128;
-const TOTAL_RAW_DATA  = EXPECTED_META + EXPECTED_PRESET; // 2304 bytes
+const PRESET_OFFSET   = EXPECTED_META + PADDING;
+const TOTAL_RAW_DATA  = PRESET_OFFSET + EXPECTED_PRESET; 
 
 let rawDataBuffer = new Uint8Array(TOTAL_RAW_DATA);
 let totalBytesReceived = 0;
@@ -60,7 +62,7 @@ function processDataStream(buffer, wsState) {
 
     if (totalBytesReceived >= TOTAL_RAW_DATA) {
         const cleanMetaBuffer = new Uint8Array(rawDataBuffer.buffer, 0, EXPECTED_META);
-        const cleanPresetBuffer = new Uint8Array(rawDataBuffer.buffer, EXPECTED_META, EXPECTED_PRESET);
+        const cleanPresetBuffer = new Uint8Array(rawDataBuffer.buffer, PRESET_OFFSET, EXPECTED_PRESET);
         
         parseMeta(cleanMetaBuffer, wsState);
         parsePreset(cleanPresetBuffer, wsState, true);
@@ -85,7 +87,6 @@ function processPresetStream(buffer, wsState) {
     }
 }
 
-
 function parseMeta(metaBuf, wsState) {
     const metadata = parseMetadata(metaBuf);
     console.log("Metadata Parse: Ok");
@@ -106,7 +107,7 @@ function parsePreset(presetBuf, wsState, isInitStream) {
         });
         delete wsState.tempMetadata;
     } else {
-        console.log("Load Preset Stream: Ok");
+        console.log("Load Preset: Ok");
         wsState.onParsed?.({ 
             metadata: lastValidMetadata,
             currentId, 

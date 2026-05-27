@@ -58,11 +58,13 @@ export function usePresetsBar({
 
     const updatePreset = (updatedFields) => {
         if (!setMetadata) return;
-        setMetadata(prev => {
-            const next = prev.map(p => 
-                p.id === currentPreset ? { ...p, ...updatedFields } : p
+    setMetadata(prev => {
+            if (!prev) return prev;
+            return prev.map(p => 
+                p.id === currentPreset 
+                    ? { ...p, ...updatedFields, isEmpty: false, exists: true } 
+                    : p
             );
-            return next;
         });
     };
 
@@ -71,7 +73,7 @@ export function usePresetsBar({
         const clean = newName.trim().toUpperCase().substring(0, 16);
         if (!clean) return;
         setPresetModified(true); 
-        updatePreset({ name: clean, isEmpty: false, exists: true });
+        updatePreset({ name: clean });
         setIsEditing(false);
     };
 
@@ -92,11 +94,19 @@ export function usePresetsBar({
         e.stopPropagation();
         if (!sendSavePacket || currentPreset === null || isSaving || !isConnected || activePreset?.isReadOnly) return;
         setIsSaving(true);
-        const flagsByte = packFlags(activePreset);
-        sendSavePacket(activePresetName, flagsByte);
-        setPresetModified(false);
 
-        setTimeout(() => setIsSaving(false), 800); // Mensaje de confirmación aquí
+        const flagsByte = packFlags({ ...activePreset, isEmpty: false, exists: true });
+        sendSavePacket(activePresetName, flagsByte);
+
+        if (setMetadata) {
+            setMetadata(prev => prev.map(p => 
+                p.id === currentPreset 
+                    ? { ...p, name: activePresetName, isEmpty: false, exists: true } 
+                    : p
+            ));
+        }
+        setPresetModified(false);
+        setTimeout(() => setIsSaving(false), 800);
     };
 
     const handleSelectPreset = (presetId) => {
