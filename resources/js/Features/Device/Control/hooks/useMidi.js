@@ -8,7 +8,7 @@ const NOTE_OFF = 0x80;
 const MS_BATCH = 5; 
 const MAX_MESSAGES_PER_BATCH = 12;
 
-export default function useMidi(send) {
+export default function useMidi(ws) {
     const activeNotes = useRef(new Set());
     const [logMidi, setLogMidi] = useState('');
 
@@ -44,14 +44,14 @@ export default function useMidi(send) {
             }
 
             if (packetBytes.length > 0) {
-                send(packetBytes);
+                ws.send(packetBytes);
             }
         }, MS_BATCH);
 
         return () => {
             if (intervalRef.current) clearInterval(intervalRef.current);
         };
-    }, [send]);
+    }, [ws]);
 
     const noteOn = useCallback((midiNote, velocity) => {
         if (midiNote > 127 || activeNotes.current.has(midiNote)) return false;
@@ -80,11 +80,17 @@ export default function useMidi(send) {
     const sendCC = useCallback((channel, cc, value) => {
         const key = `${channel}-${cc}`;
         ccLatestRef.current[key] = [0xB0 | (channel & 0x0F), cc & 0x7F, value & 0x7F];
+        ws.setPresetModified(true);
+    }, [ws]);
+
+    const sendBend = useCallback((channel, lsb, msb) => {
+        const key = `bend-${channel}`;
+        ccLatestRef.current[key] = [0xE0 | (channel & 0x0F), lsb & 0x7F, msb & 0x7F];
     }, []);
 
     const appendLogMidi = useCallback((msg) => {
         setLogMidi(`${new Date().toLocaleTimeString()} — ${msg}`);
     }, []);
 
-    return { noteOn, noteOff, clearAllNotes, sendCC, appendLogMidi, logMidi };
+    return { noteOn, noteOff, clearAllNotes, sendCC, sendBend, appendLogMidi, logMidi };
 }

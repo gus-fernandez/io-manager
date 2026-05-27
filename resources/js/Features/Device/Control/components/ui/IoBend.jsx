@@ -35,7 +35,7 @@ export default function IoBend({ label = "PITCH", channel = 0, send, appendLog, 
                 const msb = (midiValue >> 7) & 0x7F;
 
                 // Mensaje MIDI Pitch Bend: 0xE0 combinando el canal (0-15)
-                send([0xE0 | channel, lsb, msb]);
+                send(channel, lsb, msb);
                 appendLog(`TX BEND — ${label}: ${midiValue}`);
             }
             t.lastSentTime  = now;

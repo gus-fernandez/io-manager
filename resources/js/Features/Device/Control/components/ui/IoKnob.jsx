@@ -63,7 +63,7 @@ export default function IoKnob({ label, cc, value = 0, type = 'unipolar', send, 
             const now = performance.now();
             if ((isFinal || now - t.lastSentTime >= 33) && midiValue !== t.lastSentValue) {
                 if (send) {
-                    send([0xB0, cc, midiValue]);
+                    send(0xB0, cc, midiValue);
                     appendLog(`TX KNOB — ${label}: ${midiValue}`);
                 }
                 t.lastSentTime  = now;

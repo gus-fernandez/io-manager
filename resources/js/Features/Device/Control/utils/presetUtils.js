@@ -22,7 +22,7 @@ const Flag = {
     Cat:      5
 };
 
-const Cat = {
+export const Cat = {
     0: "Undef",
     1: "Lead",
     2: "Pad",

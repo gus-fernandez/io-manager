@@ -34,7 +34,7 @@ export default function IoSlider({ label, cc, value = 0, send, appendLog, classN
         const t   = tracking.current;
         if ((isFinal || now - t.lastSentTime >= 33) && midiValue !== t.lastSentValue) {
             if (send) {
-                send([0xB0, cc, midiValue]);
+                send(0xB0, cc, midiValue);
                 appendLog(`TX FADER — ${label}: ${midiValue}`);
             }
             t.lastSentTime  = now;

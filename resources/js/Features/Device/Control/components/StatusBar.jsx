@@ -17,6 +17,8 @@ export default function StatusBar({ ws, midi }) {
                     presets={metadata}
                     currentPreset={currentId}
                     setMetadata={ws.setMetadata}
+                    setPresetModified={ws.setPresetModified}
+                    presetModified={ws.presetModified}
                     sendSavePacket={(name, flags) => sendSavePacket(ws.send, name, flags)}
                     sendLoadPacket={(id) => sendLoadPacket(ws.send, id)}
                     isConnected={isConnected}

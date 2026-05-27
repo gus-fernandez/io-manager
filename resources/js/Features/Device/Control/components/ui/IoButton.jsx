@@ -27,7 +27,7 @@ export default function IoButton({ label, cc, value, send, appendLog, activeCc, 
             const nextState = !localIsOn;
             setLocalIsOn(nextState);
             if (send) {
-                send([0xB0, cc, nextState ? 127 : 0]);
+                send(0xB0, cc, nextState ? 127 : 0);
                 appendLog(`TX BUTTON — ${label}: ${nextState ? 'ON' : 'OFF'}`);
             }
         }

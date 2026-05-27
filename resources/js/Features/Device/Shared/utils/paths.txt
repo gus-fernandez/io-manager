@@ -56,6 +56,7 @@ CONTROL
 @/Features/Device/Control/components/layout/Module.jsx
 @/Features/Device/Control/components/layout/ModuleDivider.jsx
 @/Features/Device/Control/components/layout/ModuleGrid.jsx
+@/Features/Device/Control/components/layout/PresetLine.jsx
 
 @/Features/Device/Control/components/modules/AdsrModule.jsx
 @/Features/Device/Control/components/modules/ArpModule.jsx
@@ -71,13 +72,14 @@ CONTROL
 @/Features/Device/Control/components/ui/IoSelector.jsx
 @/Features/Device/Control/components/ui/IoSlider.jsx
 
-@/Features/Device/Control/components/PresetsControl.jsx
+@/Features/Device/Control/components/PresetsBar.jsx
+@/Features/Device/Control/components/StatusBar.jsx
 @/Features/Device/Control/components/VirtualKeyboard.jsx
 @/Features/Device/Control/components/WaveIcons.jsx
 
 @/Features/Device/Control/hooks/useMidi.js
 @/Features/Device/Control/hooks/useVirtualKeyboard.js
-@/Features/Device/Control/hooks/usePresetsControl.js
+@/Features/Device/Control/hooks/usePresetsBar.js
 @/Features/Device/Control/hooks/useModuleGrid.js
 
 @/Features/Device/Control/utils/midiCC.js

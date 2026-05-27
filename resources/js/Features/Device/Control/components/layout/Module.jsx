@@ -27,7 +27,6 @@ export default function Module({ id, title, children }) {
                 ${isDragging ? 'z-50' : ''}
             `}
         >
-            {/* Drag handle — esquina superior derecha */}
             <button
                 {...attributes}
                 {...listeners}
@@ -42,7 +41,6 @@ export default function Module({ id, title, children }) {
                 tabIndex={-1}
                 aria-label="Move module"
             >
-                {/* Grip icon */}
                 <svg width="12" height="12" viewBox="0 0 10 10" fill="currentColor">
                     <circle cx="2" cy="2" r="1" />
                     <circle cx="5" cy="2" r="1" />
@@ -56,7 +54,6 @@ export default function Module({ id, title, children }) {
                 </svg>
             </button>
 
-            {/* Título del módulo */}
             {title && (
                 <div className="uppercase text-[14px] tracking-widest text-neutral-400 text-center px-4">
                     {title}

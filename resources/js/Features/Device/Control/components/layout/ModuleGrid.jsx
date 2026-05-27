@@ -5,7 +5,7 @@ import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import { useModuleGrid } from '@/Features/Device/Control/hooks/useModuleGrid';
 
-export default function ModuleGrid({ moduleComponents, send, appendLog, isConnected, values = {} }) {
+export default function ModuleGrid({ moduleComponents, sendCC, sendBend , appendLog, isConnected, values = {} }) {
     const {
         modules,
         sensors,
@@ -33,7 +33,8 @@ export default function ModuleGrid({ moduleComponents, send, appendLog, isConnec
                                 key={id}
                                 id={id}
                                 colSpan={colSpan}
-                                send={send}
+                                sendCC={sendCC}
+                                sendBend={sendBend}
                                 appendLog={appendLog}
                                 isConnected={isConnected}
                                 values={values}

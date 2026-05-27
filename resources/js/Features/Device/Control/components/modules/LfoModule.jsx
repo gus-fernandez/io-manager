@@ -27,22 +27,22 @@ const LfoDest = {
     "SPREAD": 6,
     "PAN": 7
 };
-export default function LfoModule({ id, send, appendLog, values = {} }) {
+export default function LfoModule({ id, sendCC, appendLog, values = {} }) {
     return (
         <Module id={id} title="LFO">
             <div className="grid gap-x-4 justify-items-center items-end" style={{ gridTemplateColumns: 'repeat(3, 40px)' }}>
                 <ModuleDivider label="line" className='col-span-3' />
-                <IoButton label="Trigger" cc={CC.LFO_TRIGGER} value={values.LFO_TRIGGER ?? 0} send={send} appendLog={appendLog} />
-                <IoButton label="Sync" cc={CC.LFO_SYNC} value={values.LFO_SYNC ?? 0} send={send} appendLog={appendLog} />
+                <IoButton label="Trigger" cc={CC.LFO_TRIGGER} value={values.LFO_TRIGGER ?? 0} send={sendCC} appendLog={appendLog} />
+                <IoButton label="Sync" cc={CC.LFO_SYNC} value={values.LFO_SYNC ?? 0} send={sendCC} appendLog={appendLog} />
                 <div className="w-10 h-10" />
                 <ModuleDivider className='col-span-3' />
-                <IoSelector label="Wave" cc={CC.LFO_WAVEFORM} options={LfoWaves} value={values.LFO_WAVEFORM ?? 0} send={send} appendLog={appendLog} />
-                <IoKnob label="Amount" cc={CC.LFO_AMOUNT} type="bipolar" value={values.LFO_AMOUNT ?? 64} send={send} appendLog={appendLog} />
-                <IoKnob label="Rate" cc={CC.LFO_RATE} value={values.LFO_RATE ?? 100} send={send} appendLog={appendLog} />
+                <IoSelector label="Wave" cc={CC.LFO_WAVEFORM} options={LfoWaves} value={values.LFO_WAVEFORM ?? 0} send={sendCC} appendLog={appendLog} />
+                <IoKnob label="Amount" cc={CC.LFO_AMOUNT} type="bipolar" value={values.LFO_AMOUNT ?? 64} send={sendCC} appendLog={appendLog} />
+                <IoKnob label="Rate" cc={CC.LFO_RATE} value={values.LFO_RATE ?? 100} send={sendCC} appendLog={appendLog} />
                 <ModuleDivider className='col-span-3' />
-                <IoKnob label="Phase" cc={CC.LFO_PHASE} type="bipolar" value={values.LFO_PHASE ?? 64} send={send} appendLog={appendLog} />
-                <IoKnob label="Delay" cc={CC.LFO_DELAY} type="bipolar" value={values.LFO_DELAY ?? 64} send={send} appendLog={appendLog} />
-                <IoSelector label="Dest" cc={CC.LFO_DEST} options={LfoDest} value={values.LFO_DEST ?? 0} send={send} appendLog={appendLog} />
+                <IoKnob label="Phase" cc={CC.LFO_PHASE} type="bipolar" value={values.LFO_PHASE ?? 64} send={sendCC} appendLog={appendLog} />
+                <IoKnob label="Delay" cc={CC.LFO_DELAY} type="bipolar" value={values.LFO_DELAY ?? 64} send={sendCC} appendLog={appendLog} />
+                <IoSelector label="Dest" cc={CC.LFO_DEST} options={LfoDest} value={values.LFO_DEST ?? 0} send={sendCC} appendLog={appendLog} />
             </div>
         </Module>
     );

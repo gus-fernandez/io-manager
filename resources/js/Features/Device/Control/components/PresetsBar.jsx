@@ -5,14 +5,15 @@ import { usePresetsBar } from '@/Features/Device/Control/hooks/usePresetsBar.js'
 import PresetLine from '@/Features/Device/Control/components/layout/PresetLine.jsx';
 
 export default function PresetsBar(props) {
-    const { presets = [], currentPreset } = props;
+    const { presets = [], currentPreset, presetModified } = props;
 
     const {
         isOpen, isSaving, isEditing, isLoading,
         newName, setNewName,
         activePreset, activePresetName, hasPresets,
         toggleOpen, handleStartEdit, handleCancelEdit,
-        handleConfirmName, toggleFav, handleSave, handleSelectPreset,
+        handleConfirmName, toggleFav, handleSave,
+        handleSelectPreset, changeCategory
     } = usePresetsBar(props);
 
     return (
@@ -55,6 +56,7 @@ export default function PresetsBar(props) {
                                             category={activePreset?.category}
                                             onToggleFav={toggleFav}
                                             onClick={toggleOpen}
+                                            onCategoryChange={(newCatName) => changeCategory(currentPreset, newCatName)}
                                         />
                                     )}
                                 </div>
@@ -78,21 +80,15 @@ export default function PresetsBar(props) {
                             {!isEditing && !isLoading && (
                                 <button
                                     onClick={handleSave}
-                                    disabled={isSaving}
+                                    disabled={isSaving || !presetModified}
                                     className={`transition-colors duration-150 ${
                                         isSaving
-                                            ? 'text-emerald-500 animate-pulse font-bold'
-                                            : 'text-neutral-500 hover:text-emerald-400'
+                                            ? 'text-emerald-500 animate-pulse'
+                                            : !presetModified
+                                            ? 'text-neutral-700'
+                                            : 'text-neutral-500 hover:text-neutral-300' 
                                     }`}
-                                >
-                                    {isSaving ? '[SAVING...]' : '[SAVE]'}
-                                </button>
-                            )}
-
-                            {!isEditing && (
-                                <span className="text-neutral-600">
-                                    {isLoading ? '[BUSY]' : isOpen ? '[CLOSE]' : '[OPEN]'}
-                                </span>
+                                >{isSaving ? '[SAVING...]' : '[SAVE]'}</button>
                             )}
                         </div>
                     </div>

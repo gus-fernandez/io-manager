@@ -1,6 +1,7 @@
 // @/Pages/Control.jsx
 
-import React from 'react';
+//import React from 'react';
+import React, { useEffect } from 'react';
 import AppLayout from '@/Layouts/AppLayout';
 import useWebSocket from '@/Features/Device/Shared/hooks/useWebSocket';
 import useMidi from '@/Features/Device/Control/hooks/useMidi';
@@ -35,9 +36,13 @@ export default function Control() {
         }
     });
     
-    const midi = useMidi(ws.send);
+    const midi = useMidi(ws);
     const { presetParams } = ws;
     const isConnected = ws.status === 'Connected';
+
+    useEffect(() => {
+        console.log("¿Preset modificado?:", ws.presetModified);
+    }, [ws.presetModified]);
 
     return (
         <AppLayout>
@@ -47,7 +52,8 @@ export default function Control() {
             {isConnected && presetParams && (
                 <ModuleGrid
                     moduleComponents={MODULE_COMPONENTS}
-                    send={ws.send}
+                    sendCC={midi.sendCC}
+                    sendBend={midi.sendBend}
                     appendLog={midi.appendLogMidi}
                     values={presetParams}
                     isConnected={isConnected}

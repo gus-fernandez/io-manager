@@ -9,7 +9,8 @@ export function usePresetsBar({
     sendSavePacket, 
     sendLoadPacket, 
     isConnected = false,
-    setMetadata
+    setMetadata,
+    setPresetModified
 }) {
 
     const [isOpen,    setIsOpen]    = useState(false);
@@ -68,20 +69,22 @@ export function usePresetsBar({
     const handleConfirmName = (e) => {
         e.stopPropagation();
         const clean = newName.trim().toUpperCase().substring(0, 16);
-        if (!clean) return;        
+        if (!clean) return;
+        setPresetModified(true); 
         updatePreset({ name: clean, isEmpty: false, exists: true });
         setIsEditing(false);
     };
 
     const toggleFav = (e) => {
         e.stopPropagation();
-        if (!isConnected || !activePreset) return;        
+        if (!isConnected || !activePreset) return;     
+        setPresetModified(true);
         updatePreset({ isFav: !activePreset.isFav });
     };
 
     const changeCategory = (catId, categoryName) => {
         if (!isConnected || !activePreset) return;
-
+        setPresetModified(true);
         updatePreset({ catId, category: categoryName });
     };
 
@@ -91,12 +94,15 @@ export function usePresetsBar({
         setIsSaving(true);
         const flagsByte = packFlags(activePreset);
         sendSavePacket(activePresetName, flagsByte);
+        setPresetModified(false);
+
         setTimeout(() => setIsSaving(false), 800); // Mensaje de confirmación aquí
     };
 
     const handleSelectPreset = (presetId) => {
         if (!sendLoadPacket || !isConnected || isSaving || isLoading) return;
         setIsLoading(true);
+        setPresetModified(false);
         sendLoadPacket(presetId);
     };
 

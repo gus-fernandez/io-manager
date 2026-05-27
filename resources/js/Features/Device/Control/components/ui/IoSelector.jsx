@@ -37,7 +37,7 @@ export default function IoSelector({ label, cc, options, value = 0, send, append
         }
 
         if (send) {
-            send([0xB0, cc, midiValue]);
+            send(0xB0, cc, midiValue);
             const logText = keys[nextIndex].replace(/\n/g, '');
             appendLog(`TX SELECTOR — ${label}: ${logText} (${midiValue})`);
         }

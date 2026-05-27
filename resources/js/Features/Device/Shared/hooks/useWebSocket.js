@@ -3,10 +3,10 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { resetDataStream, clearStoredMetadata } from '@/Features/Device/Control/utils/wsMsgHandle';
 
-const WS_URL         = `ws://io-8.local/ws`;
-const CONN_TIMEOUT_MS = 8000;
+const WS_URL             = `ws://io-8.local/ws`;
+const CONN_TIMEOUT_MS    = 8000;
 const HEARTBEAT_INTERVAL = 1000;
-const HEARTBEAT_TIMEOUT  = 1000;
+const HEARTBEAT_TIMEOUT  = 2000;
 
 export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {}) {
     const ws               = useRef(null);
@@ -19,6 +19,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     const [metadata,    setMetadata]    = useState(null);
     const [currentId,   setCurrentId]   = useState(null);
     const [presetParams, setPresetParams] = useState(null);
+    const [presetModified, setPresetModified] = useState(false);
 
     const refs = useRef({ onOpen, onClose, onError, onMessage });
     useEffect(() => {
@@ -29,6 +30,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         setMetadata(metadata);
         setCurrentId(currentId);
         setPresetParams(presetParams);
+        setPresetModified(false);
     }, []);
 
     const cleanTimers = useCallback(() => {
@@ -38,10 +40,10 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     }, []);
 
     const send = useCallback((data) => {
-    if (ws.current?.readyState === WebSocket.OPEN) {
-        ws.current.send(new Uint8Array(data));
-    }
-}, []);
+        if (ws.current?.readyState === WebSocket.OPEN) {
+            ws.current.send(new Uint8Array(data));
+        }
+    }, []);
 
     const disconnect = useCallback(() => {
         cleanTimers();
@@ -143,7 +145,8 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     }, [connect, disconnect]);
 
     return { 
-    status, connect, disconnect, ws, send, onParsed, 
-    metadata, setMetadata, currentId, presetParams
-};
+        status, connect, disconnect, ws, send, onParsed, 
+        metadata, setMetadata, currentId, presetParams,
+        presetModified, setPresetModified
+    };
 }
