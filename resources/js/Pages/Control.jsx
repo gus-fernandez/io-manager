@@ -6,7 +6,7 @@ import useWebSocket from '@/Features/Device/Shared/hooks/useWebSocket';
 import useMidi from '@/Features/Device/Control/hooks/useMidi';
 import { handleMsg } from '@/Features/Device/Control/utils/wsMsgHandle';
 import WsConnection from '@/Features/Device/Shared/components/WsConnection';
-import StatusBar from '@/Features/Device/Control/components/layout/StatusBar';
+import StatusBar from '@/Features/Device/Control/components/StatusBar';
 import ModuleGrid from '@/Features/Device/Control/components/layout/ModuleGrid';
 
 // Modules

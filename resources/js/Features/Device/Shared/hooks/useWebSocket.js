@@ -1,7 +1,7 @@
 // @/Features/Device/Shared/hooks/useWebSocket.js
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { resetDataStream } from '@/Features/Device/Control/utils/wsMsgHandle';
+import { resetDataStream, clearStoredMetadata } from '@/Features/Device/Control/utils/wsMsgHandle';
 
 const WS_URL         = `ws://io-8.local/ws`;
 const CONN_TIMEOUT_MS = 8000;
@@ -51,11 +51,12 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
             ws.current.close();
             ws.current = null;
         }
+        setMetadata(null);
+        clearStoredMetadata();
         setStatus('Disconnected');
     }, [cleanTimers]);
 
     const startHeartbeat = useCallback((socket) => {
-        clearInterval(heartbeatIntervalRef.current);
         
         heartbeatIntervalRef.current = setInterval(() => {
             if (socket.readyState !== WebSocket.OPEN) return;
@@ -63,7 +64,6 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
             const heartbeatBuffer = new Uint8Array([0xFF]).buffer;
             socket.send(heartbeatBuffer); 
 
-            clearTimeout(heartbeatTimeoutRef.current);
             heartbeatTimeoutRef.current = setTimeout(() => {
                 console.warn('Connection lost, trying to reconnect.');
                 cleanTimers();
@@ -91,11 +91,10 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         }, CONN_TIMEOUT_MS);
 
         socket.onopen = () => {
-            clearTimeout(connTimeoutRef.current);
             hasRetriedRef.current = false;
+            startHeartbeat(socket);
             resetDataStream();
             setStatus('Connected');
-            startHeartbeat(socket);
             refs.current.onOpen?.(socket);
         };
 
@@ -117,6 +116,8 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
                 console.log('Connection lost, Trying to reconnect');
                 connect(); 
             } else {
+                setMetadata(null);
+                clearStoredMetadata();
                 setStatus('Disconnected');
                 refs.current.onClose?.();
             }
@@ -141,5 +142,8 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         return () => disconnect();
     }, [connect, disconnect]);
 
-    return { status, connect, disconnect, ws, send, onParsed, metadata, currentId, presetParams };
+    return { 
+    status, connect, disconnect, ws, send, onParsed, 
+    metadata, setMetadata, currentId, presetParams
+};
 }

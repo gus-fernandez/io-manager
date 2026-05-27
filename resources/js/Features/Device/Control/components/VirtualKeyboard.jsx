@@ -7,8 +7,6 @@ import { KeyboardIcon } from '@/Features/Device/Shared/components/Icons';
 export default function VirtualKeyboard({ midi, appendLog, isConnected }) {
     const { active, toggleActive } = useVirtualKeyboard({ midi, appendLog, isConnected });
 
-    if (!isConnected) return null;
-
     return (
         <button
             onClick={toggleActive}

@@ -17,6 +17,8 @@ let totalBytesReceived = 0;
 let presetBuffer = new Uint8Array(EXPECTED_PRESET);
 let presetBytesReceived = 0;
 
+let lastValidMetadata = null;
+
 export function resetDataStream() {
     totalBytesReceived = 0;
     presetBytesReceived = 0;
@@ -40,7 +42,6 @@ export function handleMsg(event, wsState) {
             break;
         
         case MSG_LOAD:
-            console.log("Entrando en Load");
             processPresetStream(buffer, wsState);
             break;
 
@@ -50,7 +51,7 @@ export function handleMsg(event, wsState) {
 }
 
 function processDataStream(buffer, wsState) {
-    const chunkData = new Uint8Array(buffer, 1); // Saltamos opcode
+    const chunkData = new Uint8Array(buffer, 1);
     const remainingBytes = TOTAL_RAW_DATA - totalBytesReceived;
     const bytesToCopy = Math.min(chunkData.length, remainingBytes);
 
@@ -88,7 +89,8 @@ function processPresetStream(buffer, wsState) {
 function parseMeta(metaBuf, wsState) {
     const metadata = parseMetadata(metaBuf);
     console.log("Metadata Parse: Ok");
-    wsState.tempMetadata = metadata; 
+    wsState.tempMetadata = metadata;
+    lastValidMetadata = metadata;
 }
 
 function parsePreset(presetBuf, wsState, isInitStream) {
@@ -98,7 +100,7 @@ function parsePreset(presetBuf, wsState, isInitStream) {
     if (isInitStream) {
         console.log("Init Stream: Ok");
         wsState.onParsed?.({ 
-            metadata: wsState.tempMetadata || null, 
+            metadata: wsState.tempMetadata || lastValidMetadata || null,
             currentId, 
             presetParams 
         });
@@ -106,7 +108,7 @@ function parsePreset(presetBuf, wsState, isInitStream) {
     } else {
         console.log("Load Preset Stream: Ok");
         wsState.onParsed?.({ 
-            metadata: null,
+            metadata: lastValidMetadata,
             currentId, 
             presetParams 
         });
@@ -133,4 +135,8 @@ export function sendLoadPacket(sendFn, presetId) {
 
     const payload = new Uint8Array([MSG_LOAD, presetId]);
     sendFn(payload.buffer);
+}
+
+export function clearStoredMetadata() {
+    lastValidMetadata = null;
 }

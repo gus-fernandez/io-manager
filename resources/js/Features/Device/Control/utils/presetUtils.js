@@ -51,19 +51,28 @@ function extractFlags(flagsByte) {
     };
 }
 
-function extractName(nameBytes, presetIndex, isEmpty = false) {
-    if (isEmpty) {
-        return `Preset ${String(presetIndex).padStart(3, '0')}`;
-    }
+export function packFlags(preset) {
+    if (!preset) return 0;
+    
+    let flagsByte = 0;
+    if (preset.isEmpty)    flagsByte |= (1 << Flag.Empty);
+    if (preset.isReadOnly) flagsByte |= (1 << Flag.ReadOnly);
+    if (preset.isFav)      flagsByte |= (1 << Flag.Fav);
+    if (preset.exists)     flagsByte |= (1 << Flag.Exists);
+    flagsByte |= ((preset.catId ?? 0) & 0x07) << Flag.Cat;
+    
+    return flagsByte;
+}
 
+function extractName(nameBytes) {
     let name = "";
     for (let i = 0; i < nameBytes.length; i++) {
         if (nameBytes[i] === 0) break;
         name += String.fromCharCode(nameBytes[i]);
     }
-
     const trimmed = name.trim();
-    return trimmed === "" ? `Preset ${String(presetIndex).padStart(3, '0')}` : trimmed;
+    if (trimmed === "") return `NO NAME`;
+    return `${trimmed}`;
 }
 
 export function parseMetadata(rawBuffer) {
