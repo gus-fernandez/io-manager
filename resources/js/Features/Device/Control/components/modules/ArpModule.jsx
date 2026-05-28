@@ -5,7 +5,7 @@ import ModuleDivider from '@/Features/Device/Control/components/layout/ModuleDiv
 import IoSelector from '@/Features/Device/Control/components/ui/IoSelector';
 import IoKnob from '@/Features/Device/Control/components/ui/IoKnob';
 import IoButton from '@/Features/Device/Control/components/ui/IoButton';
-import { CC } from '@/Features/Device/Control/utils/midiCC';
+import { CC } from '@/Features/Device/Shared/utils/midiCC';
 
 const ArpType = {
     "OFF": 0,       

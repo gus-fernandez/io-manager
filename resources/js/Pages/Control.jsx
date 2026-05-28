@@ -4,34 +4,35 @@ import React from 'react';
 import AppLayout from '@/Layouts/AppLayout';
 import DeviceLayout from '@/Layouts/DeviceLayout';
 import { useDevice } from '@/Features/Device/Shared/context/WsContext';
-import ModuleGrid from '@/Features/Device/Control/components/layout/ModuleGrid';
 import { sendSavePacket, sendLoadPacket } from '@/Features/Device/Control/utils/wsMsgHandle.js';
 import PresetsBar from '@/Features/Device/Control/components/PresetsBar.jsx';
+import ModuleGrid from '@/Features/Device/Control/components/layout/ModuleGrid';
 
 export default function Control() {
     const { ws, midi } = useDevice();
-    
-    const { metadata, currentId, presetParams, status } = ws;
-    const isConnected = status === 'Connected';
+    const isConnected = ws.status === 'Connected';
 
     return (
         <>
         <PresetsBar 
-            presets={metadata}
-            currentPreset={currentId}
+            metadata={ws.metadata}
             setMetadata={ws.setMetadata}
-            setPresetModified={ws.setPresetModified}
+            currentPreset={ws.currentPreset}
+            setCurrentPreset={ws.setCurrentPreset}
             presetModified={ws.presetModified}
+            setPresetModified={ws.setPresetModified}
+            updateData={ws.updateData}
             sendSavePacket={(name, flags) => sendSavePacket(ws.send, name, flags)}
             sendLoadPacket={(id) => sendLoadPacket(ws.send, id)}
             isConnected={isConnected}
         />
-        {isConnected && presetParams && (
+        {isConnected && ws.currentPreset?.params && (
             <ModuleGrid
                 sendCC={midi.sendCC}
                 sendBend={midi.sendBend}
                 appendLog={midi.appendLogMidi}
-                values={presetParams}
+                currentPreset={ws.currentPreset}
+                updateData={ws.updateData}
                 isConnected={isConnected}
             />
         )}

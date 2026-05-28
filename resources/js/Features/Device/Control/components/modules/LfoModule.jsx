@@ -5,7 +5,7 @@ import ModuleDivider from '@/Features/Device/Control/components/layout/ModuleDiv
 import IoKnob from '@/Features/Device/Control/components/ui/IoKnob';
 import IoButton from '@/Features/Device/Control/components/ui/IoButton';
 import IoSelector from '@/Features/Device/Control/components/ui/IoSelector';
-import { CC } from '@/Features/Device/Control/utils/midiCC';
+import { CC } from '@/Features/Device/Shared/utils/midiCC';
 import { WaveIcons } from '@/Features/Device/Control/components/WaveIcons.jsx';
 
 const LfoWaves = {

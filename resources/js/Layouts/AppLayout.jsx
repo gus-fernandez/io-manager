@@ -23,15 +23,15 @@ export default function AppLayout({ children }) {
 
     return (
         <div className="font-whiterabbit min-h-screen bg-neutral-950 text-neutral-200 flex flex-col">
-            <nav className="border-b border-neutral-900 bg-neutral-950/60 backdrop-blur px-4 py-2 select-none">
-                <ul className="flex items-center gap-6 list-none max-w-7xl mx-auto w-full">
+            <nav className="border-b border-neutral-900 bg-neutral-950/60 backdrop-blur px-5 py-2 select-none max-w-[1128px] mx-auto w-full">
+                <ul className="flex items-center gap-6 list-none w-full">
                     
                     <li>{navLink('io.control', 'IO-CONTROL')}</li>
                     <li>{navLink('io.presets', 'IO-PRESETS')}</li>
                     <li>{navLink('io.firmware', 'IO-FIRMWARE')}</li>
-                    <li>{navLink('about', 'ABOUT')}</li>
+                    <li className="ml-auto">{navLink('about', 'ABOUT')}</li>
 
-                    <li className="ml-auto flex items-center text-xs tracking-widest">
+                    <li className="flex items-center text-xs tracking-widest">
                         {user ? (
                             <Dropdown>
                                 <Dropdown.Trigger>
@@ -51,14 +51,14 @@ export default function AppLayout({ children }) {
                             <Link 
                                 href={route('landing')} 
                                 className="text-neutral-500 hover:text-neutral-200 transition-colors"
-                            >[EXIT]</Link>
+                            >EXIT</Link>
                         )}
                     </li>
                     
                 </ul>
             </nav>
 
-            <main className="flex-1 px-4 py-2">
+            <main className="flex-1 px-4 py-2 max-w-[1128px] mx-auto w-full">
                 {children}
             </main>
         </div>

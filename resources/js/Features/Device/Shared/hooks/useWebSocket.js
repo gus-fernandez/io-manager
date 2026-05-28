@@ -17,8 +17,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
 
     const [status, setStatus] = useState('Disconnected');
     const [metadata,    setMetadata]    = useState(null);
-    const [currentId,   setCurrentId]   = useState(null);
-    const [presetParams, setPresetParams] = useState(null);
+    const [currentPreset,   setCurrentPreset]   = useState(null);
     const [presetModified, setPresetModified] = useState(false);
 
     const refs = useRef({ onOpen, onClose, onError, onMessage });
@@ -26,13 +25,13 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         refs.current = { onOpen, onClose, onError, onMessage };
     }, [onOpen, onClose, onError, onMessage]);
 
-    const onParsed = useCallback(({ metadata, currentId, presetParams }) => {
+    const onParsed = useCallback(({ metadata, ...preset }) => {
         setMetadata(metadata);
-        setCurrentId(currentId);
-        setPresetParams(presetParams);
+        setCurrentPreset(preset);
         setPresetModified(false);
+        //Debug
         console.table(metadata);
-        //console.log("currentId recibido:", currentId, "Tipo de dato:", typeof currentId);
+        console.table(preset);
     }, []);
 
     const cleanTimers = useCallback(() => {
@@ -148,7 +147,8 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
 
     return { 
         status, connect, disconnect, ws, send, onParsed, 
-        metadata, setMetadata, currentId, presetParams,
+        metadata, setMetadata,
+        currentPreset, setCurrentPreset,
         presetModified, setPresetModified
     };
 }

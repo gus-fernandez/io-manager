@@ -6,7 +6,7 @@ import ModuleDivider from '@/Features/Device/Control/components/layout/ModuleDiv
 import IoButton from '@/Features/Device/Control/components/ui/IoButton';
 import IoKnob from '@/Features/Device/Control/components/ui/IoKnob';
 import IoSelector from '@/Features/Device/Control/components/ui/IoSelector';
-import { CC } from '@/Features/Device/Control/utils/midiCC';
+import { CC } from '@/Features/Device/Shared/utils/midiCC';
 import { WaveIcons } from '@/Features/Device/Control/components/WaveIcons.jsx';
 
 const OscWaves = { "SIN": WaveIcons.OSC_SIN, "TRI": WaveIcons.OSC_TRI, "SAW": WaveIcons.OSC_SAW, "SQR": WaveIcons.OSC_SQR, "PLS": WaveIcons.OSC_PLS };
@@ -38,7 +38,6 @@ function OscSection({ prefix, label, isMaster = false, sendCC, appendLog, values
         <div>
             <ModuleDivider label={label} className='col-span-3' />
             <div className="grid gap-x-4 gap-y-2 justify-items-center items-end" style={{ gridTemplateColumns: 'repeat(3, 40px)' }}>
-                {/* CORREGIDO: cc usa CC[key] para el número MIDI, value usa values[key] para el estado */}
                 <IoButton label="LFO" cc={CC[getCCKey('LFO_ACTIVE')]} value={values[getCCKey('LFO_ACTIVE')] ?? 0} send={sendCC} appendLog={appendLog} />
                 <IoButton label="AD" cc={CC[getCCKey('AD_ACTIVE')]} value={values[getCCKey('AD_ACTIVE')] ?? 0} send={sendCC} appendLog={appendLog} />
                 {isMaster

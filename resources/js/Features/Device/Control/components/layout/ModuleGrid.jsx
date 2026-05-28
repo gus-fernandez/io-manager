@@ -22,7 +22,14 @@ const MODULE_COMPONENTS = {
     arp:    ArpModule
 };
 
-export default function ModuleGrid({ sendCC, sendBend , appendLog, isConnected, values = {} }) {
+export default function ModuleGrid({ 
+sendCC, 
+    sendBend, 
+    appendLog, 
+    isConnected, 
+    currentPreset,
+    updateData
+}) {
     
     const {
         modules,
@@ -55,7 +62,8 @@ export default function ModuleGrid({ sendCC, sendBend , appendLog, isConnected, 
                                 sendBend={sendBend}
                                 appendLog={appendLog}
                                 isConnected={isConnected}
-                                values={values}
+                                values={currentPreset?.params}
+                                updateData={updateData}
                             />
                         );
                     })}

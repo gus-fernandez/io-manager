@@ -1,6 +1,7 @@
 // @/Features/Device/Shared/hooks/useMidi.js
 
 import { useRef, useCallback, useState, useEffect } from 'react';
+import { CC } from '@/Features/Device/Shared/utils/midiCC';
 
 const NOTE_ON  = 0x90;
 const NOTE_OFF = 0x80;
@@ -15,6 +16,11 @@ export default function useMidi(ws) {
     const notesQueueRef = useRef([]);
     const ccLatestRef = useRef({});
     const intervalRef = useRef(null);
+    const wsRef = useRef(ws);
+
+    useEffect(() => {
+        wsRef.current = ws;
+    }, [ws]);
 
     useEffect(() => {
         intervalRef.current = setInterval(() => {
@@ -51,7 +57,7 @@ export default function useMidi(ws) {
         return () => {
             if (intervalRef.current) clearInterval(intervalRef.current);
         };
-    }, [ws]);
+    }, []);
 
     const noteOn = useCallback((midiNote, velocity) => {
         if (midiNote > 127 || activeNotes.current.has(midiNote)) return false;
@@ -80,8 +86,16 @@ export default function useMidi(ws) {
     const sendCC = useCallback((channel, cc, value) => {
         const key = `${channel}-${cc}`;
         ccLatestRef.current[key] = [0xB0 | (channel & 0x0F), cc & 0x7F, value & 0x7F];
-        ws.setPresetModified(true);
-    }, [ws]);
+        const paramKey = Object.keys(CC).find(k => CC[k] === cc);
+        if (paramKey && wsRef.current.updateData) {
+            wsRef.current.updateData({
+                params: {
+                    ...(wsRef.current.currentPreset?.params || {}),
+                    [paramKey]: value
+                }
+            });
+        }
+    }, []);
 
     const sendBend = useCallback((channel, lsb, msb) => {
         const key = `bend-${channel}`;

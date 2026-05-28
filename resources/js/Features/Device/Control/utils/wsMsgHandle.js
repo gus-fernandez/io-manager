@@ -1,14 +1,19 @@
 // @/Features/Device/Control/utils/wsMsgHandle.js
 
-import { parseMetadata, parsePresetParams, parseCurrentId, IOP_NUM, PRESET_META_SIZE } from '@/Features/Device/Control/utils/presetUtils.js';
+import {
+    parseMetadata,
+    parseCurrentPreset,
+    IOP_NUM,
+    PRESET_META_SIZE
+} from '@/Features/Device/Control/utils/presetUtils.js';
 
 const MSG_HEARTBEAT   = 0xFF;
 const MSG_DATA        = 0xFC;
 const MSG_LOAD        = 0xFB;
 const MSG_SAVE        = 0xFA;
 
-const EXPECTED_META   = IOP_NUM * PRESET_META_SIZE; // 2176 bytes
-const PADDING         = 25;
+const EXPECTED_META   = IOP_NUM * PRESET_META_SIZE; // 2688 bytes
+const PADDING         = 9;
 const EXPECTED_PRESET = 128;
 const PRESET_OFFSET   = EXPECTED_META + PADDING;
 const TOTAL_RAW_DATA  = PRESET_OFFSET + EXPECTED_PRESET; 
@@ -95,25 +100,28 @@ function parseMeta(metaBuf, wsState) {
 }
 
 function parsePreset(presetBuf, wsState, isInitStream) {
-    const currentId = parseCurrentId(presetBuf);
-    const presetParams = parsePresetParams(presetBuf);
+    const preset = parseCurrentPreset(presetBuf);
     
     if (isInitStream) {
         console.log("Init Stream: Ok");
         wsState.onParsed?.({ 
             metadata: wsState.tempMetadata || lastValidMetadata || null,
-            currentId, 
-            presetParams 
+            ...preset
         });
         delete wsState.tempMetadata;
     } else {
         console.log("Load Preset: Ok");
         wsState.onParsed?.({ 
             metadata: lastValidMetadata,
-            currentId, 
-            presetParams 
+            ...preset
         });
     }
+}
+
+function checkCrc(currentId, crcPreset, metadata) {
+    if (!metadata || metadata.length === 0) return false;
+    const meta = metadata.find(p => p.id === currentId);
+    return (meta.crc >>> 0) === (crcPreset >>> 0);
 }
 
 export function sendSavePacket(sendFn, name, flags = 0) {

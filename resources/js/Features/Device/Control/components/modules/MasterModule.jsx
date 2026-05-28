@@ -4,7 +4,7 @@ import Module from '@/Features/Device/Control/components/layout/Module';
 import ModuleDivider from '@/Features/Device/Control/components/layout/ModuleDivider';
 import IoButton from '@/Features/Device/Control/components/ui/IoButton';
 import IoKnob from '@/Features/Device/Control/components/ui/IoKnob';
-import { CC } from '@/Features/Device/Control/utils/midiCC';
+import { CC } from '@/Features/Device/Shared/utils/midiCC';
 
 export default function MasterModule({ id, sendCC, appendLog, values = {} }) {
     return (

@@ -1,17 +1,24 @@
 // @/Features/Device/Control/utils/presetUtils.js
 
-import { CC } from '@/Features/Device/Control/utils/midiCC';
+import { CC } from '@/Features/Device/Shared/utils/midiCC';
 
 export const IOP_NUM = 128;
-export const PRESET_META_SIZE = 17;
+export const PRESET_META_SIZE = 21;
+const NAME_SIZE = 16;
 
 const Slot = {
     Header: 0,   // 2 bytes
     Id:     2,   // 1 byte
     Flags:  3,   // 1 byte
     Name:   4,   // 16 bytes
-    Params: 20,  // 106 bytes
-    Crc:    126  // 2 bytes
+    Params: 20,  // 104 bytes
+    Crc:    124  // 4 bytes
+};
+
+const MetaSlot = {
+    Flags: 0,
+    Name:  1,   // 16 bytes
+    Crc:   17   // 4 bytes
 };
 
 const Flag = {
@@ -33,7 +40,8 @@ export const Cat = {
     7: "Perc"
 };
 
-function extractFlags(flagsByte) {
+function parseFlags(flagsByte) {
+    
     const isEmpty    = (flagsByte & (1 << Flag.Empty)) !== 0;
     const isReadOnly = (flagsByte & (1 << Flag.ReadOnly)) !== 0;
     const isFav      = (flagsByte & (1 << Flag.Fav)) !== 0;
@@ -52,43 +60,31 @@ function extractFlags(flagsByte) {
 }
 
 export function packFlags(preset) {
-    if (!preset) return 0;
     
     let flagsByte = 0;
-    if (preset.isEmpty)    flagsByte |= (1 << Flag.Empty);
+    if (preset.isEmpty) flagsByte |= (1 << Flag.Empty);
     if (preset.isReadOnly) flagsByte |= (1 << Flag.ReadOnly);
-    if (preset.isFav)      flagsByte |= (1 << Flag.Fav);
-    if (preset.exists)     flagsByte |= (1 << Flag.Exists);
+    if (preset.isFav) flagsByte |= (1 << Flag.Fav);
+    if (preset.exists) flagsByte |= (1 << Flag.Exists);
     flagsByte |= ((preset.catId ?? 0) & 0x07) << Flag.Cat;
     
     return flagsByte;
 }
 
-function extractName(nameBytes) {
+function parseName(nameBytes) {
     let name = "";
-    for (let i = 0; i < nameBytes.length; i++) {
-        if (nameBytes[i] === 0) break;
-        name += String.fromCharCode(nameBytes[i]);
+    
+    for (let i = 0; i < 16; i++) {
+        const byte = nameBytes[i];
+        if (byte === 0) break;
+        name += String.fromCharCode(byte);
     }
+    
     const trimmed = name.trim();
-    if (trimmed === "") return `NO NAME`;
-    return `${trimmed}`;
+    return trimmed === "" ? `NO NAME` : trimmed;
 }
 
-export function parseMetadata(rawBuffer) {
-    const presets = [];
-    for (let i = 0; i < IOP_NUM; i++) {
-        const offset    = i * PRESET_META_SIZE;
-        const flagsByte = rawBuffer[offset];
-        const flags     = extractFlags(flagsByte);
-        const nameBytes = rawBuffer.subarray(offset + 1, offset + PRESET_META_SIZE);
-        const name      = extractName(nameBytes);
-        presets.push({ id: i, name, ...flags });
-    }
-    return presets;
-}
-
-export function parsePresetParams(rawBuffer) {
+function parseParams(rawBuffer) {
     const mappedValues = {};
     const paramsBuffer = rawBuffer.subarray(Slot.Params, Slot.Crc);
     Object.entries(CC).forEach(([key, ccNumber]) => {
@@ -100,7 +96,51 @@ export function parsePresetParams(rawBuffer) {
     return mappedValues;
 }
 
-export function parseCurrentId(rawBuffer) {
-    //console.log(rawBuffer); //debug
+function parseId(rawBuffer) {
     return rawBuffer[Slot.Id];
+}
+
+function parseCrc(crcBytes) {
+    return (
+        (crcBytes[0] << 24) |
+        (crcBytes[1] << 16) |
+        (crcBytes[2] << 8) |
+        crcBytes[3]
+    ) >>> 0;
+}
+
+export function parseCurrentPreset(buf) {
+    let currentId     = parseId(buf);
+    let currentFlags  = parseFlags(buf[Slot.Flags]);
+    let currentName   = parseName(buf.subarray(Slot.Name, Slot.Name + NAME_SIZE));
+    let currentParams = parseParams(buf);
+    let currentCrc    = parseCrc(buf.subarray(Slot.Crc, Slot.Crc + 4));
+    
+    return {
+        id: currentId,
+        name: currentName,
+        crc: currentCrc,
+        params: currentParams,
+        ...currentFlags
+    };
+}
+
+export function parseMetadata(rawBuffer) {
+    const presets = [];
+
+    for (let i = 0; i < IOP_NUM; i++) {
+        const offset = i * PRESET_META_SIZE;
+
+        let currentFlags = parseFlags(rawBuffer[offset + MetaSlot.Flags]);
+        let currentName  = parseName(rawBuffer.subarray(offset + MetaSlot.Name, offset + MetaSlot.Name + NAME_SIZE));
+        let currentCrc   = parseCrc(rawBuffer.subarray(offset + MetaSlot.Crc, offset + MetaSlot.Crc + 4));
+
+        presets.push({
+            id: i,
+            name: currentName,
+            crc: currentCrc,
+            ...currentFlags
+        });
+    }
+    return presets;
 }

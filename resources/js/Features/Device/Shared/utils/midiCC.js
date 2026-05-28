@@ -1,4 +1,4 @@
-// @/Features/Device/Control/utils/midiCC.js
+// @/Features/Device/Shared/utils/midiCC.js
 
 export const CC = {
     MODWHEEL        : 1,  // 0.0f to 1.0f

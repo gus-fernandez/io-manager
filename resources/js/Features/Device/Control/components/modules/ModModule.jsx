@@ -7,7 +7,7 @@ import IoSlider from '@/Features/Device/Control/components/ui/IoSlider';
 import IoBend from '@/Features/Device/Control/components/ui/IoBend';
 import IoKnob from '@/Features/Device/Control/components/ui/IoKnob';
 import IoButton from '@/Features/Device/Control/components/ui/IoButton';
-import { CC } from '@/Features/Device/Control/utils/midiCC';
+import { CC } from '@/Features/Device/Shared/utils/midiCC';
 
 export default function ModModule({ id, sendCC, sendBend, appendLog, values = {} }) {
     // Inicialización del grupo de botones en base al preset activo

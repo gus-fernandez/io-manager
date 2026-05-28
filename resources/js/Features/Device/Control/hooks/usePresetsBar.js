@@ -1,16 +1,16 @@
 // @/Features/Device/Control/hooks/usePresetsBar.js
 
 import { useState, useEffect } from 'react';
-import { packFlags } from '@/Features/Device/Control/utils/presetUtils.js';
 
 export function usePresetsBar({ 
-    presets = [], 
-    currentPreset, 
-    sendSavePacket, 
-    sendLoadPacket, 
-    isConnected = false,
-    setMetadata,
-    setPresetModified
+    metadata = [],
+    currentPreset,
+    presetModified,
+    setPresetModified,
+    updateData,
+    sendSavePacket,
+    sendLoadPacket,
+    isConnected = false
 }) {
 
     const [isOpen,    setIsOpen]    = useState(false);
@@ -19,15 +19,11 @@ export function usePresetsBar({
     const [isLoading, setIsLoading] = useState(false);
     const [newName,   setNewName]   = useState('');
 
-    const hasPresets       = presets?.length > 0;
-    const activePreset     = presets?.find(p => p.id === currentPreset);
-    const activePresetName = activePreset?.name ?? '';
-
     useEffect(() => {
-        setNewName(activePresetName);
+        setNewName(currentPreset?.name ?? '');
         setIsEditing(false);
         setIsLoading(false);
-    }, [currentPreset, presets]);
+    }, [currentPreset?.id, currentPreset?.name]);
 
     useEffect(() => {
         if (!isConnected) {
@@ -45,66 +41,48 @@ export function usePresetsBar({
 
     const handleStartEdit = (e) => {
         e.stopPropagation();
-        if (!isConnected || activePreset?.isReadOnly) return;
-        setNewName(activePresetName);
+        if (!isConnected || currentPreset?.isReadOnly) return;
+        setNewName(currentPreset?.name ?? '');
         setIsEditing(true);
     };
 
     const handleCancelEdit = (e) => {
         e.stopPropagation();
         setIsEditing(false);
-        setNewName(activePresetName);
-    };
-
-    const updatePreset = (updatedFields) => {
-        if (!setMetadata) return;
-    setMetadata(prev => {
-            if (!prev) return prev;
-            return prev.map(p => 
-                p.id === currentPreset 
-                    ? { ...p, ...updatedFields, isEmpty: false, exists: true } 
-                    : p
-            );
-        });
+        setNewName(currentPreset?.name ?? '');
     };
 
     const handleConfirmName = (e) => {
         e.stopPropagation();
         const clean = newName.trim().toUpperCase().substring(0, 16);
-        if (!clean) return;
-        setPresetModified(true); 
-        updatePreset({ name: clean });
+        
+        if (!clean || clean === currentPreset?.name) {
+            setIsEditing(false);
+            return;
+        }
+        updateData({ name: clean });
         setIsEditing(false);
     };
 
     const toggleFav = (e) => {
         e.stopPropagation();
-        if (!isConnected || !activePreset) return;     
-        setPresetModified(true);
-        updatePreset({ isFav: !activePreset.isFav });
+        if (!isConnected || !currentPreset) return;     
+        updateData({ isFav: !currentPreset.isFav });
     };
 
-    const changeCategory = (catId, categoryName) => {
-        if (!isConnected || !activePreset) return;
-        setPresetModified(true);
-        updatePreset({ catId, category: categoryName });
+    const changeCategory = (categoryName) => {
+        if (!isConnected || !currentPreset) return;
+        updateData({ category: categoryName });
     };
-
+    
     const handleSave = (e) => {
         e.stopPropagation();
-        if (!sendSavePacket || currentPreset === null || isSaving || !isConnected || activePreset?.isReadOnly) return;
-        setIsSaving(true);
-
-        const flagsByte = packFlags({ ...activePreset, isEmpty: false, exists: true });
-        sendSavePacket(activePresetName, flagsByte);
-
-        if (setMetadata) {
-            setMetadata(prev => prev.map(p => 
-                p.id === currentPreset 
-                    ? { ...p, name: activePresetName, isEmpty: false, exists: true } 
-                    : p
-            ));
+        
+        if (!sendSavePacket || !currentPreset || isSaving || !isConnected || currentPreset.isReadOnly) {
+            return;
         }
+        setIsSaving(true);
+        sendSavePacket(currentPreset.name, currentPreset.flags);
         setPresetModified(false);
         setTimeout(() => setIsSaving(false), 800);
     };
@@ -117,10 +95,10 @@ export function usePresetsBar({
     };
 
     return {
-        isOpen, isSaving, isEditing, isLoading, newName, setNewName,
-        activePreset, activePresetName, hasPresets,
-        toggleOpen, handleStartEdit, handleCancelEdit,
-        handleConfirmName, toggleFav, changeCategory,
-        handleSave, handleSelectPreset
+        isOpen, isSaving, isEditing, isLoading,
+        metadata, currentPreset, presetModified,
+        newName, setNewName, toggleOpen, handleStartEdit,
+        handleCancelEdit, handleConfirmName,
+        toggleFav, changeCategory, handleSave, handleSelectPreset
     };
 }

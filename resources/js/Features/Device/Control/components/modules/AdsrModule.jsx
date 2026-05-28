@@ -6,7 +6,7 @@ import IoSlider from '@/Features/Device/Control/components/ui/IoSlider';
 import IoKnob from '@/Features/Device/Control/components/ui/IoKnob';
 import IoButton from '@/Features/Device/Control/components/ui/IoButton';
 import IoSelector from '@/Features/Device/Control/components/ui/IoSelector';
-import { CC } from '@/Features/Device/Control/utils/midiCC';
+import { CC } from '@/Features/Device/Shared/utils/midiCC';
 
 const VcfType = {
     "LPF\n24dB": 0, "HPF\n24dB": 1, "BPF\n24dB": 2, "NPF\n24dB": 3,

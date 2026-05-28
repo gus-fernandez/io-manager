@@ -5,21 +5,19 @@ import { usePresetsBar } from '@/Features/Device/Control/hooks/usePresetsBar.js'
 import PresetLine from '@/Features/Device/Control/components/PresetLine.jsx';
 
 export default function PresetsBar(props) {
-    const { presets = [], currentPreset, presetModified } = props;
-
     const {
         isOpen, isSaving, isEditing, isLoading,
-        newName, setNewName,
-        activePreset, activePresetName, hasPresets,
-        toggleOpen, handleStartEdit, handleCancelEdit,
-        handleConfirmName, toggleFav, handleSave,
-        handleSelectPreset, changeCategory
+        metadata, currentPreset, presetModified,
+        newName, setNewName, toggleOpen, handleStartEdit,
+        handleCancelEdit, handleConfirmName,
+        toggleFav, changeCategory, handleSave, handleSelectPreset
     } = usePresetsBar(props);
+    const metaNoData = !metadata || metadata.length === 0;
 
     return (
-        <div className="bg-neutral-950 border border-neutral-800 rounded-lg px-2">
+        <div className="bg-neutral-950 border border-neutral-800 rounded-lg px-2 pt-1 mt-2">
             
-            {!hasPresets && !isLoading ? (
+            {metaNoData && !isLoading ? (
                 <div className="flex items-center h-7 select-none">
                     <span className="uppercase text-xs tracking-widest text-neutral-200">
                         PRESET: <span className="text-neutral-700">NO DATA</span>
@@ -48,15 +46,15 @@ export default function PresetsBar(props) {
                                         </span>
                                     ) : (
                                         <PresetLine 
-                                            id={currentPreset} 
-                                            name={activePresetName} 
+                                            id={currentPreset?.id} 
+                                            name={currentPreset?.name} 
                                             isActive={true}
-                                            isFav={activePreset?.isFav}
+                                            isFav={currentPreset?.isFav}
                                             isList={false}
-                                            category={activePreset?.category}
+                                            category={currentPreset?.category}
                                             onToggleFav={toggleFav}
                                             onClick={toggleOpen}
-                                            onCategoryChange={(newCatName) => changeCategory(currentPreset, newCatName)}
+                                            onCategoryChange={(newCatName) => changeCategory(newCatName)}
                                         />
                                     )}
                                 </div>
@@ -93,26 +91,24 @@ export default function PresetsBar(props) {
                         </div>
                     </div>
 
-                    {isOpen && !isEditing && (
+                    {isOpen && !isEditing && !metaNoData && (
                         <div className={`max-h-48 overflow-y-auto border-t border-neutral-900 mt-2 pt-1 divide-y divide-neutral-900/40 transition-opacity duration-150 ${
                             isLoading ? 'pointer-events-none opacity-40' : ''
                         }`}>
-                            {presets.map((preset) => {
-                                const isActive = preset.id === currentPreset;
-
+                            {metadata?.map((meta) => {
                                 return (
-                                    <div key={preset.id} className="px-1 py-1 transition-colors hover:bg-neutral-900/20">
+                                    <div key={meta.id} className="px-1 py-1 transition-colors hover:bg-neutral-900/20">
                                         <PresetLine 
-                                            id={preset.id}
-                                            name={preset.name}
-                                            isFav={preset.isFav}
-                                            category={preset.category}
-                                            isActive={isActive}
-                                            isEmpty={preset.isEmpty}
+                                            id={meta.id}
+                                            name={meta.name}
+                                            isFav={meta.isFav}
+                                            category={meta.category}
+                                            isActive={(meta.id === currentPreset)}
+                                            isEmpty={meta.isEmpty}
                                             isList={true}
                                             onToggleFav={toggleFav}
                                             onClick={() => { 
-                                            if (!isActive) handleSelectPreset(preset.id);
+                                            if (!isActive) handleSelectPreset(meta.id);
                                                 toggleOpen(); 
                                             }}
                                         />

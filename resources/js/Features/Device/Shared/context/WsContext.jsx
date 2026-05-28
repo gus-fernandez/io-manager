@@ -4,6 +4,7 @@ import React, { createContext, useContext } from 'react';
 import useWebSocket from '@/Features/Device/Shared/hooks/useWebSocket';
 import useMidi from '@/Features/Device/Shared/hooks/useMidi';
 import { handleMsg } from '@/Features/Device/Control/utils/wsMsgHandle';
+import { usePresetUpdate } from '@/Features/Device/Shared/hooks/usePresetUpdate';
 
 const WsContext = createContext(null);
 
@@ -13,7 +14,9 @@ export function WsProvider({ children }) {
             handleMsg(event, ws); 
         }
     });
-    const midi = useMidi(ws);
+    const { updateData } = usePresetUpdate(ws);
+    const wsContextValue = { ...ws, updateData };
+    const midi = useMidi(wsContextValue);
 
     return (
         <WsContext.Provider value={{ ws, midi }}>
