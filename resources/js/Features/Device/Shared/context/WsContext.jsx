@@ -19,7 +19,7 @@ export function WsProvider({ children }) {
     const midi = useMidi(wsContextValue);
 
     return (
-        <WsContext.Provider value={{ ws, midi }}>
+        <WsContext.Provider value={{ ws: wsContextValue, midi }}>
             {children}
         </WsContext.Provider>
     );

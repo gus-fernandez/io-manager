@@ -1,12 +1,12 @@
 // @/Features/Device/Shared/hooks/useWebSocket.js
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { resetDataStream, clearStoredMetadata } from '@/Features/Device/Control/utils/wsMsgHandle';
+import { resetDataStream } from '@/Features/Device/Control/utils/wsMsgHandle';
 
 const WS_URL             = `ws://io-8.local/ws`;
 const CONN_TIMEOUT_MS    = 8000;
 const HEARTBEAT_INTERVAL = 1000;
-const HEARTBEAT_TIMEOUT  = 2000;
+const HEARTBEAT_TIMEOUT  = 4000;
 
 export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {}) {
     const ws               = useRef(null);
@@ -26,7 +26,9 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     }, [onOpen, onClose, onError, onMessage]);
 
     const onParsed = useCallback(({ metadata, ...preset }) => {
-        setMetadata(metadata);
+        if (metadata) {
+            setMetadata(metadata);
+        }
         setCurrentPreset(preset);
         setPresetModified(false);
         //Debug
@@ -55,7 +57,6 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
             ws.current = null;
         }
         setMetadata(null);
-        clearStoredMetadata();
         setStatus('Disconnected');
     }, [cleanTimers]);
 
@@ -120,7 +121,6 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
                 connect(); 
             } else {
                 setMetadata(null);
-                clearStoredMetadata();
                 setStatus('Disconnected');
                 refs.current.onClose?.();
             }

@@ -103,12 +103,12 @@ export default function PresetsBar(props) {
                                             name={meta.name}
                                             isFav={meta.isFav}
                                             category={meta.category}
-                                            isActive={(meta.id === currentPreset)}
+                                            isActive={(meta.id === currentPreset?.id)}
                                             isEmpty={meta.isEmpty}
                                             isList={true}
                                             onToggleFav={toggleFav}
                                             onClick={() => { 
-                                            if (!isActive) handleSelectPreset(meta.id);
+                                            if (meta.id !== currentPreset?.id) handleSelectPreset(meta.id);
                                                 toggleOpen(); 
                                             }}
                                         />

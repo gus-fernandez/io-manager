@@ -24,8 +24,6 @@ let totalBytesReceived = 0;
 let presetBuffer = new Uint8Array(EXPECTED_PRESET);
 let presetBytesReceived = 0;
 
-let lastValidMetadata = null;
-
 export function resetDataStream() {
     totalBytesReceived = 0;
     presetBytesReceived = 0;
@@ -96,7 +94,6 @@ function parseMeta(metaBuf, wsState) {
     const metadata = parseMetadata(metaBuf);
     console.log("Metadata Parse: Ok");
     wsState.tempMetadata = metadata;
-    lastValidMetadata = metadata;
 }
 
 function parsePreset(presetBuf, wsState, isInitStream) {
@@ -105,14 +102,14 @@ function parsePreset(presetBuf, wsState, isInitStream) {
     if (isInitStream) {
         console.log("Init Stream: Ok");
         wsState.onParsed?.({ 
-            metadata: wsState.tempMetadata || lastValidMetadata || null,
+            metadata: wsState.tempMetadata || null,
             ...preset
         });
         delete wsState.tempMetadata;
     } else {
         console.log("Load Preset: Ok");
         wsState.onParsed?.({ 
-            metadata: lastValidMetadata,
+            metadata: null,
             ...preset
         });
     }
@@ -144,8 +141,4 @@ export function sendLoadPacket(sendFn, presetId) {
 
     const payload = new Uint8Array([MSG_LOAD, presetId]);
     sendFn(payload.buffer);
-}
-
-export function clearStoredMetadata() {
-    lastValidMetadata = null;
 }

@@ -52,8 +52,11 @@ SHARED
 @/Features/Device/Shared/hooks/useWebSocket.js
 @/Features/Device/Shared/hooks/useMidi.js
 @/Features/Device/Shared/hooks/useVirtualKeyboard.js
+@/Features/Device/Shared/hooks/usePresetUpdate.js
 
-@/Features/Device/Shared/components/WsContext.jsx
+@/Features/Device/Shared/context/WsContext.jsx
+
+@/Features/Device/Shared/utils/midiCC.js
 
 PRESETS
 
@@ -91,6 +94,5 @@ CONTROL
 @/Features/Device/Control/hooks/usePresetsBar.js
 @/Features/Device/Control/hooks/useModuleGrid.js
 
-@/Features/Device/Control/utils/midiCC.js
 @/Features/Device/Control/utils/presetUtils.js
 @/Features/Device/Control/utils/wsMsgHandle.js
