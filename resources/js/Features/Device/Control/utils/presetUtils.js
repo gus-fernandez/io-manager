@@ -82,7 +82,7 @@ export function parseMetadata(rawBuffer) {
         const flagsByte = rawBuffer[offset];
         const flags     = extractFlags(flagsByte);
         const nameBytes = rawBuffer.subarray(offset + 1, offset + PRESET_META_SIZE);
-        const name      = extractName(nameBytes, i, flags.isEmpty);
+        const name      = extractName(nameBytes);
         presets.push({ id: i, name, ...flags });
     }
     return presets;

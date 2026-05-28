@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { usePresetsBar } from '@/Features/Device/Control/hooks/usePresetsBar.js';
-import PresetLine from '@/Features/Device/Control/components/layout/PresetLine.jsx';
+import PresetLine from '@/Features/Device/Control/components/PresetLine.jsx';
 
 export default function PresetsBar(props) {
     const { presets = [], currentPreset, presetModified } = props;
@@ -17,18 +17,18 @@ export default function PresetsBar(props) {
     } = usePresetsBar(props);
 
     return (
-        <div className="mt-4 bg-neutral-950/40 border border-neutral-800 rounded p-2">
+        <div className="bg-neutral-950 border border-neutral-800 rounded-lg px-2">
             
             {!hasPresets && !isLoading ? (
-                <div className="flex items-center h-7 px-1 select-none">
-                    <span className="uppercase text-xs tracking-widest text-neutral-600 font-bold">
-                        PRESETS: <span className="text-neutral-700">NO DATA</span>
+                <div className="flex items-center h-7 select-none">
+                    <span className="uppercase text-xs tracking-widest text-neutral-200">
+                        PRESET: <span className="text-neutral-700">NO DATA</span>
                     </span>
                 </div>
             ) : (
                 <>
-                    <div className="flex items-center justify-between w-full h-7 select-none px-1 rounded-sm">
-                        <div className="flex items-center uppercase text-xs tracking-widest text-neutral-500 font-bold leading-none flex-1 mr-2">
+                    <div className="flex items-center justify-between w-full h-7 select-none rounded-sm">
+                        <div className="flex items-center uppercase text-xs tracking-widest text-neutral-500 leading-none">
                             <span className="whitespace-nowrap mr-2">PRESET:</span>
                             {isEditing ? (
                                 <input
@@ -63,7 +63,7 @@ export default function PresetsBar(props) {
                             )}
                         </div>
 
-                        <div className="flex items-center gap-4 uppercase text-xs tracking-widest whitespace-nowrap leading-none">
+                        <div className="flex items-center gap-4 uppercase text-xs whitespace-nowrap leading-none">
                             {!isLoading && (
                                 isEditing ? (
                                     <div className="flex gap-2">

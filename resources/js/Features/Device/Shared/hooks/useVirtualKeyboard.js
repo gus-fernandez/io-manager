@@ -1,4 +1,4 @@
-// @/Features/Device/Control/hooks/useVirtualKeyboard.js
+// @/Features/Device/Shared/hooks/useVirtualKeyboard.js
 
 import { useEffect, useState, useRef } from 'react';
 

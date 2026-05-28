@@ -37,10 +37,23 @@ PAGES
 @/Pages/Firmware.jsx
 @/Pages/Presets.jsx
 
+LAYOUTS
+@/Layouts/AppLayout.jsx
+@/Layouts/AuthenticatedLayout.jsx
+@/Layouts/DeviceLayout.jsx
+@/Layouts/GuestLayout.jsx
+
 SHARED
 @/Features/Device/Shared/components/Icons.jsx
 @/Features/Device/Shared/components/WsConnection.jsx
+@/Features/Device/Shared/components/StatusBar.jsx
+@/Features/Device/Shared/components/VirtualKeyboard.jsx
+
 @/Features/Device/Shared/hooks/useWebSocket.js
+@/Features/Device/Shared/hooks/useMidi.js
+@/Features/Device/Shared/hooks/useVirtualKeyboard.js
+
+@/Features/Device/Shared/components/WsContext.jsx
 
 PRESETS
 
@@ -56,7 +69,6 @@ CONTROL
 @/Features/Device/Control/components/layout/Module.jsx
 @/Features/Device/Control/components/layout/ModuleDivider.jsx
 @/Features/Device/Control/components/layout/ModuleGrid.jsx
-@/Features/Device/Control/components/layout/PresetLine.jsx
 
 @/Features/Device/Control/components/modules/AdsrModule.jsx
 @/Features/Device/Control/components/modules/ArpModule.jsx
@@ -73,12 +85,9 @@ CONTROL
 @/Features/Device/Control/components/ui/IoSlider.jsx
 
 @/Features/Device/Control/components/PresetsBar.jsx
-@/Features/Device/Control/components/StatusBar.jsx
-@/Features/Device/Control/components/VirtualKeyboard.jsx
+@/Features/Device/Control/components/PresetLine.jsx
 @/Features/Device/Control/components/WaveIcons.jsx
 
-@/Features/Device/Control/hooks/useMidi.js
-@/Features/Device/Control/hooks/useVirtualKeyboard.js
 @/Features/Device/Control/hooks/usePresetsBar.js
 @/Features/Device/Control/hooks/useModuleGrid.js
 

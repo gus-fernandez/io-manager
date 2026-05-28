@@ -2,6 +2,7 @@
 
 import React from 'react';
 import AppLayout from '@/Layouts/AppLayout';
+import DeviceLayout from '@/Layouts/DeviceLayout';
 import { useFirmware } from '@/Features/Device/Firmware/hooks/useFirmware';
 import SerialMonitor from '@/Features/Device/Firmware/components/SerialMonitor';
 import FlashFirmware from '@/Features/Device/Firmware/components/FlashFirmware';
@@ -24,39 +25,41 @@ export default function Firmware() {
     } = useFirmware();
 
     return (
-        <AppLayout>
-            <h1>IO Firmware</h1>
+        <>
+        <h1>IO Firmware</h1>
 
-            <div>
-                <p>Estado: {flashing ? 'Flasheando...' : connected ? 'Conectado' : 'Desconectado'}</p>
+        <div>
+            <p>Estado: {flashing ? 'Flasheando...' : connected ? 'Conectado' : 'Desconectado'}</p>
 
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
 
-                {flashCompleted && !connected && (
-                    <p style={{ color: 'green' }}>
-                        ¡Flash completado! Reiniciando y reconectando dispositivo...
-                    </p>
-                )}
-
-                {!connected && !flashing
-                    ? <button onClick={connect}>Conectar dispositivo</button>
-                    : !flashing && <button onClick={disconnect}>Desconectar</button>
-                }
-            </div>
-
-            {showComponents && (
-                <>
-                    {connected && !flashing && (
-                        <SerialMonitor log={log} clearLog={clearLog} logRef={logRef} />
-                    )}
-                    <FlashFirmware
-                        port={port}
-                        disconnect={disconnect}
-                        onFlashStart={handleFlashStart}
-                        onFlashEnd={handleFlashEnd}
-                    />
-                </>
+            {flashCompleted && !connected && (
+                <p style={{ color: 'green' }}>
+                    ¡Flash completado! Reiniciando y reconectando dispositivo...
+                </p>
             )}
-        </AppLayout>
+
+            {!connected && !flashing
+                ? <button onClick={connect}>Conectar dispositivo</button>
+                : !flashing && <button onClick={disconnect}>Desconectar</button>
+            }
+        </div>
+
+        {showComponents && (
+            <>
+                {connected && !flashing && (
+                    <SerialMonitor log={log} clearLog={clearLog} logRef={logRef} />
+                )}
+                <FlashFirmware
+                    port={port}
+                    disconnect={disconnect}
+                    onFlashStart={handleFlashStart}
+                    onFlashEnd={handleFlashEnd}
+                />
+            </>
+        )}
+        </>
     );
 }
+
+Firmware.layout = [AppLayout, DeviceLayout];

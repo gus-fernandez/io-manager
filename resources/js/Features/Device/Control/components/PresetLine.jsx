@@ -1,4 +1,4 @@
-// @/Features/Device/Control/components/layout/PresetLine.jsx
+// @/Features/Device/Control/components/PresetLine.jsx
 
 import React, { useState, useEffect } from 'react';
 import { Cat } from '@/Features/Device/Control/utils/presetUtils.js';

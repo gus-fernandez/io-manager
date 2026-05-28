@@ -1,4 +1,4 @@
-// @/Features/Device/Control/hooks/useMidi.js
+// @/Features/Device/Shared/hooks/useMidi.js
 
 import { useRef, useCallback, useState, useEffect } from 'react';
 
