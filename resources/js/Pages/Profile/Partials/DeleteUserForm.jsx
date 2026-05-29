@@ -4,83 +4,84 @@ import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
-import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
+import axios from '@/bootstrap';
 
 export default function DeleteUserForm({ className = '' }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+    const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState({});
+    const [processing, setProcessing] = useState(false);
+    
     const passwordInput = useRef();
-
-    const {
-        data,
-        setData,
-        delete: destroy,
-        processing,
-        reset,
-        errors,
-        clearErrors,
-    } = useForm({
-        password: '',
-    });
 
     const confirmUserDeletion = () => {
         setConfirmingUserDeletion(true);
     };
 
-    const deleteUser = (e) => {
+    const deleteUser = async (e) => {
         e.preventDefault();
+        setProcessing(true);
+        setErrors({});
 
-        destroy(route('profile.destroy'), {
-            preserveScroll: true,
-            onSuccess: () => closeModal(),
-            onError: () => passwordInput.current.focus(),
-            onFinish: () => reset(),
-        });
+        try {
+            await axios.delete('/api/profile', {
+                data: { password }
+            });
+            
+            closeModal();
+            window.location.reload(); 
+        } catch (err) {
+            if (err.response?.status === 422) {
+                setErrors(err.response.data.errors);
+                passwordInput.current?.focus();
+            } else {
+                setErrors({ password: ['Ocurrió un error al intentar eliminar la cuenta.'] });
+            }
+        } finally {
+            setProcessing(false);
+        }
     };
 
     const closeModal = () => {
         setConfirmingUserDeletion(false);
-
-        clearErrors();
-        reset();
+        setErrors({});
+        setPassword('');
     };
 
     return (
         <section className={`space-y-6 ${className}`}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900">
-                    Delete Account
+                    Eliminar Cuenta
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Once your account is deleted, all of its resources and data
-                    will be permanently deleted. Before deleting your account,
-                    please download any data or information that you wish to
-                    retain.
+                    Una vez que tu cuenta sea eliminada, todos sus recursos y datos
+                    se borrarán permanentemente. Por favor, descarga cualquier dato
+                    que desees conservar antes de proceder.
                 </p>
             </header>
 
             <DangerButton onClick={confirmUserDeletion}>
-                Delete Account
+                Eliminar Cuenta
             </DangerButton>
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900">
-                        Are you sure you want to delete your account?
+                        ¿De verdad quieres eliminar tu cuenta?
                     </h2>
 
                     <p className="mt-1 text-sm text-gray-600">
-                        Once your account is deleted, all of its resources and
-                        data will be permanently deleted. Please enter your
-                        password to confirm you would like to permanently delete
-                        your account.
+                        Por favor, introduce tu contraseña para confirmar que deseas
+                        borrar definitivamente tu cuenta.
                     </p>
 
                     <div className="mt-6">
                         <InputLabel
                             htmlFor="password"
-                            value="Password"
+                            value="Contraseña"
                             className="sr-only"
                         />
 
@@ -89,28 +90,26 @@ export default function DeleteUserForm({ className = '' }) {
                             type="password"
                             name="password"
                             ref={passwordInput}
-                            value={data.password}
-                            onChange={(e) =>
-                                setData('password', e.target.value)
-                            }
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             className="mt-1 block w-3/4"
                             isFocused
-                            placeholder="Password"
+                            placeholder="Contraseña"
                         />
 
                         <InputError
-                            message={errors.password}
+                            message={errors.password ? errors.password[0] : null}
                             className="mt-2"
                         />
                     </div>
 
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>
-                            Cancel
+                            Cancelar
                         </SecondaryButton>
 
                         <DangerButton className="ms-3" disabled={processing}>
-                            Delete Account
+                            {processing ? 'Eliminando...' : 'Eliminar Cuenta'}
                         </DangerButton>
                     </div>
                 </form>

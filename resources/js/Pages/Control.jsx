@@ -18,7 +18,6 @@ export default function Control() {
             metadata={ws.metadata}
             setMetadata={ws.setMetadata}
             currentPreset={ws.currentPreset}
-            setCurrentPreset={ws.setCurrentPreset}
             presetModified={ws.presetModified}
             setPresetModified={ws.setPresetModified}
             snapshot={ws.snapshot}

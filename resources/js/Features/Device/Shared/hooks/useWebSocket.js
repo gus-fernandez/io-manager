@@ -38,7 +38,6 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
             if (prev?.id !== preset.id) {
                 setSnapshot(preset);
                 setPresetModified(false);
-                console.log("New Preset");
             } else {
                 setReloadPreset(true);
             }
@@ -85,7 +84,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
             socket.send(heartbeatBuffer); 
 
             heartbeatTimeoutRef.current = setTimeout(() => {
-                console.warn('Connection lost, trying to reconnect.');
+                console.warn('Connection timeout, trying to reconnect.');
                 cleanTimers();
                 setStatus('Disconnected');
                 socket.close();
@@ -133,7 +132,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
 
             if (!hasRetriedRef.current) {
                 hasRetriedRef.current = true;
-                console.log('Connection lost, Trying to reconnect');
+                console.warn('Connection lost, Trying to reconnect');
                 connect(); 
             } else {
                 setMetadata(null);

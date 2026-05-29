@@ -3,22 +3,30 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class EmailVerificationNotificationController extends Controller
 {
     /**
-     * Send a new email verification notification.
+     * Enviar una nueva notificación de verificación de email.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): JsonResponse
     {
+        // Si el usuario ya verificó su cuenta, avisamos al frontend
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(route('dashboard', absolute: false));
+            return response()->json([
+                'verified' => true,
+                'message' => 'El email ya ha sido verificado.'
+            ]);
         }
 
+        // Enviar el correo de verificación estándar de Laravel
         $request->user()->sendEmailVerificationNotification();
 
-        return back()->with('status', 'verification-link-sent');
+        return response()->json([
+            'status' => 'verification-link-sent',
+            'message' => 'Se ha enviado un nuevo enlace de verificación a tu correo.'
+        ]);
     }
 }

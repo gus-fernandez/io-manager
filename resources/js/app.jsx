@@ -1,25 +1,111 @@
 import '../css/app.css';
 import './bootstrap';
 
-import { createInertiaApp } from '@inertiajs/react';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+import axios from '@/bootstrap';
+import AppLayout from './Layouts/AppLayout';
+import DeviceLayout from './Layouts/DeviceLayout';
+import Profile from './Pages/Profile/Edit';
+import Landing from './Pages/Landing';
+import Control from './Pages/Control';
+import Presets from './Pages/Presets';
+import Firmware from './Pages/Firmware';
+import About from './Pages/About';
 
-const appName = import.meta.env.VITE_APP_NAME || 'IO Manager';
+function App() {
+    const [currentTab, setTab] = useState('landing');
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-createInertiaApp({
-    title: (title) => `${appName}`,
-    resolve: (name) =>
-        resolvePageComponent(
-            `./Pages/${name}.jsx`,
-            import.meta.glob('./Pages/**/*.jsx'),
-        ),
-    setup({ el, App, props }) {
-        const root = createRoot(el);
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        if (queryParams.get('verified') === '1') {
+            alert("¡Tu correo ha sido verificado correctamente!");
+            window.history.replaceState({}, document.title, "/");
+        }
 
-        root.render(<App {...props} />);
-    },
-    progress: {
-        color: '#4B5563',
-    },
-});
+        const checkAuth = async () => {
+            try {
+                await axios.get('/sanctum/csrf-cookie');
+                const response = await axios.get('/api/current-user');
+                setUser(response.data);
+                setTab('control');
+            } catch (error) {
+                setUser(null);
+                setTab('landing');
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkAuth();
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            await axios.post('/logout');
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+        } finally {
+            setUser(null);
+            setTab('landing');
+        }
+    };
+
+    const renderContent = () => {
+        try {
+            if (currentTab === 'profile' && !user) {
+                return <div className="p-6 text-center text-neutral-500">Cargando perfil...</div>;
+            }
+
+            switch (currentTab) {
+                case 'control': 
+                    return <DeviceLayout currentTab={currentTab}><Control /></DeviceLayout>;
+                case 'presets': 
+                    return <DeviceLayout currentTab={currentTab}><Presets /></DeviceLayout>;
+                case 'firmware': 
+                    return <DeviceLayout currentTab={currentTab}><Firmware /></DeviceLayout>;
+                case 'about': 
+                    return <About />;
+                case 'profile': 
+                    return <Profile user={user} setUser={setUser} />;
+                case 'verify-email':
+                    return <VerifyEmail onLogout={handleLogout} />;
+                default: 
+                    return <DeviceLayout currentTab="control"><Control /></DeviceLayout>;
+            }
+        } catch (e) {
+            console.error("Error al renderizar:", e);
+            return <div className="p-4 text-red-500">Error cargando contenido.</div>;
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="flex h-screen items-center justify-center bg-neutral-900 text-neutral-400">
+                Cargando...
+            </div>
+        );
+    }
+
+    if (currentTab === 'landing') {
+        return <Landing setTab={setTab} setUser={setUser} />;
+    }
+
+    return (
+        <AppLayout 
+            currentTab={currentTab} 
+            setTab={setTab} 
+            user={user} 
+            onLogout={handleLogout}
+        >
+            {renderContent()}
+        </AppLayout>
+    );
+}
+
+const container = document.getElementById('app') || document.getElementById('root');
+if (container) {
+    const root = createRoot(container);
+    root.render(<App />);
+}

@@ -1,4 +1,12 @@
+// resources/js/bootstrap.js
 import axios from 'axios';
+
+axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.headers.common['Accept']            = 'application/json';
+
 window.axios = axios;
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+export default axios;

@@ -4,11 +4,11 @@ import React from 'react';
 import { WsProvider } from '@/Features/Device/Shared/context/WsContext';
 import StatusBar from '@/Features/Device/Shared/components/StatusBar';
 
-export default function DeviceLayout({ children }) {
+export default function DeviceLayout({ children, currentTab }) { // <-- Recibe currentTab
     return (
         <WsProvider>
             <div>
-                <StatusBar /> 
+                <StatusBar currentTab={currentTab} /> {/* <-- Lo pasa a StatusBar */}
                 <main>
                     {children}
                 </main>

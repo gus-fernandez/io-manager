@@ -1,44 +1,31 @@
 <?php
+
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 use App\Http\Controllers\FirmwareController;
 use App\Http\Controllers\WsTokenController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
-
-// Landing Page
-Route::get('/', function () {
-    return Inertia::render('Landing', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-    ]);
-})->name('landing');
-
-// Modo Local (sin auth)
-Route::get('/local', fn() => Inertia::render('Control'))->name('local');
-
-// Grupo IO (público)
-Route::prefix('io')->group(function () {
-    Route::get('/control', fn() => Inertia::render('Control'))->name('io.control');
-    Route::get('/presets', fn() => Inertia::render('Presets'))->name('io.presets');
-    Route::get('/firmware', fn() => Inertia::render('Firmware'))->name('io.firmware');
-    Route::get('/about', fn() => Inertia::render('About'))->name('about');
+Route::prefix('api')->group(function () {
+    Route::get('/firmware/list', [FirmwareController::class, 'index'])->name('firmware.list');
+    Route::get('/firmware/{firmware}/download', [FirmwareController::class, 'download'])->name('firmware.download');
+    
+    // Seguridad WS
+    //Route::get('/ws-token', [WsTokenController::class, 'index'])->name('ws.token');
 });
 
-// API firmware (pública)
-Route::get('/api/firmware/list', [FirmwareController::class, 'index'])->name('firmware.list');
-Route::get('/api/firmware/{firmware}/download', [FirmwareController::class, 'download'])->name('firmware.download');
+Route::middleware('auth:sanctum')->group(function () {
+    
+    Route::get('/api/current-user', function (Request $request) {
+        return response()->json($request->user());
+    })->name('current-user');
 
-// Perfil (auth)
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::prefix('api')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 });
 
-// Seguridad WS
-//Route::get('/api/ws-token', [WsTokenController::class, 'index']);
-
-
+// ── AUTENTICACIÓN (Breeze) ───────────────────────────────────────────────
 require __DIR__.'/auth.php';

@@ -5,31 +5,20 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
-use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
-     */
-    public function create(): Response
-    {
-        return Inertia::render('Auth/Register');
-    }
-
-    /**
-     * Handle an incoming registration request.
+     * Maneja una solicitud de registro entrante.
      *
-     * @throws ValidationException
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -45,8 +34,13 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+        // Laravel inicia la sesión automáticamente tras registrarse
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Devolvemos el usuario y confirmamos el éxito en JSON
+        return response()->json([
+            'user' => $user,
+            'message' => 'Usuario registrado e inicio de sesión correcto.',
+        ]);
     }
 }

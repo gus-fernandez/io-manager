@@ -3,54 +3,103 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Transition } from '@headlessui/react';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { useState, useEffect } from 'react';
+import axios from '@/bootstrap';
 
 export default function UpdateProfileInformation({
+    user,
+    setUser,
     mustVerifyEmail,
-    status,
     className = '',
 }) {
-    const user = usePage().props.auth.user;
+    // Estados locales para sustituir useForm
+    const [values, setValues] = useState({
+        name: user?.name || '',
+        email: user?.email || '',
+    });
+    const [errors, setErrors] = useState({});
+    const [processing, setProcessing] = useState(false);
+    const [recentlySuccessful, setRecentlySuccessful] = useState(false);
+    const [verificationStatus, setVerificationStatus] = useState(null);
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
-        useForm({
-            name: user.name,
-            email: user.email,
-        });
+    // Mantiene sincronizado el formulario si los datos de usuario cambian
+    useEffect(() => {
+        if (user) {
+            setValues({ name: user.name, email: user.email });
+        }
+    }, [user]);
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
+        setProcessing(true);
+        setErrors({});
 
-        patch(route('profile.update'));
+        try {
+            await axios.patch('/api/profile', values);
+            
+            // Sincroniza los nuevos datos en el estado global de App.jsx
+            setUser({ ...user, ...values }); 
+            
+            setRecentlySuccessful(true);
+            setTimeout(() => setRecentlySuccessful(false), 3000);
+        } catch (err) {
+            if (err.response?.status === 422) {
+                setErrors(err.response.data.errors);
+            } else {
+                setErrors({ global: ['Ocurrió un error al actualizar el perfil.'] });
+            }
+        } finally {
+            setProcessing(false);
+        }
+    };
+
+    const sendVerification = async () => {
+        setVerificationStatus(null);
+        try {
+            await axios.get('/sanctum/csrf-cookie');
+
+            await axios.post('/email/verification-notification', {}, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            
+            setVerificationStatus('verification-link-sent');
+        } catch (err) {
+            console.error('Error al enviar el enlace de verificación:', err);
+        }
     };
 
     return (
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900">
-                    Profile Information
+                    Información del Perfil
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Update your account's profile information and email address.
+                    Actualiza la información del perfil de tu cuenta y la dirección de correo electrónico.
                 </p>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
+                {errors.global && <p className="text-red-600 text-sm">{errors.global[0]}</p>}
+
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value="Nombre" />
 
                     <TextInput
                         id="name"
                         className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
+                        value={values.name}
+                        onChange={(e) => setValues({ ...values, name: e.target.value })}
                         required
                         isFocused
                         autoComplete="name"
                     />
 
-                    <InputError className="mt-2" message={errors.name} />
+                    <InputError className="mt-2" message={errors.name ? errors.name[0] : null} />
                 </div>
 
                 <div>
@@ -60,40 +109,40 @@ export default function UpdateProfileInformation({
                         id="email"
                         type="email"
                         className="mt-1 block w-full"
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
+                        value={values.email}
+                        onChange={(e) => setValues({ ...values, email: e.target.value })}
                         required
                         autoComplete="username"
                     />
 
-                    <InputError className="mt-2" message={errors.email} />
+                    <InputError className="mt-2" message={errors.email ? errors.email[0] : null} />
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className="mt-2 text-sm text-gray-800">
-                            Your email address is unverified.
-                            <Link
-                                href={route('verification.send')}
-                                method="post"
-                                as="button"
-                                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            Tu dirección de correo electrónico no está verificada.
+                            <button
+                                type="button"
+                                onClick={sendVerification}
+                                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ms-1"
                             >
-                                Click here to re-send the verification email.
-                            </Link>
+                                Haz clic aquí para volver a enviar el correo de verificación.
+                            </button>
                         </p>
 
-                        {status === 'verification-link-sent' && (
+                        {verificationStatus === 'verification-link-sent' && (
                             <div className="mt-2 text-sm font-medium text-green-600">
-                                A new verification link has been sent to your
-                                email address.
+                                Se ha enviado un nuevo enlace de verificación a tu correo electrónico.
                             </div>
                         )}
                     </div>
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={processing}>
+                        {processing ? 'Guardando...' : 'Guardar'}
+                    </PrimaryButton>
 
                     <Transition
                         show={recentlySuccessful}
@@ -103,7 +152,7 @@ export default function UpdateProfileInformation({
                         leaveTo="opacity-0"
                     >
                         <p className="text-sm text-gray-600">
-                            Saved.
+                            Guardado.
                         </p>
                     </Transition>
                 </div>

@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 export function usePresetsBar({ 
     metadata = [],
     currentPreset,
-    setCurrentPreset,
     presetModified,
     setPresetModified,
     updateData,

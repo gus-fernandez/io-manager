@@ -2,27 +2,44 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { useState } from 'react';
+import axios from '@/bootstrap';
 
-export default function ForgotPassword({ status }) {
-    const { data, setData, post, processing, errors } = useForm({
-        email: '',
-    });
+export default function ForgotPassword() {
+    const [email, setEmail] = useState('');
+    const [errors, setErrors] = useState({});
+    const [processing, setProcessing] = useState(false);
+    const [status, setStatus] = useState(null);
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
+        setProcessing(true);
+        setErrors({});
+        setStatus(null);
 
-        post(route('password.email'));
+        try {
+            // Endpoint estándar de Laravel Breeze/Fortify para el olvido de contraseña
+            const response = await axios.post('/forgot-password', { email });
+            
+            // Laravel suele responder con un JSON que contiene un campo 'status'
+            setStatus(response.data.status || '¡Enlace de restauración enviado con éxito!');
+            setEmail('');
+        } catch (err) {
+            if (err.response?.status === 422) {
+                setErrors(err.response.data.errors);
+            } else {
+                setErrors({ email: ['Ocurrió un error al procesar la solicitud.'] });
+            }
+        } finally {
+            setProcessing(false);
+        }
     };
 
     return (
         <GuestLayout>
-            <Head title="Forgot Password" />
-
             <div className="mb-4 text-sm text-gray-600">
-                Forgot your password? No problem. Just let us know your email
-                address and we will email you a password reset link that will
-                allow you to choose a new one.
+                ¿Olvidaste tu contraseña? No hay problema. Indícanos tu dirección de correo electrónico 
+                y te enviaremos un enlace para restablecerla que te permitirá elegir una nueva.
             </div>
 
             {status && (
@@ -36,17 +53,18 @@ export default function ForgotPassword({ status }) {
                     id="email"
                     type="email"
                     name="email"
-                    value={data.email}
+                    value={email}
                     className="mt-1 block w-full"
                     isFocused={true}
-                    onChange={(e) => setData('email', e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                 />
 
-                <InputError message={errors.email} className="mt-2" />
+                <InputError message={errors.email ? errors.email[0] : null} className="mt-2" />
 
                 <div className="mt-4 flex items-center justify-end">
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Email Password Reset Link
+                        {processing ? 'Enviando...' : 'Enviar enlace de restablecimiento'}
                     </PrimaryButton>
                 </div>
             </form>
