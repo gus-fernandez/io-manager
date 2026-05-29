@@ -5,9 +5,13 @@ import { useState, useEffect } from 'react';
 export function usePresetsBar({ 
     metadata = [],
     currentPreset,
+    setCurrentPreset,
     presetModified,
     setPresetModified,
     updateData,
+    snapshot,
+    setReload,
+    reload,
     sendSavePacket,
     sendLoadPacket,
     isConnected = false
@@ -23,7 +27,8 @@ export function usePresetsBar({
         setNewName(currentPreset?.name ?? '');
         setIsEditing(false);
         setIsLoading(false);
-    }, [currentPreset?.id, currentPreset?.name]);
+        setReload(false);
+    }, [currentPreset?.id, currentPreset?.name, reload]);
 
     useEffect(() => {
         if (!isConnected) {
@@ -94,11 +99,17 @@ export function usePresetsBar({
         sendLoadPacket(presetId);
     };
 
+    const handleDiscardChanges = (e) => {
+        e.stopPropagation();
+        handleSelectPreset(snapshot.id);
+    };
+
     return {
         isOpen, isSaving, isEditing, isLoading,
         metadata, currentPreset, presetModified,
         newName, setNewName, toggleOpen, handleStartEdit,
         handleCancelEdit, handleConfirmName,
-        toggleFav, changeCategory, handleSave, handleSelectPreset
+        toggleFav, changeCategory, handleSave,
+        handleSelectPreset, handleDiscardChanges
     };
 }

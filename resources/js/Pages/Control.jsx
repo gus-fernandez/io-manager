@@ -21,6 +21,9 @@ export default function Control() {
             setCurrentPreset={ws.setCurrentPreset}
             presetModified={ws.presetModified}
             setPresetModified={ws.setPresetModified}
+            snapshot={ws.snapshot}
+            reload={ws.reloadPreset}
+            setReload={ws.setReloadPreset}
             updateData={ws.updateData}
             sendSavePacket={(name, flags) => sendSavePacket(ws.send, name, flags)}
             sendLoadPacket={(id) => sendLoadPacket(ws.send, id)}

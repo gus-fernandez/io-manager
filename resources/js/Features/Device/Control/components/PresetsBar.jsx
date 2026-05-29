@@ -10,7 +10,8 @@ export default function PresetsBar(props) {
         metadata, currentPreset, presetModified,
         newName, setNewName, toggleOpen, handleStartEdit,
         handleCancelEdit, handleConfirmName,
-        toggleFav, changeCategory, handleSave, handleSelectPreset
+        toggleFav, changeCategory, handleSave,
+        handleSelectPreset, handleDiscardChanges
     } = usePresetsBar(props);
     const metaNoData = !metadata || metadata.length === 0;
 
@@ -84,9 +85,18 @@ export default function PresetsBar(props) {
                                             ? 'text-emerald-500 animate-pulse'
                                             : !presetModified
                                             ? 'text-neutral-700'
-                                            : 'text-neutral-500 hover:text-neutral-300' 
+                                            : 'text-neutral-500 hover:text-neutral-200' 
                                     }`}
                                 >{isSaving ? '[SAVING...]' : '[SAVE]'}</button>
+                            )}
+                            {!isEditing && !isLoading && (
+                                <button
+                                onClick={handleDiscardChanges}
+                                disabled={!presetModified}
+                                className={`transition-colors duration-150 ${
+                                    !presetModified ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'
+                                }`}
+                            >[DISCARD CHANGES]</button>
                             )}
                         </div>
                     </div>

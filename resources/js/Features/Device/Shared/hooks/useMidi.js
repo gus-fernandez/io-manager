@@ -50,7 +50,7 @@ export default function useMidi(ws) {
             }
 
             if (packetBytes.length > 0) {
-                ws.send(packetBytes);
+                wsRef.current.send(packetBytes);
             }
         }, MS_BATCH);
 

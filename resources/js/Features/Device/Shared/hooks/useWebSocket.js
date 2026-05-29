@@ -16,24 +16,40 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     const hasRetriedRef    = useRef(false);
 
     const [status, setStatus] = useState('Disconnected');
-    const [metadata,    setMetadata]    = useState(null);
-    const [currentPreset,   setCurrentPreset]   = useState(null);
+    const [metadata, setMetadata] = useState(null);
+    const [currentPreset, setCurrentPreset] = useState(null);
+    const [snapshot, setSnapshot] = useState(null);
     const [presetModified, setPresetModified] = useState(false);
+    const [reloadPreset, setReloadPreset] = useState(false);
 
     const refs = useRef({ onOpen, onClose, onError, onMessage });
     useEffect(() => {
         refs.current = { onOpen, onClose, onError, onMessage };
     }, [onOpen, onClose, onError, onMessage]);
 
+    // Core
     const onParsed = useCallback(({ metadata, ...preset }) => {
         if (metadata) {
             setMetadata(metadata);
         }
-        setCurrentPreset(preset);
-        setPresetModified(false);
+
+        // ¯\_(ツ)_/¯
+        setCurrentPreset(prev => {
+            if (prev?.id !== preset.id) {
+                setSnapshot(preset);
+                setPresetModified(false);
+                console.log("New Preset");
+            } else {
+                setReloadPreset(true);
+            }
+            
+            console.log(`Preset: ${preset.id} ${preset.name} loaded.`);
+            return preset;
+        });
+        
         //Debug
-        console.table(metadata);
-        console.table(preset);
+        //console.table(metadata);
+        //console.table(preset);
     }, []);
 
     const cleanTimers = useCallback(() => {
@@ -147,8 +163,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
 
     return { 
         status, connect, disconnect, ws, send, onParsed, 
-        metadata, setMetadata,
-        currentPreset, setCurrentPreset,
-        presetModified, setPresetModified
+        metadata, currentPreset, snapshot, presetModified, reloadPreset,
+        setMetadata, setCurrentPreset, setPresetModified, setReloadPreset
     };
 }
