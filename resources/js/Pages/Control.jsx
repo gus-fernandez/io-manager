@@ -1,8 +1,6 @@
 // @/Pages/Control.jsx
 
 import React from 'react';
-import AppLayout from '@/Layouts/AppLayout';
-import DeviceLayout from '@/Layouts/DeviceLayout';
 import { useDevice } from '@/Features/Device/Shared/context/WsContext';
 import { sendSavePacket, sendLoadPacket } from '@/Features/Device/Control/utils/wsMsgHandle.js';
 import PresetsBar from '@/Features/Device/Control/components/PresetsBar.jsx';
@@ -41,5 +39,3 @@ export default function Control() {
         </>
     );
 }
-
-Control.layout = [AppLayout, DeviceLayout];

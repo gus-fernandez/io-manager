@@ -20,11 +20,11 @@ export default forwardRef(function TextInput(
         <input
             {...props}
             type={type}
+            ref={localRef}
             className={
-                'rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 ' +
+                'rounded-md border border-neutral-800 bg-neutral-900 text-neutral-300 placeholder:text-neutral-600 focus:border-neutral-700 focus:ring-0 focus:outline-none ' +
                 className
             }
-            ref={localRef}
         />
     );
 });

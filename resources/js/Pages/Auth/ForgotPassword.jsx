@@ -18,10 +18,8 @@ export default function ForgotPassword() {
         setStatus(null);
 
         try {
-            // Endpoint estándar de Laravel Breeze/Fortify para el olvido de contraseña
             const response = await axios.post('/forgot-password', { email });
-            
-            // Laravel suele responder con un JSON que contiene un campo 'status'
+
             setStatus(response.data.status || '¡Enlace de restauración enviado con éxito!');
             setEmail('');
         } catch (err) {

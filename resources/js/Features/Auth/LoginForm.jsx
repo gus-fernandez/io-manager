@@ -1,36 +1,35 @@
 import React, { useState } from 'react';
 import axios from '@/bootstrap';
+import Checkbox from '@/Components/Checkbox';
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import PrimaryButton from '@/Components/PrimaryButton';
+import TextInput from '@/Components/TextInput';
 
-axios.defaults.baseURL = 'http://localhost';
-axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true; 
-axios.defaults.headers.common['Accept'] = 'application/json';
-
-export default function LoginForm({ setTab, setUser }) {
-    const [values, setValues] = useState({ email: '', password: '' });
+export default function LoginForm({ setTab, setUser, onNavigate }) {
+    const [values, setValues] = useState({ 
+        email: '', 
+        password: '', 
+        remember: false 
+    });
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
     const handleLogin = async (e) => {
-        e.preventDefault(); // Evita que el navegador recargue la página o redirija a http://localhost/
+        e.preventDefault();
         setProcessing(true);
         setErrors({});
 
         try {
             await axios.get('/sanctum/csrf-cookie');
             const response = await axios.post('/login', values);
-        
-
             setUser(response.data.user);
             setTab('control'); 
-} catch (err) {
+        } catch (err) {
             if (err.response?.status === 422) {
                 setErrors(err.response.data.errors);
             } else {
-                // Esto te mostrará el número exacto (500, 419, 403...) en la pantalla
-                const status = err.response?.status || 'Red/CORS';
-                const msg = err.response?.data?.message || err.message;
-                setErrors({ general: `Error ${status}: ${msg}` });
+                setErrors({ general: [`Error ${err.response?.status || 'CORS'}: ${err.message}`] });
             }
         } finally {
             setProcessing(false);
@@ -38,35 +37,59 @@ export default function LoginForm({ setTab, setUser }) {
     };
 
     return (
-        <div className='bg-neutral-200 p-4'>
-            {errors.general && <p style={{ color: 'red' }}>{errors.general}</p>}
+        <div className="max-w-md mx-auto">
+            <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 font-whiterabbit">
+                {errors.general && <p className="text-rose-500 text-xs mb-4">{errors.general[0]}</p>}
 
-            {/* Agregamos la etiqueta form con onSubmit para controlar el flujo */}
-            <form onSubmit={handleLogin}>
-                <input
-                    id="login-email"
-                    name="email" // Corrige el aviso del navegador
-                    type="email"
-                    placeholder="Email"
-                    value={values.email}
-                    onChange={e => setValues({...values, email: e.target.value})}
-                />
-                {errors.email && <p style={{ color: 'red' }}>{errors.email[0]}</p>}
+                <form onSubmit={handleLogin} className="space-y-4">
+                    <div>
+                        <InputLabel value="Email Address" className="text-neutral-200 uppercase text-[10px]" />
+                        <TextInput
+                            type="email"
+                            value={values.email}
+                            className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
+                            onChange={e => setValues({...values, email: e.target.value})}
+                            required
+                        />
+                        <InputError message={errors.email?.[0]} />
+                    </div>
 
-                <input
-                    id="login-password"
-                    name="password" // Corrige el aviso del navegador
-                    type="password"
-                    placeholder="Password"
-                    value={values.password}
-                    onChange={e => setValues({...values, password: e.target.value})}
-                />
-                {errors.password && <p style={{ color: 'red' }}>{errors.password[0]}</p>}
+                    <div>
+                        <InputLabel value="Password" className="text-neutral-200 uppercase text-[10px]" />
+                        <TextInput
+                            type="password"
+                            value={values.password}
+                            className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
+                            onChange={e => setValues({...values, password: e.target.value})}
+                            required
+                        />
+                        <InputError message={errors.password?.[0]} />
+                    </div>
 
-                <button type="submit" disabled={processing}>
-                    {processing ? 'Entrando...' : 'Login'}
-                </button>
-            </form>
+                    <div className="flex items-center justify-between mt-4">
+                        <label className="flex items-center text-neutral-500 text-xs uppercase tracking-widest cursor-pointer">
+                            <Checkbox
+                                checked={values.remember}
+                                onChange={e => setValues({...values, remember: e.target.checked})}
+                                className="bg-neutral-950 border-neutral-700"
+                            />
+                            <span className="ms-2">Remember me</span>
+                        </label>
+
+                        <button
+                            type="button"
+                            onClick={() => onNavigate('forgot-password')}
+                            className="text-xs text-neutral-600 hover:text-neutral-400 uppercase tracking-widest"
+                        >
+                            Forgot password?
+                        </button>
+                    </div>
+
+                    <PrimaryButton className="w-full justify-center mt-6 uppercase tracking-widest" disabled={processing}>
+                        {processing ? 'Authenticating...' : 'Login'}
+                    </PrimaryButton>
+                </form>
+            </div>
         </div>
     );
 }

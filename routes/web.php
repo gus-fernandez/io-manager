@@ -27,5 +27,4 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-// ── AUTENTICACIÓN (Breeze) ───────────────────────────────────────────────
 require __DIR__.'/auth.php';

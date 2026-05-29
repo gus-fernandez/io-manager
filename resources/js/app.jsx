@@ -9,7 +9,7 @@ import DeviceLayout from './Layouts/DeviceLayout';
 import Profile from './Pages/Profile/Edit';
 import Landing from './Pages/Landing';
 import Control from './Pages/Control';
-import Presets from './Pages/Presets';
+import Cloud from './Pages/Cloud';
 import Firmware from './Pages/Firmware';
 import About from './Pages/About';
 
@@ -61,8 +61,8 @@ function App() {
             switch (currentTab) {
                 case 'control': 
                     return <DeviceLayout currentTab={currentTab}><Control /></DeviceLayout>;
-                case 'presets': 
-                    return <DeviceLayout currentTab={currentTab}><Presets /></DeviceLayout>;
+                case 'cloud': 
+                    return <DeviceLayout currentTab={currentTab}><Cloud /></DeviceLayout>;
                 case 'firmware': 
                     return <DeviceLayout currentTab={currentTab}><Firmware /></DeviceLayout>;
                 case 'about': 
@@ -83,7 +83,7 @@ function App() {
     if (loading) {
         return (
             <div className="flex h-screen items-center justify-center bg-neutral-900 text-neutral-400">
-                Cargando...
+                Loading...
             </div>
         );
     }

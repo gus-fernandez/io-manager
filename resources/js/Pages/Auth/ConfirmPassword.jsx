@@ -17,10 +17,8 @@ export default function ConfirmPassword() {
         setErrors({});
 
         try {
-            // Ruta estándar de Laravel Breeze para confirmar contraseña
             await axios.post('/confirm-password', { password });
             
-            // Si la confirmación es correcta, redirige o recarga para continuar
             window.location.reload();
         } catch (err) {
             if (err.response?.status === 422) {
@@ -28,7 +26,7 @@ export default function ConfirmPassword() {
             } else {
                 setErrors({ password: ['Ocurrió un error al confirmar la contraseña.'] });
             }
-            setPassword(''); // Resetea el campo de contraseña
+            setPassword('');
         } finally {
             setProcessing(false);
         }

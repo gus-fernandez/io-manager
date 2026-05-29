@@ -16,7 +16,7 @@ js/
 │       │   ├ components/
 │       │   ├ hooks/
 │       │   └ utils/
-│       ├── Presets/
+│       ├── Cloud/
 │       │   ├ components/
 │       │   ├ hooks/
 │       │   └ utils/
@@ -35,7 +35,7 @@ PAGES
 @/Pages/About.jsx
 @/Pages/Control.jsx
 @/Pages/Firmware.jsx
-@/Pages/Presets.jsx
+@/Pages/Cloud.jsx
 
 LAYOUTS
 @/Layouts/AppLayout.jsx

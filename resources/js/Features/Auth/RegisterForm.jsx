@@ -1,38 +1,45 @@
 import React, { useState } from 'react';
 import axios from '@/bootstrap';
 
-axios.defaults.baseURL = 'http://localhost'; // La URL de tu Sail
-axios.defaults.withCredentials = true;      // Vital para las cookies de sesión
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import PrimaryButton from '@/Components/PrimaryButton';
+import TextInput from '@/Components/TextInput';
+
+axios.defaults.baseURL = 'http://localhost';
+axios.defaults.withCredentials = true;
 
 export default function RegisterForm({ setTab, setUser }) {
-    const [values, setValues] = useState({ 
-        name: '', 
-        email: '', 
-        password: '', 
-        password_confirmation: '' 
+    const [values, setValues] = useState({
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
     });
+
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
-    const handleRegister = async () => {
+    const handleRegister = async (e) => {
+        e.preventDefault();
+
         setProcessing(true);
         setErrors({});
 
         try {
-            // CSRF necesario para Sanctum
             await axios.get('/sanctum/csrf-cookie');
 
-            // POST a tu ruta de registro de Laravel
             const response = await axios.post('/register', values);
 
-            // Éxito: guardamos usuario y saltamos a control
             setUser(response.data.user);
             setTab('control');
         } catch (err) {
             if (err.response?.status === 422) {
                 setErrors(err.response.data.errors);
             } else {
-                setErrors({ general: 'Error al procesar el registro.' });
+                setErrors({
+                    general: ['Error al procesar el registro.'],
+                });
             }
         } finally {
             setProcessing(false);
@@ -40,44 +47,115 @@ export default function RegisterForm({ setTab, setUser }) {
     };
 
     return (
-        <div>
-            <h3>Crear cuenta</h3>
-            {errors.general && <p style={{ color: 'red' }}>{errors.general}</p>}
+        <div className="max-w-md mx-auto">
+            
+            <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 font-whiterabbit shadow-2xl">
 
-            <input
-                type="text"
-                placeholder="Nombre"
-                value={values.name}
-                onChange={e => setValues({...values, name: e.target.value})}
-            />
-            {errors.name && <p style={{ color: 'red' }}>{errors.name[0]}</p>}
+                {errors.general && (
+                    <p className="text-rose-500 text-xs mb-4">
+                        {errors.general[0]}
+                    </p>
+                )}
 
-            <input
-                type="email"
-                placeholder="Email"
-                value={values.email}
-                onChange={e => setValues({...values, email: e.target.value})}
-            />
-            {errors.email && <p style={{ color: 'red' }}>{errors.email[0]}</p>}
+                <form onSubmit={handleRegister} className="space-y-4">
 
-            <input
-                type="password"
-                placeholder="Contraseña"
-                value={values.password}
-                onChange={e => setValues({...values, password: e.target.value})}
-            />
-            {errors.password && <p style={{ color: 'red' }}>{errors.password[0]}</p>}
+                    <div>
+                        <InputLabel
+                            value="Name"
+                            className="text-neutral-500 uppercase text-[10px]"
+                        />
 
-            <input
-                type="password"
-                placeholder="Confirmar contraseña"
-                value={values.password_confirmation}
-                onChange={e => setValues({...values, password_confirmation: e.target.value})}
-            />
+                        <TextInput
+                            type="text"
+                            value={values.name}
+                            className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
+                            onChange={(e) =>
+                                setValues({
+                                    ...values,
+                                    name: e.target.value,
+                                })
+                            }
+                            required
+                        />
 
-            <button disabled={processing} onClick={handleRegister}>
-                {processing ? 'Creando cuenta...' : 'Registrarse'}
-            </button>
+                        <InputError message={errors.name?.[0]} />
+                    </div>
+
+                    <div>
+                        <InputLabel
+                            value="Email Address"
+                            className="text-neutral-500 uppercase text-[10px]"
+                        />
+
+                        <TextInput
+                            type="email"
+                            value={values.email}
+                            className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
+                            onChange={(e) =>
+                                setValues({
+                                    ...values,
+                                    email: e.target.value,
+                                })
+                            }
+                            required
+                        />
+
+                        <InputError message={errors.email?.[0]} />
+                    </div>
+
+                    <div>
+                        <InputLabel
+                            value="Password"
+                            className="text-neutral-500 uppercase text-[10px]"
+                        />
+
+                        <TextInput
+                            type="password"
+                            value={values.password}
+                            className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
+                            onChange={(e) =>
+                                setValues({
+                                    ...values,
+                                    password: e.target.value,
+                                })
+                            }
+                            required
+                        />
+
+                        <InputError message={errors.password?.[0]} />
+                    </div>
+
+                    <div>
+                        <InputLabel
+                            value="Confirm Password"
+                            className="text-neutral-500 uppercase text-[10px]"
+                        />
+
+                        <TextInput
+                            type="password"
+                            value={values.password_confirmation}
+                            className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
+                            onChange={(e) =>
+                                setValues({
+                                    ...values,
+                                    password_confirmation: e.target.value,
+                                })
+                            }
+                            required
+                        />
+                    </div>
+
+                    <PrimaryButton
+                        className="w-full justify-center mt-6 uppercase tracking-widest"
+                        disabled={processing}
+                    >
+                        {processing
+                            ? 'Creating Account...'
+                            : 'Create Account'}
+                    </PrimaryButton>
+
+                </form>
+            </div>
         </div>
     );
 }

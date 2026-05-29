@@ -23,7 +23,7 @@ export default function AppLayout({ children, currentTab, setTab, user, onLogout
                 <ul className="flex items-center gap-6 list-none w-full">
                     
                     <li>{navLink('control', 'IO-CONTROL')}</li>
-                    <li>{navLink('presets', 'IO-PRESETS')}</li>
+                    <li>{navLink('cloud', 'IO-CLOUD')}</li>
                     <li>{navLink('firmware', 'IO-FIRMWARE')}</li>
                     <li className="ml-auto">{navLink('about', 'ABOUT')}</li>
 

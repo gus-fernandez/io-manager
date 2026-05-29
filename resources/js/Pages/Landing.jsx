@@ -1,37 +1,61 @@
-// @/Pages/Landing.jsx
-
 import React, { useState } from 'react';
 import LoginForm from '@/Features/Auth/LoginForm';
 import RegisterForm from '@/Features/Auth/RegisterForm';
-import Modal from '@/Components/Modal';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Landing({ setTab, setUser }) {
     const [showRegister, setShowRegister] = useState(false);
 
     return (
-        <div className='bg-neutral-200'>
-            <h1>IO Manager</h1>
+        <div className="bg-neutral-950 text-neutral-200 font-whiterabbit min-h-screen flex justify-center">
+            <div className="w-full max-w-md text-center">
+                <h1 className="text-2xl uppercase tracking-widest text-neutral-200 py-6">
+                    IO Manager
+                </h1>
 
-            <div>
-                <h3>Modo Local</h3>
-                <button onClick={() => setTab('control')}>
-                    Entrar sin Login
-                </button>
+                <div className="border-t border-neutral-900 py-4" />
+
+                {!showRegister ? (
+                    <div>
+                        <div>
+                            <LoginForm
+                                setTab={setTab}
+                                setUser={setUser}
+                                onNavigate={setTab}
+                            />
+                        </div>
+
+                        <div className="flex flex-row gap-2 w-full mt-2">
+                            <PrimaryButton 
+                                onClick={() => setShowRegister(true)} 
+                                className="flex-1 justify-center"
+                            >
+                                Create Account
+                            </PrimaryButton>
+                            
+                            <PrimaryButton 
+                                onClick={() => setTab('control')} 
+                                className="flex-1 justify-center"
+                            >
+                                Local Mode
+                            </PrimaryButton>
+                        </div>
+                    </div>
+                ) : (
+                    <div>
+                        <RegisterForm
+                            setTab={setTab}
+                            setUser={setUser}
+                        />
+                        <PrimaryButton 
+                            onClick={() => setShowRegister(false)}
+                            className="w-full justify-center mt-2"
+                        >
+                            Back to Login
+                        </PrimaryButton>
+                    </div>
+                )}
             </div>
-
-            <hr />
-
-            <div>
-                <h3>Modo Colaborativo</h3>
-                <LoginForm setTab={setTab} setUser={setUser} />
-                <button onClick={() => setShowRegister(true)}>
-                    Crear cuenta
-                </button>
-            </div>
-
-            <Modal show={showRegister} onClose={() => setShowRegister(false)}>
-                <RegisterForm setTab={setTab} setUser={setUser} />
-            </Modal>
         </div>
     );
 }

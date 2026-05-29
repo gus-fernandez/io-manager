@@ -1,8 +1,6 @@
 // @/Pages/Firmware.jsx
 
 import React from 'react';
-import AppLayout from '@/Layouts/AppLayout';
-import DeviceLayout from '@/Layouts/DeviceLayout';
 import { useFirmware } from '@/Features/Device/Firmware/hooks/useFirmware';
 import SerialMonitor from '@/Features/Device/Firmware/components/SerialMonitor';
 import FlashFirmware from '@/Features/Device/Firmware/components/FlashFirmware';
@@ -61,5 +59,3 @@ export default function Firmware() {
         </>
     );
 }
-
-Firmware.layout = [AppLayout, DeviceLayout];
