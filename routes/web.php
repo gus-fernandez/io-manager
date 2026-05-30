@@ -5,6 +5,7 @@ use App\Http\Controllers\FirmwareController;
 use App\Http\Controllers\PresetController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\WsTokenController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ Route::prefix('api')->group(function () {
     Route::get('/firmware/{firmware}/download', [FirmwareController::class, 'download'])->name('firmware.download');
     
     // Listado de presets (Público)
-    Route::get('/presets', [PresetController::class, 'index'])->name('presets.index');
+    Route::get('/cloud/public', [PresetController::class, 'indexPublic'])->name('cloud.public');
     
     // Seguridad WS
     //Route::get('/ws-token', [WsTokenController::class, 'index'])->name('ws.token');
@@ -34,8 +35,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         // Presets (Crear)
+        Route::get('/cloud/private', [PresetController::class, 'indexPrivate'])->name('cloud.private');
         Route::post('/presets', [PresetController::class, 'store'])->name('presets.store');
-        
+        Route::delete('/presets/{preset}', [PresetController::class, 'destroy'])->name('presets.destroy');
+
         // Ratings (Votar)
         Route::post('/presets/{preset}/rate', [RatingController::class, 'store'])->name('presets.rate');
     });

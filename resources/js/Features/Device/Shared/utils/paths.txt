@@ -58,17 +58,25 @@ SHARED
 
 @/Features/Device/Shared/utils/midiCC.js
 
-PRESETS
+CLOUD
+@/Features/Device/Cloud/components/PublicRepo.jsx
+@/Features/Device/Cloud/components/PrivateRepo.jsx
+@/Features/Device/Cloud/components/RepoWrapper.jsx
+
+@/Features/Device/Cloud/hooks/usePublicRepo.jsx
+@/Features/Device/Cloud/hooks/usePrivateRepo.jsx
+
+@/Features/Device/Cloud/utils/
 
 FIRMWARE
 @/Features/Device/Firmware/components/FlashFirmware.jsx
 @/Features/Device/Firmware/components/SerialMonitor.jsx
+
 @/Features/Device/Firmware/hooks/useSerial.js
 @/Features/Device/Firmware/hooks/useFlashFirmware.js
 @/Features/Device/Firmware/hooks/useFirmware.js
 
 CONTROL
-
 @/Features/Device/Control/components/layout/Module.jsx
 @/Features/Device/Control/components/layout/ModuleDivider.jsx
 @/Features/Device/Control/components/layout/ModuleGrid.jsx

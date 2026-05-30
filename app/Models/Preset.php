@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Database\Factories\PresetFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-
-
 class Preset extends Model
 {   
     use HasFactory;
@@ -33,6 +31,7 @@ class Preset extends Model
             'cat'    => 'integer',
             'crc32'  => 'integer',
             'rating' => 'float',
+            'params' => \App\Casts\BinaryToHex::class,
         ];
     }
 

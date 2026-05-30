@@ -7,8 +7,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PresetsController extends Controller
+class PresetController extends Controller
 {
+    
     /**
      * GET /api/presets
      */
@@ -38,13 +39,39 @@ class PresetsController extends Controller
         ]);
     }
 
+    public function indexPublic(Request $request): JsonResponse
+    {
+        try {
+            $data = \App\Models\Preset::query()->global()->orderBy('name')->get();
+            return response()->json($data);
+        } catch (\Exception $e) {
+            \Log::error('Error en indexPublic: ' . $e->getMessage());
+            return response()->json(['error' => 'Error interno al cargar presets públicos'], 500);
+        }
+    }
+
+    public function indexPrivate(Request $request): JsonResponse
+    {
+        try {
+            if (!$request->user()) {
+                return response()->json(['error' => 'No autenticado'], 401);
+            }
+            
+            $data = \App\Models\Preset::where('id_user', $request->user()->id)->orderBy('name')->get();
+            return response()->json($data);
+        } catch (\Exception $e) {
+            \Log::error('Error en indexPrivate: ' . $e->getMessage());
+            return response()->json(['error' => 'Error interno al cargar tus presets'], 500);
+        }
+    }
+
     /**
      * POST /api/presets
      */
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'name'      => 'required|string|max:50',
+            'name'      => 'required|string|max:16',
             'cat'       => 'required|integer',
             'crc32'     => 'required|integer',
             'params'    => 'required|string', 
@@ -62,14 +89,12 @@ class PresetsController extends Controller
 
         $idUser = ($user->is_admin && $isGlobalRequested) ? null : $user->id;
 
-        $binaryParams = ctype_xdigit($request->params) ? hex2bin($request->params) : $request->params;
-
         $preset = Preset::create([
             'id_user' => $idUser,
             'name'    => $request->name,
             'cat'     => $request->cat,
             'crc32'   => $request->crc32,
-            'params'  => $binaryParams,
+            'params'  => $request->params,
             'desc'    => $request->desc,
             'fav'     => false,
         ]);
@@ -78,5 +103,21 @@ class PresetsController extends Controller
             'message' => 'Preset guardado con éxito',
             'preset'  => $preset
         ], 201);
+    }
+
+    public function destroy(Preset $preset): JsonResponse
+    {
+        $user = Auth::user();
+
+        $isOwner = $preset->id_user === $user->id;
+        $isAdminDeletingGlobal = $user->is_admin && is_null($preset->id_user);
+
+        if (!$isOwner && !$isAdminDeletingGlobal) {
+            return response()->json(['message' => 'No autorizado.'], 403);
+        }
+
+        $preset->delete();
+
+        return response()->json(['message' => 'Preset eliminado.']);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-// app/Http/Controllers/WsTokenController.php
+// App/Http/Controllers/WsTokenController.php
 // Not implemented yet
 
 namespace App\Http\Controllers;
