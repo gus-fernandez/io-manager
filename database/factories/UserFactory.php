@@ -12,9 +12,6 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
     protected static ?string $password;
 
     /**
@@ -29,8 +26,20 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'is_admin' => false, // Reflejamos explícitamente el valor por defecto
             'remember_token' => Str::random(10),
         ];
+    }
+
+    /**
+     * Estado para generar un usuario administrador rápidamente.
+     * Ejemplo de uso: User::factory()->admin()->create();
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_admin' => true,
+        ]);
     }
 
     /**

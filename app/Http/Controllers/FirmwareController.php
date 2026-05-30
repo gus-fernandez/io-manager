@@ -55,7 +55,7 @@ class FirmwareController extends Controller
     /**
      * GET /api/firmware/{firmware}/download
      *
-     * Descarga el .bin. Solo accesible para usuarios autenticados.
+     * Descarga el .bin.
      */
     public function download(Firmware $firmware): BinaryFileResponse
     {

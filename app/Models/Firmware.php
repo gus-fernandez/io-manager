@@ -23,7 +23,7 @@ class Firmware extends Model
         'size_bytes' => 'integer',
     ];
 
-    // ── Scopes ────────────────────────────────────────────────────────────────
+    // Scopes
 
     public function scopeInstrument(Builder $query, string $instrument): Builder
     {
@@ -41,8 +41,6 @@ class Firmware extends Model
         return $query->orderByRaw("INET_ATON(CONCAT(version, '.0'))  DESC")
                      ->orOrderBy('created_at', 'desc');
     }
-
-    // ── Helpers ───────────────────────────────────────────────────────────────
 
     /**
      * Devuelve el firmware más reciente de un instrumento y canal.
