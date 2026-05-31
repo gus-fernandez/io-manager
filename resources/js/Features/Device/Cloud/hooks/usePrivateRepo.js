@@ -3,10 +3,18 @@
 import axios from '@/bootstrap';
 import { useState, useEffect, useRef } from 'react';
 import { packPresetForBD } from '@/Features/Device/Shared/utils/presetUtils';
+import { sendLoadPacket } from '@/Features/Device/Shared/utils/wsMsgHandle';
 
-export const usePrivateRepo = (devicePresets = [], currentPreset, registerSaveCallback) => {
+export const usePrivateRepo = (
+    devicePresets = [],
+    currentPreset,
+    send,
+    registerSaveCallback,
+    registerLoadCallback
+) => {
     const [cloudData, setCloudData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isSyncing, setIsSyncing] = useState(false);
     const uploadRef = useRef(null);
 
     useEffect(() => {
@@ -61,13 +69,43 @@ export const usePrivateRepo = (devicePresets = [], currentPreset, registerSaveCa
         }
     };
 
+    const syncAll = () => {
+        const itemsToSync = data.filter(item => needsSync(item));
+        if (!itemsToSync.length) return;
+
+        const initialId = currentPreset?.id;
+        const [first, ...rest] = itemsToSync;
+        const queue = [...rest];
+
+        setIsSyncing(true);
+
+        registerLoadCallback(async (preset) => {
+            const alreadyInCloud = cloudData.find(c => (c.crc ?? c.crc32) === preset.crc);
+            
+            if (!alreadyInCloud) {
+                await uploadPreset(preset);
+            }
+
+            if (queue.length > 0) {
+                const next = queue.shift();
+                sendLoadPacket(send, next.deviceId);
+            } else {
+                sendLoadPacket(send, initialId);
+                registerLoadCallback(null);
+                setIsSyncing(false);
+            }
+        });
+
+        sendLoadPacket(send, first.deviceId);
+    };  
+
     useEffect(() => {
         refresh();
     }, []);
 
     const data = mergePresets(cloudData, devicePresets);
 
-    return { data, loading, refresh, deletePreset, uploadPreset };
+    return { data, loading, refresh, deletePreset, uploadPreset, syncAll, isSyncing };
 };
 
 const mergePresets = (cloudData, devicePresets) => {
@@ -88,7 +126,7 @@ const mergePresets = (cloudData, devicePresets) => {
             deviceId: match?.id ?? null,
             inCloud:  true,
             inDevice: !!match,
-            crc:      cloud.crc,
+            crc:      cloud.crc ?? cloud.crc32,
         });
         if (match) matchedCrcs.add(match.crc);
     });
@@ -122,4 +160,8 @@ export const needsSync = (item) => {
 export const canSync = (item, currentPreset) => {
     if (!currentPreset) return false;
     return !item.inCloud && item.inDevice && item.deviceId === currentPreset.id;
+};
+
+export const hasItemsToSync = (data) => {
+    return data.some(item => needsSync(item));
 };

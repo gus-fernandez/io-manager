@@ -3,7 +3,7 @@
 import {Cat} from '@/Features/Device/Shared/utils/presetUtils.js';
 import { needsSync } from '@/Features/Device/Cloud/hooks/usePrivateRepo';
 
-export const RepoWrapper = ({ title, items, loading, renderActions, currentPreset }) => {
+export const RepoWrapper = ({ title, titleAction, items, loading, renderActions, currentPreset }) => {
 
     const titleColor = (item) => needsSync(item) ? 'text-neutral-700' : 'text-neutral-200';
     const textColor = (item) => needsSync(item) ? 'text-neutral-700' : 'text-neutral-500';
@@ -17,9 +17,12 @@ export const RepoWrapper = ({ title, items, loading, renderActions, currentPrese
 
     return (
         <div>
-            <h2 className="text-xs tracking-widest uppercase text-neutral-400">
-                {title}
-            </h2>
+            <div className="flex items-center justify-between text-sm">
+                <h2 className="tracking-widest uppercase text-neutral-400">
+                    {title}
+                </h2>
+                    {titleAction && titleAction}
+            </div>
 
             <ul className="divide-y divide-neutral-800">
                 {items.map(item => (

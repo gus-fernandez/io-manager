@@ -15,6 +15,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     const heartbeatTimeoutRef = useRef(null);
     const hasRetriedRef = useRef(false);
     const onAfterSaveRef = useRef(null);
+    const onAfterLoadRef = useRef(null);
 
     const [status, setStatus] = useState('Disconnected');
     const [metadata, setMetadata] = useState(null);
@@ -46,6 +47,8 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
             console.log(`Preset: ${preset.id} ${preset.name} loaded.`);
             return preset;
         });
+
+        onAfterLoadRef.current?.(preset);
         
         //Debug
         //console.table(metadata);
@@ -152,12 +155,16 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
 
     }, [startHeartbeat, cleanTimers]);
 
+    const triggerAfterSave = useCallback(() => {
+        onAfterSaveRef.current?.();
+    }, []);
+
     const registerSaveCallback = useCallback((cb) => {
         onAfterSaveRef.current = cb;
     }, []);
 
-    const triggerAfterSave = useCallback(() => {
-        onAfterSaveRef.current?.();
+    const registerLoadCallback = useCallback((cb) => {
+        onAfterLoadRef.current = cb;
     }, []);
 
     useEffect(() => {
@@ -173,6 +180,6 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         status, connect, disconnect, ws, send, onParsed, 
         metadata, currentPreset, snapshot, presetModified, reloadPreset,
         setMetadata, setCurrentPreset, setPresetModified, setReloadPreset,
-        registerSaveCallback, triggerAfterSave
+        triggerAfterSave, registerSaveCallback, registerLoadCallback
     };
 }

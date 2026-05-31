@@ -48,14 +48,15 @@ SHARED
 @/Features/Device/Shared/components/WsConnection.jsx
 @/Features/Device/Shared/components/StatusBar.jsx
 @/Features/Device/Shared/components/VirtualKeyboard.jsx
-@/Features/Device/Control/components/PresetsBar.jsx
-@/Features/Device/Control/components/PresetLine.jsx
+@/Features/Device/Shared/components/PresetsBar.jsx
+@/Features/Device/Shared/components/PresetLine.jsx
+@/Features/Device/Shared/components/NavGuardModal.jsx
 
 @/Features/Device/Shared/hooks/useWebSocket.js
 @/Features/Device/Shared/hooks/useMidi.js
 @/Features/Device/Shared/hooks/useVirtualKeyboard.js
 @/Features/Device/Shared/hooks/usePresetUpdate.js
-@/Features/Device/Control/hooks/usePresetsBar.js
+@/Features/Device/Shared/hooks/usePresetsBar.js
 
 @/Features/Device/Shared/context/WsContext.jsx
 
