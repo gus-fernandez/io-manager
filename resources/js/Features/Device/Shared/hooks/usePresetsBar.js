@@ -17,7 +17,8 @@ export function usePresetsBar() {
         updateData,
         snapshot,
         reloadPreset: reload,
-        setReloadPreset: setReload
+        setReloadPreset: setReload,
+        triggerAfterSave
     } = ws;
 
     const [isOpen,    setIsOpen]    = useState(false);
@@ -92,6 +93,7 @@ export function usePresetsBar() {
         setIsSaving(true);
         sendSavePacket(ws.send, currentPreset.name, currentPreset.flags);
         setPresetModified(false);
+        triggerAfterSave();
         setTimeout(() => setIsSaving(false), 800);
     };
 

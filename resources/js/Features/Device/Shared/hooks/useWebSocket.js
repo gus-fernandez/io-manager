@@ -9,11 +9,12 @@ const HEARTBEAT_INTERVAL = 1000;
 const HEARTBEAT_TIMEOUT  = 4000;
 
 export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {}) {
-    const ws               = useRef(null);
-    const connTimeoutRef   = useRef(null);
+    const ws = useRef(null);
+    const connTimeoutRef = useRef(null);
     const heartbeatIntervalRef = useRef(null);
-    const heartbeatTimeoutRef  = useRef(null);
-    const hasRetriedRef    = useRef(false);
+    const heartbeatTimeoutRef = useRef(null);
+    const hasRetriedRef = useRef(false);
+    const onAfterSaveRef = useRef(null);
 
     const [status, setStatus] = useState('Disconnected');
     const [metadata, setMetadata] = useState(null);
@@ -151,6 +152,14 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
 
     }, [startHeartbeat, cleanTimers]);
 
+    const registerSaveCallback = useCallback((cb) => {
+        onAfterSaveRef.current = cb;
+    }, []);
+
+    const triggerAfterSave = useCallback(() => {
+        onAfterSaveRef.current?.();
+    }, []);
+
     useEffect(() => {
         return () => cleanTimers();
     }, [cleanTimers]);
@@ -163,6 +172,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     return { 
         status, connect, disconnect, ws, send, onParsed, 
         metadata, currentPreset, snapshot, presetModified, reloadPreset,
-        setMetadata, setCurrentPreset, setPresetModified, setReloadPreset
+        setMetadata, setCurrentPreset, setPresetModified, setReloadPreset,
+        registerSaveCallback, triggerAfterSave
     };
 }

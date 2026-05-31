@@ -115,12 +115,6 @@ function parsePreset(presetBuf, wsState, isInitStream) {
     }
 }
 
-function checkCrc(currentId, crcPreset, metadata) {
-    if (!metadata || metadata.length === 0) return false;
-    const meta = metadata.find(p => p.id === currentId);
-    return (meta.crc >>> 0) === (crcPreset >>> 0);
-}
-
 export function sendSavePacket(sendFn, name, flags = 0) {
     if (!sendFn) return;
 

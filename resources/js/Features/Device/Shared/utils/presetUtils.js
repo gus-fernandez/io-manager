@@ -144,3 +144,68 @@ export function parseMetadata(rawBuffer) {
     }
     return presets;
 }
+
+function checkCrc(currentId, crcPreset, metadata) {
+    if (!metadata || metadata.length === 0) return false;
+    const meta = metadata.find(p => p.id === currentId);
+    return (meta.crc >>> 0) === (crcPreset >>> 0);
+}
+
+export function packPresetForBD(preset) {
+
+    // --- Binario ---
+    const buffer = new Uint8Array(128);
+
+    // Header: "IO"
+    buffer[Slot.Header]     = 0x49; // 'I'
+    buffer[Slot.Header + 1] = 0x4F; // 'O'
+
+    // Id: 255 (pending relocation)
+    buffer[Slot.Id] = 0xFF;
+
+    // Flags
+    const uploadFlags = {
+        isEmpty:    false,
+        isReadOnly: preset.isReadOnly,
+        isFav:      preset.isFav,
+        exists:     true,
+        catId:      preset.catId ?? 0,
+    };
+    buffer[Slot.Flags] = packFlags(uploadFlags);
+
+    // Name (16 bytes, null-padded)
+    const nameBytes = new Uint8Array(16);
+    for (let i = 0; i < Math.min(preset.name.length, 16); i++) {
+        nameBytes[i] = preset.name.charCodeAt(i);
+    }
+    buffer.set(nameBytes, Slot.Name);
+
+    // Params (104 bytes, mapped por CC number)
+    const paramsBuffer = new Uint8Array(104);
+    Object.entries(CC).forEach(([key, ccNumber]) => {
+        if (preset.params?.[key] !== undefined && ccNumber < 104) {
+            paramsBuffer[ccNumber] = preset.params[key];
+        }
+    });
+    buffer.set(paramsBuffer, Slot.Params);
+
+    // CRC (el que viene de la placa)
+    buffer[Slot.Crc]     = (preset.crc >>> 24) & 0xFF;
+    buffer[Slot.Crc + 1] = (preset.crc >>> 16) & 0xFF;
+    buffer[Slot.Crc + 2] = (preset.crc >>> 8)  & 0xFF;
+    buffer[Slot.Crc + 3] =  preset.crc         & 0xFF;
+
+    // --- Campos BD ---
+    const dbFields = {
+        name:   preset.name,
+        fav:    preset.isFav  ?? false,
+        cat:    preset.catId  ?? 0,
+        crc32:  preset.crc,
+        desc:   preset.desc   ?? null,
+        params: Array.from(buffer)
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join(''),
+    };
+
+    return { buffer, dbFields };
+}

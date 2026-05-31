@@ -120,4 +120,42 @@ class PresetController extends Controller
 
         return response()->json(['message' => 'Preset eliminado.']);
     }
+
+    /**
+     * PUT /api/presets/{preset}
+     */
+    public function update(Request $request, Preset $preset): JsonResponse
+    {
+        $user = Auth::user();
+
+        $isOwner = $preset->id_user === $user->id;
+        $isAdminUpdatingGlobal = $user->is_admin && is_null($preset->id_user);
+
+        if (!$isOwner && !$isAdminUpdatingGlobal) {
+            return response()->json(['message' => 'No autorizado.'], 403);
+        }
+
+        $request->validate([
+            'name'   => 'required|string|max:16',
+            'cat'    => 'required|integer',
+            'crc32'  => 'required|integer',
+            'params' => 'required|string',
+            'desc'   => 'nullable|string|max:255',
+            'fav'    => 'nullable|boolean',
+        ]);
+
+        $preset->update([
+            'name'   => $request->name,
+            'cat'    => $request->cat,
+            'crc32'  => $request->crc32,
+            'params' => $request->params,
+            'desc'   => $request->desc,
+            'fav'    => $request->boolean('fav'),
+        ]);
+
+        return response()->json([
+            'message' => 'Preset actualizado con éxito',
+            'preset'  => $preset->fresh(),
+        ]);
+    }
 }

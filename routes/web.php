@@ -34,11 +34,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        // Presets (Crear)
+        // Presets CRUD
         Route::get('/cloud/private', [PresetController::class, 'indexPrivate'])->name('cloud.private');
         Route::post('/presets', [PresetController::class, 'store'])->name('presets.store');
         Route::delete('/presets/{preset}', [PresetController::class, 'destroy'])->name('presets.destroy');
-
+        Route::put('/presets/{preset}', [PresetController::class, 'update'])->name('presets.update');
+        
         // Ratings (Votar)
         Route::post('/presets/{preset}/rate', [RatingController::class, 'store'])->name('presets.rate');
     });
