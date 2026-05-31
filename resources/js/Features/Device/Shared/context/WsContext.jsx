@@ -3,7 +3,7 @@
 import React, { createContext, useContext } from 'react';
 import useWebSocket from '@/Features/Device/Shared/hooks/useWebSocket';
 import useMidi from '@/Features/Device/Shared/hooks/useMidi';
-import { handleMsg } from '@/Features/Device/Control/utils/wsMsgHandle';
+import { handleMsg } from '@/Features/Device/Shared/utils/wsMsgHandle';
 import { usePresetUpdate } from '@/Features/Device/Shared/hooks/usePresetUpdate';
 
 const WsContext = createContext(null);

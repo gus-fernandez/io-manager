@@ -1,8 +1,8 @@
-// @/Features/Device/Control/components/PresetsBar.jsx
+// @/Features/Device/Shared/components/PresetsBar.jsx
 
 import React from 'react';
-import { usePresetsBar } from '@/Features/Device/Control/hooks/usePresetsBar.js';
-import PresetLine from '@/Features/Device/Control/components/PresetLine.jsx';
+import { usePresetsBar } from '@/Features/Device/Shared/hooks/usePresetsBar.js';
+import PresetLine from '@/Features/Device/Shared/components/PresetLine.jsx';
 
 export default function PresetsBar(props) {
     const {

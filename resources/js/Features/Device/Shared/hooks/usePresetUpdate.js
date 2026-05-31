@@ -1,6 +1,6 @@
 // @/Features/Device/Shared/hooks/usePresetUpdate.js
 
-import { packFlags, Cat } from '@/Features/Device/Control/utils/presetUtils.js';
+import { packFlags, Cat } from '@/Features/Device/Shared/utils/presetUtils.js';
 
 export const usePresetUpdate = (ws) => {
     const updateData = (updatedFields) => {

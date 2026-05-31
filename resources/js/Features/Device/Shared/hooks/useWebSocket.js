@@ -1,7 +1,7 @@
 // @/Features/Device/Shared/hooks/useWebSocket.js
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { resetDataStream } from '@/Features/Device/Control/utils/wsMsgHandle';
+import { resetDataStream } from '@/Features/Device/Shared/utils/wsMsgHandle';
 
 const WS_URL             = `ws://io-8.local/ws`;
 const CONN_TIMEOUT_MS    = 8000;

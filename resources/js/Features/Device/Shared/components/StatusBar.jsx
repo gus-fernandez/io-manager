@@ -1,16 +1,13 @@
 // @/Features/Device/Shared/components/StatusBar.jsx
 
 import React from 'react';
-// ¡Eliminado usePage!
 import { useDevice } from '@/Features/Device/Shared/context/WsContext';
 import VirtualKeyboard from '@/Features/Device/Shared/components/VirtualKeyboard.jsx';
 import WsConnection from '@/Features/Device/Shared/components/WsConnection';
 
-export default function StatusBar({ currentTab }) { // <-- Recibimos currentTab por prop
+export default function StatusBar({ currentTab }) {
     const { ws, midi } = useDevice();
     const isConnected = ws.status === 'Connected';
-
-    // Ahora el título se genera dinámicamente con el nombre de la pestaña local
     const pageTitle = `IO-${currentTab}`;
 
     return (

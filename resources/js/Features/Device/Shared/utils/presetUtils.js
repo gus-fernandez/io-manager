@@ -1,4 +1,4 @@
-// @/Features/Device/Control/utils/presetUtils.js
+// @/Features/Device/Shared/utils/presetUtils.js
 
 import { CC } from '@/Features/Device/Shared/utils/midiCC';
 

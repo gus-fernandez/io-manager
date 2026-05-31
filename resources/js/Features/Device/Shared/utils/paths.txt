@@ -48,15 +48,20 @@ SHARED
 @/Features/Device/Shared/components/WsConnection.jsx
 @/Features/Device/Shared/components/StatusBar.jsx
 @/Features/Device/Shared/components/VirtualKeyboard.jsx
+@/Features/Device/Control/components/PresetsBar.jsx
+@/Features/Device/Control/components/PresetLine.jsx
 
 @/Features/Device/Shared/hooks/useWebSocket.js
 @/Features/Device/Shared/hooks/useMidi.js
 @/Features/Device/Shared/hooks/useVirtualKeyboard.js
 @/Features/Device/Shared/hooks/usePresetUpdate.js
+@/Features/Device/Control/hooks/usePresetsBar.js
 
 @/Features/Device/Shared/context/WsContext.jsx
 
 @/Features/Device/Shared/utils/midiCC.js
+@/Features/Device/Shared/utils/presetUtils.js
+@/Features/Device/Shared/utils/wsMsgHandle.js
 
 CLOUD
 @/Features/Device/Cloud/components/PublicRepo.jsx
@@ -95,12 +100,6 @@ CONTROL
 @/Features/Device/Control/components/ui/IoSelector.jsx
 @/Features/Device/Control/components/ui/IoSlider.jsx
 
-@/Features/Device/Control/components/PresetsBar.jsx
-@/Features/Device/Control/components/PresetLine.jsx
 @/Features/Device/Control/components/WaveIcons.jsx
 
-@/Features/Device/Control/hooks/usePresetsBar.js
 @/Features/Device/Control/hooks/useModuleGrid.js
-
-@/Features/Device/Control/utils/presetUtils.js
-@/Features/Device/Control/utils/wsMsgHandle.js

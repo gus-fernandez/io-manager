@@ -1,20 +1,24 @@
-// @/Features/Device/Control/hooks/usePresetsBar.js
+// @/Features/Device/Shared/hooks/usePresetsBar.js
 
 import { useState, useEffect } from 'react';
+import { useDevice } from '@/Features/Device/Shared/context/WsContext';
+import { sendSavePacket, sendLoadPacket } from '@/Features/Device/Shared/utils/wsMsgHandle.js';
 
-export function usePresetsBar({ 
-    metadata = [],
-    currentPreset,
-    presetModified,
-    setPresetModified,
-    updateData,
-    snapshot,
-    setReload,
-    reload,
-    sendSavePacket,
-    sendLoadPacket,
-    isConnected = false
-}) {
+export function usePresetsBar() {
+
+    const { ws } = useDevice();
+    const isConnected = ws.status === 'Connected';
+
+    const {
+        metadata = [],
+        currentPreset,
+        presetModified,
+        setPresetModified,
+        updateData,
+        snapshot,
+        reloadPreset: reload,
+        setReloadPreset: setReload
+    } = ws;
 
     const [isOpen,    setIsOpen]    = useState(false);
     const [isSaving,  setIsSaving]  = useState(false);
@@ -86,7 +90,7 @@ export function usePresetsBar({
             return;
         }
         setIsSaving(true);
-        sendSavePacket(currentPreset.name, currentPreset.flags);
+        sendSavePacket(ws.send, currentPreset.name, currentPreset.flags);
         setPresetModified(false);
         setTimeout(() => setIsSaving(false), 800);
     };
@@ -95,7 +99,7 @@ export function usePresetsBar({
         if (!sendLoadPacket || !isConnected || isSaving || isLoading) return;
         setIsLoading(true);
         setPresetModified(false);
-        sendLoadPacket(presetId);
+        sendLoadPacket(ws.send, presetId);
     };
 
     const handleDiscardChanges = (e) => {

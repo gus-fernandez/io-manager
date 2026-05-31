@@ -1,11 +1,11 @@
-// @/Features/Device/Control/utils/wsMsgHandle.js
+// @/Features/Device/Shared/utils/wsMsgHandle.js
 
 import {
     parseMetadata,
     parseCurrentPreset,
     IOP_NUM,
     PRESET_META_SIZE
-} from '@/Features/Device/Control/utils/presetUtils.js';
+} from '@/Features/Device/Shared/utils/presetUtils.js';
 
 const MSG_HEARTBEAT   = 0xFF;
 const MSG_DATA        = 0xFC;

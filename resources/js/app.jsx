@@ -64,7 +64,7 @@ function App() {
                 case 'cloud': 
                     return <DeviceLayout currentTab={currentTab}><Cloud /></DeviceLayout>;
                 case 'firmware': 
-                    return <DeviceLayout currentTab={currentTab}><Firmware /></DeviceLayout>;
+                    return <Firmware />;
                 case 'about': 
                     return <About />;
                 case 'profile': 

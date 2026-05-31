@@ -1,7 +1,7 @@
-// @/Features/Device/Control/components/PresetLine.jsx
+// @/Features/Device/Shared/components/PresetLine.jsx
 
 import React, { useState, useEffect } from 'react';
-import { Cat } from '@/Features/Device/Control/utils/presetUtils.js';
+import { Cat } from '@/Features/Device/Shared/utils/presetUtils.js';
 
 export default function PresetLine({ 
     id, name, isFav, category, 
