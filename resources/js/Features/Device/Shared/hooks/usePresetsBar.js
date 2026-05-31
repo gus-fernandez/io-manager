@@ -1,12 +1,12 @@
 // @/Features/Device/Shared/hooks/usePresetsBar.js
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDevice } from '@/Features/Device/Shared/context/WsContext';
 import { sendSavePacket, sendLoadPacket } from '@/Features/Device/Shared/utils/wsMsgHandle.js';
 
 export function usePresetsBar() {
 
-    const { ws } = useDevice();
+    const { ws, registerNavGuard } = useDevice();
     const isConnected = ws.status === 'Connected';
 
     const {
@@ -106,6 +106,27 @@ export function usePresetsBar() {
         e.stopPropagation();
         handleSelectPreset(snapshot.id);
     };
+
+    const presetModifiedRef = useRef(presetModified);
+    useEffect(() => { presetModifiedRef.current = presetModified; }, [presetModified]);
+
+    const actionsRef = useRef({});
+    useEffect(() => {
+        actionsRef.current = {
+            save:    () => handleSave({ stopPropagation: () => {} }),
+            discard: () => handleDiscardChanges({ stopPropagation: () => {} }),
+        };
+    });
+
+    useEffect(() => {
+        if (!registerNavGuard) return;
+        registerNavGuard({
+            isBlocking: () => presetModifiedRef.current,
+            onSave:     () => actionsRef.current.save(),
+            onDiscard:  () => actionsRef.current.discard(),
+        });
+        return () => registerNavGuard(null);
+    }, [registerNavGuard]);
 
     return {
         isOpen, isSaving, isEditing, isLoading,

@@ -1,5 +1,4 @@
 import React from 'react';
-import Dropdown from '@/Components/Dropdown';
 
 export default function AppLayout({ children, currentTab, setTab, user, onLogout }) {
         

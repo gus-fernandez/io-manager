@@ -1,7 +1,7 @@
 import '../css/app.css';
 import './bootstrap';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
 import axios from '@/bootstrap';
 import AppLayout from './Layouts/AppLayout';
@@ -12,16 +12,58 @@ import Control from './Pages/Control';
 import Cloud from './Pages/Cloud';
 import Firmware from './Pages/Firmware';
 import About from './Pages/About';
+import NavGuardModal from '@/Features/Device/Shared/components/NavGuardModal.jsx'
+
+const getInitialTab = () => {
+    const path = window.location.pathname.replace('/', '') || 'control';
+    return path;
+};
 
 function App() {
-    const [currentTab, setTab] = useState('landing');
+    const [currentTab, setTab] = useState(getInitialTab);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navGuardRef = useRef(null);
+    const [pendingTab, setPendingTab] = useState(null);
+    const [showGuardModal, setShowGuardModal] = useState(false);
+
+    const registerNavGuard = useCallback((guard) => {
+        navGuardRef.current = guard;
+    }, []);
+
+    const requestTabChange = useCallback((tab) => {
+        if (navGuardRef.current?.isBlocking()) {
+            setPendingTab(tab);
+            setShowGuardModal(true);
+            return;
+        }
+        setTab(tab);
+        window.history.pushState({}, '', `/${tab}`);
+    }, []);
+
+    const handleGuardSave = () => {
+        navGuardRef.current?.onSave();
+        setShowGuardModal(false);
+        setTab(pendingTab);
+        setPendingTab(null);
+    };
+
+    const handleGuardDiscard = () => {
+        navGuardRef.current?.onDiscard();
+        setShowGuardModal(false);
+        setTab(pendingTab);
+        setPendingTab(null);
+    };
+
+    const handleGuardCancel = () => {
+        setShowGuardModal(false);
+        setPendingTab(null);
+    };
 
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
         if (queryParams.get('verified') === '1') {
-            alert("¡Tu correo ha sido verificado correctamente!");
+            alert("Your mail has been verified!");
             window.history.replaceState({}, document.title, "/");
         }
 
@@ -30,14 +72,22 @@ function App() {
                 await axios.get('/sanctum/csrf-cookie');
                 const response = await axios.get('/api/current-user');
                 setUser(response.data);
-                setTab('control');
+
+                const validTabs = ['control', 'cloud', 'firmware', 'about', 'profile'];
+                const pathTab = window.location.pathname.replace('/', '');
+                const startTab = validTabs.includes(pathTab) ? pathTab : 'control';
+
+                setTab(startTab);
+                window.history.replaceState({}, '', `/${startTab}`);
             } catch (error) {
                 setUser(null);
                 setTab('landing');
+                window.history.replaceState({}, '', '/');
             } finally {
                 setLoading(false);
             }
         };
+
         checkAuth();
     }, []);
 
@@ -49,6 +99,7 @@ function App() {
         } finally {
             setUser(null);
             setTab('landing');
+            window.history.pushState({}, '', '/');
         }
     };
 
@@ -58,22 +109,21 @@ function App() {
                 return <div className="p-6 text-center text-neutral-500">Cargando perfil...</div>;
             }
 
-            switch (currentTab) {
-                case 'control': 
-                    return <DeviceLayout currentTab={currentTab}><Control /></DeviceLayout>;
-                case 'cloud': 
-                    return <DeviceLayout currentTab={currentTab}><Cloud /></DeviceLayout>;
-                case 'firmware': 
-                    return <Firmware />;
-                case 'about': 
-                    return <About />;
-                case 'profile': 
-                    return <Profile user={user} setUser={setUser} />;
-                case 'verify-email':
-                    return <VerifyEmail onLogout={handleLogout} />;
-                default: 
-                    return <DeviceLayout currentTab="control"><Control /></DeviceLayout>;
-            }
+            const isDeviceTab = currentTab === 'control' || currentTab === 'cloud';
+
+            return (
+                <>
+                    {isDeviceTab && (
+                        <DeviceLayout currentTab={currentTab} registerNavGuard={registerNavGuard}>
+                            {currentTab === 'control' ? <Control /> : <Cloud />}
+                        </DeviceLayout>
+                    )}
+                    {currentTab === 'firmware'     && <Firmware />}
+                    {currentTab === 'about'        && <About />}
+                    {currentTab === 'profile'      && <Profile user={user} setUser={setUser} />}
+                    {currentTab === 'verify-email' && <VerifyEmail onLogout={handleLogout} />}
+                </>
+            );
         } catch (e) {
             console.error("Error al renderizar:", e);
             return <div className="p-4 text-rose-600">Error cargando contenido.</div>;
@@ -82,7 +132,7 @@ function App() {
 
     if (loading) {
         return (
-            <div className="flex h-screen items-center justify-center bg-neutral-900 text-neutral-400">
+            <div className="font-whiterabbit flex h-screen items-center justify-center bg-neutral-900 text-neutral-400">
                 Loading...
             </div>
         );
@@ -93,14 +143,22 @@ function App() {
     }
 
     return (
+        <>
         <AppLayout 
             currentTab={currentTab} 
-            setTab={setTab} 
+            setTab={requestTabChange} 
             user={user} 
             onLogout={handleLogout}
         >
             {renderContent()}
         </AppLayout>
+
+        {showGuardModal && <NavGuardModal
+            onSave={handleGuardSave}
+            onDiscard={handleGuardDiscard}
+            onCancel={handleGuardCancel}
+        />}
+        </>
     );
 }
 

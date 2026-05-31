@@ -8,7 +8,7 @@ import { usePresetUpdate } from '@/Features/Device/Shared/hooks/usePresetUpdate'
 
 const WsContext = createContext(null);
 
-export function WsProvider({ children }) {
+export function WsProvider({ children, registerNavGuard }) {
     const ws = useWebSocket({
         onMessage: (event) => {
             handleMsg(event, ws); 
@@ -19,7 +19,7 @@ export function WsProvider({ children }) {
     const midi = useMidi(wsContextValue);
 
     return (
-        <WsContext.Provider value={{ ws: wsContextValue, midi }}>
+        <WsContext.Provider value={{ ws: wsContextValue, midi, registerNavGuard }}>
             {children}
         </WsContext.Provider>
     );

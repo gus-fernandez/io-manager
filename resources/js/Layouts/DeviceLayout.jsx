@@ -5,9 +5,9 @@ import { WsProvider } from '@/Features/Device/Shared/context/WsContext';
 import StatusBar from '@/Features/Device/Shared/components/StatusBar';
 import PresetsBar from '@/Features/Device/Shared/components/PresetsBar';
 
-export default function DeviceLayout({ children, currentTab }) {
+export default function DeviceLayout({ children, currentTab, registerNavGuard }) {
     return (
-        <WsProvider>
+        <WsProvider registerNavGuard={registerNavGuard}>
             <div>
                 <StatusBar currentTab={currentTab} />
                 <PresetsBar />

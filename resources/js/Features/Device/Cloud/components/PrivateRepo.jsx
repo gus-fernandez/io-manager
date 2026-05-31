@@ -11,9 +11,9 @@ export const PrivateRepo = ({ data, loading, onDelete }) => {
             items={data}
             loading={loading}
             renderActions={(item) => (
-                <SecondaryButton onClick={() => onDelete(item.id)}>
-                    DELETE
-                </SecondaryButton>
+                <button onClick={() => onDelete(item.id)}>
+                    [DELETE]
+                </button>
             )}
         />
     );

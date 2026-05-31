@@ -13,9 +13,9 @@ export const PublicRepo = ({ onCopy }) => {
             items={data}
             loading={loading}
             renderActions={(item) => (
-                <SecondaryButton onClick={() => copyToPrivate(item)}>
-                    + ADD
-                </SecondaryButton>
+                <button onClick={() => copyToPrivate(item)}>
+                    [ADD]
+                </button>
             )}
         />
     );
