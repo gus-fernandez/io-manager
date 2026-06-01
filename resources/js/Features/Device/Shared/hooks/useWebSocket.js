@@ -24,6 +24,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     const [presetModified, setPresetModified] = useState(false);
     const [reloadPreset, setReloadPreset] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [isParsed, setIsParsed] = useState(false);
 
     const refs = useRef({ onOpen, onClose, onError, onMessage });
     useEffect(() => {
@@ -53,6 +54,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
             return preset;
         });
 
+        setIsParsed(true);
         onAfterLoadRef.current?.(preset);
         
         //Debug
@@ -82,6 +84,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         }
         setMetadata(null);
         setStatus('Disconnected');
+        setIsParsed(false);
     }, [cleanTimers]);
 
     const startHeartbeat = useCallback((socket) => {
@@ -96,6 +99,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
                 console.warn('Connection timeout, trying to reconnect.');
                 cleanTimers();
                 setStatus('Disconnected');
+                setIsParsed(false);
                 socket.close();
             }, HEARTBEAT_TIMEOUT);
 
@@ -135,6 +139,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
 
         socket.onclose = () => {
             cleanTimers();
+            setIsParsed(false);
             if (ws.current === socket) {
                 ws.current = null;
             }
@@ -152,6 +157,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
 
         socket.onerror = () => {
             cleanTimers();
+            setIsParsed(false);
             if (ws.current === socket) {
                 ws.current = null;
             }
@@ -186,6 +192,6 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         metadata, currentPreset, snapshot, presetModified, reloadPreset,
         setMetadata, setCurrentPreset, setPresetModified, setReloadPreset,
         triggerAfterSave, registerSaveCallback, registerLoadCallback,
-        isSaving, setIsSaving
+        isSaving, setIsSaving, isParsed
     };
 }

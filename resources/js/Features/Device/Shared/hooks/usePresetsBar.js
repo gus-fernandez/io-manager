@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDevice } from '@/Features/Device/Shared/context/WsContext';
 import { sendSavePacket, sendLoadPacket, sendDeletePacket } from '@/Features/Device/Shared/utils/wsMsgHandle.js';
+import { packFlags } from '@/Features/Device/Shared/utils/presetUtils.js';
 
 export function usePresetsBar() {
 
@@ -98,7 +99,9 @@ export function usePresetsBar() {
             return;
         }
         setIsSaving(true);
-        sendSavePacket(ws.send, currentPreset.name, currentPreset.flags);
+        const newFlagByte = packFlags({ ...currentPreset, isEmpty: false });
+        updateData({ isEmpty: false });
+        sendSavePacket(ws.send, currentPreset.name, newFlagByte);
         setPresetModified(false);
     };
 

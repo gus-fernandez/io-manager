@@ -3,14 +3,16 @@
 import axios from '@/bootstrap';
 import { useState, useEffect, useRef } from 'react';
 import { packPresetForBD } from '@/Features/Device/Shared/utils/presetUtils';
-import { sendLoadPacket } from '@/Features/Device/Shared/utils/wsMsgHandle';
+import { sendLoadPacket, sendPreset } from '@/Features/Device/Shared/utils/wsMsgHandle';
+import { Slot } from '@/Features/Device/Shared/utils/presetUtils.js';
 
 export const usePrivateRepo = (
     devicePresets = [],
     currentPreset,
     send,
     registerSaveCallback,
-    registerLoadCallback
+    registerLoadCallback,
+    wsState
 ) => {
     const [cloudData, setCloudData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -25,7 +27,7 @@ export const usePrivateRepo = (
         if (!registerSaveCallback) return;
         registerSaveCallback(() => {
             const { uploadPreset, currentPreset } = uploadRef.current;
-            if (currentPreset) uploadPreset(currentPreset);
+            if (currentPreset && !currentPreset.isEmpty) uploadPreset(currentPreset);
         });
         return () => registerSaveCallback(null);
     }, [registerSaveCallback]);
@@ -69,6 +71,35 @@ export const usePrivateRepo = (
         }
     };
 
+    const uploadToDevice = async (cloudItem, overrideName = null) => {
+        const freeSlotId = getNextFreeSlot(devicePresets);
+
+        if (freeSlotId === null) {
+            console.error('Device full');
+            return;
+        }
+
+        const cloud = cloudData.find(c => c.id === cloudItem.cloudId);
+        if (!cloud?.params) {
+            console.error('Params not found');
+            return;
+        }
+
+        const presetBuffer = hexToUint8Array(cloud.params);
+
+        if (overrideName) {
+            const nameBytes = new Uint8Array(16);
+            const upper = overrideName.toUpperCase();
+            for (let i = 0; i < Math.min(upper.length, 16); i++) {
+                nameBytes[i] = upper.charCodeAt(i);
+            }
+            presetBuffer.set(nameBytes, Slot.Name);
+        }
+
+        presetBuffer[Slot.Id] = freeSlotId;
+        sendPreset(send, presetBuffer, wsState);
+    };
+
     const syncAll = () => {
         const itemsToSync = data.filter(item => needsSync(item));
         if (!itemsToSync.length) return;
@@ -104,8 +135,11 @@ export const usePrivateRepo = (
     }, []);
 
     const data = mergePresets(cloudData, devicePresets);
-
-    return { data, loading, refresh, deletePreset, uploadPreset, syncAll, isSyncing };
+    const freeSlots = 128 - devicePresets.length;
+    return { 
+        data, loading, refresh, deletePreset, uploadPreset,
+        syncAll, isSyncing, freeSlots, uploadToDevice
+    };
 };
 
 const mergePresets = (cloudData, devicePresets) => {
@@ -127,6 +161,7 @@ const mergePresets = (cloudData, devicePresets) => {
             inCloud:  true,
             inDevice: !!match,
             crc:      cloud.crc ?? cloud.crc32,
+            
         });
         if (match) matchedCrcs.add(match.crc);
     });
@@ -164,4 +199,18 @@ export const canSync = (item, currentPreset) => {
 
 export const hasItemsToSync = (data) => {
     return data.some(item => needsSync(item));
+};
+
+const hexToUint8Array = (hexString) => {
+    if (!hexString) return new Uint8Array(128);
+    const pairs = hexString.match(/.{1,2}/g) || [];
+    return new Uint8Array(pairs.map(byte => parseInt(byte, 16)));
+};
+
+const getNextFreeSlot = (devicePresets) => {
+    const occupiedSlots = new Set(devicePresets.map(p => p.id));
+    for (let i = 0; i < 128; i++) {
+        if (!occupiedSlots.has(i)) return i;
+    }
+    return null; // Dispositivo lleno
 };

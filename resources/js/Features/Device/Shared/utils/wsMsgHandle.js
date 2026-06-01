@@ -9,7 +9,7 @@ import {
 
 const MSG_HEARTBEAT   = 0xFF;
 const MSG_DELETE      = 0xFE;
-
+const MSG_UPLOAD      = 0xFD;
 const MSG_DATA        = 0xFC;
 const MSG_LOAD        = 0xFB;
 const MSG_SAVE        = 0xFA;
@@ -20,11 +20,18 @@ const EXPECTED_PRESET = 128;
 const PRESET_OFFSET   = EXPECTED_META + PADDING;
 const TOTAL_RAW_DATA  = PRESET_OFFSET + EXPECTED_PRESET; 
 
+const PAYLOAD_SIZE    = 31; // Chunk Size 31 + header
+
 let rawDataBuffer = new Uint8Array(TOTAL_RAW_DATA);
 let totalBytesReceived = 0;
 
 let presetBuffer = new Uint8Array(EXPECTED_PRESET);
 let presetBytesReceived = 0;
+
+let uploadBuffer = null;
+let uploadOffset = 0;
+let cachedSendFn = null;
+let cachedWsState = null;
 
 export function resetDataStream() {
     totalBytesReceived = 0;
@@ -63,6 +70,11 @@ export function handleMsg(event, wsState) {
             wsState.triggerAfterSave?.();
             console.log("Preset Deleted");
             break;
+
+        case MSG_UPLOAD:
+            sendNextChunk();
+            break;
+        
         default:
             console.warn(`Unknown opcode: 0x${opcode.toString(16).toUpperCase()}`);
     }
@@ -153,4 +165,39 @@ export function sendDeletePacket(sendFn, presetId) {
     if (!sendFn) return;
     const payload = new Uint8Array([MSG_DELETE, presetId]);
     sendFn(payload.buffer);
+}
+
+export function sendPreset(sendFn, presetBuffer, wsState) {
+    if (!sendFn || !(presetBuffer instanceof Uint8Array)) return;
+
+    uploadBuffer = presetBuffer;
+    uploadOffset = 0;
+    cachedSendFn = sendFn;
+    cachedWsState = wsState;
+    wsState.setIsUploading?.(true);
+
+    sendNextChunk();
+}
+
+function sendNextChunk() {
+
+    if (!uploadBuffer || uploadOffset >= uploadBuffer.length) {
+        cachedWsState?.setIsUploading?.(false);
+        uploadBuffer = null;
+        uploadOffset = 0;
+        cachedSendFn = null;
+        cachedWsState = null;
+        console.log("Preset Uploaded!");
+        return;
+    }
+
+    const limit = Math.min(uploadOffset + PAYLOAD_SIZE, uploadBuffer.length);
+    const chunkPayload = uploadBuffer.subarray(uploadOffset, limit);
+    
+    const packet = new Uint8Array(chunkPayload.length + 1);
+    packet[0] = MSG_UPLOAD;
+    packet.set(chunkPayload, 1);
+    
+    cachedSendFn(packet.buffer);
+    uploadOffset += chunkPayload.length;
 }

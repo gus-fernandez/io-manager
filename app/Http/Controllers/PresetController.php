@@ -76,6 +76,7 @@ class PresetController extends Controller
             'crc32'     => 'required|integer',
             'params'    => 'required|string', 
             'desc'      => 'nullable|string|max:255',
+            'fav'       => 'nullable|boolean',
             'is_global' => 'nullable|boolean'
         ]);
 
@@ -87,16 +88,16 @@ class PresetController extends Controller
             return response()->json(['message' => 'No tienes permisos para crear presets públicos.'], 403);
         }
 
-        $idUser = ($user->is_admin && $isGlobalRequested) ? null : $user->id;
+        $id_user = ($user->is_admin && $isGlobalRequested) ? null : $user->id;
 
         $preset = Preset::create([
-            'id_user' => $idUser,
+            'id_user' => $id_user,
             'name'    => $request->name,
             'cat'     => $request->cat,
             'crc32'   => $request->crc32,
             'params'  => $request->params,
             'desc'    => $request->desc,
-            'fav'     => false,
+            'fav'     => is_null($id_user) ? false : $request->boolean('fav'),
         ]);
 
         return response()->json([
@@ -144,13 +145,15 @@ class PresetController extends Controller
             'fav'    => 'nullable|boolean',
         ]);
 
+        $id_user = $preset->id_user;
+
         $preset->update([
             'name'   => $request->name,
             'cat'    => $request->cat,
             'crc32'  => $request->crc32,
             'params' => $request->params,
             'desc'   => $request->desc,
-            'fav'    => $request->boolean('fav'),
+            'fav'    => is_null($id_user) ? false : $request->boolean('fav'),
         ]);
 
         return response()->json([

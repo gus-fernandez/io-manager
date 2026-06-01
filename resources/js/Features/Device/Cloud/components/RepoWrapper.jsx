@@ -1,9 +1,17 @@
 // RepoWrapper.jsx
 
-import {Cat} from '@/Features/Device/Shared/utils/presetUtils.js';
+import { Cat } from '@/Features/Device/Shared/utils/presetUtils.js';
 import { needsSync } from '@/Features/Device/Cloud/hooks/usePrivateRepo';
 
-export const RepoWrapper = ({ title, titleAction, items, loading, renderActions, currentPreset }) => {
+export const RepoWrapper = ({ 
+    title,
+    titleAction,
+    items,
+    loading,
+    renderActions,
+    currentPreset,
+    showFav = true
+}) => {
 
     const titleColor = (item) => needsSync(item) ? 'text-neutral-700' : 'text-neutral-200';
     const textColor = (item) => needsSync(item) ? 'text-neutral-700' : 'text-neutral-500';
@@ -47,10 +55,12 @@ export const RepoWrapper = ({ title, titleAction, items, loading, renderActions,
                                 {item.rating.toFixed(1)}
                             </span>
                         )}
+                        {showFav && (
                         <span className={`w-4 text-center text-xs ${favColor(item)}`}>
-                            {item.fav ? '★' : '☆'}
+                            {item.fav ? '♥' : '♡'}
                         </span>
-                        <div className="ml-auto text-xs text-neutral-500 hover:text-neutral-200">
+                        )}
+                        <div>
                             {renderActions && renderActions(item)}
                         </div>
                     </li>

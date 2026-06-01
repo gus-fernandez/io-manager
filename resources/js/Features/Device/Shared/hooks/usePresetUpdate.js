@@ -7,9 +7,7 @@ export const usePresetUpdate = (ws) => {
     const updateData = (updatedFields) => {
         const tempPreset = { 
             ...ws.currentPreset, 
-            ...updatedFields, 
-            isEmpty: false, 
-            exists: true 
+            ...updatedFields 
         };
 
         if (updatedFields.category) {

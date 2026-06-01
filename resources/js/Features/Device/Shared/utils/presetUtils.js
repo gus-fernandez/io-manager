@@ -6,7 +6,7 @@ export const IOP_NUM = 128;
 export const PRESET_META_SIZE = 21;
 const NAME_SIZE = 16;
 
-const Slot = {
+export const Slot = {
     Header: 0,   // 2 bytes
     Id:     2,   // 1 byte
     Flags:  3,   // 1 byte
@@ -145,12 +145,6 @@ export function parseMetadata(rawBuffer) {
     return presets;
 }
 
-function checkCrc(currentId, crcPreset, metadata) {
-    if (!metadata || metadata.length === 0) return false;
-    const meta = metadata.find(p => p.id === currentId);
-    return (meta.crc >>> 0) === (crcPreset >>> 0);
-}
-
 export function packPresetForBD(preset) {
 
     // --- Binario ---
@@ -164,10 +158,11 @@ export function packPresetForBD(preset) {
     buffer[Slot.Id] = 0xFF;
 
     // Flags
+    const isFavorite = preset.isFav ?? preset.fav ?? false;
     const uploadFlags = {
         isEmpty:    false,
         isReadOnly: preset.isReadOnly,
-        isFav:      preset.isFav,
+        isFav:      isFavorite,
         exists:     true,
         catId:      preset.catId ?? 0,
     };
@@ -195,10 +190,10 @@ export function packPresetForBD(preset) {
     buffer[Slot.Crc + 2] = (preset.crc >>> 8)  & 0xFF;
     buffer[Slot.Crc + 3] =  preset.crc         & 0xFF;
 
-    // --- Campos BD ---
+    // Campos BD
     const dbFields = {
         name:   preset.name,
-        fav:    preset.isFav  ?? false,
+        fav:    isFavorite,
         cat:    preset.catId  ?? 0,
         crc32:  preset.crc,
         desc:   preset.desc   ?? null,

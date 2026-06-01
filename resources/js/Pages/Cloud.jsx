@@ -9,12 +9,16 @@ export default function Cloud() {
     const { ws } = useDevice();
 
     const devicePresets = ws.metadata?.filter(p => p.exists && !p.isEmpty) ?? [];
-    const { data, loading, refresh, deletePreset, uploadPreset, syncAll, isSyncing } = usePrivateRepo(
+    const { 
+        data, loading, refresh, deletePreset, uploadPreset,
+        syncAll, isSyncing, freeSlots, uploadToDevice
+    } = usePrivateRepo(
         devicePresets,
         ws.currentPreset,
         ws.send,
         ws.registerSaveCallback,
-        ws.registerLoadCallback
+        ws.registerLoadCallback,
+        ws
     );
 
     return (
@@ -28,7 +32,11 @@ export default function Cloud() {
                         onUpload={uploadPreset}
                         onSyncAll={syncAll}
                         isSyncing={isSyncing}
+                        freeSlots={freeSlots}
                         currentPreset={ws.currentPreset}
+                        uploadToDevice={uploadToDevice}
+                        isParsed={ws.isParsed}
+                        deviceNames={devicePresets.map(p => p.name?.trim() ?? '')}
                     />
                 </section>
                 <section>
