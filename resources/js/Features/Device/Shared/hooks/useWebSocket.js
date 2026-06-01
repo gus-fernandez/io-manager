@@ -23,6 +23,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     const [snapshot, setSnapshot] = useState(null);
     const [presetModified, setPresetModified] = useState(false);
     const [reloadPreset, setReloadPreset] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     const refs = useRef({ onOpen, onClose, onError, onMessage });
     useEffect(() => {
@@ -33,11 +34,15 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     const onParsed = useCallback(({ metadata, ...preset }) => {
         if (metadata) {
             setMetadata(metadata);
+        } else {
+            setMetadata(prev => prev.map(p => 
+                p.id === preset.id ? { ...p, ...preset } : p
+            ));
         }
 
         // ¯\_(ツ)_/¯
         setCurrentPreset(prev => {
-            if (prev?.id !== preset.id) {
+            if (prev?.id !== preset.id || preset.isEmpty) {
                 setSnapshot(preset);
                 setPresetModified(false);
             } else {
@@ -180,6 +185,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         status, connect, disconnect, ws, send, onParsed, 
         metadata, currentPreset, snapshot, presetModified, reloadPreset,
         setMetadata, setCurrentPreset, setPresetModified, setReloadPreset,
-        triggerAfterSave, registerSaveCallback, registerLoadCallback
+        triggerAfterSave, registerSaveCallback, registerLoadCallback,
+        isSaving, setIsSaving
     };
 }

@@ -3,6 +3,7 @@
 import { packFlags, Cat } from '@/Features/Device/Shared/utils/presetUtils.js';
 
 export const usePresetUpdate = (ws) => {
+    
     const updateData = (updatedFields) => {
         const tempPreset = { 
             ...ws.currentPreset, 
@@ -23,7 +24,9 @@ export const usePresetUpdate = (ws) => {
             p.id === ws.currentPreset?.id ? finalData : p
         ));
         
-        ws.setPresetModified(true);
+        const { flags, ...finalNoFlagsByte } = finalData;
+        const checkWithSnapshot = JSON.stringify(finalNoFlagsByte) !== JSON.stringify(ws.snapshot);
+        ws.setPresetModified(checkWithSnapshot);
     };
     return { updateData };
 };

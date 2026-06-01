@@ -3,6 +3,7 @@
 import React from 'react';
 import { usePresetsBar } from '@/Features/Device/Shared/hooks/usePresetsBar.js';
 import PresetLine from '@/Features/Device/Shared/components/PresetLine.jsx';
+import DeleteModal from '@/Features/Device/Shared/components/DeleteModal.jsx';
 
 export default function PresetsBar(props) {
     const {
@@ -10,8 +11,9 @@ export default function PresetsBar(props) {
         metadata, currentPreset, presetModified,
         newName, setNewName, toggleOpen, handleStartEdit,
         handleCancelEdit, handleConfirmName,
-        toggleFav, changeCategory, handleSave,
-        handleSelectPreset, handleDiscardChanges
+        toggleFav, toggleLock, changeCategory, handleSave,
+        handleSelectPreset, handleDiscardChanges,
+        showDeleteModal, setShowDeleteModal, handleDelete
     } = usePresetsBar(props);
     const metaNoData = !metadata || metadata.length === 0;
 
@@ -51,9 +53,11 @@ export default function PresetsBar(props) {
                                             name={currentPreset?.name} 
                                             isActive={true}
                                             isFav={currentPreset?.isFav}
+                                            isReadOnly={currentPreset?.isReadOnly}
                                             isList={false}
                                             category={currentPreset?.category}
                                             onToggleFav={toggleFav}
+                                            onToggleLock={toggleLock}
                                             onClick={toggleOpen}
                                             onCategoryChange={(newCatName) => changeCategory(newCatName)}
                                         />
@@ -96,10 +100,23 @@ export default function PresetsBar(props) {
                                 className={`transition-colors duration-150 ${
                                     !presetModified ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'
                                 }`}
-                            >[DISCARD CHANGES]</button>
+                            >[DISCARD]</button>
+                            )}
+
+                            {!isEditing && !isLoading && (
+                                <button
+                                    onClick={() => setShowDeleteModal(true)}
+                                    disabled={currentPreset?.isReadOnly}
+                                    className={`transition-colors duration-150 ${
+                                        currentPreset?.isReadOnly 
+                                            ? 'text-neutral-700' 
+                                            : 'text-neutral-500 hover:text-neutral-200'
+                                    }`}
+                                >[DELETE]</button>
                             )}
                         </div>
                     </div>
+                    
 
                     {isOpen && !isEditing && !metaNoData && (
                         <div className={`max-h-48 overflow-y-auto border-t border-neutral-900 mt-2 pt-1 divide-y divide-neutral-900/40 transition-opacity duration-150 ${
@@ -112,11 +129,11 @@ export default function PresetsBar(props) {
                                             id={meta.id}
                                             name={meta.name}
                                             isFav={meta.isFav}
+                                            isReadOnly={meta.isReadOnly}
                                             category={meta.category}
                                             isActive={(meta.id === currentPreset?.id)}
                                             isEmpty={meta.isEmpty}
                                             isList={true}
-                                            onToggleFav={toggleFav}
                                             onClick={() => { 
                                             if (meta.id !== currentPreset?.id) handleSelectPreset(meta.id);
                                                 toggleOpen(); 
@@ -127,7 +144,15 @@ export default function PresetsBar(props) {
                             })}
                         </div>
                     )}
+                    
                 </>
+            )}
+            {showDeleteModal && (
+                <DeleteModal 
+                    presetName={currentPreset?.name}
+                    onConfirm={() => handleDelete(currentPreset?.id)}
+                    onCancel={() => setShowDeleteModal(false)}
+                />
             )}
         </div>
     );

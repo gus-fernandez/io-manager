@@ -11,3 +11,12 @@ export const KeyboardIcon = {
         </svg>
     )
 };
+
+export const LockIcon = {
+    LOCK: () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-full h-full">
+            <path d="M8 10V8a4 4 0 1 1 8 0v2" strokeLinecap="round" strokeLinejoin="round" />
+            <rect x="5" y="10" width="14" height="12" rx="1.5" fill="currentColor" stroke="none" />
+        </svg>
+    )
+};

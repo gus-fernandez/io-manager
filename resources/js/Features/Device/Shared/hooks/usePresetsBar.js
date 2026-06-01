@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useDevice } from '@/Features/Device/Shared/context/WsContext';
-import { sendSavePacket, sendLoadPacket } from '@/Features/Device/Shared/utils/wsMsgHandle.js';
+import { sendSavePacket, sendLoadPacket, sendDeletePacket } from '@/Features/Device/Shared/utils/wsMsgHandle.js';
 
 export function usePresetsBar() {
 
@@ -18,14 +18,15 @@ export function usePresetsBar() {
         snapshot,
         reloadPreset: reload,
         setReloadPreset: setReload,
-        triggerAfterSave
+        isSaving,
+        setIsSaving
     } = ws;
 
     const [isOpen,    setIsOpen]    = useState(false);
-    const [isSaving,  setIsSaving]  = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [newName,   setNewName]   = useState('');
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     useEffect(() => {
         setNewName(currentPreset?.name ?? '');
@@ -79,6 +80,12 @@ export function usePresetsBar() {
         updateData({ isFav: !currentPreset.isFav });
     };
 
+    const toggleLock = (e) => {
+        e.stopPropagation();
+        if (!isConnected || !currentPreset) return;     
+        updateData({ isReadOnly: !currentPreset.isReadOnly });
+    };
+
     const changeCategory = (categoryName) => {
         if (!isConnected || !currentPreset) return;
         updateData({ category: categoryName });
@@ -87,14 +94,12 @@ export function usePresetsBar() {
     const handleSave = (e) => {
         e.stopPropagation();
         
-        if (!sendSavePacket || !currentPreset || isSaving || !isConnected || currentPreset.isReadOnly) {
+        if (!sendSavePacket || !currentPreset || isSaving || !isConnected) {
             return;
         }
         setIsSaving(true);
         sendSavePacket(ws.send, currentPreset.name, currentPreset.flags);
         setPresetModified(false);
-        triggerAfterSave();
-        setTimeout(() => setIsSaving(false), 800);
     };
 
     const handleSelectPreset = (presetId) => {
@@ -107,6 +112,12 @@ export function usePresetsBar() {
     const handleDiscardChanges = (e) => {
         e.stopPropagation();
         handleSelectPreset(snapshot.id);
+    };
+
+    const handleDelete = (presetId) => {
+        setIsSaving(true);
+        sendDeletePacket(ws.send, presetId);
+        setShowDeleteModal(false);
     };
 
     const presetModifiedRef = useRef(presetModified);
@@ -135,7 +146,8 @@ export function usePresetsBar() {
         metadata, currentPreset, presetModified,
         newName, setNewName, toggleOpen, handleStartEdit,
         handleCancelEdit, handleConfirmName,
-        toggleFav, changeCategory, handleSave,
-        handleSelectPreset, handleDiscardChanges
+        toggleFav, toggleLock, changeCategory, handleSave,
+        handleSelectPreset, handleDiscardChanges,
+        showDeleteModal, setShowDeleteModal, handleDelete
     };
 }

@@ -8,6 +8,8 @@ import {
 } from '@/Features/Device/Shared/utils/presetUtils.js';
 
 const MSG_HEARTBEAT   = 0xFF;
+const MSG_DELETE      = 0xFE;
+
 const MSG_DATA        = 0xFC;
 const MSG_LOAD        = 0xFB;
 const MSG_SAVE        = 0xFA;
@@ -49,7 +51,18 @@ export function handleMsg(event, wsState) {
         case MSG_LOAD:
             processPresetStream(buffer, wsState);
             break;
-
+        
+        case MSG_SAVE: // Confirmación ESP32
+            wsState.setIsSaving(false);
+            wsState.triggerAfterSave?.();
+            console.log("Preset saved");
+            break;
+        
+        case MSG_DELETE: // Confirmación ESP32
+            wsState.setIsSaving(false);
+            wsState.triggerAfterSave?.();
+            console.log("Preset Deleted");
+            break;
         default:
             console.warn(`Unknown opcode: 0x${opcode.toString(16).toUpperCase()}`);
     }
@@ -132,7 +145,12 @@ export function sendSavePacket(sendFn, name, flags = 0) {
 
 export function sendLoadPacket(sendFn, presetId) {
     if (!sendFn) return;
-
     const payload = new Uint8Array([MSG_LOAD, presetId]);
+    sendFn(payload.buffer);
+}
+
+export function sendDeletePacket(sendFn, presetId) {
+    if (!sendFn) return;
+    const payload = new Uint8Array([MSG_DELETE, presetId]);
     sendFn(payload.buffer);
 }

@@ -2,11 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { Cat } from '@/Features/Device/Shared/utils/presetUtils.js';
+import { LockIcon } from '@/Features/Device/Shared/components/Icons.jsx';
 
 export default function PresetLine({ 
     id, name, isFav, category, 
-    isActive = false, isEmpty = false, isList = false,
-    onToggleFav, onClick, onCategoryChange
+    isActive = false,
+    isEmpty = false,
+    isList = false,
+    isReadOnly = false,
+    onToggleFav, onToggleLock,
+    onClick, onCategoryChange
 }) {
 
     const [showCatMenu, setShowCatMenu] = useState(false);
@@ -18,13 +23,13 @@ export default function PresetLine({
     }, [showCatMenu]);
 
     let active = isActive && !isList;
-    const formattedId = `[${String(id).padStart(3, '0')}]`;
+    const formattedId = `${String(id).padStart(3, '0')}`;
     const formattedCat = category !== 'Undef' ? `[${category}]` : '[OTHER]';
     const formattedName = isEmpty ? '[EMPTY]' : name;    
     const nameColor = active ? 'text-neutral-200' : 'text-neutral-700';
     const flagsIdColor = active ? 'text-neutral-500' : 'text-neutral-700';
     const favColor = isFav ? 'text-neutral-200' : 'text-neutral-700';
-
+    const lockColor = isReadOnly ? 'text-neutral-200' : 'text-neutral-700';
     return (
         
         <div 
@@ -32,6 +37,15 @@ export default function PresetLine({
             className={`relative flex justify-between items-center w-full text-xs tracking-widest uppercase cursor-pointer`}
         >
             <span className="flex items-center gap-2 overflow-hidden truncate">
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (active) onToggleLock?.(e);
+                    }}
+                    className={`size-[16px] -translate-y-[3px] ${lockColor} ${active ? 'cursor-pointer' : 'cursor-default'}`}
+                >
+                    <LockIcon.LOCK />
+                </button>
                 <button
                     onClick={(e) => {
                         e.stopPropagation();
