@@ -57,7 +57,10 @@ export const usePrivateRepo = (
         try {
             const { dbFields } = packPresetForBD(preset);
             
-            const existing = cloudData.find(c => (c.crc ?? c.crc32) === preset.crc);
+            const existing = cloudData.find(c => 
+                (c.crc ?? c.crc32) === preset.crc && 
+                c.name.toUpperCase() === preset.name.toUpperCase()
+            );
 
             if (existing) {
                 const { data } = await axios.put(`/api/presets/${existing.id}`, dbFields);
@@ -144,11 +147,17 @@ export const usePrivateRepo = (
 
 const mergePresets = (cloudData, devicePresets) => {
     const merged = [];
-    const matchedCrcs = new Set();
+    const matchedDeviceIds = new Set();
 
     cloudData.forEach(cloud => {
         const cloudCrc = cloud.crc ?? cloud.crc32;
-        const match = devicePresets.find(d => d.crc === cloudCrc);
+        
+        const match = devicePresets.find(d => 
+            !matchedDeviceIds.has(d.id) && 
+            d.crc === cloudCrc && 
+            d.name.toUpperCase() === cloud.name.toUpperCase()
+        );
+
         merged.push({
             key:      `cloud-${cloud.id}`,
             name:     cloud.name,
@@ -160,14 +169,14 @@ const mergePresets = (cloudData, devicePresets) => {
             deviceId: match?.id ?? null,
             inCloud:  true,
             inDevice: !!match,
-            crc:      cloud.crc ?? cloud.crc32,
-            
+            crc:      cloudCrc,
         });
-        if (match) matchedCrcs.add(match.crc);
+        
+        if (match) matchedDeviceIds.add(match.id);
     });
 
     devicePresets
-        .filter(d => !matchedCrcs.has(d.crc))
+        .filter(d => !matchedDeviceIds.has(d.id))
         .forEach(device => {
             merged.push({
                 key:      `device-${device.id}`,

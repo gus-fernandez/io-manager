@@ -5,6 +5,7 @@ import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { RepoWrapper } from './RepoWrapper';
 import { canSync, hasItemsToSync } from '@/Features/Device/Cloud/hooks/usePrivateRepo';
+import TextInput from '@/Components/TextInput';
 
 export const PrivateRepo = ({ 
     data, loading, onDelete, onUpload, onSyncAll,
@@ -47,7 +48,7 @@ export const PrivateRepo = ({
                 <p className="text-xs tracking-widest uppercase text-neutral-400">
                     Preset already on device. Rename?
                 </p>
-                <input
+                <TextInput
                     className="bg-neutral-800 border border-neutral-600 rounded px-3 py-2 text-sm text-neutral-200 uppercase tracking-widest w-full"
                     maxLength={16}
                     value={pendingName}

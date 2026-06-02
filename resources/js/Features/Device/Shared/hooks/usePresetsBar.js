@@ -119,6 +119,7 @@ export function usePresetsBar() {
 
     const handleDelete = (presetId) => {
         setIsSaving(true);
+        updateData({ isEmpty: true });
         sendDeletePacket(ws.send, presetId);
         setShowDeleteModal(false);
     };

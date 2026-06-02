@@ -51,6 +51,7 @@ SHARED
 @/Features/Device/Shared/components/PresetsBar.jsx
 @/Features/Device/Shared/components/PresetLine.jsx
 @/Features/Device/Shared/components/NavGuardModal.jsx
+@/Features/Device/Shared/components/DeleteModal.jsx
 
 @/Features/Device/Shared/hooks/useWebSocket.js
 @/Features/Device/Shared/hooks/useMidi.js
