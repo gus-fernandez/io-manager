@@ -17,6 +17,10 @@ export default function Cloud() {
     const { 
         privatePresets,
         publicPresets,
+        privateSort,
+        setPrivateSort,
+        publicSort,
+        setPublicSort,
         loading,
         deletePreset,
         uploadPreset,
@@ -24,7 +28,8 @@ export default function Cloud() {
         isSyncing,
         freeSlots,
         uploadToDevice,
-        uploadPublicToDevice
+        sortConfig,
+        setSortConfig
     } = useRepo(devicePresets, ws.currentPreset, ws.send, ws.registerSaveCallback, ws.registerLoadCallback, ws);
 
     const handleSave = () => {
@@ -50,6 +55,8 @@ export default function Cloud() {
                     <Repo
                         type="private"
                         data={privatePresets}
+                        sortConfig={privateSort}
+                        setSortConfig={setPrivateSort}
                         loading={loading}
                         freeSlots={freeSlots}
                         isParsed={ws.isParsed}
@@ -60,7 +67,7 @@ export default function Cloud() {
                         onSyncAll={syncAll}
                         isSyncing={isSyncing}
                         currentPreset={ws.currentPreset}
-                        snapshot={ws.snapshot} // Inyectamos el snapshot original
+                        snapshot={ws.snapshot}
                         presetModified={ws.presetModified}
                         onSave={handleSave}
                         onDiscard={handleDiscard}
@@ -71,13 +78,15 @@ export default function Cloud() {
                     <Repo 
                         type="public"
                         data={publicPresets}
+                        sortConfig={publicSort}
+                        setSortConfig={setPublicSort}
                         loading={loading}
                         freeSlots={freeSlots}
                         isParsed={ws.isParsed}
                         deviceNames={deviceNames}
                         uploadToDevice={uploadToDevice}
                         currentPreset={ws.currentPreset}
-                        snapshot={ws.snapshot} // Inyectamos el snapshot original
+                        snapshot={ws.snapshot}
                         presetModified={ws.presetModified}
                         onSave={handleSave}
                         onDiscard={handleDiscard}

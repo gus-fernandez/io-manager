@@ -5,13 +5,36 @@ import { RepoWrapper } from './RepoWrapper';
 import { UploadPresetModal } from './UploadPresetModal';
 import NavGuardModal from '@/Features/Device/Shared/components/NavGuardModal.jsx';
 import { canSync, hasItemsToSync } from '@/Features/Device/Cloud/utils/repoUtils.js';
+import { Cat } from '@/Features/Device/Shared/utils/presetUtils';
+
+// Refactor to Components
+const SortButton = ({ label, sortKey, sortConfig, onSort }) => {
+    const isActive = sortConfig.key === sortKey;
+    const activeCat = sortConfig.activeCat;
+
+    let indicator = "";
+
+    if (isActive && sortKey === 'cat' && activeCat !== null && activeCat !== undefined) {
+        indicator = `:${activeCat === 0 ? "OTHER" : Cat[activeCat]}`;
+    }
+
+    return (
+        <button 
+            onClick={() => onSort(sortKey)}
+            className={`text-xs uppercase tracking-widest ${isActive ? 'text-neutral-200' : 'text-neutral-500 hover:text-neutral-400'}`}
+        >
+            [{label}{indicator}]
+        </button>
+    );
+};
 
 export const Repo = ({
     type = 'private',
     data, loading, freeSlots, isParsed, deviceNames = [], uploadToDevice,
     onDelete, onUpload, onSyncAll, isSyncing, currentPreset, snapshot,
-    presetModified, onSave, onDiscard
+    presetModified, onSave, onDiscard, sortConfig, setSortConfig
 }) => {
+    // Refactor
     const [pendingItem, setPendingItem] = useState(null);
     const [pendingName, setPendingName] = useState('');
     const [pendingGuardItem, setPendingGuardItem] = useState(null);
@@ -85,6 +108,24 @@ export const Repo = ({
         setPendingItem(null);
     };
 
+const handleSort = (key) => {
+    setSortConfig(prev => {
+        if (key === 'cat') {
+            if (prev.key !== 'cat' || prev.activeCat === null) {
+                return { key: 'cat', asc: true, activeCat: 1 };
+            }
+            let nextCat = prev.activeCat + 1;
+            if (nextCat > 7) nextCat = 0;
+            return { ...prev, activeCat: nextCat };
+        }
+        return {
+            key,
+            asc: prev.key === key ? !prev.asc : true,
+            activeCat: null
+        };
+    });
+};
+
     const syncColor = (item) => canSync(item, currentPreset) && isParsed ? 'text-emerald-400 hover:text-neutral-200' : 'text-neutral-700';
     const syncAllColor = () => hasItemsToSync(data) && !isSyncing && isParsed ? 'text-emerald-400 hover:text-neutral-200' : 'text-neutral-700';
 
@@ -109,7 +150,21 @@ export const Repo = ({
         )}
 
         <RepoWrapper
-            title={isPrivate ? "Personal Repository" : "Public Repository"}
+            title={
+                <div className="flex items-center gap-6">
+                    <span>{isPrivate ? "Personal Repository" : "Public Repository"}</span>
+                    <div className="flex gap-2">
+                        <SortButton label="Name" sortKey="name" sortConfig={sortConfig} onSort={handleSort} />
+                        <SortButton label="Loaded" sortKey="device" sortConfig={sortConfig} onSort={handleSort} />
+                        <SortButton label="Cat" sortKey="cat" sortConfig={sortConfig} onSort={handleSort} />
+                        {isPrivate ? (
+                            <SortButton label="Fav" sortKey="fav" sortConfig={sortConfig} onSort={handleSort} />
+                        ) : (
+                            <SortButton label="Rate" sortKey="rating" sortConfig={sortConfig} onSort={handleSort} />
+                        )}
+                    </div>
+                </div>
+            }
             titleAction={isPrivate && (
                 <div className="flex items-center gap-4 tracking-widest uppercase">
                     <span className="text-xs text-neutral-500">{isParsed ? `FREE SLOTS: ${freeSlots}/128` : 'FREE SLOTS: --'}</span>

@@ -1,11 +1,12 @@
 // @/Features/Device/Cloud/hooks/useRepo.js
 
 import axios from '@/bootstrap';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { packPresetForBD } from '@/Features/Device/Shared/utils/presetUtils';
 import { mergePresets, hexToUint8Array, getNextFreeSlot, needsSync } from '@/Features/Device/Cloud/utils/repoUtils.js';
 import { sendLoadPacket, sendPreset } from '@/Features/Device/Shared/utils/wsMsgHandle';
 import { Slot } from '@/Features/Device/Shared/utils/presetUtils.js';
+import { sortPresets } from '@/Features/Device/Cloud/utils/sortUtils';
 
 export const useRepo = (
     devicePresets = [],
@@ -20,6 +21,8 @@ export const useRepo = (
     const [loadingPrivate, setLoadingPrivate] = useState(true);
     const [loadingPublic, setLoadingPublic] = useState(true);
     const [isSyncing, setIsSyncing] = useState(false);
+    const [privateSort, setPrivateSort] = useState({ key: 'name', asc: true, activeCat: null });
+    const [publicSort, setPublicSort] = useState({ key: 'name', asc: true, activeCat: null });
     const uploadRef = useRef(null);
 
     useEffect(() => {
@@ -152,35 +155,43 @@ export const useRepo = (
         fetchPrivate();
         fetchPublic();
     }, []);
-
-    const privatePresets = mergePresets(privateData, devicePresets);
     
-    const publicPresets = publicData.map(pub => {
-        const pubCrc = pub.crc32 ?? pub.crc;
-        
-        const inCloud = privateData.some(p => 
-            (p.crc ?? p.crc32) === pubCrc && p.name.toUpperCase() === pub.name.toUpperCase()
-        );
+    const rawPublicPresets = useMemo(() => {
+        return publicData.map(pub => {
+            const pubCrc = pub.crc32 ?? pub.crc;
+            const inCloud = privateData.some(p => 
+                (p.crc ?? p.crc32) === pubCrc && p.name.toUpperCase() === pub.name.toUpperCase()
+            );
+            const inDevice = devicePresets.some(d => 
+                d.crc === pubCrc && d.name.toUpperCase() === pub.name.toUpperCase()
+            );
 
-        const inDevice = devicePresets.some(d => 
-            d.crc === pubCrc && d.name.toUpperCase() === pub.name.toUpperCase()
-        );
+            return {
+                key: `public-${pub.id}`,
+                name: pub.name,
+                desc: pub.desc,
+                rating: pub.rating,
+                cat: pub.cat,
+                fav: false,
+                cloudId: pub.id,
+                deviceId: devicePresets.find(d => d.crc === pubCrc && d.name.toUpperCase() === pub.name.toUpperCase())?.id ?? null,
+                inCloud,
+                inDevice,
+                crc: pubCrc,
+                params: pub.params
+            };
+        });
+    }, [publicData, privateData, devicePresets]);
 
-        return {
-            key:      `public-${pub.id}`,
-            name:     pub.name,
-            desc:     pub.desc,
-            rating:   pub.rating,
-            cat:      pub.cat,
-            fav:      false,
-            cloudId:  pub.id,
-            deviceId: devicePresets.find(d => d.crc === pubCrc && d.name.toUpperCase() === pub.name.toUpperCase())?.id ?? null,
-            inCloud,
-            inDevice,
-            crc:      pubCrc,
-            params:   pub.params
-        };
-    });
+    const publicPresets = useMemo(() => {
+        const sorted = sortPresets(rawPublicPresets, publicSort.key, publicSort.asc, publicSort.activeCat);
+        return sorted;
+    }, [rawPublicPresets, publicSort]);
+
+    const privatePresets = useMemo(() => {
+        const merged = mergePresets(privateData, devicePresets);
+        return sortPresets(merged, privateSort.key, privateSort.asc, privateSort.activeCat);
+    }, [privateData, devicePresets, privateSort]);
 
     const freeSlots = 128 - devicePresets.length;
     const loading = loadingPrivate || loadingPublic;
@@ -188,7 +199,8 @@ export const useRepo = (
     return { 
         privatePresets, publicPresets, loading,
         deletePreset, uploadPreset,
-        syncAll, isSyncing, freeSlots, 
-        uploadToDevice
+        syncAll, isSyncing, freeSlots, uploadToDevice,
+        privateSort, setPrivateSort,
+        publicSort, setPublicSort
     };
 };
