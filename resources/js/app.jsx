@@ -126,7 +126,7 @@ function App() {
             );
         } catch (e) {
             console.error("Error al renderizar:", e);
-            return <div className="p-4 text-rose-600">Error cargando contenido.</div>;
+            return <div className="p-4 text-rose-400">Error loading App.</div>;
         }
     };
 

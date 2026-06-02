@@ -10,10 +10,9 @@ export const RepoWrapper = ({
     loading,
     renderActions,
     currentPreset,
-    showFav = true,
+    isPrivate = true,
     deviceNames = []
 }) => {
-    const isPrivate = showFav;
     
     if (loading) return (
         <div className="text-neutral-500 text-xs tracking-widest uppercase py-2">
@@ -32,6 +31,9 @@ export const RepoWrapper = ({
 
             <ul className="divide-y divide-neutral-800">
                 {items.map(item => {
+                    const isSelected = currentPreset && 
+                        item.name.trim().toUpperCase() === currentPreset.name?.trim().toUpperCase();
+
                     const isInDevice = item.inDevice || deviceNames.some(
                         name => name.toUpperCase() === item.name.trim().toUpperCase()
                     );
@@ -39,19 +41,21 @@ export const RepoWrapper = ({
                     const isMuted = isPrivate 
                         ? needsSync(item) 
                         : (isInDevice || item.inCloud);
-
+                    
+                    const arrowColor = isInDevice ? 'text-emerald-500' : item.inCloud ? 'text-yellow-500' : 'text-neutral-700';
                     const titleColor = isMuted ? 'text-neutral-700' : 'text-neutral-200';
                     const textColor = isMuted ? 'text-neutral-700' : 'text-neutral-500';
                     const favColor = isMuted ? 'text-neutral-700' : 'text-neutral-500';
 
-                    const arrowColor = isInDevice 
-                        ? 'text-emerald-500' 
-                        : (!isPrivate && item.inCloud ? 'text-yellow-500' : 'text-neutral-700');
-
                     return (
-                        <li key={item.key ?? item.id} className="flex items-center gap-2 py-2">
-                            <span className="w-4 text-center text-xs">
-                                <span className={arrowColor}>↑</span>
+                        <li 
+                            key={item.key ?? item.id} 
+                            className={`flex items-center gap-2 py-2 px-2 rounded-sm transition-colors ${
+                                isSelected ? 'bg-neutral-900/80' : ''
+                            }`}
+                        >
+                            <span className={`w-4 text-center text-xs ${arrowColor}`}>
+                                ↑
                             </span>
                             <span className={`w-40 truncate uppercase text-sm ${titleColor}`}>
                                 {item.name}
@@ -67,7 +71,7 @@ export const RepoWrapper = ({
                                     {Number(item.rating).toFixed(1)}
                                 </span>
                             )}
-                            {showFav && (
+                            {isPrivate && (
                                 <span className={`w-4 text-center text-xs ${favColor}`}>
                                     {item.fav ? '♥' : '♡'}
                                 </span>

@@ -3,7 +3,7 @@
 import axios from '@/bootstrap';
 import { useState, useEffect, useRef } from 'react';
 import { packPresetForBD } from '@/Features/Device/Shared/utils/presetUtils';
-import { mergePresets, hexToUint8Array, getNextFreeSlot } from '@/Features/Device/Cloud/utils/repoUtils.js';
+import { mergePresets, hexToUint8Array, getNextFreeSlot, needsSync } from '@/Features/Device/Cloud/utils/repoUtils.js';
 import { sendLoadPacket, sendPreset } from '@/Features/Device/Shared/utils/wsMsgHandle';
 import { Slot } from '@/Features/Device/Shared/utils/presetUtils.js';
 
@@ -155,7 +155,7 @@ export const useRepo = (
 
     const privatePresets = mergePresets(privateData, devicePresets);
     
-const publicPresets = publicData.map(pub => {
+    const publicPresets = publicData.map(pub => {
         const pubCrc = pub.crc32 ?? pub.crc;
         
         const inCloud = privateData.some(p => 

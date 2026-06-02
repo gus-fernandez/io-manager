@@ -121,7 +121,7 @@ export const Repo = ({
             items={data}
             loading={loading}
             currentPreset={currentPreset}
-            showFav={isPrivate}
+            isPrivate={isPrivate}
             deviceNames={deviceNames}
             renderActions={(item) => (
                 <div className="flex gap-2 text-xs">

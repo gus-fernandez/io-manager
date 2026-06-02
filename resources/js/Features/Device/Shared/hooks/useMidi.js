@@ -76,10 +76,9 @@ export default function useMidi(ws) {
     }, []);
 
     const clearAllNotes = useCallback(() => {
-        if (activeNotes.current.size === 0) return;
-        activeNotes.current.forEach((midiNote) => {
-            notesQueueRef.current.push(NOTE_OFF, midiNote, 0x00);
-        });
+        if (wsRef.current?.send) {
+            wsRef.current.send([0xB0, 123, 0]);
+        }
         activeNotes.current.clear();
     }, []);
 

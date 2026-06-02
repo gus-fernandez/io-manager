@@ -28,16 +28,39 @@ export function useVirtualKeyboard({ midi, appendLog, isConnected }) {
         midi.clearAllNotes();
     }, [octave, active]);
 
+    // Escudo antibugs: Limpieza total ante cualquier cambio de contexto o foco
     useEffect(() => {
-        const handleBlur = () => {
+        const killNotes = () => {
             if (stateRef.current.active) midi.clearAllNotes();
         };
-        window.addEventListener('blur', handleBlur);
-        return () => window.removeEventListener('blur', handleBlur);
+
+        const handleFocusIn = (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+                killNotes();
+            }
+        };
+
+        const handleVisibility = () => {
+            if (document.visibilityState === 'hidden') killNotes();
+        };
+
+        window.addEventListener('blur', killNotes);
+        window.addEventListener('focusin', handleFocusIn);
+        document.addEventListener('visibilitychange', handleVisibility);
+
+        return () => {
+            window.removeEventListener('blur', killNotes);
+            window.removeEventListener('focusin', handleFocusIn);
+            document.removeEventListener('visibilitychange', handleVisibility);
+        };
     }, []);
 
     useEffect(() => {
+        const isTyping = (e) => e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable;
+
         const handleKeyDown = (e) => {
+            if (isTyping(e)) return;
+
             const { octave: currentOct, velocity: currentVel, active: isActive } = stateRef.current;
             if (!isActive) return;
 
@@ -61,6 +84,8 @@ export function useVirtualKeyboard({ midi, appendLog, isConnected }) {
         };
 
         const handleKeyUp = (e) => {
+            if (isTyping(e)) return;
+
             const { octave: currentOct } = stateRef.current;
             const key = e.key.toLowerCase();
 

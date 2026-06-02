@@ -84,6 +84,9 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         cleanTimers();
         hasRetriedRef.current = false;
         if (ws.current) {
+            if (ws.current.readyState === WebSocket.OPEN) {
+                ws.current.send(new Uint8Array([0xB0, 123, 0])); // All notes off entre pestañas
+            }
             ws.current.onclose = null;
             ws.current.close();
             ws.current = null;
@@ -132,6 +135,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
             hasRetriedRef.current = false;
             startHeartbeat(socket);
             resetDataStream();
+            socket.send(new Uint8Array([0xB0, 123, 0])); // midi all notes off
             setStatus('Connected');
             refs.current.onOpen?.(socket);
         };
