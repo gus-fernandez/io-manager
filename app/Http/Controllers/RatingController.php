@@ -44,6 +44,29 @@ class RatingController extends Controller
         return response()->json([
             'message' => 'Voto registrado con éxito',
             'rating'  => $preset->rating,
+            'user_voted' => true,
+            'user_vote'  => (int) $request->rate,
+        ]);
+    }
+
+    public function destroy(Preset $preset): JsonResponse
+    {
+        if ($preset->id_user !== null) {
+            return response()->json(['error' => 'Solo se pueden votar presets de fábrica'], 403);
+        }
+
+        $userId = Auth::id();
+
+        Rating::where('id_user', $userId)->where('id_preset', $preset->id)->delete();
+
+        $avg = Rating::where('id_preset', $preset->id)->avg('rate');
+        $preset->update(['rating' => round($avg ?? 0, 2)]);
+
+        return response()->json([
+            'message' => 'Voto eliminado',
+            'rating'  => $preset->rating,
+            'user_voted' => false,
+            'user_vote'  => null,
         ]);
     }
 }

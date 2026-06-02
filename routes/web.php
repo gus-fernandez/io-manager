@@ -15,7 +15,9 @@ Route::prefix('api')->group(function () {
     Route::get('/firmware/{firmware}/download', [FirmwareController::class, 'download'])->name('firmware.download');
     
     // Listado de presets (Público)
-    Route::get('/cloud/public', [PresetController::class, 'indexPublic'])->name('cloud.public');
+    Route::get('/cloud/public', [PresetController::class, 'indexPublic'])
+    ->middleware('auth:sanctum') 
+    ->name('cloud.public');
     
     // Seguridad WS
     //Route::get('/ws-token', [WsTokenController::class, 'index'])->name('ws.token');
@@ -42,6 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
         
         // Ratings (Votar)
         Route::post('/presets/{preset}/rate', [RatingController::class, 'store'])->name('presets.rate');
+        Route::delete('/presets/{preset}/rate', [RatingController::class, 'destroy'])->name('presets.rate.delete');
     });
 });
 

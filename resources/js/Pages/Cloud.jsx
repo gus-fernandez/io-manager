@@ -17,6 +17,7 @@ export default function Cloud() {
     const { 
         privatePresets,
         publicPresets,
+        setPublicData,
         privateSort,
         setPrivateSort,
         publicSort,
@@ -27,9 +28,7 @@ export default function Cloud() {
         syncAll,
         isSyncing,
         freeSlots,
-        uploadToDevice,
-        sortConfig,
-        setSortConfig
+        uploadToDevice
     } = useRepo(devicePresets, ws.currentPreset, ws.send, ws.registerSaveCallback, ws.registerLoadCallback, ws);
 
     const handleSave = () => {
@@ -78,6 +77,7 @@ export default function Cloud() {
                     <Repo 
                         type="public"
                         data={publicPresets}
+                        setData={setPublicData}
                         sortConfig={publicSort}
                         setSortConfig={setPublicSort}
                         loading={loading}

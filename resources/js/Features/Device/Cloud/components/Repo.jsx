@@ -6,6 +6,7 @@ import { UploadPresetModal } from './UploadPresetModal';
 import NavGuardModal from '@/Features/Device/Shared/components/NavGuardModal.jsx';
 import { canSync, hasItemsToSync } from '@/Features/Device/Cloud/utils/repoUtils.js';
 import { Cat } from '@/Features/Device/Shared/utils/presetUtils';
+import { useStars } from '@/Features/Device/Cloud/hooks/useStars.js';
 
 // Refactor to Components
 const SortButton = ({ label, sortKey, sortConfig, onSort }) => {
@@ -32,7 +33,7 @@ export const Repo = ({
     type = 'private',
     data, loading, freeSlots, isParsed, deviceNames = [], uploadToDevice,
     onDelete, onUpload, onSyncAll, isSyncing, currentPreset, snapshot,
-    presetModified, onSave, onDiscard, sortConfig, setSortConfig
+    presetModified, onSave, onDiscard, sortConfig, setSortConfig, setData
 }) => {
     // Refactor
     const [pendingItem, setPendingItem] = useState(null);
@@ -42,6 +43,8 @@ export const Repo = ({
 
     const isPrivate = type === 'private';
     const isLoadDisabled = freeSlots <= 0 || !isParsed;
+
+    const { handleRate, handleDeleteRate } = useStars(setData);
 
     const handleLoad = (item) => {
         if (presetModified) {
@@ -108,23 +111,24 @@ export const Repo = ({
         setPendingItem(null);
     };
 
-const handleSort = (key) => {
-    setSortConfig(prev => {
-        if (key === 'cat') {
-            if (prev.key !== 'cat' || prev.activeCat === null) {
-                return { key: 'cat', asc: true, activeCat: 1 };
+    const handleSort = (key) => {
+        setSortConfig(prev => {
+            if (key === 'cat') {
+                if (prev.key !== 'cat' || prev.activeCat === null) {
+                    return { key: 'cat', asc: true, activeCat: 1 };
+                }
+                let nextCat = prev.activeCat + 1;
+                if (nextCat > 7) nextCat = 0;
+                return { ...prev, activeCat: nextCat };
             }
-            let nextCat = prev.activeCat + 1;
-            if (nextCat > 7) nextCat = 0;
-            return { ...prev, activeCat: nextCat };
-        }
-        return {
-            key,
-            asc: prev.key === key ? !prev.asc : true,
-            activeCat: null
-        };
-    });
-};
+            const defaultAsc = key === 'rating' ? false : true;
+            return {
+                key,
+                asc: prev.key === key ? !prev.asc : defaultAsc,
+                activeCat: null
+            };
+        });
+    };
 
     const syncColor = (item) => canSync(item, currentPreset) && isParsed ? 'text-emerald-400 hover:text-neutral-200' : 'text-neutral-700';
     const syncAllColor = () => hasItemsToSync(data) && !isSyncing && isParsed ? 'text-emerald-400 hover:text-neutral-200' : 'text-neutral-700';
@@ -178,6 +182,8 @@ const handleSort = (key) => {
             currentPreset={currentPreset}
             isPrivate={isPrivate}
             deviceNames={deviceNames}
+            onRate={handleRate}
+            onRemove={handleDeleteRate}
             renderActions={(item) => (
                 <div className="flex gap-2 text-xs">
                     {!isPrivate && (

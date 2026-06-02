@@ -56,7 +56,17 @@ export const sortByCategory = (data, asc = true, activeCat = null) => {
     });
 };
 
-export const sortByRating = (data, asc = false) => sortByProperty(data, 'rating', asc);
+export const sortByRating = (data, asc = false) => {
+    return [...data].sort((a, b) => {
+        if (a.userVoted && !b.userVoted) return -1;
+        if (!a.userVoted && b.userVoted) return 1;
+
+        const ratingA = a.userVoted ? (a.userVote ?? 0) : (a.rating ?? 0);
+        const ratingB = b.userVoted ? (b.userVote ?? 0) : (b.rating ?? 0);
+
+        return asc ? ratingA - ratingB : ratingB - ratingA;
+    });
+};
 
 export const sortByDeviceState = (data, asc = true) => {
     return [...data].sort((a, b) => {

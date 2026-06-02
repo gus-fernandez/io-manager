@@ -69,10 +69,14 @@ SHARED
 CLOUD
 @/Features/Device/Cloud/components/Repo.jsx
 @/Features/Device/Cloud/components/RepoWrapper.jsx
+@/Features/Device/Cloud/components/RepoWrapper.jsx
+@/Features/Device/Cloud/components/UploadPresetModal.jsx
+@/Features/Device/Cloud/components/Stars.jsx
 
-@/Features/Device/Cloud/hooks/useRepo.jsx
+@/Features/Device/Cloud/hooks/useRepo.js
+@/Features/Device/Cloud/hooks/useStars.js
 
-@/Features/Device/Cloud/utils/repoUtils.jsx
+@/Features/Device/Cloud/utils/repoUtils.js
 @/Features/DeviceCloud/utils/sortUtils.js
 
 FIRMWARE

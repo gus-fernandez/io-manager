@@ -2,6 +2,7 @@
 
 import { Cat } from '@/Features/Device/Shared/utils/presetUtils.js';
 import { needsSync } from '@/Features/Device/Cloud/utils/repoUtils.js';
+import { Stars } from '@/Features/Device/Cloud/components/Stars';
 
 export const RepoWrapper = ({ 
     title,
@@ -11,7 +12,9 @@ export const RepoWrapper = ({
     renderActions,
     currentPreset,
     isPrivate = true,
-    deviceNames = []
+    deviceNames = [],
+    onRate,
+    onRemove
 }) => {
     
     if (loading) return (
@@ -67,9 +70,18 @@ export const RepoWrapper = ({
                                 {Cat[item.cat] && Cat[item.cat] !== "Undef" ? Cat[item.cat] : "OTHER"}
                             </span>
                             {item.rating != null && (
-                                <span className={`w-10 text-center text-xs ${textColor}`}>
-                                    {Number(item.rating).toFixed(1)}
-                                </span>
+                                <div className="w-26 flex items-center justify-center gap-2 select-none">
+                                    <Stars 
+                                        value={item.rating}
+                                        hasVoted={item.userVoted}
+                                        userVote={item.userVote}
+                                        onRate={(rateValue) => onRate && onRate(item, rateValue)}
+                                        onRemove={() => onRemove && onRemove(item)}
+                                    />
+                                    <span className={`w-8 text-left text-xs ${textColor}`}>
+                                        {Number(item.rating).toFixed(1)}
+                                    </span>
+                                </div>
                             )}
                             {isPrivate && (
                                 <span className={`w-4 text-center text-xs ${favColor}`}>

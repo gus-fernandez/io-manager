@@ -11,9 +11,12 @@ class RatingSeeder extends Seeder
 {
     public function run(): void
     {
-        $users = User::all();
-        // Filtramos solo los globales (públicos)
-        $presets = Preset::whereNull('id_user')->get();
+        $users = User::whereNotIn('email', ['admin@a.com', 'user@u.com'])->get();
+        
+        $presets = Preset::all()->map(function ($preset) {
+            $preset->quality_bias = fake()->numberBetween(1, 5);
+            return $preset;
+        });
 
         if ($users->isEmpty() || $presets->isEmpty()) {
             return;
@@ -21,13 +24,17 @@ class RatingSeeder extends Seeder
 
         foreach ($users as $user) {
             foreach ($presets as $preset) {
+                $vote = $preset->quality_bias + fake()->numberBetween(-1, 1);
+                
+                $finalVote = max(1, min(5, $vote));
+
                 Rating::updateOrCreate(
                     [
                         'id_user'   => $user->id,
                         'id_preset' => $preset->id,
                     ],
                     [
-                        'rate' => fake()->numberBetween(1, 5),
+                        'rate' => $finalVote,
                     ]
                 );
             }

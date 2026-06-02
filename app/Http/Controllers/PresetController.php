@@ -42,7 +42,25 @@ class PresetController extends Controller
     public function indexPublic(Request $request): JsonResponse
     {
         try {
-            $data = \App\Models\Preset::query()->global()->orderBy('name')->get();
+            $userId = Auth::id(); 
+
+            $data = \App\Models\Preset::query()
+                ->global()
+                ->when($userId, function ($query, $userId) {
+                    $query->withExists(['ratings as user_voted' => function ($q) use ($userId) {
+                        $q->where('id_user', $userId);
+                    }]);
+                    $query->addSelect(['user_vote' => \App\Models\Rating::select('rate')
+                        ->whereColumn('id_preset', 'presets.id')
+                        ->where('id_user', $userId)
+                        ->limit(1)
+                    ]);
+                }, function ($query) {
+                    $query->selectRaw('*, false as user_voted');
+                })
+                ->orderBy('name')
+                ->get();
+
             return response()->json($data);
         } catch (\Exception $e) {
             \Log::error('Error en indexPublic: ' . $e->getMessage());

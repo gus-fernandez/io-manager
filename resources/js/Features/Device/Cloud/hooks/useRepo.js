@@ -174,6 +174,8 @@ export const useRepo = (
                 cat: pub.cat,
                 fav: false,
                 cloudId: pub.id,
+                userVoted: !!pub.user_voted,
+                userVote: pub.user_vote,
                 deviceId: devicePresets.find(d => d.crc === pubCrc && d.name.toUpperCase() === pub.name.toUpperCase())?.id ?? null,
                 inCloud,
                 inDevice,
@@ -201,6 +203,6 @@ export const useRepo = (
         deletePreset, uploadPreset,
         syncAll, isSyncing, freeSlots, uploadToDevice,
         privateSort, setPrivateSort,
-        publicSort, setPublicSort
+        publicSort, setPublicSort, setPublicData
     };
 };
