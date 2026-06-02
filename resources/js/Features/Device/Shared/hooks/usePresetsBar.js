@@ -24,14 +24,15 @@ export function usePresetsBar() {
     } = ws;
 
     const [isOpen,    setIsOpen]    = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [newName,   setNewName]   = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showRenameModal, setShowRenameModal] = useState(false);
 
     useEffect(() => {
         setNewName(currentPreset?.name ?? '');
-        setIsEditing(false);
+        setShowRenameModal(false);
+        setShowDeleteModal(false);
         setIsLoading(false);
         setReload(false);
     }, [currentPreset?.id, currentPreset?.name, reload]);
@@ -39,14 +40,14 @@ export function usePresetsBar() {
     useEffect(() => {
         if (!isConnected) {
             setIsOpen(false);
-            setIsEditing(false);
+            setShowRenameModal(false);
+            setShowDeleteModal(false);
             setIsSaving(false);
             setIsLoading(false);
         }
     }, [isConnected]);
 
-    const toggleOpen = () => {
-        if (isEditing) return;
+    const toggleOpen = () => {        
         setIsOpen(prev => !prev);
     };
 
@@ -54,13 +55,13 @@ export function usePresetsBar() {
         e.stopPropagation();
         if (!isConnected || currentPreset?.isReadOnly) return;
         setNewName(currentPreset?.name ?? '');
-        setIsEditing(true);
+        setShowRenameModal(true);
     };
 
     const handleCancelEdit = (e) => {
         e.stopPropagation();
-        setIsEditing(false);
         setNewName(currentPreset?.name ?? '');
+        setShowRenameModal(false);
     };
 
     const handleConfirmName = (e) => {
@@ -68,11 +69,11 @@ export function usePresetsBar() {
         const clean = newName.trim().toUpperCase().substring(0, 16);
         
         if (!clean || clean === currentPreset?.name) {
-            setIsEditing(false);
+            setShowRenameModal(false);
             return;
         }
         updateData({ name: clean });
-        setIsEditing(false);
+        setShowRenameModal(false);
     };
 
     const toggleFav = (e) => {
@@ -146,12 +147,13 @@ export function usePresetsBar() {
     }, [registerNavGuard]);
 
     return {
-        isOpen, isSaving, isEditing, isLoading,
+        isOpen, isSaving, isLoading,
         metadata, currentPreset, presetModified,
         newName, setNewName, toggleOpen, handleStartEdit,
         handleCancelEdit, handleConfirmName,
         toggleFav, toggleLock, changeCategory, handleSave,
         handleSelectPreset, handleDiscardChanges,
-        showDeleteModal, setShowDeleteModal, handleDelete
+        showDeleteModal, setShowDeleteModal, handleDelete,
+        showRenameModal, setShowRenameModal
     };
 }

@@ -4,17 +4,20 @@ import React from 'react';
 import { usePresetsBar } from '@/Features/Device/Shared/hooks/usePresetsBar.js';
 import PresetLine from '@/Features/Device/Shared/components/PresetLine.jsx';
 import DeleteModal from '@/Features/Device/Shared/components/DeleteModal.jsx';
+import { RenameModal } from '@/Features/Device/Shared/components/RenameModal.jsx';
 
 export default function PresetsBar(props) {
     const {
-        isOpen, isSaving, isEditing, isLoading,
+        isOpen, isSaving, isLoading,
         metadata, currentPreset, presetModified,
         newName, setNewName, toggleOpen, handleStartEdit,
-        handleCancelEdit, handleConfirmName,
+        handleConfirmName,
         toggleFav, toggleLock, changeCategory, handleSave,
         handleSelectPreset, handleDiscardChanges,
-        showDeleteModal, setShowDeleteModal, handleDelete
+        showDeleteModal, setShowDeleteModal, handleDelete,
+        showRenameModal, setShowRenameModal
     } = usePresetsBar(props);
+
     const metaNoData = !metadata || metadata.length === 0;
 
     return (
@@ -31,56 +34,37 @@ export default function PresetsBar(props) {
                     <div className="flex items-center justify-between w-full h-7 select-none rounded-sm">
                         <div className="flex items-center uppercase text-xs tracking-widest text-neutral-500 leading-none">
                             <span className="whitespace-nowrap mr-2">PRESET:</span>
-                            {isEditing ? (
-                                <input
-                                    type="text"
-                                    value={newName}
-                                    onChange={(e) => setNewName(e.target.value.toUpperCase())}
-                                    onClick={(e) => e.stopPropagation()}
-                                    maxLength={16}
-                                    autoFocus
-                                    className="bg-neutral-900 border border-neutral-700 text-neutral-200 px-1 py-0.5 text-xs rounded outline-none focus:border-neutral-500 w-48 h-5"
-                                />
-                            ) : (
-                                <div className="flex-1">
-                                    {isLoading ? (
-                                        <span className="text-amber-500 animate-pulse transition-colors duration-150">
-                                            LOADING DATA...
-                                        </span>
-                                    ) : (
-                                        <PresetLine 
-                                            id={currentPreset?.id} 
-                                            name={currentPreset?.name} 
-                                            isActive={true}
-                                            isFav={currentPreset?.isFav}
-                                            isReadOnly={currentPreset?.isReadOnly}
-                                            isList={false}
-                                            category={currentPreset?.category}
-                                            onToggleFav={toggleFav}
-                                            onToggleLock={toggleLock}
-                                            onClick={toggleOpen}
-                                            onCategoryChange={(newCatName) => changeCategory(newCatName)}
-                                        />
-                                    )}
-                                </div>
-                            )}
+                            <div className="flex-1">
+                                {isLoading ? (
+                                    <span className="text-amber-500 animate-pulse transition-colors duration-150">
+                                        LOADING DATA...
+                                    </span>
+                                ) : (
+                                    <PresetLine 
+                                        id={currentPreset?.id} 
+                                        name={currentPreset?.name} 
+                                        isActive={true}
+                                        isFav={currentPreset?.isFav}
+                                        isReadOnly={currentPreset?.isReadOnly}
+                                        isList={false}
+                                        category={currentPreset?.category}
+                                        onToggleFav={toggleFav}
+                                        onToggleLock={toggleLock}
+                                        onClick={toggleOpen}
+                                        onCategoryChange={(newCatName) => changeCategory(newCatName)}
+                                    />
+                                )}
+                            </div>
                         </div>
 
                         <div className="flex items-center gap-4 uppercase text-xs whitespace-nowrap leading-none">
                             {!isLoading && (
-                                isEditing ? (
-                                    <div className="flex gap-2">
-                                        <button onClick={handleConfirmName} className="text-emerald-400 hover:text-emerald-300 font-bold">[OK]</button>
-                                        <button onClick={handleCancelEdit} className="text-rose-500 hover:text-rose-400">[X]</button>
-                                    </div>
-                                ) : (
-                                    <button onClick={handleStartEdit} className="text-neutral-500 hover:text-neutral-300">
-                                        [RENAME]
-                                    </button>
-                                )
+                                <button onClick={handleStartEdit} className="text-neutral-500 hover:text-neutral-200">
+                                    [RENAME]
+                                </button>
                             )}
 
-                            {!isEditing && !isLoading && (
+                            {!isLoading && (
                                 <button
                                     onClick={handleSave}
                                     disabled={isSaving || !presetModified}
@@ -93,17 +77,17 @@ export default function PresetsBar(props) {
                                     }`}
                                 >{isSaving ? '[SAVING...]' : '[SAVE]'}</button>
                             )}
-                            {!isEditing && !isLoading && (
+                            {!isLoading && (
                                 <button
-                                onClick={handleDiscardChanges}
-                                disabled={!presetModified}
-                                className={`transition-colors duration-150 ${
-                                    !presetModified ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'
-                                }`}
-                            >[DISCARD]</button>
+                                    onClick={handleDiscardChanges}
+                                    disabled={!presetModified}
+                                    className={`transition-colors duration-150 ${
+                                        !presetModified ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'
+                                    }`}
+                                >[DISCARD]</button>
                             )}
 
-                            {!isEditing && !isLoading && (
+                            {!isLoading && (
                                 <button
                                     onClick={() => setShowDeleteModal(true)}
                                     disabled={currentPreset?.isReadOnly}
@@ -118,7 +102,7 @@ export default function PresetsBar(props) {
                     </div>
                     
 
-                    {isOpen && !isEditing && !metaNoData && (
+                    {isOpen && !metaNoData && (
                         <div className={`max-h-48 overflow-y-auto border-t border-neutral-900 mt-2 pt-1 divide-y divide-neutral-900/40 transition-opacity duration-150 ${
                             isLoading ? 'pointer-events-none opacity-40' : ''
                         }`}>
@@ -135,7 +119,7 @@ export default function PresetsBar(props) {
                                             isEmpty={meta.isEmpty}
                                             isList={true}
                                             onClick={() => { 
-                                            if (meta.id !== currentPreset?.id) handleSelectPreset(meta.id);
+                                                if (meta.id !== currentPreset?.id) handleSelectPreset(meta.id);
                                                 toggleOpen(); 
                                             }}
                                         />
@@ -147,6 +131,18 @@ export default function PresetsBar(props) {
                     
                 </>
             )}
+
+            {showRenameModal && (
+                <RenameModal 
+                    pendingName={newName}
+                    setPendingName={setNewName}
+                    originalName={currentPreset?.name}
+                    metadata={metadata}
+                    onClose={() => setShowRenameModal(false)}
+                    onConfirm={handleConfirmName}
+                />
+            )}
+
             {showDeleteModal && (
                 <DeleteModal 
                     presetName={currentPreset?.name}

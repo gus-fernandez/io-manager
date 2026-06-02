@@ -16,6 +16,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     const hasRetriedRef = useRef(false);
     const onAfterSaveRef = useRef(null);
     const onAfterLoadRef = useRef(null);
+    const currentPresetRef = useRef(null);
 
     const [status, setStatus] = useState('Disconnected');
     const [metadata, setMetadata] = useState(null);
@@ -27,9 +28,14 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     const [isParsed, setIsParsed] = useState(false);
 
     const refs = useRef({ onOpen, onClose, onError, onMessage });
+
     useEffect(() => {
         refs.current = { onOpen, onClose, onError, onMessage };
     }, [onOpen, onClose, onError, onMessage]);
+
+    useEffect(() => {
+        currentPresetRef.current = currentPreset;
+    }, [currentPreset]);
 
     // Core
     const onParsed = useCallback(({ metadata, ...preset }) => {
@@ -167,6 +173,11 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
     }, [startHeartbeat, cleanTimers]);
 
     const triggerAfterSave = useCallback(() => {
+        if (currentPresetRef.current) {
+            const { flags, ...finalNoFlagsByte } = currentPresetRef.current;
+            setSnapshot(finalNoFlagsByte);
+            setPresetModified(false);
+        }
         onAfterSaveRef.current?.();
     }, []);
 

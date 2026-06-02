@@ -1,46 +1,87 @@
 // @/Pages/Cloud.jsx
+
 import React from 'react';
 import { useDevice } from '@/Features/Device/Shared/context/WsContext';
-import { PrivateRepo } from '@/Features/Device/Cloud/components/PrivateRepo';
-import { PublicRepo } from '@/Features/Device/Cloud/components/PublicRepo';
-import { usePrivateRepo } from '@/Features/Device/Cloud/hooks/usePrivateRepo';
+import { useRepo } from '@/Features/Device/Cloud/hooks/useRepo';
+import { Repo } from '@/Features/Device/Cloud/components/Repo';
+import { sendSavePacket, sendLoadPacket } from '@/Features/Device/Shared/utils/wsMsgHandle.js';
+import { packFlags } from '@/Features/Device/Shared/utils/presetUtils.js';
 
 export default function Cloud() {
     const { ws } = useDevice();
+    const isConnected = ws.status === 'Connected';
 
     const devicePresets = ws.metadata?.filter(p => p.exists && !p.isEmpty) ?? [];
+    const deviceNames = devicePresets.map(p => p.name?.trim() ?? '');
+    
     const { 
-        data, loading, refresh, deletePreset, uploadPreset,
-        syncAll, isSyncing, freeSlots, uploadToDevice
-    } = usePrivateRepo(
-        devicePresets,
-        ws.currentPreset,
-        ws.send,
-        ws.registerSaveCallback,
-        ws.registerLoadCallback,
-        ws
-    );
+        privatePresets,
+        publicPresets,
+        loading,
+        deletePreset,
+        uploadPreset,
+        syncAll,
+        isSyncing,
+        freeSlots,
+        uploadToDevice,
+        uploadPublicToDevice
+    } = useRepo(devicePresets, ws.currentPreset, ws.send, ws.registerSaveCallback, ws.registerLoadCallback, ws);
+
+    const handleSave = () => {
+        if (!ws.currentPreset || !isConnected) return;
+        ws.setIsSaving?.(true);
+        const newFlagByte = packFlags({ ...ws.currentPreset, isEmpty: false });
+        ws.updateData({ isEmpty: false });
+        sendSavePacket(ws.send, ws.currentPreset.name, newFlagByte);
+        ws.setPresetModified(false);
+    };
+
+    const handleDiscard = () => {
+        if (!ws.snapshot || !isConnected) return;
+        ws.setIsLoading?.(true);
+        ws.setPresetModified(false);
+        sendLoadPacket(ws.send, ws.snapshot.id);
+    };
 
     return (
         <div className="py-10">
             <div className="space-y-6">
                 <section>
-                    <PrivateRepo
-                        data={data}
+                    <Repo
+                        type="private"
+                        data={privatePresets}
                         loading={loading}
+                        freeSlots={freeSlots}
+                        isParsed={ws.isParsed}
+                        deviceNames={deviceNames}
+                        uploadToDevice={uploadToDevice}
                         onDelete={deletePreset}
                         onUpload={uploadPreset}
                         onSyncAll={syncAll}
                         isSyncing={isSyncing}
-                        freeSlots={freeSlots}
                         currentPreset={ws.currentPreset}
-                        uploadToDevice={uploadToDevice}
-                        isParsed={ws.isParsed}
-                        deviceNames={devicePresets.map(p => p.name?.trim() ?? '')}
+                        snapshot={ws.snapshot} // Inyectamos el snapshot original
+                        presetModified={ws.presetModified}
+                        onSave={handleSave}
+                        onDiscard={handleDiscard}
                     />
                 </section>
+
                 <section>
-                    <PublicRepo onCopy={refresh} />
+                    <Repo 
+                        type="public"
+                        data={publicPresets}
+                        loading={loading}
+                        freeSlots={freeSlots}
+                        isParsed={ws.isParsed}
+                        deviceNames={deviceNames}
+                        uploadToDevice={uploadToDevice}
+                        currentPreset={ws.currentPreset}
+                        snapshot={ws.snapshot} // Inyectamos el snapshot original
+                        presetModified={ws.presetModified}
+                        onSave={handleSave}
+                        onDiscard={handleDiscard}
+                    />
                 </section>
             </div>
         </div>
