@@ -11,6 +11,10 @@ export function useFirmware() {
     const [flashCompleted, setFlashCompleted] = useState(false);
     const fallbackTimer                       = useRef(null);
 
+    const [uploading, setUploading]           = useState(false);
+    const [uploadSuccess, setUploadSuccess]   = useState(false);
+    const [uploadError, setUploadError]       = useState(null);
+
     useEffect(() => () => clearTimeout(fallbackTimer.current), []);
 
     const handleFlashEnd = async (hasError = false) => {
@@ -37,6 +41,43 @@ export function useFirmware() {
         clearTimeout(fallbackTimer.current);
     };
 
+    const uploadFirmwareToServer = async ({ file, version, channel, description }) => {
+        setUploading(true);
+        setUploadError(null);
+        setUploadSuccess(false);
+
+        const formData = new FormData();
+        formData.append('firmware', file);
+        formData.append('instrument', 'IO-8'); // Requerido por la validación de Laravel
+        formData.append('version', version);
+        formData.append('channel', channel);
+        if (description) formData.append('description', description);
+
+        try {
+            const response = await fetch('/api/admin/firmware/upload', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Error al procesar la subida en el servidor.');
+            }
+
+            setUploadSuccess(true);
+            return data;
+        } catch (err) {
+            setUploadError(err.message);
+            throw err;
+        } finally {
+            setUploading(false);
+        }
+    };
+
     const showComponents = connected || flashing;
 
     return {
@@ -52,6 +93,11 @@ export function useFirmware() {
         flashCompleted,
         showComponents,
         handleFlashStart,
-        handleFlashEnd
+        handleFlashEnd,
+        uploading,
+        uploadSuccess,
+        uploadError,
+        uploadFirmwareToServer,
+        instrument: 'IO-8'
     };
 }

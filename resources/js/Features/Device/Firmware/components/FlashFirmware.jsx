@@ -2,87 +2,72 @@
 
 import React from 'react';
 import { useFlashFirmware } from '@/Features/Device/Firmware/hooks/useFlashFirmware';
+import SecondaryButton from '@/Components/SecondaryButton';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashEnd }) {
     const {
-        firmware,
-        selected,
-        setSelected,
-        loadingFw,
-        flashing,
-        flashLog,
-        logRef,
-        handleFlash,
-        instrument
+        firmware, selected, setSelected,
+        loadingFw, flashing, flashLog, logRef,
+        handleFlash, instrument
     } = useFlashFirmware({ port, disconnect, onFlashStart, onFlashEnd });
 
     const channels = ['stable', 'nightly'];
 
     return (
-        <div>
-            <h3>Flash Firmware — {instrument}</h3>
+        <div className="space-y-4">
+            <h3 className="text-xs tracking-widest uppercase text-neutral-400">
+                Flash Firmware — {instrument}
+            </h3>
 
             {loadingFw ? (
-                <p>Cargando versiones disponibles...</p>
+                <p className="text-xs text-neutral-500 tracking-widest uppercase">Loading...</p>
             ) : !firmware || Object.keys(firmware).length === 0 ? (
-                <p style={{ color: 'red' }}>No hay firmware disponible</p>
+                <p className="text-xs text-rose-400 tracking-widest uppercase">No firmware available</p>
             ) : (
-                <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
-                    {channels.map(channel =>
-                        firmware[channel] ? (
-                            <label
-                                key={channel}
-                                style={{
-                                    border: `2px solid ${selected?.channel === channel ? '#0f0' : '#555'}`,
-                                    borderRadius: '6px',
-                                    padding: '10px 16px',
-                                    cursor: 'pointer',
-                                    userSelect: 'none',
-                                }}
-                            >
-                                <input
-                                    type="radio"
-                                    name="channel"
-                                    value={channel}
-                                    checked={selected?.channel === channel}
-                                    onChange={() => setSelected({ ...firmware[channel], channel })}
-                                    style={{ display: 'none' }}
-                                />
-                                <strong style={{ textTransform: 'capitalize' }}>{channel}</strong>
-                                <br />
-                                <span style={{ fontSize: '12px', color: '#aaa' }}>
-                                    v{firmware[channel].version} · {firmware[channel].size}
-                                </span>
-                                {firmware[channel].description && (
-                                    <>
-                                        <br />
-                                        <span style={{ fontSize: '11px', color: '#888' }}>
-                                            {firmware[channel].description}
-                                        </span>
-                                    </>
-                                )}
-                            </label>
-                        ) : null
-                    )}
+                <div className="flex gap-3">
+                    {channels.map(channel => firmware[channel] ? (
+                    <PrimaryButton
+                        key={channel}
+                        onClick={() => setSelected({ ...firmware[channel], channel })}
+                        className={`rounded-lg px-4 py-3 text-xs transition-colors flex flex-col gap-2 bg-neutral-900 ${
+                            selected?.channel === channel
+                                ? 'border-emerald-500 text-neutral-200'
+                                : 'border-neutral-800 text-neutral-500 hover:border-neutral-500'
+                        }`}
+                    >
+                        <div className="tracking-widest uppercase h-4s">
+                            {channel}
+                        </div>
+
+                        <div className="text-neutral-500 h-4 text-sm">
+                            v:{firmware[channel].version} · {firmware[channel].size}
+                        </div>
+
+                        <div className="text-neutral-600 overflow-hidden">
+                            {firmware[channel].description || <span className="opacity-0">No description</span>}
+                        </div>
+                    </PrimaryButton>
+                    ) : null)}
                 </div>
             )}
 
-            <button
+            <SecondaryButton
                 onClick={handleFlash}
                 disabled={!port || !selected || flashing || loadingFw}
+                className={`text-xs tracking-widest uppercase transition-colors ${
+                    !port || !selected || flashing || loadingFw
+                        ? 'text-neutral-700'
+                        : 'text-neutral-500 hover:text-neutral-200'
+                }`}
             >
-                {flashing ? 'Flasheando...' : `Flashear v${selected?.version ?? '...'}`}
-            </button>
+                {flashing ? 'FLASHING...' : `FLASH v${selected?.version ?? '...'}`}
+            </SecondaryButton>
 
             {flashLog.length > 0 && (
                 <div
                     ref={logRef}
-                    style={{
-                        height: '150px', overflowY: 'auto',
-                        background: '#000', color: '#ff0',
-                        fontFamily: 'monospace', padding: '8px',
-                        fontSize: '12px', marginTop: '10px',
-                    }}
+                    className="h-36 overflow-y-auto bg-black text-yellow-400 font-mono text-xs p-2 rounded border border-neutral-800"
                 >
                     {flashLog.map((line, i) => <div key={i}>{line}</div>)}
                 </div>

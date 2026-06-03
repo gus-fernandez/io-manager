@@ -1,6 +1,6 @@
 // @/Features/Device/Firmware/hooks/useFlashFirmware.js
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { ESPLoader, Transport } from 'esptool-js';
 
 const INSTRUMENT = 'IO-8';
@@ -13,13 +13,13 @@ export function useFlashFirmware({ port, disconnect, onFlashStart, onFlashEnd })
     const [flashLog, setFlashLog]   = useState([]);
     const logRef = useRef(null);
 
-    // Cargar versiones disponibles al montar
-    useEffect(() => {
+    const loadFirmware = useCallback(() => {
+        setLoadingFw(true);
         fetch(`/api/firmware/list?instrument=${INSTRUMENT}`)
             .then(r => r.json())
             .then(data => {
                 setFirmware(data.firmware);
-                if (data.firmware.stable) {
+                if (data.firmware && data.firmware.stable) {
                     setSelected({ ...data.firmware.stable, channel: 'stable' });
                 }
             })
@@ -27,7 +27,10 @@ export function useFlashFirmware({ port, disconnect, onFlashStart, onFlashEnd })
             .finally(() => setLoadingFw(false));
     }, []);
 
-    // Auto-scroll del log
+    useEffect(() => {
+        loadFirmware();
+    }, [loadFirmware]);
+
     useEffect(() => {
         if (logRef.current) {
             logRef.current.scrollTop = logRef.current.scrollHeight;
@@ -136,6 +139,7 @@ export function useFlashFirmware({ port, disconnect, onFlashStart, onFlashEnd })
         flashLog,
         logRef,
         handleFlash,
-        instrument: INSTRUMENT
+        instrument: INSTRUMENT,
+        reloadFirmwareList: loadFirmware // 3. Exponemos la función
     };
 }

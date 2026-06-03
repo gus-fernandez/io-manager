@@ -7,22 +7,34 @@ use Illuminate\Http\JsonResponse;
 
 class AdminController extends Controller
 {
-    /**
-     * Subir firmware
-     */
     public function uploadFirmware(Request $request): JsonResponse
     {
-        // 1. Validar el archivo
         $request->validate([
-            'firmware' => 'required|file|mimes:bin,hex|max:10240', // 10MB máximo
+            'firmware'    => 'required|file|max:10240',
+            'instrument'  => 'required|string',
+            'version'     => 'required|string',
+            'channel'     => 'required|in:stable,nightly',
+            'description' => 'nullable|string',
         ]);
 
-        // 2. Lógica para guardar el archivo
-        $path = $request->file('firmware')->store('firmwares');
+        $file = $request->file('firmware');
+        $version = $request->input('version');
+        $filename = "IO-8_v{$version}.bin";
+        $file->storeAs('firmware', $filename);
+
+        $firmware = \App\Models\Firmware::create([
+            'instrument'    => 'IO-8',
+            'compatibility' => 'ESP32-WROOM-32',
+            'version'       => $version,
+            'filename'      => $filename,
+            'description'   => $request->input('description'),
+            'channel'       => $request->input('channel'),
+            'size_bytes'    => $file->getSize(),
+        ]);
 
         return response()->json([
-            'message' => 'Firmware subido con éxito.',
-            'path' => $path
+            'message'  => 'Firmware subido y registrado con éxito.',
+            'firmware' => $firmware
         ], 201);
     }
 
