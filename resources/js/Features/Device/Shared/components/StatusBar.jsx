@@ -1,7 +1,7 @@
 // @/Features/Device/Shared/components/StatusBar.jsx
 
 import React from 'react';
-import { useDevice } from '@/Features/Device/Shared/context/WsContext';
+import { useDevice } from '@/Contexts/WsContext';
 import VirtualKeyboard from '@/Features/Device/Shared/components/VirtualKeyboard.jsx';
 import WsConnection from '@/Features/Device/Shared/components/WsConnection';
 

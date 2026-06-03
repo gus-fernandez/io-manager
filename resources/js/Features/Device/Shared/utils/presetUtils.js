@@ -133,6 +133,14 @@ export function parseMetadata(rawBuffer) {
 
         let currentFlags = parseFlags(rawBuffer[offset + MetaSlot.Flags]);
         let currentName  = parseName(rawBuffer.subarray(offset + MetaSlot.Name, offset + MetaSlot.Name + NAME_SIZE));
+        
+        //DEBUG
+        //let check = rawBuffer.subarray(offset + MetaSlot.Name, offset + MetaSlot.Name + NAME_SIZE);
+        //const decoder = new TextDecoder('utf-8');
+        //console.log("Bytes:", check);
+        //console.log("Buffer:", decoder.decode(check));
+        //console.log(currentName);
+        
         let currentCrc   = parseCrc(rawBuffer.subarray(offset + MetaSlot.Crc, offset + MetaSlot.Crc + 4));
 
         presets.push({
@@ -169,7 +177,7 @@ export function packPresetForBD(preset) {
     buffer[Slot.Flags] = packFlags(uploadFlags);
 
     // Name (16 bytes, null-padded)
-    const nameBytes = new Uint8Array(16);
+    const nameBytes = new Uint8Array(16).fill(0x20);
     for (let i = 0; i < Math.min(preset.name.length, 16); i++) {
         nameBytes[i] = preset.name.charCodeAt(i);
     }

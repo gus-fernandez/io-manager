@@ -1,7 +1,7 @@
 // @/Pages/Control.jsx
 
 import React from 'react';
-import { useDevice } from '@/Features/Device/Shared/context/WsContext';
+import { useDevice } from '@/Contexts/WsContext';
 import ModuleGrid from '@/Features/Device/Control/components/layout/ModuleGrid';
 
 export default function Control() {

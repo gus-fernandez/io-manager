@@ -1,7 +1,7 @@
 // @/Features/Device/Shared/hooks/usePresetsBar.js
 
 import { useState, useEffect, useRef } from 'react';
-import { useDevice } from '@/Features/Device/Shared/context/WsContext';
+import { useDevice } from '@/Contexts/WsContext';
 import { sendSavePacket, sendLoadPacket, sendDeletePacket } from '@/Features/Device/Shared/utils/wsMsgHandle.js';
 import { packFlags } from '@/Features/Device/Shared/utils/presetUtils.js';
 

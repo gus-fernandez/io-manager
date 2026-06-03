@@ -10,7 +10,7 @@ export const mergePresets = (privateData, devicePresets) => {
         const match = devicePresets.find(d => 
             !matchedDeviceIds.has(d.id) && 
             d.crc === cloudCrc && 
-            d.name.toUpperCase() === cloud.name.toUpperCase()
+            d.name.trim().toUpperCase() === cloud.name.trim().toUpperCase()
         );
 
         merged.push({

@@ -3,7 +3,7 @@ import './bootstrap';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
-import axios from '@/bootstrap';
+import { AuthProvider, useAuth } from '@/Contexts/AuthContext';
 import AppLayout from './Layouts/AppLayout';
 import DeviceLayout from './Layouts/DeviceLayout';
 import Profile from './Pages/Profile/Edit';
@@ -12,17 +12,16 @@ import Control from './Pages/Control';
 import Cloud from './Pages/Cloud';
 import Firmware from './Pages/Firmware';
 import About from './Pages/About';
-import NavGuardModal from '@/Features/Device/Shared/components/NavGuardModal.jsx'
+import NavGuardModal from '@/Features/Device/Shared/components/NavGuardModal.jsx';
 
 const getInitialTab = () => {
-    const path = window.location.pathname.replace('/', '') || 'control';
-    return path;
+    return window.location.pathname.replace('/', '') || 'control';
 };
 
-function App() {
+function AppContent() {
+    const { user, setUser, loading, logout } = useAuth();
     const [currentTab, setTab] = useState(getInitialTab);
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [isBooted, setIsBooted] = useState(false);
     const navGuardRef = useRef(null);
     const [pendingTab, setPendingTab] = useState(null);
     const [showGuardModal, setShowGuardModal] = useState(false);
@@ -66,47 +65,31 @@ function App() {
             alert("Your mail has been verified!");
             window.history.replaceState({}, document.title, "/");
         }
-
-        const checkAuth = async () => {
-            try {
-                await axios.get('/sanctum/csrf-cookie');
-                const response = await axios.get('/api/current-user');
-                setUser(response.data);
-
-                const validTabs = ['control', 'cloud', 'firmware', 'about', 'profile'];
-                const pathTab = window.location.pathname.replace('/', '');
-                const startTab = validTabs.includes(pathTab) ? pathTab : 'control';
-
-                setTab(startTab);
-                window.history.replaceState({}, '', `/${startTab}`);
-            } catch (error) {
-                setUser(null);
-                setTab('landing');
-                window.history.replaceState({}, '', '/');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        checkAuth();
     }, []);
 
-    const handleLogout = async () => {
-        try {
-            await axios.post('/logout');
-        } catch (error) {
-            console.error('Error al cerrar sesión:', error);
-        } finally {
-            setUser(null);
-            setTab('landing');
-            window.history.pushState({}, '', '/');
+    useEffect(() => {
+        if (loading) return;
+
+        if (user) {
+            const validTabs = ['control', 'cloud', 'firmware', 'about', 'profile'];
+            const pathTab = window.location.pathname.replace('/', '');
+            const startTab = validTabs.includes(pathTab) ? pathTab : 'control';
+
+            setTab(startTab);
+            window.history.replaceState({}, '', `/${startTab}`);
+        } else {
+            if (!isBooted) {
+                setTab('landing');
+                window.history.replaceState({}, '', '/');
+            }
         }
-    };
+        setIsBooted(true);
+    }, [user, loading]);
 
     const renderContent = () => {
         try {
             if (currentTab === 'profile' && !user) {
-                return <div className="p-6 text-center text-neutral-500">Cargando perfil...</div>;
+                return <div className="p-6 text-center text-neutral-500">Loading Profile...</div>;
             }
 
             const isDeviceTab = currentTab === 'control' || currentTab === 'cloud';
@@ -121,7 +104,6 @@ function App() {
                     {currentTab === 'firmware'     && <Firmware />}
                     {currentTab === 'about'        && <About />}
                     {currentTab === 'profile'      && <Profile user={user} setUser={setUser} />}
-                    {currentTab === 'verify-email' && <VerifyEmail onLogout={handleLogout} />}
                 </>
             );
         } catch (e) {
@@ -130,7 +112,7 @@ function App() {
         }
     };
 
-    if (loading) {
+    if (loading || !isBooted) {
         return (
             <div className="font-whiterabbit flex h-screen items-center justify-center bg-neutral-900 text-neutral-400">
                 Loading...
@@ -148,7 +130,7 @@ function App() {
             currentTab={currentTab} 
             setTab={requestTabChange} 
             user={user} 
-            onLogout={handleLogout}
+            onLogout={logout}
         >
             {renderContent()}
         </AppLayout>
@@ -159,6 +141,14 @@ function App() {
             onCancel={handleGuardCancel}
         />}
         </>
+    );
+}
+
+function App() {
+    return (
+        <AuthProvider>
+            <AppContent />
+        </AuthProvider>
     );
 }
 

@@ -88,7 +88,7 @@ export const RepoWrapper = ({
                                     {item.fav ? '♥' : '♡'}
                                 </span>
                             )}
-                            <div className="min-w-[80px] text-right">
+                            <div className="text-right">
                                 {renderActions && renderActions(item)}
                             </div>
                         </li>

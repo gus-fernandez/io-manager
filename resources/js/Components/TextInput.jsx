@@ -22,7 +22,7 @@ export default forwardRef(function TextInput(
             type={type}
             ref={localRef}
             className={
-                'rounded-md border border-neutral-800 bg-neutral-900 text-neutral-300 placeholder:text-neutral-600 focus:border-neutral-700 focus:ring-0 focus:outline-none ' +
+                'rounded-md border border-neutral-800 bg-neutral-950 text-neutral-300 placeholder:text-neutral-600 focus:border-neutral-700 focus:ring-0 focus:outline-none ' +
                 className
             }
         />

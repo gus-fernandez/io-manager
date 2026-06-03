@@ -1,9 +1,11 @@
 // @/Features/Device/Cloud/components/Repo.jsx
 
 import { useState } from 'react';
+import { useAuth } from '@/Contexts/AuthContext';
 import { RepoWrapper } from './RepoWrapper';
 import { UploadPresetModal } from './UploadPresetModal';
 import NavGuardModal from '@/Features/Device/Shared/components/NavGuardModal.jsx';
+import { PublishModal } from './PublishModal';
 import { canSync, hasItemsToSync } from '@/Features/Device/Cloud/utils/repoUtils.js';
 import { Cat } from '@/Features/Device/Shared/utils/presetUtils';
 import { useStars } from '@/Features/Device/Cloud/hooks/useStars.js';
@@ -32,17 +34,20 @@ const SortButton = ({ label, sortKey, sortConfig, onSort }) => {
 export const Repo = ({
     type = 'private',
     data, loading, freeSlots, isParsed, deviceNames = [], uploadToDevice,
-    onDelete, onUpload, onSyncAll, isSyncing, currentPreset, snapshot,
-    presetModified, onSave, onDiscard, sortConfig, setSortConfig, setData
+    onDelete, onUpload, onSyncAll, onPublish, isSyncing, currentPreset, snapshot,
+    presetModified, onSave, onDiscard, sortConfig, setSortConfig, setData, onDeleteFromPublic
 }) => {
-    // Refactor
+    // Needs Refactor
+    const { isAuthenticated, user } = useAuth();
     const [pendingItem, setPendingItem] = useState(null);
     const [pendingName, setPendingName] = useState('');
     const [pendingGuardItem, setPendingGuardItem] = useState(null);
     const [isPendingSync, setIsPendingSync] = useState(false);
+    const [publishItem, setPublishItem] = useState(null);
 
     const isPrivate = type === 'private';
     const isLoadDisabled = freeSlots <= 0 || !isParsed;
+    const isAdmin = Boolean(user?.is_admin) || user?.role === 'admin';
 
     const { handleRate, handleDeleteRate } = useStars(setData);
 
@@ -130,6 +135,11 @@ export const Repo = ({
         });
     };
 
+    const handlePublishConfirm = (desc) => {
+        onPublish(publishItem, desc);
+        setPublishItem(null);
+    };
+
     const syncColor = (item) => canSync(item, currentPreset) && isParsed ? 'text-emerald-400 hover:text-neutral-200' : 'text-neutral-700';
     const syncAllColor = () => hasItemsToSync(data) && !isSyncing && isParsed ? 'text-emerald-400 hover:text-neutral-200' : 'text-neutral-700';
 
@@ -153,6 +163,14 @@ export const Repo = ({
             />
         )}
 
+        {publishItem && (
+            <PublishModal
+                item={publishItem}
+                onClose={() => setPublishItem(null)}
+                onConfirm={handlePublishConfirm}
+            />
+        )}
+
         <RepoWrapper
             title={
                 <div className="flex items-center gap-6">
@@ -172,9 +190,11 @@ export const Repo = ({
             titleAction={isPrivate && (
                 <div className="flex items-center gap-4 tracking-widest uppercase">
                     <span className="text-xs text-neutral-500">{isParsed ? `FREE SLOTS: ${freeSlots}/128` : 'FREE SLOTS: --'}</span>
-                    <button onClick={onSyncAll} disabled={!hasItemsToSync(data) || isSyncing || !isParsed} className={syncAllColor()}>
-                        {isSyncing ? '[SYNCING...]' : '[SYNC ALL]'}
-                    </button>
+                    {isAuthenticated && (
+                        <button onClick={onSyncAll} disabled={!hasItemsToSync(data) || isSyncing || !isParsed} className={syncAllColor()}>
+                            {isSyncing ? '[SYNCING...]' : '[SYNC ALL]'}
+                        </button>
+                    )}
                 </div>
             )}
             items={data}
@@ -187,15 +207,29 @@ export const Repo = ({
             renderActions={(item) => (
                 <div className="flex gap-2 text-xs">
                     {!isPrivate && (
-                        <button onClick={() => handleLoad(item)} disabled={isLoadDisabled} className={isLoadDisabled ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'}>[LOAD]</button>
+                        <>
+                        <button onClick={() => 
+                            handleLoad(item)} 
+                            disabled={isLoadDisabled}
+                            className={isLoadDisabled ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'}
+                        >[LOAD]</button>
+                        {isAdmin && (
+                            <button onClick={() => onDeleteFromPublic(item.cloudId)}
+                            className="text-neutral-500 hover:text-neutral-200"
+                            >[DELETE]</button>
+                        )}
+                        </>
                     )}
                     {isPrivate && item.inCloud && (
                         <>
                         <button onClick={() => handleLoad(item)} disabled={isLoadDisabled} className={isLoadDisabled ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'}>[LOAD]</button>
                         <button onClick={() => onDelete(item.cloudId)} className="text-neutral-500 hover:text-neutral-200">[DELETE]</button>
+                        {isAdmin && (
+                            <button onClick={() => setPublishItem(item)} className="text-neutral-500 hover:text-neutral-200">[PUBLISH]</button>
+                        )}
                         </>
                     )}
-                    {isPrivate && !item.inCloud && (
+                    {isPrivate && !item.inCloud && isAuthenticated && (
                         <button onClick={handleSync} disabled={!canSync(item, currentPreset) || isSyncing || !isParsed} className={syncColor(item)}>[SYNC]</button>
                     )}
                 </div>

@@ -1,7 +1,8 @@
 // @/Features/Device/Cloud/hooks/useRepo.js
 
 import axios from '@/bootstrap';
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useAuth } from '@/Contexts/AuthContext'; // <-- Importar Auth
 import { packPresetForBD } from '@/Features/Device/Shared/utils/presetUtils';
 import { mergePresets, hexToUint8Array, getNextFreeSlot, needsSync } from '@/Features/Device/Cloud/utils/repoUtils.js';
 import { sendLoadPacket, sendPreset } from '@/Features/Device/Shared/utils/wsMsgHandle';
@@ -16,6 +17,7 @@ export const useRepo = (
     registerLoadCallback,
     wsState
 ) => {
+    const { isAuthenticated } = useAuth();
     const [privateData, setPrivateData] = useState([]);
     const [publicData, setPublicData] = useState([]);
     const [loadingPrivate, setLoadingPrivate] = useState(true);
@@ -38,7 +40,7 @@ export const useRepo = (
         return () => registerSaveCallback(null);
     }, [registerSaveCallback]);
 
-    const fetchPrivate = async () => {
+    const fetchPrivate = useCallback(async () => {
         setLoadingPrivate(true);
         try {
             const { data } = await axios.get('/api/cloud/private');
@@ -48,9 +50,9 @@ export const useRepo = (
         } finally {
             setLoadingPrivate(false);
         }
-    };
+    }, []);
 
-    const fetchPublic = async () => {
+    const fetchPublic = useCallback(async () => {
         setLoadingPublic(true);
         try {
             const { data } = await axios.get('/api/cloud/public');
@@ -60,9 +62,20 @@ export const useRepo = (
         } finally {
             setLoadingPublic(false);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            setLoadingPrivate(false);
+            setLoadingPublic(false);
+            return;
+        }
+        fetchPrivate();
+        fetchPublic();
+    }, [isAuthenticated]);
 
     const deletePreset = async (id) => {
+        if (!isAuthenticated) return;
         try {
             await axios.delete(`/api/presets/${id}`);
             setPrivateData(prev => prev.filter(item => item.id !== id));
@@ -72,6 +85,7 @@ export const useRepo = (
     };
 
     const uploadPreset = async (preset) => {
+        if (!isAuthenticated) return;
         try {
             const { dbFields } = packPresetForBD(preset);
             
@@ -89,6 +103,50 @@ export const useRepo = (
             }
         } catch (error) {
             console.error('Error al subir preset:', error);
+        }
+    };
+
+const publishToPublic = async (item, desc) => {
+        if (!isAuthenticated) return;
+        
+        try {
+            const rawPreset = privateData.find(p => p.id === item.cloudId);
+            if (!rawPreset) return;
+
+            const existingPublic = publicData.find(
+                p => p.name.trim().toUpperCase() === item.name.trim().toUpperCase()
+            );
+
+            const payload = {
+                name: rawPreset.name,
+                cat: rawPreset.cat,
+                crc32: rawPreset.crc32 ?? rawPreset.crc,
+                params: rawPreset.params,
+                desc: desc,
+                is_global: true,
+                fav: false
+            };
+
+            if (existingPublic) {
+                const publicId = existingPublic.cloudId || existingPublic.id;
+                await axios.put(`/api/presets/${publicId}`, payload);
+            } else {
+                await axios.post(`/api/presets`, payload);
+            }
+            
+            fetchPublic();
+        } catch (error) {
+            console.error('Error publicando preset:', error);
+        }
+    };
+
+    const deleteFromPublic = async (id) => {
+        if (!isAuthenticated) return;
+        try {
+            await axios.delete(`/api/presets/${id}`);
+            setPublicData(prev => prev.filter(item => item.id !== id));
+        } catch (error) {
+            console.error('Error al borrar preset:', error);
         }
     };
 
@@ -122,6 +180,7 @@ export const useRepo = (
     };
 
     const syncAll = () => {
+        if (!isAuthenticated) return;
         const itemsToSync = privatePresets.filter(item => needsSync(item));
         if (!itemsToSync.length) return;
 
@@ -150,11 +209,6 @@ export const useRepo = (
 
         sendLoadPacket(send, first.deviceId);
     };  
-
-    useEffect(() => {
-        fetchPrivate();
-        fetchPublic();
-    }, []);
     
     const rawPublicPresets = useMemo(() => {
         return publicData.map(pub => {
@@ -170,12 +224,12 @@ export const useRepo = (
                 key: `public-${pub.id}`,
                 name: pub.name,
                 desc: pub.desc,
-                rating: pub.rating,
+                rating: pub.rating ?? 0,
                 cat: pub.cat,
                 fav: false,
                 cloudId: pub.id,
-                userVoted: !!pub.user_voted,
-                userVote: pub.user_vote,
+                userVoted: !!pub.user_voted || false,
+                userVote: pub.user_vote || null,
                 deviceId: devicePresets.find(d => d.crc === pubCrc && d.name.toUpperCase() === pub.name.toUpperCase())?.id ?? null,
                 inCloud,
                 inDevice,
@@ -191,7 +245,8 @@ export const useRepo = (
     }, [rawPublicPresets, publicSort]);
 
     const privatePresets = useMemo(() => {
-        const merged = mergePresets(privateData, devicePresets);
+        const bdData = isAuthenticated ? privateData : [];
+        const merged = mergePresets(bdData, devicePresets);
         return sortPresets(merged, privateSort.key, privateSort.asc, privateSort.activeCat);
     }, [privateData, devicePresets, privateSort]);
 
@@ -203,6 +258,7 @@ export const useRepo = (
         deletePreset, uploadPreset,
         syncAll, isSyncing, freeSlots, uploadToDevice,
         privateSort, setPrivateSort,
-        publicSort, setPublicSort, setPublicData
+        publicSort, setPublicSort, setPublicData,
+        publishToPublic, deleteFromPublic
     };
 };

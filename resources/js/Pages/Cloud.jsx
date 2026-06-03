@@ -1,13 +1,15 @@
 // @/Pages/Cloud.jsx
 
 import React from 'react';
-import { useDevice } from '@/Features/Device/Shared/context/WsContext';
+import { useAuth } from '@/Contexts/AuthContext';
+import { useDevice } from '@/Contexts/WsContext';
 import { useRepo } from '@/Features/Device/Cloud/hooks/useRepo';
 import { Repo } from '@/Features/Device/Cloud/components/Repo';
 import { sendSavePacket, sendLoadPacket } from '@/Features/Device/Shared/utils/wsMsgHandle.js';
 import { packFlags } from '@/Features/Device/Shared/utils/presetUtils.js';
 
 export default function Cloud() {
+    const { isAuthenticated } = useAuth();
     const { ws } = useDevice();
     const isConnected = ws.status === 'Connected';
 
@@ -28,7 +30,9 @@ export default function Cloud() {
         syncAll,
         isSyncing,
         freeSlots,
-        uploadToDevice
+        uploadToDevice,
+        publishToPublic,
+        deleteFromPublic
     } = useRepo(devicePresets, ws.currentPreset, ws.send, ws.registerSaveCallback, ws.registerLoadCallback, ws);
 
     const handleSave = () => {
@@ -63,6 +67,7 @@ export default function Cloud() {
                         uploadToDevice={uploadToDevice}
                         onDelete={deletePreset}
                         onUpload={uploadPreset}
+                        onPublish={publishToPublic}
                         onSyncAll={syncAll}
                         isSyncing={isSyncing}
                         currentPreset={ws.currentPreset}
@@ -72,26 +77,28 @@ export default function Cloud() {
                         onDiscard={handleDiscard}
                     />
                 </section>
-
-                <section>
-                    <Repo 
-                        type="public"
-                        data={publicPresets}
-                        setData={setPublicData}
-                        sortConfig={publicSort}
-                        setSortConfig={setPublicSort}
-                        loading={loading}
-                        freeSlots={freeSlots}
-                        isParsed={ws.isParsed}
-                        deviceNames={deviceNames}
-                        uploadToDevice={uploadToDevice}
-                        currentPreset={ws.currentPreset}
-                        snapshot={ws.snapshot}
-                        presetModified={ws.presetModified}
-                        onSave={handleSave}
-                        onDiscard={handleDiscard}
-                    />
-                </section>
+                {isAuthenticated && (
+                    <section>
+                        <Repo 
+                            type="public"
+                            data={publicPresets}
+                            setData={setPublicData}
+                            sortConfig={publicSort}
+                            setSortConfig={setPublicSort}
+                            loading={loading}
+                            freeSlots={freeSlots}
+                            isParsed={ws.isParsed}
+                            deviceNames={deviceNames}
+                            uploadToDevice={uploadToDevice}
+                            onDeleteFromPublic={deleteFromPublic}
+                            currentPreset={ws.currentPreset}
+                            snapshot={ws.snapshot}
+                            presetModified={ws.presetModified}
+                            onSave={handleSave}
+                            onDiscard={handleDiscard}
+                        />
+                    </section>
+                )}
             </div>
         </div>
     );

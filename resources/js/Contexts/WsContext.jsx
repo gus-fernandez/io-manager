@@ -1,4 +1,4 @@
-// @/Features/Device/Shared/context/WsContext.jsx
+// @/Contexts/WsContext.jsx
 
 import React, { createContext, useContext } from 'react';
 import useWebSocket from '@/Features/Device/Shared/hooks/useWebSocket';

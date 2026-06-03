@@ -1,7 +1,7 @@
 // @/Layouts/DeviceLayout.jsx
 
 import React from 'react';
-import { WsProvider } from '@/Features/Device/Shared/context/WsContext';
+import { WsProvider } from '@/Contexts/WsContext';
 import StatusBar from '@/Features/Device/Shared/components/StatusBar';
 import PresetsBar from '@/Features/Device/Shared/components/PresetsBar';
 
