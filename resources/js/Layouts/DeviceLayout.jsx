@@ -10,7 +10,7 @@ export default function DeviceLayout({ children, currentTab, registerNavGuard })
         <WsProvider registerNavGuard={registerNavGuard}>
             <div>
                 <StatusBar currentTab={currentTab} />
-                <PresetsBar />
+                {currentTab !== 'firmware' && <PresetsBar />}
                 <main>
                     {children}
                 </main>

@@ -7,7 +7,7 @@ import WsConnection from '@/Features/Device/Shared/components/WsConnection';
 
 export default function StatusBar({ currentTab }) {
     const { ws, midi } = useDevice();
-    const isConnected = ws.status === 'Connected';
+    const isConnected = ws.status === 'Connected' && currentTab !== 'firmware';
     const pageTitle = `IO-${currentTab}`;
 
     return (
@@ -19,7 +19,7 @@ export default function StatusBar({ currentTab }) {
                 <WsConnection ws={ws} />
             </div>
             <div className="min-w-[400px] bg-black text-neutral-500 p-1 text-xs rounded-md">
-                {!midi.logMidi ? (
+                {!isConnected || !midi.logMidi ? (
                     <span className="text-neutral-600">No MIDI activity</span>
                 ) : (
                     <div className='px-1'>{midi.logMidi}</div>

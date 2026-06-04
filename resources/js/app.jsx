@@ -92,18 +92,19 @@ function AppContent() {
                 return <div className="p-6 text-center text-neutral-500">Loading Profile...</div>;
             }
 
-            const isDeviceTab = currentTab === 'control' || currentTab === 'cloud';
+            const isDeviceTab = ['control', 'cloud', 'firmware'].includes(currentTab);
 
             return (
                 <>
                     {isDeviceTab && (
                         <DeviceLayout currentTab={currentTab} registerNavGuard={registerNavGuard}>
-                            {currentTab === 'control' ? <Control /> : <Cloud />}
+                            {currentTab === 'control'   && <Control />}
+                            {currentTab === 'cloud'     && <Cloud />}
+                            {currentTab === 'firmware'  && <Firmware />}
                         </DeviceLayout>
                     )}
-                    {currentTab === 'firmware'     && <Firmware />}
-                    {currentTab === 'about'        && <About />}
-                    {currentTab === 'profile'      && <Profile user={user} setUser={setUser} />}
+                    {currentTab === 'about'     && <About />}
+                    {currentTab === 'profile'   && <Profile user={user} setUser={setUser} />}
                 </>
             );
         } catch (e) {
