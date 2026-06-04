@@ -82,10 +82,13 @@ CLOUD
 FIRMWARE
 @/Features/Device/Firmware/components/FlashFirmware.jsx
 @/Features/Device/Firmware/components/SerialMonitor.jsx
+@/Features/Device/Firmware/components/UploadFirmware.jsx
 
 @/Features/Device/Firmware/hooks/useSerial.js
 @/Features/Device/Firmware/hooks/useFlashFirmware.js
 @/Features/Device/Firmware/hooks/useFirmware.js
+
+@/Features/Device/Firmware/utils/serialUtils.js
 
 CONTROL
 @/Features/Device/Control/components/layout/Module.jsx

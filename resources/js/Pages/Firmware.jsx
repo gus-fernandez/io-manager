@@ -14,7 +14,8 @@ export default function Firmware() {
     const {
         port, connected, error, log, logRef, connect, disconnect, clearLog,
         flashing, flashCompleted, showComponents, handleFlashStart, handleFlashEnd,
-        uploading, uploadSuccess, uploadError, uploadFirmwareToServer, instrument
+        uploading, uploadSuccess, uploadError, uploadFirmwareToServer, instrument,
+        handleCommand, wifiState
     } = useFirmware();
 
     return (
@@ -22,11 +23,11 @@ export default function Firmware() {
             <div>
                 <div className="flex items-center gap-6 text-xs tracking-widest uppercase">
                     <span className={connected ? 'text-emerald-500' : 'text-neutral-500'}>
-                        {flashing ? 'FLASHING...' : connected ? 'SERIAL CONNECTED' : 'SERIAL DISCONNECTED'}
+                        {flashing ? 'FLASHING...' : connected ? 'USB-SERIAL CONNECTED' : 'USB-SERIAL DISCONNECTED'}
                     </span>
-                    {error && <span className="text-rose-400">{error}</span>}
+                    {error && <span className="text-rose-300">{error}</span>}
                     {flashCompleted && !connected && (
-                        <span className="text-emerald-400">Flash complete. Reconnecting...</span>
+                        <span className="text-emerald-500">Flash complete. Reconnecting...</span>
                     )}
                     {!connected && !flashing
                         ? <button onClick={connect} className="text-neutral-500 hover:text-neutral-200">[CONNECT]</button>
@@ -38,7 +39,13 @@ export default function Firmware() {
             {showComponents && (
                 <div className="space-y-6">
                     {connected && !flashing && (
-                        <SerialMonitor log={log} clearLog={clearLog} logRef={logRef} />
+                        <SerialMonitor
+                            log={log}
+                            clearLog={clearLog}
+                            logRef={logRef}
+                            onCommand={handleCommand}
+                            currentState={wifiState}
+                        />
                     )}
                     <FlashFirmware
                         port={port}

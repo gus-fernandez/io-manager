@@ -5,7 +5,11 @@ import useSerial from '@/Features/Device/Firmware/hooks/useSerial.js';
 
 export function useFirmware() {
     const serial = useSerial();
-    const { port, connected, error, log, logRef, connect, disconnect, clearLog, autoReconnect } = serial;
+    const { 
+        port, connected, error, log, logRef,
+        connect, disconnect, clearLog, autoReconnect,
+        send, wifiState, wifiPayload, handleCommand
+    } = serial;
 
     const [flashing, setFlashing]             = useState(false);
     const [flashCompleted, setFlashCompleted] = useState(false);
@@ -81,23 +85,12 @@ export function useFirmware() {
     const showComponents = connected || flashing;
 
     return {
-        port,
-        connected,
-        error,
-        log,
-        logRef,
-        connect,
-        disconnect,
-        clearLog,
-        flashing,
-        flashCompleted,
-        showComponents,
-        handleFlashStart,
-        handleFlashEnd,
-        uploading,
-        uploadSuccess,
-        uploadError,
-        uploadFirmwareToServer,
-        instrument: 'IO-8'
+        port, connected, error, log, logRef,
+        connect, disconnect, clearLog, 
+        flashing, flashCompleted, showComponents,
+        handleFlashStart, handleFlashEnd,
+        uploading, uploadSuccess, uploadError,
+        send, wifiState, wifiPayload, handleCommand,
+        uploadFirmwareToServer, instrument: 'IO-8'
     };
 }

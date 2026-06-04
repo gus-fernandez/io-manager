@@ -1,6 +1,7 @@
 // @/Features/Device/Firmware/hooks/useSerial.js
 
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { SerialProtocol, WifiStates, WIFI_OP_CODE } from '@/Features/Device/Firmware/utils/serialUtils.js';
 
 const MAX_LOG_LINES = 100;
 
@@ -9,6 +10,9 @@ export default function useSerial() {
     const [connected, setConnected] = useState(false);
     const [error, setError]         = useState(null);
     const [log, setLog]             = useState([]);
+    const [wifiState, setWifiState]     = useState(WifiStates.NEW_WIFI_SKIP);
+    const [wifiPayload, setWifiPayload] = useState(null);
+    const [xorKey, setXorKey]           = useState(null);
 
     const logRef         = useRef(null);
     const readerRef      = useRef(null);
@@ -23,7 +27,6 @@ export default function useSerial() {
         }
     }, [log]);
 
-    // Cierre atómico
     const cleanExistingPort = useCallback(async () => {
         if (closingPromise.current) return closingPromise.current;
 
@@ -47,7 +50,6 @@ export default function useSerial() {
         return closingPromise.current;
     }, []);
 
-    // Inicialización
     const initPort = useCallback(async (selectedPort) => {
         if (closingPromise.current) await closingPromise.current;
 
@@ -63,10 +65,12 @@ export default function useSerial() {
             setConnected(true);
             setError(null);
 
-            const reader  = selectedPort.readable.getReader();
+            const reader = selectedPort.readable.getReader();
             readerRef.current = reader;
+            
+            let binaryBuffer = new Uint8Array(0);
+            let textBuffer = '';
             const decoder = new TextDecoder();
-            let buffer    = '';
 
             isReadingRef.current = true;
 
@@ -76,14 +80,39 @@ export default function useSerial() {
                         const { value, done } = await reader.read();
                         if (done || !isReadingRef.current) break;
 
-                        buffer += decoder.decode(value, { stream: true });
-                        const lines = buffer.split('\n');
-                        buffer = lines.pop();
+                        let newBinaryBuffer = new Uint8Array(binaryBuffer.length + value.length);
+                        newBinaryBuffer.set(binaryBuffer);
+                        newBinaryBuffer.set(value, binaryBuffer.length);
+                        binaryBuffer = newBinaryBuffer;
+
+                        let result = SerialProtocol.binReceive(binaryBuffer);
+                        while (result.packet) {
+                            if (result.packet.opCode === WIFI_OP_CODE) {
+                                setWifiState(result.packet.state);
+                                
+                                if (result.packet.state === WifiStates.NEW_WIFI_START) {
+                                    setXorKey(result.packet.payload);
+                                } else if (result.packet.state === WifiStates.WAITING_FOR_SSID) {
+                                    setWifiPayload(result.packet.payload);
+                                }
+                            }
+                            binaryBuffer = result.buffer;
+                            result = SerialProtocol.binReceive(binaryBuffer);
+                        }
+
+                        textBuffer += decoder.decode(value, { stream: true });
+                        const lines = textBuffer.split('\n');
+                        textBuffer = lines.pop();
+
                         if (lines.length > 0) {
-                            setLog(prev => [
-                                ...prev,
-                                ...lines.map(text => ({ id: logIdRef.current++, text })),
-                            ].slice(-MAX_LOG_LINES));
+                            const cleanLines = lines.filter(line => !line.includes('###START###') && !line.includes('###END###'));
+                            
+                            if (cleanLines.length > 0) {
+                                setLog(prev => [
+                                    ...prev,
+                                    ...cleanLines.map(text => ({ id: logIdRef.current++, text })),
+                                ].slice(-MAX_LOG_LINES));
+                            }
                         }
                     }
                 } catch (err) {
@@ -152,6 +181,21 @@ export default function useSerial() {
 
     const clearLog = useCallback(() => setLog([]), []);
 
+    const handleCommand = useCallback((commandString) => {
+        const netWorkNum = wifiPayload ? wifiPayload[0] : 8;
+        
+        const bytes = SerialProtocol.handleCommand(
+            commandString,
+            wifiState,
+            xorKey,
+            netWorkNum
+        );
+
+        if (bytes) {
+            send(bytes);
+        }
+    }, [wifiState, xorKey, wifiPayload, send]);
+
     useEffect(() => {
         autoReconnect();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -162,16 +206,20 @@ export default function useSerial() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+
     return { 
         port, 
         connected, 
         error, 
         log, 
-        logRef, // NUEVO: Se expone la referencia para engancharla en el DOM
+        logRef,
+        wifiState,
+        wifiPayload,
         connect, 
         disconnect, 
         send, 
         clearLog, 
-        autoReconnect 
+        autoReconnect,
+        handleCommand
     };
 }
