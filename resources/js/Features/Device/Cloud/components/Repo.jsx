@@ -9,9 +9,10 @@ import { PublishModal } from './PublishModal';
 import { canSync, hasItemsToSync } from '@/Features/Device/Cloud/utils/repoUtils.js';
 import { Cat } from '@/Features/Device/Shared/utils/presetUtils';
 import { useStars } from '@/Features/Device/Cloud/hooks/useStars.js';
+import TextButton from '@/Components/TextButton';
 
 // Refactor to Components
-const SortButton = ({ label, sortKey, sortConfig, onSort }) => {
+const SortButton = ({ label, sortKey, sortConfig, onSort, title }) => {
     const isActive = sortConfig.key === sortKey;
     const activeCat = sortConfig.activeCat;
 
@@ -22,12 +23,13 @@ const SortButton = ({ label, sortKey, sortConfig, onSort }) => {
     }
 
     return (
-        <button 
+        <TextButton 
             onClick={() => onSort(sortKey)}
-            className={`text-xs uppercase tracking-widest ${isActive ? 'text-neutral-200' : 'text-neutral-500 hover:text-neutral-400'}`}
+            className={`text-xs uppercase tracking-wide ${isActive ? 'text-neutral-200' : 'text-neutral-500 hover:text-neutral-400'}`}
+            title={title}
         >
             [{label}{indicator}]
-        </button>
+        </TextButton>
     );
 };
 
@@ -173,27 +175,42 @@ export const Repo = ({
 
         <RepoWrapper
             title={
-                <div className="flex items-center gap-6">
+                <div className="flex flex-wrap items-center pt-6 gap-4">
                     <span>{isPrivate ? "Personal Repository" : "Public Repository"}</span>
                     <div className="flex gap-2">
-                        <SortButton label="Name" sortKey="name" sortConfig={sortConfig} onSort={handleSort} />
-                        <SortButton label="Loaded" sortKey="device" sortConfig={sortConfig} onSort={handleSort} />
-                        <SortButton label="Cat" sortKey="cat" sortConfig={sortConfig} onSort={handleSort} />
+                        <SortButton label="Name" sortKey="name" sortConfig={sortConfig} onSort={handleSort} 
+                            title="Sort presets by name asc or desc."
+                        />
+                        <SortButton label="Loaded" sortKey="device" sortConfig={sortConfig} onSort={handleSort}
+                            title="Loaded presets first."
+                        />
+                        <SortButton label="Cat" sortKey="cat" sortConfig={sortConfig} onSort={handleSort}
+                            title="Sort presets by category, loop between cats."
+                        />
                         {isPrivate ? (
-                            <SortButton label="Fav" sortKey="fav" sortConfig={sortConfig} onSort={handleSort} />
+                            <SortButton label="Fav" sortKey="fav" sortConfig={sortConfig} onSort={handleSort}
+                                title="Favorite presets first."
+                            />
                         ) : (
-                            <SortButton label="Rate" sortKey="rating" sortConfig={sortConfig} onSort={handleSort} />
+                            <SortButton label="Rate" sortKey="rating" sortConfig={sortConfig} onSort={handleSort}
+                                title="Sort presets by rating asc or desc. Voted presets first."
+                            />
                         )}
                     </div>
                 </div>
             }
             titleAction={isPrivate && (
-                <div className="flex items-center gap-4 tracking-widest uppercase">
-                    <span className="text-xs text-neutral-500">{isParsed ? `FREE SLOTS: ${freeSlots}/128` : 'FREE SLOTS: --'}</span>
+                <div className="flex items-center gap-4 pt-6 tracking-widest uppercase self-start">
+                    <span className="whitespace-nowrap text-xs text-neutral-500">{isParsed ? `FREE SLOTS: ${freeSlots}/128` : 'FREE SLOTS: --'}</span>
                     {isAuthenticated && (
-                        <button onClick={onSyncAll} disabled={!hasItemsToSync(data) || isSyncing || !isParsed} className={syncAllColor()}>
+                        <TextButton 
+                            onClick={onSyncAll} 
+                            disabled={!hasItemsToSync(data) || isSyncing || !isParsed}
+                            className={`whitespace-nowrap ${syncAllColor()}`}
+                            title="Upload all to the private database. It may take a while."
+                        >
                             {isSyncing ? '[SYNCING...]' : '[SYNC ALL]'}
-                        </button>
+                        </TextButton>
                     )}
                 </div>
             )}
@@ -208,29 +225,49 @@ export const Repo = ({
                 <div className="flex gap-2 text-xs">
                     {!isPrivate && (
                         <>
-                        <button onClick={() => 
+                        <TextButton onClick={() => 
                             handleLoad(item)} 
                             disabled={isLoadDisabled}
                             className={isLoadDisabled ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'}
-                        >[LOAD]</button>
+                            title="Load a preset from the public database to the instrument."
+                        >[LOAD]</TextButton>
                         {isAdmin && (
-                            <button onClick={() => onDeleteFromPublic(item.cloudId)}
+                            <TextButton onClick={() => onDeleteFromPublic(item.cloudId)}
                             className="text-neutral-500 hover:text-neutral-200"
-                            >[DELETE]</button>
+                            title="(Only admin) Delete a preset from the public database."
+                            >[DELETE]</TextButton>
                         )}
                         </>
                     )}
                     {isPrivate && item.inCloud && (
                         <>
-                        <button onClick={() => handleLoad(item)} disabled={isLoadDisabled} className={isLoadDisabled ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'}>[LOAD]</button>
-                        <button onClick={() => onDelete(item.cloudId)} className="text-neutral-500 hover:text-neutral-200">[DELETE]</button>
+                        <TextButton onClick={() =>
+                            handleLoad(item)} 
+                            disabled={isLoadDisabled} 
+                            className={isLoadDisabled ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'}
+                            title="Load a preset from your private database to the instrument."
+                        >[LOAD]</TextButton>
+                        <TextButton onClick={() =>
+                            onDelete(item.cloudId)}
+                            className="text-neutral-500 hover:text-neutral-200"
+                            title="Delete preset from your private database."
+                            >[DELETE]</TextButton>
                         {isAdmin && (
-                            <button onClick={() => setPublishItem(item)} className="text-neutral-500 hover:text-neutral-200">[PUBLISH]</button>
+                            <TextButton onClick={() => 
+                                setPublishItem(item)} 
+                                className="text-neutral-500 hover:text-neutral-200"
+                                title="(Only admin) Publish a preset from the private database to the public database."
+                                >[PUBLISH]</TextButton>
                         )}
                         </>
                     )}
                     {isPrivate && !item.inCloud && isAuthenticated && (
-                        <button onClick={handleSync} disabled={!canSync(item, currentPreset) || isSyncing || !isParsed} className={syncColor(item)}>[SYNC]</button>
+                        <TextButton 
+                            onClick={handleSync}
+                            disabled={!canSync(item, currentPreset) || isSyncing || !isParsed}
+                            className={syncColor(item)}
+                            title="Upload a preset to your private database."
+                        >[SYNC]</TextButton>
                     )}
                 </div>
             )}

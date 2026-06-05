@@ -3,7 +3,8 @@ import { AboutIcons } from "@/Features/Device/Shared/components/Icons";
 
 const IconWrapper = ({ children, href, tt }) => (
     <div className="w-14 h-14 block shrink-0 hover:text-neutral-200 transition-all duration-150 cursor-pointer hover:scale-125">
-        <a 
+        <a  
+            className="block w-full h-full outline-none focus-visible:ring-4 focus-visible:ring-neutral-700 rounded-full"
             title={tt}
             href={href}
             target="blank" 
@@ -17,7 +18,7 @@ const IconWrapper = ({ children, href, tt }) => (
 export default function About() {
     return (
         <>
-        <div className="text-neutral-400 flex w-full justify-center items-center gap-6 py-12">
+        <div className="text-neutral-400 flex w-full justify-center items-center gap-6 py-12 ">
             <IconWrapper tt="Link to Github" href="https://github.com/gus-fernandez/io-manager"><AboutIcons.Github /></IconWrapper>
             <IconWrapper tt="Link to LinkedIn" href="https://www.linkedin.com/in/gusmoai"><AboutIcons.Linkedin /></IconWrapper>
             <IconWrapper tt="Soon" href="https://discord.gg/"><AboutIcons.Discord /></IconWrapper>

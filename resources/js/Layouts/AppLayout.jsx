@@ -115,8 +115,13 @@ export default function AppLayout({ children, currentTab, setTab, user, onLogout
             </main>
 
             <footer className='border-t border-neutral-900 max-w-[1128px] mx-auto w-full text-right text-neutral-600 text-xs py-1 px-4 -translate-y-2'>
-                © 2026 IO-MANAGER — Licensed under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-200 underline">MIT</a>
+                © 2026 IO-MANAGER — Licensed under <a 
+                    href="https://opensource.org/licenses/MIT" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-neutral-200 underline outline-none focus-visible:ring-1 focus-visible:ring-neutral-700 rounded-sm"
+                    >MIT</a>
             </footer>
         </div>
-    );
+    );      
 }

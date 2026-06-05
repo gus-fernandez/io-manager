@@ -52,24 +52,44 @@ export default function Cloud() {
     };
 
     return (
-        <div className="py-10">
-            <div className="space-y-6">
+        <div>
+            <section>
+                <Repo
+                    type="private"
+                    data={privatePresets}
+                    sortConfig={privateSort}
+                    setSortConfig={setPrivateSort}
+                    loading={loading}
+                    freeSlots={freeSlots}
+                    isParsed={ws.isParsed}
+                    deviceNames={deviceNames}
+                    uploadToDevice={uploadToDevice}
+                    onDelete={deletePreset}
+                    onUpload={uploadPreset}
+                    onPublish={publishToPublic}
+                    onSyncAll={syncAll}
+                    isSyncing={isSyncing}
+                    currentPreset={ws.currentPreset}
+                    snapshot={ws.snapshot}
+                    presetModified={ws.presetModified}
+                    onSave={handleSave}
+                    onDiscard={handleDiscard}
+                />
+            </section>
+            {isAuthenticated && (
                 <section>
-                    <Repo
-                        type="private"
-                        data={privatePresets}
-                        sortConfig={privateSort}
-                        setSortConfig={setPrivateSort}
+                    <Repo 
+                        type="public"
+                        data={publicPresets}
+                        setData={setPublicData}
+                        sortConfig={publicSort}
+                        setSortConfig={setPublicSort}
                         loading={loading}
                         freeSlots={freeSlots}
                         isParsed={ws.isParsed}
                         deviceNames={deviceNames}
                         uploadToDevice={uploadToDevice}
-                        onDelete={deletePreset}
-                        onUpload={uploadPreset}
-                        onPublish={publishToPublic}
-                        onSyncAll={syncAll}
-                        isSyncing={isSyncing}
+                        onDeleteFromPublic={deleteFromPublic}
                         currentPreset={ws.currentPreset}
                         snapshot={ws.snapshot}
                         presetModified={ws.presetModified}
@@ -77,29 +97,7 @@ export default function Cloud() {
                         onDiscard={handleDiscard}
                     />
                 </section>
-                {isAuthenticated && (
-                    <section>
-                        <Repo 
-                            type="public"
-                            data={publicPresets}
-                            setData={setPublicData}
-                            sortConfig={publicSort}
-                            setSortConfig={setPublicSort}
-                            loading={loading}
-                            freeSlots={freeSlots}
-                            isParsed={ws.isParsed}
-                            deviceNames={deviceNames}
-                            uploadToDevice={uploadToDevice}
-                            onDeleteFromPublic={deleteFromPublic}
-                            currentPreset={ws.currentPreset}
-                            snapshot={ws.snapshot}
-                            presetModified={ws.presetModified}
-                            onSave={handleSave}
-                            onDiscard={handleDiscard}
-                        />
-                    </section>
-                )}
-            </div>
+            )}
         </div>
     );
 }

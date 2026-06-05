@@ -35,6 +35,7 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
                                 ? 'border-emerald-500 text-neutral-200'
                                 : 'border-neutral-800 text-neutral-500 hover:border-neutral-500'
                         }`}
+                        title="Select firmware to flash."
                     >
                         <div className="tracking-widest uppercase h-4s">
                             {channel}
@@ -60,16 +61,24 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
                         ? 'text-neutral-700'
                         : 'text-neutral-500 hover:text-neutral-200'
                 }`}
+                title="Flash selected firmware to ESP32."
             >
                 {flashing ? 'FLASHING...' : `FLASH v${selected?.version ?? '...'}`}
             </SecondaryButton>
 
             {flashLog.length > 0 && (
-                <div
-                    ref={logRef}
-                    className="h-36 overflow-y-auto bg-black text-yellow-400 font-mono text-xs p-2 rounded border border-neutral-800"
+                <div 
+                    className="border border-neutral-800 rounded bg-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-700" 
+                    tabIndex="0"
                 >
-                    {flashLog.map((line, i) => <div key={i}>{line}</div>)}
+                    <div
+                        ref={logRef}
+                        className="h-36 overflow-y-auto text-amber-400 font-mono text-xs p-2"
+                    >
+                        {flashLog.map((line, i) => (
+                            <div key={i}>{line}</div>
+                        ))}
+                    </div>
                 </div>
             )}
         </div>

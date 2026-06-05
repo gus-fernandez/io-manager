@@ -1,6 +1,8 @@
 import TextInput from '@/Components/TextInput';
 import React, { useState } from 'react';
 import { WifiStates } from '@/Features/Device/Firmware/utils/serialUtils';
+import TextButton from '@/Components/TextButton';
+import SecondaryButton from '@/Components/SecondaryButton';
 
 export default function SerialMonitor({ log, clearLog, logRef, onCommand, currentState }) {
     const [inputValue, setInputValue] = useState('');
@@ -20,20 +22,24 @@ export default function SerialMonitor({ log, clearLog, logRef, onCommand, curren
 
     return (
         <div className="space-y-2">
-            <div className="flex items-center justify-between">
-                <button
-                    onClick={clearLog}
-                    className="text-xs tracking-widest uppercase text-neutral-500 hover:text-neutral-200"
-                >[CLEAR]</button>
-            </div>
-            
-            <div
-                ref={logRef}
-                className="h-48 overflow-y-auto bg-black text-emerald-400 font-mono text-xs p-2 rounded border border-neutral-800"
-            >
-                {log.map(({ id, text }) => (
-                    <div key={id}>{text}</div>
-                ))}
+            <div className="relative border border-neutral-800 rounded bg-black">
+    
+                <div className="absolute top-1 right-2 z-10">
+                    <TextButton
+                        onClick={clearLog}
+                        className="text-xs tracking-widest uppercase text-neutral-500 hover:text-neutral-200"
+                        title="Clear the console"
+                    >[CLEAR]</TextButton>
+                </div>
+
+                <div
+                    ref={logRef}
+                    className="h-48 overflow-y-auto text-emerald-400 font-mono text-xs p-2 pt-8 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-700"
+                >
+                    {log.map(({ id, text }) => (
+                        <div key={id}>{text}</div>
+                    ))}
+                </div>
             </div>
 
             <form onSubmit={handleSubmit} className="flex gap-2">
@@ -44,12 +50,13 @@ export default function SerialMonitor({ log, clearLog, logRef, onCommand, curren
                     placeholder="Write 'WIFI' to begin..."
                     className="flex-1 bg-neutral-900 border border-neutral-800 text-xs font-mono text-neutral-200 px-3 py-1.5 rounded focus:outline-none focus:border-neutral-600"
                 />
-                <button
+                <SecondaryButton
                     type="submit"
                     className="text-xs font-mono border border-neutral-800 hover:border-neutral-600 px-4 py-1.5 rounded text-neutral-400 hover:text-neutral-200 transition-colors"
+                    title="Send a console command to the instrument."
                 >
                     SEND
-                </button>
+                </SecondaryButton>
             </form>
         </div>
     );

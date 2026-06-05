@@ -30,7 +30,7 @@ export default function SecondaryButton({
                 `inline-flex items-center rounded-md border border-neutral-800 bg-neutral-950
                 px-4 py-2 text-xs font-semibold uppercase tracking-widest
                 transition duration-150 ease-in-out hover:bg-neutral-900
-                focus:outline-none focus:ring-0
+                focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-700
                 ${hasColor ? '' : 'text-neutral-500'}
                 ${hasHoverColor ? '' : 'hover:text-neutral-300'}
                 ${disabled ? 'opacity-25' : ''} ` + className

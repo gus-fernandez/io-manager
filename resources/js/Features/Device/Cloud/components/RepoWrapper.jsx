@@ -18,13 +18,13 @@ export const RepoWrapper = ({
 }) => {
     
     if (loading) return (
-        <div className="text-neutral-500 text-xs tracking-widest uppercase py-2">
-            Loading {title}...
+        <div className="text-neutral-500 text-sm tracking-widest uppercase mx-2">
+            {title} Loading... 
         </div>
     );
 
     return (
-        <div>
+        <div className='mx-2'>
             <div className="flex items-center justify-between text-sm mb-2">
                 <h2 className="tracking-widest uppercase text-neutral-400">
                     {title}

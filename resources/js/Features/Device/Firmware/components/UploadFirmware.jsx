@@ -1,5 +1,6 @@
 // @/Features/Device/Firmware/components/UploadFirmware.jsx
 
+import PrimaryButton from '@/Components/PrimaryButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 import React, { useState } from 'react';
 
@@ -72,6 +73,7 @@ export default function UploadFirmware({ uploadFirmwareToServer, uploading, uplo
                     <label 
                         htmlFor="firmware-input"
                         className="flex items-center justify-center w-full cursor-pointer py-2 px-4 rounded border border-neutral-700 text-xs tracking-widest uppercase bg-neutral-900 text-neutral-500 hover:border-neutral-500 hover:text-neutral-200 transition-colors"
+                        tabIndex="0"
                     >
                         {file ? file.name : 'SELECT FILE'}
                     </label>
@@ -116,12 +118,12 @@ export default function UploadFirmware({ uploadFirmwareToServer, uploading, uplo
                 </div>
 
                 <div className="pt-2 flex justify-center">
-                    <SecondaryButton 
+                    <PrimaryButton 
                         type="submit" 
                         disabled={uploading}
                     >
                         {uploading ? 'UPLOADING...' : 'UPLOAD FIRMWARE'}
-                    </SecondaryButton>
+                    </PrimaryButton>
                 </div>
             </form>
         </div>

@@ -16,7 +16,8 @@ export default function DangerButton({
                 text-xs font-semibold uppercase tracking-widest
                 text-neutral-400
                 transition-colors duration-150
-                hover:text-rose-300
+                focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-rose-400
+                hover:text-rose-400
                 ${
                     disabled && 'opacity-25'
                 } ` + className
