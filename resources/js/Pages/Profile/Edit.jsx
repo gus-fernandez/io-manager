@@ -14,19 +14,22 @@ export default function Profile({ user, setUser }) {
             .then(response => {
                 setMustVerifyEmail(response.data.mustVerifyEmail);
             })
-            .catch(err => console.error('Error al cargar datos de verificación:', err))
+            .catch(err => console.error('Error loading verification data:', err))
             .finally(() => setLoading(false));
     }, [user]);
 
     if (loading) {
-        return <div className="p-6 text-center text-neutral-600">Loading configuration...</div>;
+        return (
+            <div className="p-12 text-center text-neutral-400 tracking-wide animate-pulse">
+                Loading configuration...
+            </div>
+        );
     }
 
     return (
-        <div className="max-w-4xl mx-auto my-6 p-4 space-y-6">
-            <h1 className="text-2xl font-bold text-neutral-800">Perfil</h1>
+        <div className="max-w-2xl mx-auto p-4 space-y-4">
             
-            <div className="p-6 bg-white rounded shadow-sm border border-neutral-200">
+            <div className="p-6 bg-neutral-900 rounded-xl border border-neutral-800">
                 <UpdateProfileInformationForm
                     user={user}
                     setUser={setUser}
@@ -34,11 +37,11 @@ export default function Profile({ user, setUser }) {
                 />
             </div>
 
-            <div className="p-6 bg-white rounded shadow-sm border border-neutral-200">
+            <div className="p-6 bg-neutral-900 rounded-xl border border-neutral-800">
                 <UpdatePasswordForm />
             </div>
 
-            <div className="p-6 bg-white rounded shadow-sm border border-neutral-200">
+            <div className="p-6 bg-neutral-900 rounded-xl border border-neutral-800">
                 <DeleteUserForm />
             </div>
         </div>

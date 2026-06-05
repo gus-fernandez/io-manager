@@ -35,9 +35,7 @@ export default function UpdateProfileInformation({
         setErrors({});
 
         try {
-            await axios.patch('/api/profile', values);
-            
-            // Sincroniza los nuevos datos en el estado global de App.jsx
+            await axios.patch('/api/profile', values);            
             setUser({ ...user, ...values }); 
             
             setRecentlySuccessful(true);
@@ -57,7 +55,6 @@ export default function UpdateProfileInformation({
         setVerificationStatus(null);
         try {
             await axios.get('/sanctum/csrf-cookie');
-
             await axios.post('/email/verification-notification', {}, {
                 headers: {
                     'Accept': 'application/json',
@@ -74,17 +71,17 @@ export default function UpdateProfileInformation({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
+                <h2>
                     Profile Information
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="mt-1 text-sm text-neutral-600">
                     Update your account's profile information and email address.
                 </p>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
-                {errors.global && <p className="text-red-600 text-sm">{errors.global[0]}</p>}
+                {errors.global && <p className="text-rose-400 text-sm">{errors.global[0]}</p>}
 
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
@@ -120,19 +117,19 @@ export default function UpdateProfileInformation({
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
-                        <p className="mt-2 text-sm text-gray-800">
+                        <p className="mt-2 text-sm text-neutral-400">
                             Your email address is unverified.
                             <button
                                 type="button"
                                 onClick={sendVerification}
-                                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ms-1"
+                                className="rounded-md text-sm text-neutral-200 underline ms-1"
                             >
                                 Click here to re-send the verification email.
                             </button>
                         </p>
 
                         {verificationStatus === 'verification-link-sent' && (
-                            <div className="mt-2 text-sm font-medium text-green-600">
+                            <div className="mt-2 text-sm font-medium text-emerald-400">
                                 A new verification link has been sent to your email address.
                             </div>
                         )}
@@ -151,7 +148,7 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-neutral-600">
                             Saved.
                         </p>
                     </Transition>
