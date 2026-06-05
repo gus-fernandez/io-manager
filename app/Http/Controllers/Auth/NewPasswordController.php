@@ -14,6 +14,12 @@ use Illuminate\Validation\ValidationException;
 
 class NewPasswordController extends Controller
 {
+    public function create(Request $request, string $token): \Illuminate\Http\RedirectResponse
+    {
+        return redirect(
+            env('FRONTEND_URL') . '/reset-password?token=' . $token . '&email=' . urlencode($request->query('email', ''))
+        );
+    }
     /**
      * Procesa la solicitud de la nueva contraseña.
      *

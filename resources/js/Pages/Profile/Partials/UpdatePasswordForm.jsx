@@ -10,7 +10,7 @@ export default function UpdatePasswordForm({ className = '' }) {
     const passwordInput = useRef();
     const currentPasswordInput = useRef();
 
-    // Estados locales para sustituir useForm
+    // Local states to replace useForm
     const [values, setValues] = useState({
         current_password: '',
         password: '',
@@ -19,14 +19,14 @@ export default function UpdatePasswordForm({ className = '' }) {
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
     const [recentlySuccessful, setRecentlySuccessful] = useState(false);
-const updatePassword = async (e) => {
+
+    const updatePassword = async (e) => {
         e.preventDefault();
         setProcessing(true);
         setErrors({});
 
         try {
             await axios.get('/sanctum/csrf-cookie');
-            
             await axios.put('/password', values);
             
             setValues({
@@ -42,7 +42,7 @@ const updatePassword = async (e) => {
             if (err.response?.status === 422) {
                 setErrors(err.response.data.errors);
             } else {
-                setErrors({ global: ['Ocurrió un error inesperado al actualizar la contraseña.'] });
+                setErrors({ global: ['An unexpected error occurred while updating the password.'] });
             }
         } finally {
             setProcessing(false);
@@ -53,11 +53,11 @@ const updatePassword = async (e) => {
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900">
-                    Actualizar Contraseña
+                    Update Password
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Asegúrate de que tu cuenta use una contraseña larga y aleatoria para mantener la seguridad.
+                    Ensure your account is using a long, random password to stay secure.
                 </p>
             </header>
 
@@ -67,7 +67,7 @@ const updatePassword = async (e) => {
                 <div>
                     <InputLabel
                         htmlFor="current_password"
-                        value="Contraseña Actual"
+                        value="Current Password"
                     />
 
                     <TextInput
@@ -89,7 +89,7 @@ const updatePassword = async (e) => {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password" value="Nueva Contraseña" />
+                    <InputLabel htmlFor="password" value="New Password" />
 
                     <TextInput
                         id="password"
@@ -112,7 +112,7 @@ const updatePassword = async (e) => {
                 <div>
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirmar Contraseña"
+                        value="Confirm Password"
                     />
 
                     <TextInput
@@ -134,7 +134,7 @@ const updatePassword = async (e) => {
 
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>
-                        {processing ? 'Guardando...' : 'Guardar'}
+                        {processing ? 'Saving...' : 'Save'}
                     </PrimaryButton>
 
                     <Transition
@@ -145,7 +145,7 @@ const updatePassword = async (e) => {
                         leaveTo="opacity-0"
                     >
                         <p className="text-sm text-gray-600">
-                            Guardado.
+                            Saved.
                         </p>
                     </Transition>
                 </div>

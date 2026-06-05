@@ -46,7 +46,7 @@ export default function UpdateProfileInformation({
             if (err.response?.status === 422) {
                 setErrors(err.response.data.errors);
             } else {
-                setErrors({ global: ['Ocurrió un error al actualizar el perfil.'] });
+                setErrors({ global: ['An error occurred while updating your profile.'] });
             }
         } finally {
             setProcessing(false);
@@ -75,11 +75,11 @@ export default function UpdateProfileInformation({
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900">
-                    Información del Perfil
+                    Profile Information
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Actualiza la información del perfil de tu cuenta y la dirección de correo electrónico.
+                    Update your account's profile information and email address.
                 </p>
             </header>
 
@@ -87,7 +87,7 @@ export default function UpdateProfileInformation({
                 {errors.global && <p className="text-red-600 text-sm">{errors.global[0]}</p>}
 
                 <div>
-                    <InputLabel htmlFor="name" value="Nombre" />
+                    <InputLabel htmlFor="name" value="Name" />
 
                     <TextInput
                         id="name"
@@ -121,19 +121,19 @@ export default function UpdateProfileInformation({
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className="mt-2 text-sm text-gray-800">
-                            Tu dirección de correo electrónico no está verificada.
+                            Your email address is unverified.
                             <button
                                 type="button"
                                 onClick={sendVerification}
                                 className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ms-1"
                             >
-                                Haz clic aquí para volver a enviar el correo de verificación.
+                                Click here to re-send the verification email.
                             </button>
                         </p>
 
                         {verificationStatus === 'verification-link-sent' && (
                             <div className="mt-2 text-sm font-medium text-green-600">
-                                Se ha enviado un nuevo enlace de verificación a tu correo electrónico.
+                                A new verification link has been sent to your email address.
                             </div>
                         )}
                     </div>
@@ -141,7 +141,7 @@ export default function UpdateProfileInformation({
 
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>
-                        {processing ? 'Guardando...' : 'Guardar'}
+                        {processing ? 'Saving...' : 'Save'}
                     </PrimaryButton>
 
                     <Transition
@@ -152,7 +152,7 @@ export default function UpdateProfileInformation({
                         leaveTo="opacity-0"
                     >
                         <p className="text-sm text-gray-600">
-                            Guardado.
+                            Saved.
                         </p>
                     </Transition>
                 </div>

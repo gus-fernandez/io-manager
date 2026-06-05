@@ -1,7 +1,6 @@
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
 import { useState } from 'react';
 import axios from '@/bootstrap';
 
@@ -18,15 +17,19 @@ export default function ForgotPassword() {
         setStatus(null);
 
         try {
-            const response = await axios.post('/forgot-password', { email });
+            await axios.get('/sanctum/csrf-cookie');
+            const response = await axios.post('/forgot-password', 
+                { email },
+                { headers: { 'Accept': 'application/json' } }
+            );
 
-            setStatus(response.data.status || '¡Enlace de restauración enviado con éxito!');
+            setStatus(response.data.status || 'Password reset link sent successfully!');
             setEmail('');
         } catch (err) {
             if (err.response?.status === 422) {
                 setErrors(err.response.data.errors);
             } else {
-                setErrors({ email: ['Ocurrió un error al procesar la solicitud.'] });
+                setErrors({ email: ['An error occurred while processing your request.'] });
             }
         } finally {
             setProcessing(false);
@@ -34,14 +37,14 @@ export default function ForgotPassword() {
     };
 
     return (
-        <GuestLayout>
-            <div className="mb-4 text-sm text-gray-600">
-                ¿Olvidaste tu contraseña? No hay problema. Indícanos tu dirección de correo electrónico 
-                y te enviaremos un enlace para restablecerla que te permitirá elegir una nueva.
+        <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 font-whiterabbit">
+            <div className="mb-4 text-sm text-neutral-400 text-left">
+                Forgot your password? No problem. Just let us know your email address 
+                and we will email you a password reset link that will allow you to choose a new one.
             </div>
 
             {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
+                <div className="mb-4 text-sm font-medium text-emerald-500">
                     {status}
                 </div>
             )}
@@ -62,10 +65,10 @@ export default function ForgotPassword() {
 
                 <div className="mt-4 flex items-center justify-end">
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        {processing ? 'Enviando...' : 'Enviar enlace de restablecimiento'}
+                        {processing ? 'Sending...' : 'Send Password Reset Link'}
                     </PrimaryButton>
                 </div>
             </form>
-        </GuestLayout>
+        </div>
     );
 }

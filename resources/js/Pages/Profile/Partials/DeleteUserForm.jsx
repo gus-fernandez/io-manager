@@ -36,7 +36,7 @@ export default function DeleteUserForm({ className = '' }) {
                 setErrors(err.response.data.errors);
                 passwordInput.current?.focus();
             } else {
-                setErrors({ password: ['Ocurrió un error al intentar eliminar la cuenta.'] });
+                setErrors({ password: ['An error occurred while attempting to delete your account.'] });
             }
         } finally {
             setProcessing(false);
@@ -53,67 +53,69 @@ export default function DeleteUserForm({ className = '' }) {
         <section className={`space-y-6 ${className}`}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900">
-                    Eliminar Cuenta
+                    Delete Account
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600">
-                    Una vez que tu cuenta sea eliminada, todos sus recursos y datos
-                    se borrarán permanentemente. Por favor, descarga cualquier dato
-                    que desees conservar antes de proceder.
+                    Once your account is deleted, all of its resources and data
+                    will be permanently deleted. Please download any data you
+                    wish to retain before proceeding.
                 </p>
             </header>
 
             <DangerButton onClick={confirmUserDeletion}>
-                Eliminar Cuenta
+                Delete Account
             </DangerButton>
 
-            <Modal show={confirmingUserDeletion} onClose={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900">
-                        ¿De verdad quieres eliminar tu cuenta?
-                    </h2>
+            {confirmingUserDeletion && (
+                <Modal show={confirmingUserDeletion} onClose={closeModal}>
+                    <form onSubmit={deleteUser} className="p-6">
+                        <h2 className="text-lg font-medium text-neutral-200">
+                            Are you sure you want to delete your account?
+                        </h2>
 
-                    <p className="mt-1 text-sm text-gray-600">
-                        Por favor, introduce tu contraseña para confirmar que deseas
-                        borrar definitivamente tu cuenta.
-                    </p>
+                        <p className="mt-1 text-sm text-neutral-500">
+                            Please enter your password to confirm you would like to
+                            permanently delete your account.
+                        </p>
 
-                    <div className="mt-6">
-                        <InputLabel
-                            htmlFor="password"
-                            value="Contraseña"
-                            className="sr-only"
-                        />
+                        <div className="mt-6">
+                            <InputLabel
+                                htmlFor="password"
+                                value="Password"
+                                className="sr-only"
+                            />
 
-                        <TextInput
-                            id="password"
-                            type="password"
-                            name="password"
-                            ref={passwordInput}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="mt-1 block w-3/4"
-                            isFocused
-                            placeholder="Contraseña"
-                        />
+                            <TextInput
+                                id="password"
+                                type="password"
+                                name="password"
+                                ref={passwordInput}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="mt-1 block w-3/4"
+                                isFocused
+                                placeholder="Password"
+                            />
 
-                        <InputError
-                            message={errors.password ? errors.password[0] : null}
-                            className="mt-2"
-                        />
-                    </div>
+                            <InputError
+                                message={errors.password ? errors.password[0] : null}
+                                className="mt-2"
+                            />
+                        </div>
 
-                    <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>
-                            Cancelar
-                        </SecondaryButton>
+                        <div className="mt-6 flex justify-end">
+                            <SecondaryButton onClick={closeModal}>
+                                Cancel
+                            </SecondaryButton>
 
-                        <DangerButton className="ms-3" disabled={processing}>
-                            {processing ? 'Eliminando...' : 'Eliminar Cuenta'}
-                        </DangerButton>
-                    </div>
-                </form>
-            </Modal>
+                            <DangerButton className="ms-3" disabled={processing}>
+                                {processing ? 'Deleting...' : 'Delete Account'}
+                            </DangerButton>
+                        </div>
+                    </form>
+                </Modal>
+                )}
         </section>
     );
 }

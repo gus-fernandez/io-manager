@@ -4,6 +4,7 @@ import React from 'react';
 import { useDevice } from '@/Contexts/WsContext';
 import VirtualKeyboard from '@/Features/Device/Shared/components/VirtualKeyboard.jsx';
 import WsConnection from '@/Features/Device/Shared/components/WsConnection';
+import { Io8Icon } from '@/Features/Device/Shared/components/Icons';
 
 export default function StatusBar({ currentTab }) {
     const { ws, midi } = useDevice();

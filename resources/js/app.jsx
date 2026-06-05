@@ -14,8 +14,10 @@ import Firmware from './Pages/Firmware';
 import About from './Pages/About';
 import NavGuardModal from '@/Features/Device/Shared/components/NavGuardModal.jsx';
 
+const initialPath = window.location.pathname.replace('/', '');
+
 const getInitialTab = () => {
-    return window.location.pathname.replace('/', '') || 'control';
+    return initialPath || 'control';
 };
 
 function AppContent() {
@@ -78,9 +80,11 @@ function AppContent() {
             setTab(startTab);
             window.history.replaceState({}, '', `/${startTab}`);
         } else {
-            if (!isBooted) {
+                if (!isBooted) {
                 setTab('landing');
-                window.history.replaceState({}, '', '/');
+                if (initialPath !== 'reset-password') {
+                    window.history.replaceState({}, '', '/');
+                }
             }
         }
         setIsBooted(true);
@@ -122,7 +126,7 @@ function AppContent() {
     }
 
     if (currentTab === 'landing') {
-        return <Landing setTab={setTab} setUser={setUser} />;
+        return <Landing setTab={setTab} setUser={setUser} initialPath={initialPath} />;
     }
 
     return (

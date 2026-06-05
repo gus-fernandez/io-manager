@@ -1,4 +1,5 @@
 import React from 'react';
+import { IoIcon } from '@/Features/Device/Shared/components/Icons';
 
 export default function AppLayout({ children, currentTab, setTab, user, onLogout }) {
         
@@ -19,6 +20,14 @@ export default function AppLayout({ children, currentTab, setTab, user, onLogout
         <div className="font-whiterabbit min-h-screen bg-neutral-950 text-neutral-200 flex flex-col">
             <nav className="border-b border-neutral-900 bg-neutral-950/60 backdrop-blur px-5 py-2 select-none max-w-[1128px] mx-auto w-full">
                 <ul className="flex items-center gap-6 list-none w-full">
+                    <li className="flex items-center mr-4">
+                        <div className="w-6 h-6 text-neutral-200 mr-2">
+                            <IoIcon.IoIcon />
+                        </div>
+                        <h1 className="flex flex-col leading-tight">
+                            <span className="text-lg font-bold text-neutral-200 translate-y-[1px]">IO-MANAGER</span>
+                        </h1>
+                    </li>
                     <li>{navLink('IO-CONTROL', () => setTab('control'), currentTab === 'control')}</li>
                     <li>{navLink('IO-CLOUD', () => setTab('cloud'), currentTab === 'cloud')}</li>
                     <li>{navLink('IO-FIRMWARE', () => setTab('firmware'), currentTab === 'firmware')}</li>

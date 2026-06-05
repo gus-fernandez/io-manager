@@ -1,3 +1,5 @@
+
+
 import React, { useState } from 'react';
 import axios from '@/bootstrap';
 
@@ -28,7 +30,6 @@ export default function RegisterForm({ setTab, setUser }) {
 
         try {
             await axios.get('/sanctum/csrf-cookie');
-
             const response = await axios.post('/register', values);
 
             setUser(response.data.user);
@@ -38,7 +39,7 @@ export default function RegisterForm({ setTab, setUser }) {
                 setErrors(err.response.data.errors);
             } else {
                 setErrors({
-                    general: ['Error al procesar el registro.'],
+                    general: ['An error occurred while processing your registration.'],
                 });
             }
         } finally {

@@ -2,7 +2,6 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
 import { useState } from 'react';
 import axios from '@/bootstrap';
 
@@ -24,7 +23,7 @@ export default function ConfirmPassword() {
             if (err.response?.status === 422) {
                 setErrors(err.response.data.errors);
             } else {
-                setErrors({ password: ['Ocurrió un error al confirmar la contraseña.'] });
+                setErrors({ password: ['An error occurred while confirming your password.'] });
             }
             setPassword('');
         } finally {
@@ -33,15 +32,15 @@ export default function ConfirmPassword() {
     };
 
     return (
-        <GuestLayout>
+        <div>
             <div className="mb-4 text-sm text-gray-600">
-                Esta es una zona segura de la aplicación. Por favor, confirma tu
-                contraseña antes de continuar.
+                This is a secure area of the application. Please confirm your
+                password before continuing.
             </div>
 
             <form onSubmit={submit}>
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Contraseña" />
+                    <InputLabel htmlFor="password" value="Password" />
 
                     <TextInput
                         id="password"
@@ -58,10 +57,10 @@ export default function ConfirmPassword() {
 
                 <div className="mt-4 flex items-center justify-end">
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        {processing ? 'Confirmando...' : 'Confirmar'}
+                        {processing ? 'Confirming...' : 'Confirm'}
                     </PrimaryButton>
                 </div>
             </form>
-        </GuestLayout>
+        </div>
     );
 }

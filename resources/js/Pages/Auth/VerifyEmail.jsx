@@ -1,5 +1,4 @@
 import PrimaryButton from '@/Components/PrimaryButton';
-import GuestLayout from '@/Layouts/GuestLayout';
 import { useState } from 'react';
 import axios from '@/bootstrap';
 
@@ -16,7 +15,7 @@ export default function VerifyEmail({ onNavigate }) {
             await axios.post('/email/verification-notification');
             setStatus('verification-link-sent');
         } catch (err) {
-            console.error('Error al reenviar el correo de verificación:', err);
+            console.error('Error resending verification email:', err);
         } finally {
             setProcessing(false);
         }
@@ -27,38 +26,37 @@ export default function VerifyEmail({ onNavigate }) {
             await axios.post('/logout');
             onLogout();
         } catch (err) {
-            console.error('Error al cerrar sesión:', err);
+            console.error('Error logging out:', err);
         }
     };
 
     return (
-        <GuestLayout>
+        <>
             <div className="mb-4 text-sm text-gray-600">
-                ¡Gracias por registrarte! Antes de comenzar, ¿podrías verificar tu dirección de correo electrónico 
-                haciendo clic en el enlace que te acabamos de enviar? Si no recibiste el correo, con gusto te enviaremos otro.
+                Thanks for signing up! Before getting started, could you verify your email address 
+                by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.
             </div>
 
             {status === 'verification-link-sent' && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    Se ha enviado un nuevo enlace de verificación a la dirección de correo electrónico que proporcionaste durante el registro.
+                <div className="mb-4 text-sm font-medium text-emerald-500">
+                    A new verification link has been sent to the email address you provided during registration.
                 </div>
             )}
 
             <form onSubmit={submit}>
                 <div className="mt-4 flex items-center justify-between">
                     <PrimaryButton disabled={processing}>
-                        {processing ? 'Enviando...' : 'Reenviar correo de verificación'}
+                        {processing ? 'Sending...' : 'Resend Verification Email'}
                     </PrimaryButton>
 
                     <button
                         type="button"
                         onClick={handleLogout}
                         className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Cerrar sesión
+                    >Log Out
                     </button>
                 </div>
             </form>
-        </GuestLayout>
+        </>
     );
 }

@@ -19,7 +19,7 @@ export default function Profile({ user, setUser }) {
     }, [user]);
 
     if (loading) {
-        return <div className="p-6 text-center text-neutral-600">Cargando configuración...</div>;
+        return <div className="p-6 text-center text-neutral-600">Loading configuration...</div>;
     }
 
     return (

@@ -46,11 +46,12 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
-        $user->delete();
-
+        
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        
+        $user->delete();
 
         return response()->json(['message' => 'Cuenta eliminada']);
     }

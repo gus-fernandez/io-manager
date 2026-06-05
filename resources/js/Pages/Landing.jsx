@@ -1,33 +1,45 @@
 import React, { useState } from 'react';
-import LoginForm from '@/Features/Auth/LoginForm';
-import RegisterForm from '@/Features/Auth/RegisterForm';
+import LoginForm from '@/Pages/Auth/LoginForm';
+import ForgotPassword from '@/Pages/Auth/ForgotPassword';
+import ResetPassword from '@/Pages/Auth/ResetPassword';
+import RegisterForm from '@/Pages/Auth/RegisterForm';
 import PrimaryButton from '@/Components/PrimaryButton';
+import { IoIcon } from '@/Features/Device/Shared/components/Icons';
 
 export default function Landing({ setTab, setUser }) {
-    const [showRegister, setShowRegister] = useState(false);
+    
+    const [view, setView] = useState(() => {
+        const path = window.location.pathname.replace('/', '');
+        return path === 'reset-password' ? 'reset-password' : 'login';
+    });
 
     return (
         <div className="bg-neutral-950 text-neutral-200 font-whiterabbit min-h-screen flex justify-center">
             <div className="w-full max-w-md text-center">
-                <h1 className="text-2xl uppercase tracking-widest text-neutral-200 py-6">
-                    IO Manager
-                </h1>
+                <div className="flex items-center justify-center py-6">
+                    <div className="w-12 h-12 text-neutral-200 mr-2">
+                        <IoIcon.IoIcon />
+                    </div>
+                    <h1 className="flex flex-col leading-tight">
+                        <span className="text-3xl tracking-widest text-neutral-200 translate-y-[3px]">IO-MANAGER</span>
+                    </h1>
+                </div>
 
                 <div className="border-t border-neutral-900 py-4" />
 
-                {!showRegister ? (
+                {view === 'login' && (
                     <div>
                         <div>
                             <LoginForm
                                 setTab={setTab}
                                 setUser={setUser}
-                                onNavigate={setTab}
+                                onNavigate={() => setView('forgot')}
                             />
                         </div>
 
                         <div className="flex flex-row gap-2 w-full mt-2">
                             <PrimaryButton 
-                                onClick={() => setShowRegister(true)} 
+                                onClick={() => setView('register')}
                                 className="flex-1 justify-center"
                             >
                                 Create Account
@@ -41,16 +53,38 @@ export default function Landing({ setTab, setUser }) {
                             </PrimaryButton>
                         </div>
                     </div>
-                ) : (
+                )}
+                {view === 'register' && (
                     <div>
                         <RegisterForm
                             setTab={setTab}
                             setUser={setUser}
                         />
                         <PrimaryButton 
-                            onClick={() => setShowRegister(false)}
+                            onClick={() => setView('login')}
                             className="w-full justify-center mt-2"
                         >
+                            Back to Login
+                        </PrimaryButton>
+                    </div>
+                )}
+                {view === 'forgot' && (
+                    <div>
+                        <ForgotPassword />
+                        <PrimaryButton onClick={() => setView('login')} className="w-full justify-center mt-2">
+                            Back to Login
+                        </PrimaryButton>
+                    </div>
+                )}
+
+                {view === 'reset-password' && (
+                    <div>
+                        <ResetPassword
+                            token={new URLSearchParams(window.location.search).get('token')}
+                            email={new URLSearchParams(window.location.search).get('email')}
+                            onNavigate={() => setView('login')}
+                        />
+                        <PrimaryButton onClick={() => setView('login')} className="w-full justify-center mt-2">
                             Back to Login
                         </PrimaryButton>
                     </div>

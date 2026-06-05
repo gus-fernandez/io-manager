@@ -37,11 +37,18 @@ PAGES
 @/Pages/Firmware.jsx
 @/Pages/Cloud.jsx
 
+@/Pages/Auth/ConfirmPassword.jsx
+@/Pages/Auth/ForgotPassword.jsx
+@/Pages/Auth/LoginForm.jsx
+@/Pages/Auth/RegisterForm.jsx
+@/Pages/Auth/ResetPassword.jsx
+@/Pages/Auth/VerifyEmail.jsx
+
 LAYOUTS
 @/Layouts/AppLayout.jsx
-@/Layouts/AuthenticatedLayout.jsx
 @/Layouts/DeviceLayout.jsx
-@/Layouts/GuestLayout.jsx
+
+AUTH
 
 SHARED
 @/Features/Device/Shared/components/Icons.jsx

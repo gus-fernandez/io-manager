@@ -2,7 +2,6 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
 import { useState } from 'react';
 import axios from '@/bootstrap';
 
@@ -24,9 +23,10 @@ export default function ResetPassword({ token, email, onNavigate }) {
         setStatus(null);
 
         try {
+            await axios.get('/sanctum/csrf-cookie'); 
             const response = await axios.post('/reset-password', values);
             
-            setStatus(response.data.status || '¡Contraseña restablecida con éxito!');
+            setStatus(response.data.status || 'Password reset successfully!');
             
             setTimeout(() => {
                 if (onNavigate) onNavigate('login');
@@ -36,7 +36,7 @@ export default function ResetPassword({ token, email, onNavigate }) {
             if (err.response?.status === 422) {
                 setErrors(err.response.data.errors);
             } else {
-                setErrors({ global: ['Ocurrió un error inesperado al restablecer la contraseña.'] });
+                setErrors({ global: ['An unexpected error occurred while resetting the password.'] });
             }
             
             setValues(prev => ({ ...prev, password: '', password_confirmation: '' }));
@@ -46,22 +46,22 @@ export default function ResetPassword({ token, email, onNavigate }) {
     };
 
     return (
-        <GuestLayout>
+        <>
             {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status} — Redirigiendo al inicio de sesión...
+                <div className="mb-4 text-sm font-medium text-emerald-500">
+                    {status} — Redirecting to login...
                 </div>
             )}
 
             {errors.global && (
-                <div className="mb-4 text-sm font-medium text-red-600">
+                <div className="mb-4 text-sm font-medium text-rose-500">
                     {errors.global[0]}
                 </div>
             )}
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="email" value="Correo electrónico" />
+                    <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
                         id="email"
@@ -78,7 +78,7 @@ export default function ResetPassword({ token, email, onNavigate }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Nueva contraseña" />
+                    <InputLabel htmlFor="password" value="New Password" />
 
                     <TextInput
                         id="password"
@@ -98,7 +98,7 @@ export default function ResetPassword({ token, email, onNavigate }) {
                 <div className="mt-4">
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirmar contraseña"
+                        value="Confirm Password"
                     />
 
                     <TextInput
@@ -122,10 +122,10 @@ export default function ResetPassword({ token, email, onNavigate }) {
 
                 <div className="mt-4 flex items-center justify-end">
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        {processing ? 'Restableciendo...' : 'Restablecer contraseña'}
+                        {processing ? 'Resetting...' : 'Reset Password'}
                     </PrimaryButton>
                 </div>
             </form>
-        </GuestLayout>
+        </>
     );
 }
