@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { globalConfig } from '@/Features/Device/Shared/utils/showTips';
 
-export default function PrimaryButton({
-    className = '',
-    disabled,
-    children,
-    title,
-    ...props
+export default function TextButton({ 
+    children, 
+    className = '', 
+    disabled = false, 
+    title, 
+    ...props 
 }) {
     const [showTip, setShowTip] = useState(globalConfig.showTooltips);
 
@@ -21,17 +21,18 @@ export default function PrimaryButton({
     return (
         <button
             {...props}
+            type="button"
             disabled={disabled}
             title={showTip ? title : undefined}
-            className={
-                `inline-flex items-center justify-center rounded-md border
-                border-neutral-700 bg-neutral-800 px-4 py-2 text-xs
-                font-semibold uppercase tracking-widest
-                transition duration-150 ease-in-out hover:bg-neutral-700
-                focus:bg-neutral-700 focus:outline-none focus:ring-0 active:bg-neutral-950
-                ${hasColor ? '' : 'text-neutral-200'}
-                ${disabled ? 'opacity-25' : ''} ` + className
-            }
+            className={`
+                uppercase tracking-widest transition-colors duration-150 rounded-sm
+                focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-700
+                ${disabled 
+                    ? 'text-neutral-700 select-none' 
+                    : `${hasColor ? '' : 'text-neutral-500'} hover:text-neutral-200`
+                }
+                ${className}
+            `}
         >
             {children}
         </button>

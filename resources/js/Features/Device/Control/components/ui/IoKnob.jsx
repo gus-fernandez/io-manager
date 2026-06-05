@@ -120,7 +120,7 @@ export default function IoKnob({ label, cc, value = 0, type = 'unipolar', send, 
                     style={{ transform: `rotate(${notchAngle}deg) translateY(-26px)` }}
                 />
             </div>
-            <div className="mt-1 whitespace-nowrap">{label}</div>
+            <div className="mt-1 whitespace-nowrap text-neutral-400">{label}</div>
         </div>
     );
 }

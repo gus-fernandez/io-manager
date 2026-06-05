@@ -81,16 +81,16 @@ export default function IoBend({ label = "PITCH", channel = 0, send, appendLog, 
                 onTouchStart={handleStart}
                 className="w-10 h-[123px] bg-neutral-950 border border-neutral-200 rounded relative cursor-ns-resize overflow-hidden box-border flex items-center justify-center"
             >
-                <div className="absolute w-full h-[1px] bg-zinc-700 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <div className="absolute w-full h-[1px] bg-neutral-700 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <div
                     className="absolute w-full bg-neutral-200 opacity-85"
                     style={{ 
                         height: '12px', 
-                        bottom: `calc(${heightPercent}% - 3px)` 
+                        bottom: `calc(${heightPercent}% - 6px)` 
                     }}
                 />
             </div>
-            <div className="mt-1 whitespace-nowrap">{label}</div>
+            <div className="mt-1 whitespace-nowrap text-neutral-400">{label}</div>
         </div>
     );
 }

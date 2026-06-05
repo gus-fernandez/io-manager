@@ -83,7 +83,7 @@ export default function IoSlider({ label, cc, value = 0, send, appendLog, classN
                     style={{ height: `${heightPercent}%` }}
                 />
             </div>
-            <div className="mt-1 whitespace-nowrap">{label}</div>
+            <div className="mt-1 whitespace-nowrap text-neutral-400">{label}</div>
         </div>
     );
 }

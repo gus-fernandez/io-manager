@@ -64,7 +64,7 @@ export default function IoSelector({ label, cc, options, value = 0, send, append
                     </div>
                 )}
             </div>
-            <div className="mt-1 whitespace-nowrap">{label}</div>
+            <div className="mt-1 whitespace-nowrap text-neutral-400">{label}</div>
         </div>
     );
 }

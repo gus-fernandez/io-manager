@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Cat } from '@/Features/Device/Shared/utils/presetUtils.js';
 import { LockIcon } from '@/Features/Device/Shared/components/Icons.jsx';
+import TextButton from '@/Components/TextButton';
 
 export default function PresetLine({ 
     id, name, isFav, category, 
@@ -32,35 +33,50 @@ export default function PresetLine({
     const lockColor = isReadOnly ? 'text-neutral-200' : 'text-neutral-700';
     return (
         
-        <div 
-            onClick={onClick}
-            className={`relative flex justify-between items-center w-full text-xs tracking-widest uppercase cursor-pointer`}
-        >
-            <span className="flex items-center gap-2 overflow-hidden truncate">
-                <button
+        <div className={`relative flex items-center text-xs tracking-widest uppercase`}>
+            <div className="flex items-center gap-2 flex-1">
+                <TextButton
                     onClick={(e) => {
                         e.stopPropagation();
                         if (active) onToggleLock?.(e);
                     }}
+                    disabled={isList}
                     className={`size-[16px] -translate-y-[3px] ${lockColor} ${active ? 'cursor-pointer' : 'cursor-default'}`}
+                    title="Lock this preset."
                 >
                     <LockIcon.LOCK />
-                </button>
-                <button
+                </TextButton>
+                <TextButton
                     onClick={(e) => {
                         e.stopPropagation();
                         if (active) onToggleFav?.(e);
                     }}
+                    disabled={isList}
                     className={`text-sm ${favColor} ${active ? 'cursor-pointer' : 'cursor-default'}`}
-                >♥</button>
+                    title="Mark this preset as favorite."
+                >♥</TextButton>
                 
-                <button 
+                <TextButton 
                     onClick={(e) => { e.stopPropagation(); if (active) setShowCatMenu(!showCatMenu); }}
                     className={`${flagsIdColor} ${active ? 'cursor-pointer hover:text-neutral-300' : 'cursor-default'} uppercase`}
-                >{formattedCat}</button>
-                <span className={`${flagsIdColor} truncate`}>{formattedId} </span>
-                <span className={nameColor}> {formattedName} </span>
-            </span>
+                    disabled={isList}
+                    title="Set the category of the preset."
+                >{formattedCat}
+                </TextButton>
+                <TextButton
+                    onClick={onClick}
+                    className='flex-1 min-w-0 overflow-hidden text-left whitespace-nowrap'
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            onClick();
+                        }
+                    }}
+                    >
+                    <span className={`${flagsIdColor} truncate`}>{formattedId} </span>
+                    <span className={nameColor}> {formattedName} </span>
+                </TextButton>
+            </div>
             {showCatMenu && (
                 <>
                 <div 

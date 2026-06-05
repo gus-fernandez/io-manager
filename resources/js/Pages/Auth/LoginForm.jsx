@@ -5,6 +5,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import TextButton from '@/Components/TextButton';
 
 export default function LoginForm({ setTab, setUser, onNavigate }) {
     const [values, setValues] = useState({ 
@@ -75,13 +76,13 @@ export default function LoginForm({ setTab, setUser, onNavigate }) {
                         <span className="ms-2">Remember me</span>
                     </label>
 
-                    <button
+                    <TextButton
                         type="button"
                         onClick={onNavigate}
-                        className="text-xs text-neutral-600 hover:text-neutral-400 uppercase tracking-widest"
+                        className='text-xs'
                     >
                         Forgot password?
-                    </button>
+                    </TextButton>
                 </div>
 
                 <PrimaryButton className="w-full justify-center mt-6 uppercase tracking-widest" disabled={processing}>

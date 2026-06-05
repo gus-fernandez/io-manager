@@ -1,5 +1,6 @@
 // @/Features/Device/Shared/components/WsConnection.jsx
 
+import TextButton from '@/Components/TextButton';
 import React from 'react';
 
 export default function WsConnection({ ws: { status, connect, disconnect } }) {
@@ -13,22 +14,28 @@ export default function WsConnection({ ws: { status, connect, disconnect } }) {
             : 'text-red-900';   
 
     return (
-        <div className="flex items-center gap-1 tracking-wide select-none">
+        <div className="flex items-center gap-1 select-none">
             <div className="flex items-center gap-1">
-                <span className="text-neutral-200">STATUS:</span>
+                <span className="text-neutral-200 tracking-normal">STATUS:</span>
                 <span className={`${statusColor} ${isConnecting ? 'animate-pulse' : ''}`}>●</span>
             </div>
             
             {isConnected ? (
-                <button onClick={disconnect}>[DISCONNECT]</button>
+                <TextButton
+                    onClick={disconnect}
+                    title="Connect the instrument via websocket. Make sure your device and your instrument are connected to the same network."
+                >
+                [DISCONNECT]
+                </TextButton>
             ) : (
-                <button 
+                <TextButton 
                     onClick={connect} 
                     disabled={isConnecting} 
                     className="text-neutral-200 hover:text-white active:scale-95 disabled:pointer-events-none disabled:opacity-40 transition-all duration-150"
+                    title="Connect the instrument via websocket. Make sure your device and your instrument are connected to the same network."
                 >
                     {isConnecting ? '[CONNECTING...]' : '[CONNECT]'}
-                </button>
+                </TextButton>
             )}
         </div>
     );
