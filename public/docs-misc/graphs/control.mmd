@@ -1,0 +1,84 @@
+flowchart LR
+
+subgraph 0["resources"]
+subgraph 1["js"]
+subgraph 2["Features"]
+subgraph 3["Device"]
+subgraph 4["Control"]
+subgraph 5["components"]
+6["WaveIcons.jsx"]
+subgraph 7["layout"]
+8["Module.jsx"]
+9["ModuleDivider.jsx"]
+A["ModuleGrid.jsx"]
+end
+subgraph B["modules"]
+C["AdsrModule.jsx"]
+I["ArpModule.jsx"]
+J["FxModule.jsx"]
+K["LfoModule.jsx"]
+L["MasterModule.jsx"]
+M["ModModule.jsx"]
+O["OscModule.jsx"]
+end
+subgraph D["ui"]
+E["IoButton.jsx"]
+F["IoKnob.jsx"]
+G["IoSelector.jsx"]
+H["IoSlider.jsx"]
+N["IoBend.jsx"]
+end
+end
+subgraph P["hooks"]
+Q["useModuleGrid.js"]
+end
+end
+end
+end
+end
+end
+A-->C
+A-->I
+A-->J
+A-->K
+A-->L
+A-->M
+A-->O
+A-->Q
+C-->8
+C-->9
+C-->E
+C-->F
+C-->G
+C-->H
+I-->8
+I-->9
+I-->E
+I-->F
+I-->G
+J-->8
+J-->9
+J-->E
+J-->F
+K-->8
+K-->9
+K-->E
+K-->F
+K-->G
+K-->6
+L-->8
+L-->9
+L-->E
+L-->F
+M-->8
+M-->9
+M-->N
+M-->E
+M-->F
+M-->H
+O-->8
+O-->9
+O-->E
+O-->F
+O-->G
+O-->6

@@ -1,0 +1,29 @@
+flowchart LR
+
+subgraph 0["resources"]
+subgraph 1["js"]
+subgraph 2["Features"]
+subgraph 3["Device"]
+subgraph 4["Firmware"]
+subgraph 5["components"]
+6["FlashFirmware.jsx"]
+9["SerialMonitor.jsx"]
+C["UploadFirmware.jsx"]
+end
+subgraph 7["hooks"]
+8["useFlashFirmware.js"]
+D["useFirmware.js"]
+E["useSerial.js"]
+end
+subgraph A["utils"]
+B["serialUtils.js"]
+end
+end
+end
+end
+end
+end
+6-->8
+9-->B
+D-->E
+E-->B

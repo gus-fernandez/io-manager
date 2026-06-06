@@ -1,0 +1,51 @@
+flowchart LR
+
+subgraph 0["resources"]
+subgraph 1["js"]
+subgraph 2["Features"]
+subgraph 3["Device"]
+subgraph 4["Control"]
+subgraph 5["components"]
+subgraph 6["modules"]
+7["AdsrModule.jsx"]
+D["ArpModule.jsx"]
+E["FxModule.jsx"]
+F["LfoModule.jsx"]
+G["MasterModule.jsx"]
+H["ModModule.jsx"]
+J["OscModule.jsx"]
+end
+subgraph 8["ui"]
+9["IoButton.jsx"]
+A["IoKnob.jsx"]
+B["IoSelector.jsx"]
+C["IoSlider.jsx"]
+I["IoBend.jsx"]
+end
+end
+end
+end
+end
+end
+end
+7-->9
+7-->A
+7-->B
+7-->C
+D-->9
+D-->A
+D-->B
+E-->9
+E-->A
+F-->9
+F-->A
+F-->B
+G-->9
+G-->A
+H-->I
+H-->9
+H-->A
+H-->C
+J-->9
+J-->A
+J-->B

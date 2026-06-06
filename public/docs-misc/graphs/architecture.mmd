@@ -1,0 +1,263 @@
+flowchart LR
+
+subgraph 0["resources"]
+subgraph 1["js"]
+subgraph 2["Contexts"]
+3["AuthContext.jsx"]
+4["WsContext.jsx"]
+end
+subgraph 5["Features"]
+subgraph 6["Device"]
+subgraph 7["Shared"]
+subgraph 8["hooks"]
+9["useMidi.js"]
+C["usePresetUpdate.js"]
+E["useWebSocket.js"]
+1Y["usePresetsBar.js"]
+21["useVirtualKeyboard.js"]
+end
+subgraph A["utils"]
+B["midiCC.js"]
+D["presetUtils.js"]
+F["wsMsgHandle.js"]
+23["showTips.js"]
+end
+subgraph R["components"]
+S["NavGuardModal.jsx"]
+1T["DeleteModal.jsx"]
+1U["Icons.jsx"]
+1V["PresetLine.jsx"]
+1W["PresetsBar.jsx"]
+1X["RenameModal.jsx"]
+1Z["StatusBar.jsx"]
+20["VirtualKeyboard.jsx"]
+22["WsConnection.jsx"]
+end
+end
+subgraph G["Cloud"]
+subgraph H["components"]
+I["PublishModal.jsx"]
+J["Repo.jsx"]
+K["RepoWrapper.jsx"]
+L["Stars.jsx"]
+O["UploadPresetModal.jsx"]
+end
+subgraph M["utils"]
+N["repoUtils.js"]
+U["sortUtils.js"]
+end
+subgraph P["hooks"]
+Q["useStars.js"]
+T["useRepo.js"]
+end
+end
+subgraph V["Control"]
+subgraph W["components"]
+X["WaveIcons.jsx"]
+subgraph Y["layout"]
+Z["Module.jsx"]
+10["ModuleDivider.jsx"]
+11["ModuleGrid.jsx"]
+end
+subgraph 12["modules"]
+13["AdsrModule.jsx"]
+19["ArpModule.jsx"]
+1A["FxModule.jsx"]
+1B["LfoModule.jsx"]
+1C["MasterModule.jsx"]
+1D["ModModule.jsx"]
+1F["OscModule.jsx"]
+end
+subgraph 14["ui"]
+15["IoButton.jsx"]
+16["IoKnob.jsx"]
+17["IoSelector.jsx"]
+18["IoSlider.jsx"]
+1E["IoBend.jsx"]
+end
+end
+subgraph 1G["hooks"]
+1H["useModuleGrid.js"]
+end
+end
+subgraph 1I["Firmware"]
+subgraph 1J["components"]
+1K["FlashFirmware.jsx"]
+1N["SerialMonitor.jsx"]
+1Q["UploadFirmware.jsx"]
+end
+subgraph 1L["hooks"]
+1M["useFlashFirmware.js"]
+1R["useFirmware.js"]
+1S["useSerial.js"]
+end
+subgraph 1O["utils"]
+1P["serialUtils.js"]
+end
+end
+end
+end
+subgraph 24["Layouts"]
+25["AppLayout.jsx"]
+26["DeviceLayout.jsx"]
+end
+subgraph 27["Pages"]
+28["About.jsx"]
+subgraph 29["Auth"]
+2A["ConfirmPassword.jsx"]
+2B["ForgotPassword.jsx"]
+2C["LoginForm.jsx"]
+2D["RegisterForm.jsx"]
+2E["ResetPassword.jsx"]
+2F["VerifyEmail.jsx"]
+end
+2G["Cloud.jsx"]
+2H["Control.jsx"]
+2I["Firmware.jsx"]
+2J["Landing.jsx"]
+subgraph 2K["Profile"]
+2L["Edit.jsx"]
+subgraph 2M["Partials"]
+2N["DeleteUserForm.jsx"]
+2O["UpdatePasswordForm.jsx"]
+2P["UpdateProfileInformationForm.jsx"]
+end
+end
+end
+2Q["app.jsx"]
+end
+end
+4-->9
+4-->C
+4-->E
+4-->F
+9-->B
+C-->D
+D-->B
+E-->F
+F-->D
+J-->I
+J-->K
+J-->O
+J-->3
+J-->Q
+J-->N
+J-->S
+J-->D
+K-->L
+K-->N
+K-->D
+T-->3
+T-->N
+T-->U
+T-->D
+T-->D
+T-->F
+11-->13
+11-->19
+11-->1A
+11-->1B
+11-->1C
+11-->1D
+11-->1F
+11-->1H
+13-->Z
+13-->10
+13-->15
+13-->16
+13-->17
+13-->18
+13-->B
+19-->Z
+19-->10
+19-->15
+19-->16
+19-->17
+19-->B
+1A-->Z
+1A-->10
+1A-->15
+1A-->16
+1A-->B
+1B-->Z
+1B-->10
+1B-->15
+1B-->16
+1B-->17
+1B-->X
+1B-->B
+1C-->Z
+1C-->10
+1C-->15
+1C-->16
+1C-->B
+1D-->Z
+1D-->10
+1D-->1E
+1D-->15
+1D-->16
+1D-->18
+1D-->B
+1F-->Z
+1F-->10
+1F-->15
+1F-->16
+1F-->17
+1F-->X
+1F-->B
+1K-->1M
+1N-->1P
+1R-->1S
+1S-->1P
+1V-->1U
+1V-->D
+1W-->1T
+1W-->1U
+1W-->1V
+1W-->1X
+1W-->1Y
+1Y-->4
+1Y-->D
+1Y-->F
+1Z-->4
+1Z-->20
+1Z-->22
+20-->1U
+20-->21
+25-->1U
+25-->23
+26-->4
+26-->1W
+26-->1Z
+28-->1U
+2G-->3
+2G-->4
+2G-->J
+2G-->T
+2G-->D
+2G-->F
+2H-->4
+2H-->11
+2I-->3
+2I-->1K
+2I-->1N
+2I-->1Q
+2I-->1R
+2J-->1U
+2J-->2B
+2J-->2C
+2J-->2D
+2J-->2E
+2L-->2N
+2L-->2O
+2L-->2P
+2Q-->25
+2Q-->26
+2Q-->28
+2Q-->2G
+2Q-->2H
+2Q-->2I
+2Q-->2J
+2Q-->2L
+2Q-->3
+2Q-->S

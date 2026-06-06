@@ -1,0 +1,54 @@
+flowchart LR
+
+subgraph 0["resources"]
+subgraph 1["js"]
+subgraph 2["Features"]
+subgraph 3["Device"]
+subgraph 4["Shared"]
+subgraph 5["components"]
+6["DeleteModal.jsx"]
+7["Icons.jsx"]
+8["NavGuardModal.jsx"]
+9["PresetLine.jsx"]
+D["PresetsBar.jsx"]
+E["RenameModal.jsx"]
+I["StatusBar.jsx"]
+J["VirtualKeyboard.jsx"]
+L["WsConnection.jsx"]
+end
+subgraph A["utils"]
+B["presetUtils.js"]
+C["midiCC.js"]
+H["wsMsgHandle.js"]
+P["showTips.js"]
+end
+subgraph F["hooks"]
+G["usePresetsBar.js"]
+K["useVirtualKeyboard.js"]
+M["useMidi.js"]
+N["usePresetUpdate.js"]
+O["useWebSocket.js"]
+end
+end
+end
+end
+end
+end
+9-->7
+9-->B
+B-->C
+D-->6
+D-->7
+D-->9
+D-->E
+D-->G
+G-->B
+G-->H
+H-->B
+I-->J
+I-->L
+J-->7
+J-->K
+M-->C
+N-->B
+O-->H

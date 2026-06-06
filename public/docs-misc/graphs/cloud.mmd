@@ -1,0 +1,36 @@
+flowchart LR
+
+subgraph 0["resources"]
+subgraph 1["js"]
+subgraph 2["Features"]
+subgraph 3["Device"]
+subgraph 4["Cloud"]
+subgraph 5["components"]
+6["PublishModal.jsx"]
+7["Repo.jsx"]
+8["RepoWrapper.jsx"]
+9["Stars.jsx"]
+C["UploadPresetModal.jsx"]
+end
+subgraph A["utils"]
+B["repoUtils.js"]
+G["sortUtils.js"]
+end
+subgraph D["hooks"]
+E["useStars.js"]
+F["useRepo.js"]
+end
+end
+end
+end
+end
+end
+7-->6
+7-->8
+7-->C
+7-->E
+7-->B
+8-->9
+8-->B
+F-->B
+F-->G
