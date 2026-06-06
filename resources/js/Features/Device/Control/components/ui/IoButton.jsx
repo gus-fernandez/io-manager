@@ -45,7 +45,7 @@ export default function IoButton({ label, cc, value, send, appendLog, activeCc, 
                 <div className={`
                     absolute top-1 left-1/2 -translate-x-1/2
                     w-3 h-1 rounded-sm transition-colors duration-100
-                    ${isOn ? 'bg-rose-400' : 'bg-neutral-700'}
+                    ${isOn ? 'bg-rose-500' : 'bg-neutral-700'}
                 `} />
             </div>
             <div className="mt-1 whitespace-nowrap text-neutral-400">{label}</div>
