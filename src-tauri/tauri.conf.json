@@ -2,11 +2,11 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "IO-Manager",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.iomanager.app",
   "build": {
-    "frontendDist": "../public/",
+    "frontendDist": "../dist/",
     "devUrl": "http://localhost:5174",
-    "beforeDevCommand": "",
+    "beforeDevCommand": "npm run build",
     "beforeBuildCommand": "npm run build"
   },
   "app": {

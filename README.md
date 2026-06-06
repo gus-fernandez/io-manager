@@ -1,92 +1,124 @@
-# IO-Manager
+# IO MANAGER
 
-Sistema de gestión, control y actualización de firmware para instrumentos IO-X basados en ESP32 mediante una aplicación híbrida de escritorio (Tauri + React) y un backend en Laravel.
+App multimodal para IO Instruments *
+	- Creación, gestión y almacenamiento de presets.
+	- Configuración y conexión del microcontrolador.
+IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.
 
----
+## GENERALES
+✓ Entorno de desarrollo
+✓ APP
+✓ ESP32
+  Documentación
 
-## Estado del Proyecto (Roadmap & TODO)
+## ENTORNO DE DESARROLLO
+✓ Configurar Docker/Sail
+✓ Crear proyecto: Laravel 13, Inertia -> (Migrado a Axios), React, Tauri
+✓ Git y Vincular con Github
+✓ Automatizar inicio y cierre de sesión (Automator)
+✓ Configurando entorno remoto con SSH VNC SMB
 
-### Entorno de Desarrollo
-- [x] Configurar Docker / Laravel Sail
-- [x] Estructura base del proyecto (Laravel 13, Inertia.js, React, Tauri)
-- [x] Control de versiones (Git y vinculación con GitHub)
-- [x] Automatización de inicio/cierre de sesión local (Apple Automator)
-- [x] Configuración de entorno remoto de desarrollo (SSH, VNC, SMB)
+## APP
+✓ App desarrollo
+✓ 	- BD
+✓ 	- Auth
+✓ 	- Landing page
+✓ 	- Control
+✓ 	- Cloud
+✓ 	- Firmware
+✓ 	- About
+✓ Seguridad
+✓ Tailwind estilos
+✓ Accesibilidad
+✓ Adaptabilidad
+✓ Icon, Name
+✓ Integración Tauri
 
-### ESP32 & Firmware
-- [x] Conexión por puerto serie (USB Serial Connection)
-- [x] Monitor de puerto serie integrado (USB Serial Monitor)
-- [x] Quemador de firmware (Firmware Burner)
-- [x] Historial y logs de versiones de firmware en Base de Datos
-- [x] Implementación de actualizaciones OTA (Over-The-Air) básica
-- [x] Servidor de WebSockets funcional en el firmware
-- [ ] Panel de administración (Dashboard para subir archivos binarios de firmware y formularios)
-- [ ] Implementación de configuración WiFi via interfaz web (Formulario de aprovisionamiento)
+## ESP32
+✓ Implementación WiFi
+✓ Implementación Websockets (V2)
+✓	Implementación mDNS
+✓	Implementación FileSystem
+✓	Implementación Presets Manager
 
-### Aplicación Web & Landing Page (Panel de Control)
-- [x] Arquitectura e infraestructura Local / Colaborativa
-- [x] Sistema de Roles (Admin / User)
-- [x] Autenticación completa (Laravel Breeze)
-  - [x] Login / Logout
-  - [x] Registro de usuarios
-  - [x] Recuperación y reajuste de contraseña (Forgot / Reset password)
-  - [x] Edición y eliminación de perfil de usuario
-  - [x] Recordar sesión (Remember me)
-  - [x] Verificación de correo electrónico
-- [ ] Módulo de Presets (Gestión en Base de Datos)
+## DOCUMENTACIÓN
+✓ Preproyecto
+✓ Cuaderno de bitácora
+✓ Git
+  Memoria
+  README (v4) Actualizar
+	Código
+✓	Paths
+	TO DO User manual
 
-### App de Escritorio & UI General
-- [x] Esqueleto de la aplicación y maquetación base
-- [x] Integración de Tauri: Primer test de entorno de escritorio
-- [ ] Integración de Tauri: Generar primer ejecutable nativo (Build)
-- [ ] Estilos globales y consistencia de UI con Tailwind CSS
-- [ ] Accesibilidad web (Atributos ARIA, navegación por teclado, etc.)
-- [ ] Soporte multi-idioma / Traducción *(Por evaluar)*
+### SEGURIDAD
+✓ CSRF protection — CORS Axios - Laravel
+✓ Password hashing — bcrypt por defecto
+✓ SQL injection protection — Eloquent usa prepared statements
+✓ XSS protection — React escapa el HTML por defecto
+✓ Sanctum — Cookies de sesión
+✓ Rate limiting — en login, register y forgot password
+✓ Session timeout — cerrar sesión por inactividad (120 min)
+✓ Logs de auditoría — registrar intentos de login fallidos
+✓ Política de contraseñas — mínimo de caracteres, complejidad
+✓ Verificación e-mail
+✓ WiFi en ESP32 (ofuscación XOR en tránsito y guardado)
+✓ Preset Parse CRC32
+	TO DO 2FA — doble factor de autenticación ???
+	TO DO HTTPS — en producción forzar siempre HTTPS
 
-### Módulo de Control (Dashboard en tiempo real)
-- [x] Establecimiento y gestión de conexiones vía WebSockets
-- [x] Teclado virtual integrado (Virtual Keyboard)
-- [ ] Interfaz gráfica de control de parámetros (Knobs, Sliders, Buttons)
-- [ ] Visualizador de Presets cargados en tiempo real
-- [ ] Parser de ajustes preestablecidos (Preset Parse)
+### BD
+✓ Auth
+✓ Firmware
+✓ Presets
+✓ Ratings
 
-### Seguridad
-- [x] Protección CSRF (Gestionado nativamente por Inertia)
-- [x] Hasheo seguro de contraseñas (Bcrypt por defecto)
-- [x] Protección contra Inyección SQL (Uso de Prepared Statements en Eloquent)
-- [x] Mitigación de ataques XSS (Escapado automático en React)
-- [x] Configuración estricta de cookies de sesión con Laravel Sanctum
-- [x] Limitación de peticiones / Rate limiting (Login, Registro, Recuperación con Breeze)
-- [x] Expiración de sesión por inactividad (Configurado a 120 minutos)
-- [x] Logs de auditoría (Registro de intentos fallidos de autenticación)
-- [x] Políticas de complejidad de contraseñas
-- [x] Seguridad en el túnel de WebSockets (Token de autenticación en Handshake + Validación de origen)
-- [ ] Forzar tráfico HTTPS en entorno de producción
-- [ ] Implementación de doble factor de autenticación (2FA) *(Por evaluar)*
-- [ ] Auditoría y revisión de seguridad del Firmware del ESP32
-- [ ] Auditoría y revisión de la seguridad de la conexión WiFi del ESP32
+### AUTH
+✓ Login
+✓ Logout
+✓ Register
+✓ Reset password
+✓ Profile edit/delete
+✓ Forgot password
+✓ Remember me
+✓ Verificación de email
 
-### Documentación
-- [x] Redacción del Preproyecto
-- [x] Cuaderno de bitácora y seguimiento diario
-- [x] Estrategia y flujo de ramas en Git
-- [x] Actualización del archivo README (v1)
-- [ ] Manual de usuario final
-- [ ] Memoria técnica del proyecto
+### LANDING PAGE:
+✓ Local / Collab
+✓	Roles (admin / user)
 
----
+### CONTROL
+✓ Conexión websockets
+✓	Control UI
+✓	Virtual Keyboard
+✓	Loaded Presets
 
-## Stack Tecnológico
+### CLOUD
+✓	Local
+✓	Cloud
+✓	Admin Dashboard (administrar repositorio público)
 
-*   **Backend:** Laravel 13 (PHP) + Sail (Docker)
-*   **Frontend:** React, Inertia.js, Tailwind CSS
-*   **Desktop Wrapper:** Tauri (Rust)
-*   **Hardware / Firmware:** ESP32 (C++/Arduino framework), WebSockets, OTA Core.
+### FIRMWARE
+✓ USB Serial Connection
+✓ USB Serial Monitor
+✓ Command Console
+✓ Firmware Burner
+✓ Historial de Firmware (BD)
+✓ Admin Dashboard (administrar firmware)
+	TO DO Administrador usuarios
 
----
+### ACCESIBILIDAD
+✓ Control Panel Highlight
+✓ Aria
+✓ Navegación focusable
+✓ Tooltips
 
-## Requisitos Previos
+### ADAPTABILIDAD
+✓ Escritorio
+	TO DO Tablet
 
-*   Docker y Docker Compose
-*   Node.js
-*   Rust (para compilación con Tauri)
+### TAURI
+✓ Primer test
+✓ Primer build
+✓ Segundo build (to do serial)
+✓ Release test
