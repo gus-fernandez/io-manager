@@ -8,12 +8,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @group Authentication
+ */
 class PasswordResetLinkController extends Controller
 {
     /**
-     * Maneja la solicitud de envío del enlace de recuperación de contraseña.
+     * Enviar enlace de recuperación
      *
-     * @throws ValidationException
+     * Envía un enlace de restablecimiento de contraseña al correo electrónico del usuario si existe en el sistema.
+     *
+     * @bodyParam email string required El correo electrónico asociado a la cuenta.
+     *
+     * @response 200 {
+     * "status": "passwords.sent",
+     * "message": "Se ha enviado el enlace de restablecimiento de contraseña a tu correo electrónico."
+     * }
+     * @response 422 {
+     * "message": "The given data was invalid.",
+     * "errors": { "email": ["No podemos encontrar un usuario con esa dirección de correo."] }
+     * }
      */
     public function store(Request $request): JsonResponse
     {

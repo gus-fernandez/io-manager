@@ -7,11 +7,24 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @group Presets
+ *
+ * APIs para la gestión, creación y almacenamiento de presets.
+ */
 class PresetController extends Controller
 {
     
     /**
-     * GET /api/presets
+     * Listar presets (mix)
+     *
+     * Devuelve una lista combinada de presets globales y del usuario autenticado.
+     *
+     * @queryParam cat integer Filtro opcional por categoría.
+     * @response 200 {
+     * "global": [...],
+     * "user": [...]
+     * }
      */
     public function index(Request $request): JsonResponse
     {
@@ -39,6 +52,15 @@ class PresetController extends Controller
         ]);
     }
 
+    /**
+     * Listar presets públicos
+     *
+     * Devuelve todos los presets globales con información de votación del usuario actual si existe.
+     *
+     * @response 200 {
+     * "id": 1, "name": "Deep Space", "user_voted": false, "user_vote": null
+     * }
+     */
     public function indexPublic(Request $request): JsonResponse
     {
         try {
@@ -68,6 +90,16 @@ class PresetController extends Controller
         }
     }
 
+    /**
+     * Listar presets privados
+     *
+     * Devuelve solo los presets creados por el usuario autenticado.
+     *
+     * @authenticated
+     * @response 200 {
+     * "id": 1, "name": "My Sound", "id_user": 1
+     * }
+     */
     public function indexPrivate(Request $request): JsonResponse
     {
         try {
@@ -84,7 +116,23 @@ class PresetController extends Controller
     }
 
     /**
-     * POST /api/presets
+     * Guardar preset
+     *
+     * Crea un nuevo preset. Solo los administradores pueden crear presets globales (is_global=true).
+     *
+     * @authenticated
+     * @bodyParam name string required Nombre (máx 16 caracteres).
+     * @bodyParam cat integer required ID de categoría.
+     * @bodyParam crc32 integer required CRC32 del preset para integridad.
+     * @bodyParam params string required Datos crudos del preset.
+     * @bodyParam desc string optional Descripción.
+     * @bodyParam fav boolean optional Marcar como favorito.
+     * @bodyParam is_global boolean optional Si es global (solo admin).
+     *
+     * @response 201 {
+     * "message": "Preset guardado con éxito",
+     * "preset": {...}
+     * }
      */
     public function store(Request $request): JsonResponse
     {
@@ -124,6 +172,14 @@ class PresetController extends Controller
         ], 201);
     }
 
+    /**
+     * Eliminar preset
+     *
+     * Elimina un preset. Solo el dueño o un administrador pueden realizar esta acción.
+     *
+     * @authenticated
+     * @urlParam preset integer required ID del preset a eliminar.
+     */
     public function destroy(Preset $preset): JsonResponse
     {
         $user = Auth::user();
@@ -141,7 +197,18 @@ class PresetController extends Controller
     }
 
     /**
-     * PUT /api/presets/{preset}
+     * Actualizar preset
+     *
+     * Modifica un preset existente. Requiere ser el dueño o administrador.
+     *
+     * @authenticated
+     * @urlParam preset integer required ID del preset.
+     * @bodyParam name string required Nombre (máx 16 caracteres).
+     * @bodyParam cat integer required ID de categoría.
+     * @bodyParam crc32 integer required CRC32.
+     * @bodyParam params string required Datos del preset.
+     * @bodyParam desc string optional Descripción.
+     * @bodyParam fav boolean optional Marcar como favorito.
      */
     public function update(Request $request, Preset $preset): JsonResponse
     {

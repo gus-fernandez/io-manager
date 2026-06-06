@@ -8,10 +8,25 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @group Authentication
+ * * APIs para gestionar la sesión del usuario.
+ */
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Maneja la petición de autenticación entrante (Login).
+     * Iniciar sesión
+     *
+     * Autentica al usuario mediante credenciales y genera una sesión.
+     *
+     * @response 200 {
+     * "user": { "id": 1, "name": "Admin", "email": "admin@io.com" },
+     * "message": "Login correcto."
+     * }
+     * @response 422 {
+     * "message": "The given data was invalid.",
+     * "errors": { "email": ["Las credenciales son incorrectas."] }
+     * }
      */
     public function store(LoginRequest $request): JsonResponse
     {
@@ -27,7 +42,14 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Cierra la sesión del usuario (Logout).
+     * Cerrar sesión
+     *
+     * Invalida la sesión actual del usuario.
+     *
+     * @authenticated
+     * @response 200 {
+     * "message": "Sesión cerrada correctamente."
+     * }
      */
     public function destroy(Request $request): JsonResponse
     {

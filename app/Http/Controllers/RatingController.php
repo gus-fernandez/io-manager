@@ -8,10 +8,31 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @group Ratings
+ *
+ * Gestión de puntuaciones para presets de fábrica.
+ */
 class RatingController extends Controller
 {
     /**
-     * POST /api/presets/{preset}/rate
+     * Votar un preset
+     *
+     * Registra o actualiza la puntuación de un usuario en un preset de fábrica.
+     *
+     * @authenticated
+     * @urlParam preset integer required ID del preset.
+     * @bodyParam rate integer required Puntuación (entre 1 y 5).
+     *
+     * @response 200 {
+     * "message": "Voto registrado con éxito",
+     * "rating": 4.5,
+     * "user_voted": true,
+     * "user_vote": 5
+     * }
+     * @response 403 {
+     * "error": "Solo se pueden votar los presets de fábrica"
+     * }
      */
     public function store(Request $request, Preset $preset): JsonResponse
     {
@@ -49,6 +70,21 @@ class RatingController extends Controller
         ]);
     }
 
+    /**
+     * Eliminar voto
+     *
+     * Elimina la puntuación del usuario actual en un preset de fábrica.
+     *
+     * @authenticated
+     * @urlParam preset integer required ID del preset.
+     *
+     * @response 200 {
+     * "message": "Voto eliminado",
+     * "rating": 4.0,
+     * "user_voted": false,
+     * "user_vote": null
+     * }
+     */
     public function destroy(Preset $preset): JsonResponse
     {
         if ($preset->id_user !== null) {

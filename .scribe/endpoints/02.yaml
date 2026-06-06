@@ -1,0 +1,45 @@
+name: Endpoints
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/current-user
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: 'http://localhost:5174'
+          access-control-allow-credentials: 'true'
+          set-cookie: 'XSRF-TOKEN=eyJpdiI6Ik9DSCtlM1VaQm0wRjhBYy9JNlNKMHc9PSIsInZhbHVlIjoiQS9RSjNDcWw5MDBET012NHZMdmpnWVB2OWVuaXUveVFOR2tTZzBsckhuVVk3bG1vM3ZrOXBIb0w5bWxQR2xGZFFNTjhhdDJRcWVMNjRhQ0x4UXFXejNIU3NtSVJkU3dUY3UxeTlEQ1BmdXhLeXdBV1hXSWFrTUZPQlFwbGlGczAiLCJtYWMiOiJkMjZhZWMxMDVlNzQ0MjE2MzE3Yjg2YzA2OTY5MDU4NTAxYjk5NWNhNWQ0NThmNzYxMzQ5ZGQxOGQyMjk3YjZiIiwidGFnIjoiIn0%3D; expires=Sat, 06 Jun 2026 16:33:39 GMT; Max-Age=7200; path=/; domain=localhost; samesite=lax; io-manager-session=eyJpdiI6ImVZSkNtSE9JUlY2RExmWXR6cVZOUEE9PSIsInZhbHVlIjoicW0wWHJqMVQ3RU9mWVI3aXdwKzNqQVNkUHZDUTlsc2lFT3BYanJtTndUMnhMMzE3OTRxczNDSlExOU9CRnFuS0NDTVJ1RG5aYk0yc3JpZDcxWmpaa0FHRi9lSStsaWdBc0ZlTW1OdGg1V3QwQks2d3dCbW14b3RUb1FWS21XYkkiLCJtYWMiOiI0MjNiMjVlMGVkMDA3YzE2ZWE4MjFhZmU2MmJkOGUzYTA4MGRmZjBjMzc2OWMxYjRmMDhlNzk1NzI4MTM5ZWRmIiwidGFnIjoiIn0%3D; path=/; domain=localhost; httponly; samesite=lax'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

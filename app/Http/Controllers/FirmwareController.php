@@ -7,13 +7,31 @@ use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @group Firmware
+ *
+ * Gestión y descarga de archivos de firmware para los instrumentos.
+ */
 class FirmwareController extends Controller
 {
     /**
-     * GET /api/firmware?instrument=IO-8
+     * Listar firmware
      *
-     * Devuelve el último stable y el último nightly del instrumento.
-     * Si no se especifica instrumento, devuelve todos los instrumentos disponibles.
+     * Devuelve el último firmware estable y nightly para un instrumento específico.
+     * Si no se proporciona el parámetro 'instrument', devuelve la lista de instrumentos disponibles.
+     *
+     * @queryParam instrument string El nombre del instrumento (ej. IO-8).
+     *
+     * @response 200 {
+     * "instrument": "IO-8",
+     * "firmware": {
+     * "stable": { "id": 1, "version": "1.0.0", "description": "Lanzamiento estable", "size": "1.2 MB", "created_at": "2026-06-06" },
+     * "nightly": { "id": 2, "version": "1.1.0-beta", "description": "Versión en pruebas", "size": "1.2 MB", "created_at": "2026-06-07" }
+     * }
+     * }
+     * @response 200 {
+     * "instruments": ["IO-8", "IO-12"]
+     * }
      */
     public function index(): JsonResponse
     {
@@ -53,9 +71,14 @@ class FirmwareController extends Controller
     }
 
     /**
-     * GET /api/firmware/{firmware}/download
+     * Descargar firmware
      *
-     * Descarga el .bin.
+     * Inicia la descarga del archivo binario (.bin) asociado a un firmware específico.
+     *
+     * @urlParam firmware integer required El ID del registro de firmware.
+     *
+     * @response 200 { "binary": "file content" }
+     * @response 404 { "message": "Archivo no encontrado" }
      */
     public function download(Firmware $firmware): BinaryFileResponse
     {

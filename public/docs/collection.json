@@ -1,0 +1,665 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/localhost"
+        }
+    ],
+    "info": {
+        "name": "IO Manager API Documentation",
+        "_postman_id": "a83073b2-b430-4ea9-bb6e-a3273db7f399",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Administration",
+            "description": "\nAPIs para la gesti\u00f3n administrativa del sistema (requiere privilegios).",
+            "item": [
+                {
+                    "name": "Subir firmware",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/admin\/firmware\/upload",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/admin\/firmware\/upload"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "multipart\/form-data"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "instrument",
+                                    "value": "architecto",
+                                    "type": "text",
+                                    "description": "Nombre del instrumento."
+                                },
+                                {
+                                    "key": "version",
+                                    "value": "architecto",
+                                    "type": "text",
+                                    "description": "Versi\u00f3n del firmware (ej. 1.0.0)."
+                                },
+                                {
+                                    "key": "channel",
+                                    "value": "architecto",
+                                    "type": "text",
+                                    "description": "Canal de despliegue: \"stable\" o \"nightly\"."
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Eius et animi quos velit et.",
+                                    "type": "text",
+                                    "description": "optional Descripci\u00f3n del firmware."
+                                },
+                                {
+                                    "key": "firmware",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
+                        },
+                        "description": "Sube un archivo binario de firmware y registra sus metadatos en la base de datos."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n\"message\": \"Firmware subido y registrado con \u00e9xito.\",\n\"firmware\": { \"id\": 1, \"instrument\": \"IO-8\", \"version\": \"1.0.0\", \"channel\": \"stable\", \"size_bytes\": 1024 }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Listar usuarios",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/admin\/users",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/admin\/users"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Obtiene una lista completa de todos los usuarios registrados en el sistema."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"users\": [ { \"id\": 1, \"name\": \"Admin\", \"email\": \"admin@io.com\", \"created_at\": \"2026-06-06T...\" } ]\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Endpoints",
+            "description": "",
+            "item": [
+                {
+                    "name": "GET api\/current-user",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/current-user",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/current-user"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "http:\/\/localhost:5174"
+                                },
+                                {
+                                    "key": "access-control-allow-credentials",
+                                    "value": "true"
+                                },
+                                {
+                                    "key": "set-cookie",
+                                    "value": "XSRF-TOKEN=eyJpdiI6Ik9DSCtlM1VaQm0wRjhBYy9JNlNKMHc9PSIsInZhbHVlIjoiQS9RSjNDcWw5MDBET012NHZMdmpnWVB2OWVuaXUveVFOR2tTZzBsckhuVVk3bG1vM3ZrOXBIb0w5bWxQR2xGZFFNTjhhdDJRcWVMNjRhQ0x4UXFXejNIU3NtSVJkU3dUY3UxeTlEQ1BmdXhLeXdBV1hXSWFrTUZPQlFwbGlGczAiLCJtYWMiOiJkMjZhZWMxMDVlNzQ0MjE2MzE3Yjg2YzA2OTY5MDU4NTAxYjk5NWNhNWQ0NThmNzYxMzQ5ZGQxOGQyMjk3YjZiIiwidGFnIjoiIn0%3D; expires=Sat, 06 Jun 2026 16:33:39 GMT; Max-Age=7200; path=\/; domain=localhost; samesite=lax; io-manager-session=eyJpdiI6ImVZSkNtSE9JUlY2RExmWXR6cVZOUEE9PSIsInZhbHVlIjoicW0wWHJqMVQ3RU9mWVI3aXdwKzNqQVNkUHZDUTlsc2lFT3BYanJtTndUMnhMMzE3OTRxczNDSlExOU9CRnFuS0NDTVJ1RG5aYk0yc3JpZDcxWmpaa0FHRi9lSStsaWdBc0ZlTW1OdGg1V3QwQks2d3dCbW14b3RUb1FWS21XYkkiLCJtYWMiOiI0MjNiMjVlMGVkMDA3YzE2ZWE4MjFhZmU2MmJkOGUzYTA4MGRmZjBjMzc2OWMxYjRmMDhlNzk1NzI4MTM5ZWRmIiwidGFnIjoiIn0%3D; path=\/; domain=localhost; httponly; samesite=lax"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Firmware",
+            "description": "\nGesti\u00f3n y descarga de archivos de firmware para los instrumentos.",
+            "item": [
+                {
+                    "name": "Listar firmware",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/firmware\/list",
+                            "query": [
+                                {
+                                    "key": "instrument",
+                                    "value": "architecto",
+                                    "description": "El nombre del instrumento (ej. IO-8).",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/firmware\/list?instrument=architecto"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Devuelve el \u00faltimo firmware estable y nightly para un instrumento espec\u00edfico.\nSi no se proporciona el par\u00e1metro 'instrument', devuelve la lista de instrumentos disponibles.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"instrument\": \"IO-8\",\n\"firmware\": {\n\"stable\": { \"id\": 1, \"version\": \"1.0.0\", \"description\": \"Lanzamiento estable\", \"size\": \"1.2 MB\", \"created_at\": \"2026-06-06\" },\n\"nightly\": { \"id\": 2, \"version\": \"1.1.0-beta\", \"description\": \"Versi\u00f3n en pruebas\", \"size\": \"1.2 MB\", \"created_at\": \"2026-06-07\" }\n}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"instruments\": [\"IO-8\", \"IO-12\"]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Descargar firmware",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/firmware\/:firmware_id\/download",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/firmware\/:firmware_id\/download",
+                            "variable": [
+                                {
+                                    "id": "firmware_id",
+                                    "key": "firmware_id",
+                                    "value": "1",
+                                    "description": "The ID of the firmware."
+                                },
+                                {
+                                    "id": "firmware",
+                                    "key": "firmware",
+                                    "value": "16",
+                                    "description": "El ID del registro de firmware."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Inicia la descarga del archivo binario (.bin) asociado a un firmware espec\u00edfico.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{ \"binary\": \"file content\" }",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{ \"message\": \"Archivo no encontrado\" }",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Presets",
+            "description": "\nAPIs para la gesti\u00f3n, creaci\u00f3n y almacenamiento de presets.",
+            "item": [
+                {
+                    "name": "Listar presets p\u00fablicos",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/cloud\/public",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/cloud\/public"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Devuelve todos los presets globales con informaci\u00f3n de votaci\u00f3n del usuario actual si existe.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"id\": 1, \"name\": \"Deep Space\", \"user_voted\": false, \"user_vote\": null\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Listar presets privados",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/cloud\/private",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/cloud\/private"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Devuelve solo los presets creados por el usuario autenticado."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"id\": 1, \"name\": \"My Sound\", \"id_user\": 1\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Guardar preset",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/presets",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/presets"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"architecto\",\"cat\":16,\"crc32\":16,\"params\":\"architecto\",\"desc\":\"architecto\",\"fav\":false,\"is_global\":false}"
+                        },
+                        "description": "Crea un nuevo preset. Solo los administradores pueden crear presets globales (is_global=true)."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n\"message\": \"Preset guardado con \u00e9xito\",\n\"preset\": {...}\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Eliminar preset",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/presets\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/presets\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the preset."
+                                },
+                                {
+                                    "id": "preset",
+                                    "key": "preset",
+                                    "value": "16",
+                                    "description": "ID del preset a eliminar."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Elimina un preset. Solo el due\u00f1o o un administrador pueden realizar esta acci\u00f3n."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Actualizar preset",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/presets\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/presets\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the preset."
+                                },
+                                {
+                                    "id": "preset",
+                                    "key": "preset",
+                                    "value": "16",
+                                    "description": "ID del preset."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"architecto\",\"cat\":16,\"crc32\":16,\"params\":\"architecto\",\"desc\":\"architecto\",\"fav\":false}"
+                        },
+                        "description": "Modifica un preset existente. Requiere ser el due\u00f1o o administrador."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Profile",
+            "description": "\nGesti\u00f3n del perfil de usuario autenticado.",
+            "item": [
+                {
+                    "name": "Obtener perfil",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/profile",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/profile"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Devuelve los datos del usuario autenticado."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"user\": { \"id\": 1, \"name\": \"Usuario\", \"email\": \"user@io.com\" },\n\"mustVerifyEmail\": false\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Eliminar cuenta",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/profile",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/profile"
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"password\":\"|]|{+-\"}"
+                        },
+                        "description": "Elimina permanentemente la cuenta del usuario autenticado. Requiere confirmar la contrase\u00f1a actual."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"message\": \"Cuenta eliminada\"\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Ratings",
+            "description": "\nGesti\u00f3n de puntuaciones para presets de f\u00e1brica.",
+            "item": [
+                {
+                    "name": "Votar un preset",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/presets\/:preset_id\/rate",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/presets\/:preset_id\/rate",
+                            "variable": [
+                                {
+                                    "id": "preset_id",
+                                    "key": "preset_id",
+                                    "value": "1",
+                                    "description": "The ID of the preset."
+                                },
+                                {
+                                    "id": "preset",
+                                    "key": "preset",
+                                    "value": "16",
+                                    "description": "ID del preset."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"rate\":16}"
+                        },
+                        "description": "Registra o actualiza la puntuaci\u00f3n de un usuario en un preset de f\u00e1brica."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"message\": \"Voto registrado con \u00e9xito\",\n\"rating\": 4.5,\n\"user_voted\": true,\n\"user_vote\": 5\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 403,
+                            "body": "{\n\"error\": \"Solo se pueden votar los presets de f\u00e1brica\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Eliminar voto",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/presets\/:preset_id\/rate",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/presets\/:preset_id\/rate",
+                            "variable": [
+                                {
+                                    "id": "preset_id",
+                                    "key": "preset_id",
+                                    "value": "1",
+                                    "description": "The ID of the preset."
+                                },
+                                {
+                                    "id": "preset",
+                                    "key": "preset",
+                                    "value": "16",
+                                    "description": "ID del preset."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Elimina la puntuaci\u00f3n del usuario actual en un preset de f\u00e1brica."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n\"message\": \"Voto eliminado\",\n\"rating\": 4.0,\n\"user_voted\": false,\n\"user_vote\": null\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "noauth"
+    }
+}

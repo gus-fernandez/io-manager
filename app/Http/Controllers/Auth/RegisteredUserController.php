@@ -11,12 +11,29 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 
+/**
+ * @group Authentication
+ */
 class RegisteredUserController extends Controller
 {
     /**
-     * Maneja una solicitud de registro entrante.
+     * Registrar usuario
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * Crea un nuevo usuario en el sistema e inicia sesión automáticamente.
+     *
+     * @bodyParam name string required El nombre del usuario.
+     * @bodyParam email string required El correo electrónico.
+     * @bodyParam password string required La contraseña (mínimo 8 caracteres).
+     * @bodyParam password_confirmation string required La confirmación de la contraseña.
+     *
+     * @response 200 {
+     * "user": { "id": 1, "name": "Nombre", "email": "email@ejemplo.com" },
+     * "message": "Usuario registrado e inicio de sesión correcto."
+     * }
+     * @response 422 {
+     * "message": "The given data was invalid.",
+     * "errors": { "email": ["El correo electrónico ya ha sido registrado."] }
+     * }
      */
     public function store(Request $request): JsonResponse
     {

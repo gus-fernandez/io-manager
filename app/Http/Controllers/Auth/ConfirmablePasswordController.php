@@ -8,12 +8,28 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @group Authentication
+ */
 class ConfirmablePasswordController extends Controller
 {
     /**
-     * Confirma la contraseña del usuario.
+     * Confirmar contraseña
      *
-     * @throws ValidationException
+     * Valida la contraseña actual del usuario antes de realizar acciones sensibles.
+     *
+     * @authenticated
+     * * @bodyParam password string required La contraseña actual del usuario.
+     *
+     * @response 200 {
+     * "confirmed": true,
+     * "message": "Contraseña confirmada correctamente."
+     * }
+     *
+     * @response 422 {
+     * "message": "The given data was invalid.",
+     * "errors": { "password": ["La contraseña es incorrecta."] }
+     * }
      */
     public function store(Request $request): JsonResponse
     {

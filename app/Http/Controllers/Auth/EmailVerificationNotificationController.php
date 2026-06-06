@@ -6,10 +6,25 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Authentication
+ */
 class EmailVerificationNotificationController extends Controller
 {
     /**
-     * Enviar una nueva notificación de verificación de email.
+     * Reenviar verificación de email
+     *
+     * Envía un nuevo enlace de verificación al correo del usuario autenticado.
+     *
+     * @authenticated
+     * * @response 200 {
+     * "status": "verification-link-sent",
+     * "message": "Se ha enviado un nuevo enlace de verificación a tu correo."
+     * }
+     * * @response 200 {
+     * "verified": true,
+     * "message": "El email ya ha sido verificado."
+     * }
      */
     public function store(Request $request): JsonResponse
     {

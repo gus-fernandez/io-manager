@@ -1,0 +1,700 @@
+openapi: 3.0.3
+info:
+  title: 'IO Manager API Documentation'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+tags:
+  -
+    name: Administration
+    description: "\nAPIs para la gestión administrativa del sistema (requiere privilegios)."
+  -
+    name: Endpoints
+    description: ''
+  -
+    name: Firmware
+    description: "\nGestión y descarga de archivos de firmware para los instrumentos."
+  -
+    name: Presets
+    description: "\nAPIs para la gestión, creación y almacenamiento de presets."
+  -
+    name: Profile
+    description: "\nGestión del perfil de usuario autenticado."
+  -
+    name: Ratings
+    description: "\nGestión de puntuaciones para presets de fábrica."
+paths:
+  /api/admin/firmware/upload:
+    post:
+      summary: 'Subir firmware'
+      operationId: subirFirmware
+      description: 'Sube un archivo binario de firmware y registra sus metadatos en la base de datos.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Firmware subido y registrado con éxito.'
+                  firmware:
+                    id: 1
+                    instrument: IO-8
+                    version: 1.0.0
+                    channel: stable
+                    size_bytes: 1024
+                properties:
+                  message:
+                    type: string
+                    example: 'Firmware subido y registrado con éxito.'
+                  firmware:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      instrument:
+                        type: string
+                        example: IO-8
+                      version:
+                        type: string
+                        example: 1.0.0
+                      channel:
+                        type: string
+                        example: stable
+                      size_bytes:
+                        type: integer
+                        example: 1024
+      tags:
+        - Administration
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                firmware:
+                  type: string
+                  format: binary
+                  description: 'El archivo binario (.bin) del firmware (máx 10MB).'
+                instrument:
+                  type: string
+                  description: 'Nombre del instrumento.'
+                  example: architecto
+                version:
+                  type: string
+                  description: 'Versión del firmware (ej. 1.0.0).'
+                  example: architecto
+                channel:
+                  type: string
+                  description: 'Canal de despliegue: "stable" o "nightly".'
+                  example: architecto
+                description:
+                  type: string
+                  description: 'optional Descripción del firmware.'
+                  example: 'Eius et animi quos velit et.'
+                  nullable: true
+              required:
+                - firmware
+                - instrument
+                - version
+                - channel
+  /api/admin/users:
+    get:
+      summary: 'Listar usuarios'
+      operationId: listarUsuarios
+      description: 'Obtiene una lista completa de todos los usuarios registrados en el sistema.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  users:
+                    -
+                      id: 1
+                      name: Admin
+                      email: admin@io.com
+                      created_at: 2026-06-06T...
+                properties:
+                  users:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: Admin
+                        email: admin@io.com
+                        created_at: 2026-06-06T...
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: Admin
+                        email:
+                          type: string
+                          example: admin@io.com
+                        created_at:
+                          type: string
+                          example: 2026-06-06T...
+      tags:
+        - Administration
+  /api/current-user:
+    get:
+      summary: ''
+      operationId: getApiCurrentUser
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  /api/firmware/list:
+    get:
+      summary: 'Listar firmware'
+      operationId: listarFirmware
+      description: "Devuelve el último firmware estable y nightly para un instrumento específico.\nSi no se proporciona el parámetro 'instrument', devuelve la lista de instrumentos disponibles."
+      parameters:
+        -
+          in: query
+          name: instrument
+          description: 'El nombre del instrumento (ej. IO-8).'
+          example: architecto
+          required: false
+          schema:
+            type: string
+            description: 'El nombre del instrumento (ej. IO-8).'
+            example: architecto
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  -
+                    description: ''
+                    type: object
+                    example:
+                      instrument: IO-8
+                      firmware:
+                        stable:
+                          id: 1
+                          version: 1.0.0
+                          description: 'Lanzamiento estable'
+                          size: '1.2 MB'
+                          created_at: '2026-06-06'
+                        nightly:
+                          id: 2
+                          version: 1.1.0-beta
+                          description: 'Versión en pruebas'
+                          size: '1.2 MB'
+                          created_at: '2026-06-07'
+                    properties:
+                      instrument:
+                        type: string
+                        example: IO-8
+                      firmware:
+                        type: object
+                        properties:
+                          stable:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 1
+                              version:
+                                type: string
+                                example: 1.0.0
+                              description:
+                                type: string
+                                example: 'Lanzamiento estable'
+                              size:
+                                type: string
+                                example: '1.2 MB'
+                              created_at:
+                                type: string
+                                example: '2026-06-06'
+                          nightly:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 2
+                              version:
+                                type: string
+                                example: 1.1.0-beta
+                              description:
+                                type: string
+                                example: 'Versión en pruebas'
+                              size:
+                                type: string
+                                example: '1.2 MB'
+                              created_at:
+                                type: string
+                                example: '2026-06-07'
+                  -
+                    description: ''
+                    type: object
+                    example:
+                      instruments:
+                        - IO-8
+                        - IO-12
+                    properties:
+                      instruments:
+                        type: array
+                        example:
+                          - IO-8
+                          - IO-12
+                        items:
+                          type: string
+      tags:
+        - Firmware
+      security: []
+  '/api/firmware/{firmware_id}/download':
+    get:
+      summary: 'Descargar firmware'
+      operationId: descargarFirmware
+      description: 'Inicia la descarga del archivo binario (.bin) asociado a un firmware específico.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  binary: 'file content'
+                properties:
+                  binary:
+                    type: string
+                    example: 'file content'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Archivo no encontrado'
+                properties:
+                  message:
+                    type: string
+                    example: 'Archivo no encontrado'
+      tags:
+        - Firmware
+      security: []
+    parameters:
+      -
+        in: path
+        name: firmware_id
+        description: 'The ID of the firmware.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: firmware
+        description: 'El ID del registro de firmware.'
+        example: 16
+        required: true
+        schema:
+          type: integer
+  /api/cloud/public:
+    get:
+      summary: 'Listar presets públicos'
+      operationId: listarPresetsPblicos
+      description: 'Devuelve todos los presets globales con información de votación del usuario actual si existe.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: 'Deep Space'
+                  user_voted: false
+                  user_vote: null
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: 'Deep Space'
+                  user_voted:
+                    type: boolean
+                    example: false
+                  user_vote:
+                    type: string
+                    example: null
+                    nullable: true
+      tags:
+        - Presets
+      security: []
+  /api/cloud/private:
+    get:
+      summary: 'Listar presets privados'
+      operationId: listarPresetsPrivados
+      description: 'Devuelve solo los presets creados por el usuario autenticado.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: 'My Sound'
+                  id_user: 1
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: 'My Sound'
+                  id_user:
+                    type: integer
+                    example: 1
+      tags:
+        - Presets
+  /api/presets:
+    post:
+      summary: 'Guardar preset'
+      operationId: guardarPreset
+      description: 'Crea un nuevo preset. Solo los administradores pueden crear presets globales (is_global=true).'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n\"message\": \"Preset guardado con éxito\",\n\"preset\": {...}\n}"
+      tags:
+        - Presets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Nombre (máx 16 caracteres).'
+                  example: architecto
+                cat:
+                  type: integer
+                  description: 'ID de categoría.'
+                  example: 16
+                crc32:
+                  type: integer
+                  description: 'CRC32 del preset para integridad.'
+                  example: 16
+                params:
+                  type: string
+                  description: 'Datos crudos del preset.'
+                  example: architecto
+                desc:
+                  type: string
+                  description: 'optional Descripción.'
+                  example: architecto
+                  nullable: true
+                fav:
+                  type: boolean
+                  description: 'optional Marcar como favorito.'
+                  example: false
+                  nullable: true
+                is_global:
+                  type: boolean
+                  description: 'optional Si es global (solo admin).'
+                  example: false
+                  nullable: true
+              required:
+                - name
+                - cat
+                - crc32
+                - params
+  '/api/presets/{id}':
+    delete:
+      summary: 'Eliminar preset'
+      operationId: eliminarPreset
+      description: 'Elimina un preset. Solo el dueño o un administrador pueden realizar esta acción.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Presets
+    put:
+      summary: 'Actualizar preset'
+      operationId: actualizarPreset
+      description: 'Modifica un preset existente. Requiere ser el dueño o administrador.'
+      parameters: []
+      responses: {  }
+      tags:
+        - Presets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Nombre (máx 16 caracteres).'
+                  example: architecto
+                cat:
+                  type: integer
+                  description: 'ID de categoría.'
+                  example: 16
+                crc32:
+                  type: integer
+                  description: CRC32.
+                  example: 16
+                params:
+                  type: string
+                  description: 'Datos del preset.'
+                  example: architecto
+                desc:
+                  type: string
+                  description: 'optional Descripción.'
+                  example: architecto
+                  nullable: true
+                fav:
+                  type: boolean
+                  description: 'optional Marcar como favorito.'
+                  example: false
+                  nullable: true
+              required:
+                - name
+                - cat
+                - crc32
+                - params
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the preset.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: preset
+        description: 'ID del preset a eliminar.'
+        example: 16
+        required: true
+        schema:
+          type: integer
+  /api/profile:
+    get:
+      summary: 'Obtener perfil'
+      operationId: obtenerPerfil
+      description: 'Devuelve los datos del usuario autenticado.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  user:
+                    id: 1
+                    name: Usuario
+                    email: user@io.com
+                  mustVerifyEmail: false
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Usuario
+                      email:
+                        type: string
+                        example: user@io.com
+                  mustVerifyEmail:
+                    type: boolean
+                    example: false
+      tags:
+        - Profile
+    delete:
+      summary: 'Eliminar cuenta'
+      operationId: eliminarCuenta
+      description: 'Elimina permanentemente la cuenta del usuario autenticado. Requiere confirmar la contraseña actual.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Cuenta eliminada'
+                properties:
+                  message:
+                    type: string
+                    example: 'Cuenta eliminada'
+      tags:
+        - Profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  description: 'Contraseña actual del usuario para confirmar la eliminación.'
+                  example: '|]|{+-'
+              required:
+                - password
+  '/api/presets/{preset_id}/rate':
+    post:
+      summary: 'Votar un preset'
+      operationId: votarUnPreset
+      description: 'Registra o actualiza la puntuación de un usuario en un preset de fábrica.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Voto registrado con éxito'
+                  rating: 4.5
+                  user_voted: true
+                  user_vote: 5
+                properties:
+                  message:
+                    type: string
+                    example: 'Voto registrado con éxito'
+                  rating:
+                    type: number
+                    example: 4.5
+                  user_voted:
+                    type: boolean
+                    example: true
+                  user_vote:
+                    type: integer
+                    example: 5
+        403:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: 'Solo se pueden votar los presets de fábrica'
+                properties:
+                  error:
+                    type: string
+                    example: 'Solo se pueden votar los presets de fábrica'
+      tags:
+        - Ratings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rate:
+                  type: integer
+                  description: 'Puntuación (entre 1 y 5).'
+                  example: 16
+              required:
+                - rate
+    delete:
+      summary: 'Eliminar voto'
+      operationId: eliminarVoto
+      description: 'Elimina la puntuación del usuario actual en un preset de fábrica.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Voto eliminado'
+                  rating: 4.0
+                  user_voted: false
+                  user_vote: null
+                properties:
+                  message:
+                    type: string
+                    example: 'Voto eliminado'
+                  rating:
+                    type: number
+                    example: 4.0
+                  user_voted:
+                    type: boolean
+                    example: false
+                  user_vote:
+                    type: string
+                    example: null
+                    nullable: true
+      tags:
+        - Ratings
+    parameters:
+      -
+        in: path
+        name: preset_id
+        description: 'The ID of the preset.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: preset
+        description: 'ID del preset.'
+        example: 16
+        required: true
+        schema:
+          type: integer

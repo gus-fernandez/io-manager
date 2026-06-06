@@ -7,10 +7,23 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @group Profile
+ *
+ * Gestión del perfil de usuario autenticado.
+ */
 class ProfileController extends Controller
 {
     /**
-     * Devuelve los datos del perfil en formato JSON.
+     * Obtener perfil
+     *
+     * Devuelve los datos del usuario autenticado.
+     *
+     * @authenticated
+     * @response 200 {
+     * "user": { "id": 1, "name": "Usuario", "email": "user@io.com" },
+     * "mustVerifyEmail": false
+     * }
      */
     public function edit(Request $request): JsonResponse
     {
@@ -21,7 +34,20 @@ class ProfileController extends Controller
     }
 
     /**
-     * Actualiza el perfil y devuelve confirmación JSON.
+     * Actualizar perfil
+     *
+     * Actualiza la información del perfil del usuario.
+     *
+     * @authenticated
+     * @bodyParam name string required Nombre del usuario.
+     * @bodyParam email string required Correo electrónico.
+     * * @response 200 {
+     * "message": "Perfil actualizado correctamente"
+     * }
+     * @response 422 {
+     * "message": "The given data was invalid.",
+     * "errors": { "email": ["El correo ya ha sido tomado."] }
+     * }
      */
     public function update(ProfileUpdateRequest $request): JsonResponse
     {
@@ -37,7 +63,16 @@ class ProfileController extends Controller
     }
 
     /**
-     * Elimina la cuenta y devuelve confirmación JSON.
+     * Eliminar cuenta
+     *
+     * Elimina permanentemente la cuenta del usuario autenticado. Requiere confirmar la contraseña actual.
+     *
+     * @authenticated
+     * @bodyParam password string required Contraseña actual del usuario para confirmar la eliminación.
+     *
+     * @response 200 {
+     * "message": "Cuenta eliminada"
+     * }
      */
     public function destroy(Request $request): JsonResponse
     {

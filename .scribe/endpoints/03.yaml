@@ -1,0 +1,102 @@
+name: Profile
+description: |-
+
+  Gestión del perfil de usuario autenticado.
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/profile
+    metadata:
+      custom: []
+      groupName: Profile
+      groupDescription: |-
+
+        Gestión del perfil de usuario autenticado.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Obtener perfil'
+      description: 'Devuelve los datos del usuario autenticado.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+          "user": { "id": 1, "name": "Usuario", "email": "user@io.com" },
+          "mustVerifyEmail": false
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: api/profile
+    metadata:
+      custom: []
+      groupName: Profile
+      groupDescription: |-
+
+        Gestión del perfil de usuario autenticado.
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Eliminar cuenta'
+      description: 'Elimina permanentemente la cuenta del usuario autenticado. Requiere confirmar la contraseña actual.'
+      authenticated: true
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      password:
+        custom: []
+        name: password
+        description: 'Contraseña actual del usuario para confirmar la eliminación.'
+        required: true
+        example: '|]|{+-'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      password: '|]|{+-'
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: |-
+          {
+          "message": "Cuenta eliminada"
+          }
+        headers: []
+        description: ''
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

@@ -5,8 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * @group Administration
+ *
+ * APIs para la gestión administrativa del sistema (requiere privilegios).
+ */
 class AdminController extends Controller
 {
+    /**
+     * Subir firmware
+     *
+     * Sube un archivo binario de firmware y registra sus metadatos en la base de datos.
+     *
+     * @authenticated
+     * @bodyParam firmware file required El archivo binario (.bin) del firmware (máx 10MB).
+     * @bodyParam instrument string required Nombre del instrumento.
+     * @bodyParam version string required Versión del firmware (ej. 1.0.0).
+     * @bodyParam channel string required Canal de despliegue: "stable" o "nightly".
+     * @bodyParam description string optional Descripción del firmware.
+     *
+     * @response 201 {
+     * "message": "Firmware subido y registrado con éxito.",
+     * "firmware": { "id": 1, "instrument": "IO-8", "version": "1.0.0", "channel": "stable", "size_bytes": 1024 }
+     * }
+     */
     public function uploadFirmware(Request $request): JsonResponse
     {
         $request->validate([
@@ -39,7 +61,14 @@ class AdminController extends Controller
     }
 
     /**
-     * Listar usuarios del sistema
+     * Listar usuarios
+     *
+     * Obtiene una lista completa de todos los usuarios registrados en el sistema.
+     *
+     * @authenticated
+     * @response 200 {
+     * "users": [ { "id": 1, "name": "Admin", "email": "admin@io.com", "created_at": "2026-06-06T..." } ]
+     * }
      */
     public function indexUsers(): JsonResponse
     {
