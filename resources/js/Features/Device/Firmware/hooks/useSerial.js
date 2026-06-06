@@ -117,7 +117,7 @@ export default function useSerial() {
                     }
                 } catch (err) {
                     if (err.name !== 'AbortError' && isReadingRef.current) {
-                        setError('Error de lectura: ' + err.message);
+                        setError('Reading Error: ' + err.message);
                     }
                     setConnected(false);
                     setPort(null);
@@ -132,7 +132,7 @@ export default function useSerial() {
             read();
         } catch (err) {
             activePortRef.current = null;
-            setError('Error al abrir el puerto: ' + err.message);
+            setError('Opening port error: ' + err.message);
         }
     }, [cleanExistingPort]);
 
@@ -142,7 +142,7 @@ export default function useSerial() {
             await initPort(selected);
         } catch (err) {
             if (err.name !== 'NotFoundError') {
-                setError('Error al conectar: ' + err.message);
+                setError('Connecting error: ' + err.message);
             }
         }
     }, [initPort]);
@@ -156,7 +156,7 @@ export default function useSerial() {
                 return true;
             }
         } catch (err) {
-            console.error('Error en reconexión automática:', err);
+            console.error('Auto-reconnect error:', err);
         }
         return false;
     }, [initPort]);
@@ -175,7 +175,7 @@ export default function useSerial() {
             await writer.write(data);
             writer.releaseLock();
         } catch (err) {
-            setError('Error al enviar: ' + err.message);
+            setError('Send error: ' + err.message);
         }
     }, []);
 
