@@ -1,8 +1,7 @@
 # IO MANAGER
   
-App multimodal para IO Instruments *  
-	- Creación, gestión y almacenamiento de presets para IO Instruments.  
-	- Configuración y conexión del microcontrolador.  
+App multimodal para IO Instruments * - Creación, gestión y almacenamiento de presets para IO Instruments.  
+  - Configuración y conexión del microcontrolador.  
 IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.  
   
 ## GENERALES
@@ -20,13 +19,13 @@ IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.
   
 ## APP
 ✓ App desarrollo  
-✓ 	- BD  
-✓ 	- Auth  
-✓ 	- Landing page  
-✓ 	- Control  
-✓ 	- Cloud  
-✓ 	- Firmware  
-✓ 	- About  
+✓     - BD  
+✓     - Auth  
+✓     - Landing page  
+✓     - Control  
+✓     - Cloud  
+✓     - Firmware  
+✓     - About  
 ✓ Seguridad  
 ✓ Tailwind estilos  
 ✓ Accesibilidad  
@@ -37,9 +36,9 @@ IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.
 ## ESP32
 ✓ Implementación WiFi  
 ✓ Implementación Websockets (V2)  
-✓	Implementación mDNS  
-✓	Implementación FileSystem  
-✓	Implementación Presets Manager  
+✓    Implementación mDNS  
+✓    Implementación FileSystem  
+✓    Implementación Presets Manager  
   
 ## DOCUMENTACIÓN
 ✓ Preproyecto  
@@ -47,9 +46,9 @@ IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.
 ✓ Git  
   Memoria  
   README (v4) Actualizar  
-	Código  
-✓	Paths  
-	TO DO User manual  
+    Código  
+✓   Paths  
+    TO DO User manual  
   
 ### SEGURIDAD
 ✓ CSRF protection — CORS Axios - Laravel  
@@ -64,8 +63,8 @@ IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.
 ✓ Verificación e-mail  
 ✓ WiFi en ESP32 (ofuscación XOR en tránsito y guardado)  
 ✓ Preset Parse CRC32  
-	TO DO 2FA — doble factor de autenticación ???  
-	TO DO HTTPS — en producción forzar siempre HTTPS  
+    TO DO 2FA — doble factor de autenticación ???  
+    TO DO HTTPS — en producción forzar siempre HTTPS  
   
 ### BD
 ✓ Auth  
@@ -85,18 +84,18 @@ IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.
   
 ### LANDING PAGE:
 ✓ Local / Collab  
-✓	Roles (admin / user)  
+✓    Roles (admin / user)  
   
 ### CONTROL
 ✓ Conexión websockets  
-✓	Control UI  
-✓	Virtual Keyboard  
-✓	Loaded Presets  
+✓    Control UI  
+✓    Virtual Keyboard  
+✓    Loaded Presets  
   
 ### CLOUD
-✓	Local  
-✓	Cloud  
-✓	Admin Dashboard (administrar repositorio público)  
+✓    Local  
+✓    Cloud  
+✓    Admin Dashboard (administrar repositorio público)  
   
 ### FIRMWARE
 ✓ USB Serial Connection  
@@ -105,7 +104,7 @@ IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.
 ✓ Firmware Burner  
 ✓ Historial de Firmware (BD)  
 ✓ Admin Dashboard (administrar firmware)  
-	TO DO Administrador usuarios  
+    TO DO Administrador usuarios  
   
 ### ACCESIBILIDAD
 ✓ Control Panel Highlight  
@@ -117,10 +116,10 @@ IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.
 ✓ Escritorio  
 ✓ Idioma: Inglés  
   TO DO Traducción  
-	TO DO Tablet  
+    TO DO Tablet  
   
 ### TAURI
 ✓ Primer test  
 ✓ Primer build  
 ✓ Segundo build (to do serial)  
-✓ Release test  
+✓ Release test
