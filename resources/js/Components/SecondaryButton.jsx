@@ -1,6 +1,23 @@
+// @/Components/SecondaryButton.jsx
+
+/**
+ * @file SecondaryButton.jsx
+ * @module Components/SecondaryButton
+ * @description Botón de estilo secundario (con bordes y fondo). Implementa un patrón
+ * de diseño para acciones no primarias, manteniendo una jerarquía visual clara.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { globalConfig } from '@/Features/Device/Shared/utils/showTips';
 
+/**
+ * @param {string} [type='button'] - Tipo de botón HTML.
+ * @param {string} [className=''] - Clases CSS adicionales para customizar estilos.
+ * @param {boolean} [disabled] - Si es true, reduce la opacidad y deshabilita la interacción.
+ * @param {ReactNode} children - Contenido interno (texto o iconos).
+ * @param {string} [title] - Texto para el tooltip (condicionado a globalConfig).
+ * @param {object} props - Atributos HTML nativos de botón.
+ */
 export default function SecondaryButton({
     type = 'button',
     className = '',

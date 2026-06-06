@@ -1,5 +1,13 @@
 // @/Features/Device/Shared/components/PresetsBar.jsx
 
+/**
+ * @file PresetsBar.jsx
+ * @module Features/Shared/components/PresetsBar
+ * @description Barra principal de gestión de presets. Actúa como el centro de control 
+ * visual para interactuar con los presets del dispositivo (selección, guardado, 
+ * edición de nombre, borrado y estados de modificación).
+ */
+
 import React, { useRef, useEffect } from 'react';
 import { usePresetsBar } from '@/Features/Device/Shared/hooks/usePresetsBar.js';
 import PresetLine from '@/Features/Device/Shared/components/PresetLine.jsx';
@@ -8,6 +16,12 @@ import { RenameModal } from '@/Features/Device/Shared/components/RenameModal.jsx
 import { Io8Icon } from '@/Features/Device/Shared/components/Icons.jsx';
 import TextButton from '@/Components/TextButton';
 
+/**
+ * Renderiza la barra de control de presets.
+ * Gestiona el despliegue del menú, la escucha de eventos externos (Escape, Click outside)
+ * y la renderización condicional de los modales de edición.
+ * * @param {object} props - Propiedades pasadas al hook usePresetsBar.
+ */
 export default function PresetsBar(props) {
     const {
         isOpen, isSaving, isLoading,

@@ -1,3 +1,19 @@
+// @/Components/DangerButton.jsx
+
+/**
+ * @file DangerButton.jsx
+ * @module Components/DangerButton
+ * @description Botón diseñado para acciones destructivas o críticas (ej. eliminar datos).
+ * Utiliza una paleta de colores basada en tonos 'rose' para ofrecer una señal visual
+ * clara de advertencia sin romper la cohesión minimalista del sistema.
+ */
+
+/**
+ * @param {string} [className=''] - Clases CSS adicionales para customizar el botón.
+ * @param {boolean} [disabled] - Si es true, reduce la opacidad y deshabilita la interacción.
+ * @param {ReactNode} children - Contenido interno (texto o iconos).
+ * @param {object} props - Atributos HTML nativos de botón (type, onClick, etc).
+ */
 export default function DangerButton({
     className = '',
     disabled,

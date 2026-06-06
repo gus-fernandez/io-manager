@@ -1,5 +1,12 @@
 // @/Features/Device/Control/components/modules/LfoModule.jsx
 
+/**
+ * @file LfoModule.jsx
+ * @module Features/Control/components/modules/LfoModule
+ * @description Módulo de control del LFO. Gestiona la forma de onda, 
+ * velocidad, fase y destino de la modulación periódica.
+ */
+
 import Module from '@/Features/Device/Control/components/layout/Module';
 import ModuleDivider from '@/Features/Device/Control/components/layout/ModuleDivider';
 import IoKnob from '@/Features/Device/Control/components/ui/IoKnob';
@@ -27,6 +34,14 @@ const LfoDest = {
     "SPREAD": 6,
     "PAN": 7
 };
+
+/**
+ * @typedef {object} LfoModuleProps
+ * @property {string} id - Identificador del módulo.
+ * @property {Function} sendCC - Callback para envío de mensajes MIDI.
+ * @property {Function} appendLog - Callback para logs.
+ * @property {object} [values] - Estado actual de los parámetros (preset).
+ */
 export default function LfoModule({ id, sendCC, appendLog, values = {} }) {
     return (
         <Module id={id} title="LFO">

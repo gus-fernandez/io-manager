@@ -1,3 +1,13 @@
+// @/Pages/Auth/ConfirmPassword.jsx
+
+/**
+ * @file ConfirmPassword.jsx
+ * @module Pages/Auth/ConfirmPassword
+ * @description Implementa un patrón de re-autenticación. 
+ * Protege áreas críticas de la aplicación solicitando la contraseña actual 
+ * antes de permitir el acceso, mitigando riesgos de seguridad en sesiones activas.
+ */
+
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -5,11 +15,18 @@ import TextInput from '@/Components/TextInput';
 import { useState } from 'react';
 import axios from '@/bootstrap';
 
+/**
+ * @param {object} props
+ */
 export default function ConfirmPassword() {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
+    /**
+     * Valida la contraseña contra el endpoint de confirmación.
+     * Al ser exitoso, recarga la página para refrescar el estado de la sesión protegida.
+     */
     const submit = async (e) => {
         e.preventDefault();
         setProcessing(true);

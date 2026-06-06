@@ -1,4 +1,10 @@
-// @/Features/Device/Control/components/waveIcons.jsx
+// @/Features/Device/Control/components/WaveIcons.jsx
+
+/**
+ * @file waveIcons.jsx
+ * @module Features/Control/components/WaveIcons
+ * @description Iconos para LFO y OSC en svg.
+ */
 
 export const WaveIcons = {
     OSC_SIN: () => (

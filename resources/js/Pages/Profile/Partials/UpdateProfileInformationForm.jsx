@@ -1,3 +1,13 @@
+// @/Pages/Profile/Partials/UpdateProfileInformationForm.jsx
+
+/**
+ * @file UpdateProfileInformationForm.jsx
+ * @module Pages/Profile/Partials/UpdateProfileInformationForm
+ * @description Formulario para la gestión de información personal.
+ * Implementa la actualización de nombre y correo electrónico, y gestiona
+ * el flujo de re-envío de verificación de correo si es requerido.
+ */
+
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -6,6 +16,13 @@ import { Transition } from '@headlessui/react';
 import { useState, useEffect } from 'react';
 import axios from '@/bootstrap';
 
+/**
+ * @param {object} props
+ * @param {object} props.user - Datos actuales del usuario (procedentes del contexto/API).
+ * @param {Function} props.setUser - Callback para actualizar el objeto usuario global.
+ * @param {boolean} props.mustVerifyEmail - Flag reactivo que indica si la verificación está pendiente.
+ * @param {string} [props.className] - Clases CSS adicionales.
+ */
 export default function UpdateProfileInformation({
     user,
     setUser,
@@ -29,6 +46,10 @@ export default function UpdateProfileInformation({
         }
     }, [user]);
 
+    /**
+     * Envía los datos actualizados a la API.
+     * Gestiona errores de validación (422) y estados de carga.
+     */
     const submit = async (e) => {
         e.preventDefault();
         setProcessing(true);
@@ -51,6 +72,9 @@ export default function UpdateProfileInformation({
         }
     };
 
+    /**
+     * Dispara la notificación de verificación de email.
+     */
     const sendVerification = async () => {
         setVerificationStatus(null);
         try {

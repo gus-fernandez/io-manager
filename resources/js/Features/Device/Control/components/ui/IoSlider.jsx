@@ -1,7 +1,28 @@
 // @/Features/Device/Control/components/ui/IoSlider.jsx
 
+/**
+ * @file IoSlider.jsx
+ * @module Features/Control/components/ui/IoSlider
+ * @description Control de deslizador (fader) vertical optimizado para mensajes MIDI.
+ * Incluye gestión de eventos táctiles/ratón y throttling de salida de datos.
+ */
+
 import { useState, useRef, useEffect } from 'react';
 
+/**
+ * @typedef {object} IoSliderProps
+ * @property {string} label - Etiqueta visible del control.
+ * @property {number} cc - Número de Control Change MIDI a enviar.
+ * @property {number} [value=0] - Valor inicial (0-127).
+ * @property {Function} send - Callback para enviar el comando MIDI (0xB0, cc, val).
+ * @property {Function} appendLog - Callback para registrar la actividad en la consola.
+ * @property {string} [className] - Clases adicionales de Tailwind.
+ */
+
+/**
+ * Renderiza un fader vertical con control de precisión y límite de tasa de envío.
+ * @param {IoSliderProps} props
+ */
 export default function IoSlider({ label, cc, value = 0, send, appendLog, className = "" }) {
     const [valueState, setValueState] = useState(value);
     const bodyRef  = useRef(null);

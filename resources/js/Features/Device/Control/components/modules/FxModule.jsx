@@ -1,10 +1,26 @@
 // @/Features/Device/Control/components/modules/FxModule.jsx
 
+/**
+ * @file FxModule.jsx
+ * @module Features/Control/components/modules/FxModule
+ * @description Módulo de efectos que encapsula la cadena de procesamiento de audio.
+ * Permite la manipulación de distorsión digital, chorus y delay mediante 
+ * controles rotativos y botones de configuración.
+ */
+
 import Module from '@/Features/Device/Control/components/layout/Module';
 import ModuleDivider from '@/Features/Device/Control/components/layout/ModuleDivider';
 import IoKnob from '@/Features/Device/Control/components/ui/IoKnob';
 import IoButton from '@/Features/Device/Control/components/ui/IoButton';
 import { CC } from '@/Features/Device/Shared/utils/midiCC';
+
+/**
+ * @typedef {object} FxModuleProps
+ * @property {string} id - Identificador del módulo.
+ * @property {Function} sendCC - Callback para envío de mensajes MIDI.
+ * @property {Function} appendLog - Callback para logs.
+ * @property {object} [values] - Estado actual de los parámetros (preset).
+ */
 
 export default function FxModule({ id, sendCC, appendLog, values = {} }) {
     return (

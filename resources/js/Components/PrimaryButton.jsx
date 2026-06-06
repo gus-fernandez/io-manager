@@ -1,6 +1,23 @@
+// @/Components/PrimaryButton.jsx
+
+/**
+ * @file PrimaryButton.jsx
+ * @module Components/PrimaryButton
+ * @description Botón de acción principal (CTA). Representa la acción más importante 
+ * en una interfaz. Posee una jerarquía visual destacada mediante fondos sólidos 
+ * y bordes contrastados.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { globalConfig } from '@/Features/Device/Shared/utils/showTips';
 
+/**
+ * @param {string} [className=''] - Clases CSS adicionales para customizar estilos.
+ * @param {boolean} [disabled] - Si es true, reduce la opacidad y deshabilita la interacción.
+ * @param {ReactNode} children - Contenido interno (texto o iconos).
+ * @param {string} [title] - Texto para el tooltip (condicionado a globalConfig).
+ * @param {object} props - Atributos HTML nativos de botón (type, onClick, etc.).
+ */
 export default function PrimaryButton({
     className = '',
     disabled,

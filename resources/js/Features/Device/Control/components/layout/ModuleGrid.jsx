@@ -1,5 +1,13 @@
 // @/Features/Device/Control/components/layout/ModuleGrid.jsx
 
+/**
+ * @file ModuleGrid.jsx
+ * @module Features/Control/components/layout/ModuleGrid
+ * @description Contenedor principal que orquesta el layout del panel de control.
+ * Implementa @dnd-kit para permitir al usuario reorganizar los módulos 
+ * dinámicamente y realiza la inyección de dependencias a los módulos hijos.
+ */
+
 import React from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
@@ -22,6 +30,28 @@ const MODULE_COMPONENTS = {
     arp:    ArpModule
 };
 
+/**
+ * @file ModuleGrid.jsx
+ * @component
+ * @description Contenedor principal que orquesta el layout del panel de control.
+ * Implementa @dnd-kit para permitir al usuario reorganizar los módulos 
+ * dinámicamente y realiza la inyección de dependencias a los módulos hijos.
+ */
+
+/**
+ * @typedef {object} ModuleGridProps
+ * @property {Function} sendCC - Callback para enviar mensajes MIDI CC.
+ * @property {Function} sendBend - Callback para enviar mensajes Pitch Bend.
+ * @property {Function} appendLog - Callback para registro en consola.
+ * @property {boolean} isConnected - Estado de conexión serial.
+ * @property {object} currentPreset - Objeto con los parámetros del preset cargado.
+ * @property {Function} updateData - Función para actualizar el estado del preset.
+ */
+
+/**
+ * Renderiza el grid de módulos utilizando un contexto de D&D.
+ * @param {ModuleGridProps} props
+ */
 export default function ModuleGrid({ 
 sendCC, 
     sendBend, 

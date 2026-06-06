@@ -1,15 +1,32 @@
+// @/Pages/Auth/ForgotPassword.jsx
+
+/**
+ * @file ForgotPassword.jsx
+ * @module Pages/Auth/ForgotPassword
+ * @description Interfaz de usuario para solicitar el restablecimiento de contraseña.
+ * Gestiona el envío del correo electrónico al servidor y proporciona feedback visual 
+ * sobre el estado de la solicitud.
+ */
+
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { useState } from 'react';
 import axios from '@/bootstrap';
 
+/**
+ * @param {object} props
+ */
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
     const [status, setStatus] = useState(null);
-
+    
+    /**
+     * Envía la solicitud al endpoint /forgot-password.
+     * Implementa la protección CSRF obligatoria para acciones de envío de formularios.
+     */
     const submit = async (e) => {
         e.preventDefault();
         setProcessing(true);

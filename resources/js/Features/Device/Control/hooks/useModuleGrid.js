@@ -1,5 +1,12 @@
 // @/Features/Device/Control/hooks/useModuleGrid.js
 
+/**
+ * @file useModuleGrid.js
+ * @module Features/Control/hooks/useModuleGrid
+ * @description Gestiona el estado y la persistencia del orden de los módulos en el grid.
+ * Utiliza @dnd-kit para manejar el Drag & Drop con sensores de puntero y teclado.
+ */
+
 import { useState, useCallback } from 'react';
 import {
     KeyboardSensor,
@@ -45,6 +52,13 @@ const saveOrder = (modules) => {
     } catch {}
 };
 
+/**
+ * @typedef {object} ModuleGridReturn
+ * @property {Array} modules - Lista ordenada de módulos.
+ * @property {object} sensors - Sensores configurados para D&D.
+ * @property {Function} handleDragOver - Handler para reordenar en tiempo real.
+ * @property {Function} handleDragEnd - Handler para guardar el estado final.
+ */
 export function useModuleGrid() {
     const [modules, setModules] = useState(loadOrder);
 

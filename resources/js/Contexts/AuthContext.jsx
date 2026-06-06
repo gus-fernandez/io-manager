@@ -1,14 +1,30 @@
 // @/Contexts/AuthContext.jsx
 
+/**
+ * @file AuthContext.jsx
+ * @module Contexts/AuthContext
+ * @description Proveedor de autenticación global que gestiona el estado de sesión del usuario.
+ * Implementa el flujo de autenticación de Laravel Sanctum para la sincronización de cookies CSRF
+ * y la persistencia del usuario actual.
+ */
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from '@/bootstrap';
 
 const AuthContext = createContext(null);
 
+/**
+ * @param {object} props
+ * @param {ReactNode} props.children - Componentes hijos que consumirán el contexto.
+ */
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    /**
+     * Sincroniza la sesión actual. Obtiene la cookie CSRF y valida
+     * el estado del usuario contra el endpoint de API.
+     */
     const checkAuth = async () => {
         try {
             await axios.get('/sanctum/csrf-cookie');
@@ -23,6 +39,10 @@ export function AuthProvider({ children }) {
         }
     };
 
+    /**
+     * Cierra la sesión en el backend y limpia el estado local,
+     * forzando una recarga de la aplicación.
+     */
     const logout = async () => {
         try {
             await axios.post('/logout');
@@ -55,6 +75,11 @@ export function AuthProvider({ children }) {
     );
 }
 
+/**
+ * Hook para consumir el contexto de autenticación.
+ * @returns {object} Contexto con el estado de sesión y métodos de auth.
+ * @throws {Error} Si se invoca fuera de un AuthProvider.
+ */
 export function useAuth() {
     const context = useContext(AuthContext);
     if (!context) {

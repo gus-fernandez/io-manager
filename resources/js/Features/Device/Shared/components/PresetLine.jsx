@@ -1,10 +1,38 @@
 // @/Features/Device/Shared/components/PresetLine.jsx
 
+/**
+ * @file PresetLine.jsx
+ * @module Features/Shared/components/PresetLine
+ * @description Renderiza una fila individual de preset. Permite la visualización de
+ * datos y la interacción para modificar estados (favorito, bloqueo, categoría, selección).
+ * Cambia su comportamiento visual dependiendo de si está en modo activo o en lista.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Cat } from '@/Features/Device/Shared/utils/presetUtils.js';
 import { LockIcon } from '@/Features/Device/Shared/components/Icons.jsx';
 import TextButton from '@/Components/TextButton';
 
+/**
+ * @typedef {object} PresetLineProps
+ * @property {number|string} id - ID del preset.
+ * @property {string} name - Nombre del preset.
+ * @property {boolean} isFav - Estado de favorito.
+ * @property {string} category - Categoría del preset.
+ * @property {boolean} [isActive=false] - Si es el preset actualmente activo.
+ * @property {boolean} [isEmpty=false] - Si el preset está vacío.
+ * @property {boolean} [isList=false] - Si se renderiza dentro de una lista (deshabilita controles).
+ * @property {boolean} [isReadOnly=false] - Si el preset está protegido contra escritura.
+ * @property {Function} onToggleFav - Callback para alternar favorito.
+ * @property {Function} onToggleLock - Callback para alternar bloqueo.
+ * @property {Function} onClick - Acción al hacer clic en el nombre.
+ * @property {Function} onCategoryChange - Callback para cambiar categoría.
+ */
+
+/**
+ * Componente de fila para presets con manejo de estados y menú de categorías.
+ * @param {PresetLineProps} props
+ */
 export default function PresetLine({ 
     id, name, isFav, category, 
     isActive = false,

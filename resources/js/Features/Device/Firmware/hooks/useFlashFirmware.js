@@ -1,10 +1,39 @@
 // @/Features/Device/Firmware/hooks/useFlashFirmware.js
 
+/**
+ * @file useFlashFirmware.js
+ * @module Features/Firmware/hooks/useFlashFirmware
+ * @description Maneja la lógica de actualización de firmware del dispositivo.
+ * Encapsula la integración con esptool-js, la descarga de binarios y el proceso
+ * de escritura en la memoria flash.
+ */
+
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { ESPLoader, Transport } from 'esptool-js';
 
-const INSTRUMENT = 'IO-8';
+const INSTRUMENT = 'IO-8'; // Por ahora
 
+/**
+ * @typedef {object} FlashHookReturn
+ * @property {Object|null} firmware - Lista de versiones de firmware disponibles.
+ * @property {Object|null} selected - Objeto del firmware seleccionado actualmente.
+ * @property {Function} setSelected - Setter para cambiar el firmware a flashear.
+ * @property {boolean} loadingFw - Estado de carga de la lista de firmware.
+ * @property {boolean} flashing - Estado del proceso de flasheo.
+ * @property {Array} flashLog - Registro de mensajes del proceso de flasheo.
+ * @property {object} logRef - Referencia para scroll automático.
+ * @property {Function} handleFlash - Inicia la secuencia de flasheo.
+ * @property {Function} reloadFirmwareList - Función para refrescar la lista de firmwares.
+ */
+
+/**
+ * Hook para gestionar el ciclo de vida del flasheo de firmware.
+ * @param {object} params
+ * @param {SerialPort} params.port - Puerto serial activo (de Web Serial API).
+ * @param {Function} params.disconnect - Callback para cerrar la conexión serial antes de flashear.
+ * @param {Function} params.onFlashStart - Callback al iniciar el proceso.
+ * @param {Function} params.onFlashEnd - Callback al finalizar (recibe un booleano de error).
+ */
 export function useFlashFirmware({ port, disconnect, onFlashStart, onFlashEnd }) {
     const [firmware, setFirmware]   = useState(null);
     const [selected, setSelected]   = useState(null);
@@ -51,6 +80,10 @@ export function useFlashFirmware({ port, disconnect, onFlashStart, onFlashEnd })
             return next;
         });
 
+    /**
+     * Secuencia de reset físico mediante la manipulación de las señales
+     * RTS y DTR, esencial para entrar en modo bootloader en el hardware.
+     */
     const performReset = async (transport) => {
         appendLog('Ejecutando reset...');
         await transport.setDTR(false);
@@ -64,6 +97,9 @@ export function useFlashFirmware({ port, disconnect, onFlashStart, onFlashEnd })
         appendLog('Reset completado');
     };
 
+    /**
+     * Proceso principal de flasheo: desconexión serial, descarga, escritura y reset.
+     */
     const handleFlash = async () => {
         if (!port || !selected) return;
 

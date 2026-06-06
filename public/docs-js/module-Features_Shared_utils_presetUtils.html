@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Features/Shared/utils/presetUtils - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-App.html#~App">App</a></li><li data-type='method' style='display: none;'><a href="module-App.html#~AppContent">AppContent</a></li><li data-type='method' style='display: none;'><a href="module-App.html#~getInitialTab">getInitialTab</a></li></ul></li><li><a href="module-Components_Checkbox.html">Components/Checkbox</a></li><li><a href="module-Components_DangerButton.html">Components/DangerButton</a></li><li><a href="module-Components_InputError.html">Components/InputError</a></li><li><a href="module-Components_InputLabel.html">Components/InputLabel</a></li><li><a href="module-Components_Modal.html">Components/Modal</a></li><li><a href="module-Components_NavLink.html">Components/NavLink</a></li><li><a href="module-Components_PrimaryButton.html">Components/PrimaryButton</a></li><li><a href="module-Components_ResponsiveNavLink.html">Components/ResponsiveNavLink</a></li><li><a href="module-Components_SecondaryButton.html">Components/SecondaryButton</a></li><li><a href="module-Components_TextButton.html">Components/TextButton</a></li><li><a href="module-Components_TextInput.html">Components/TextInput</a></li><li><a href="module-Contexts_AuthContext.html">Contexts/AuthContext</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Contexts_AuthContext.html#.AuthProvider">AuthProvider</a></li><li data-type='method' style='display: none;'><a href="module-Contexts_AuthContext.html#.useAuth">useAuth</a></li></ul></li><li><a href="module-Contexts_WsContext.html">Contexts/WsContext</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Contexts_WsContext.html#.WsProvider">WsProvider</a></li></ul></li><li><a href="module-Features_Cloud_components_PublishModal.html">Features/Cloud/components/PublishModal</a></li><li><a href="module-Features_Cloud_components_Repo.html">Features/Cloud/components/Repo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Cloud_components_Repo.html#~SortButton">SortButton</a></li></ul></li><li><a href="module-Features_Cloud_components_RepoWrapper.html">Features/Cloud/components/RepoWrapper</a></li><li><a href="module-Features_Cloud_components_Stars.html">Features/Cloud/components/Stars</a></li><li><a href="module-Features_Cloud_components_UploadPresetModal.html">Features/Cloud/components/UploadPresetModal</a></li><li><a href="module-Features_Cloud_hooks_useRepo.html">Features/Cloud/hooks/useRepo</a></li><li><a href="module-Features_Cloud_hooks_useStars.html">Features/Cloud/hooks/useStars</a></li><li><a href="module-Features_Cloud_utils_repoUtils.html">Features/Cloud/utils/repoUtils</a></li><li><a href="module-Features_Cloud_utils_sortUtils.html">Features/Cloud/utils/sortUtils</a></li><li><a href="module-Features_Control_components_WaveIcons.html">Features/Control/components/WaveIcons</a></li><li><a href="module-Features_Control_components_layout_Module.html">Features/Control/components/layout/Module</a></li><li><a href="module-Features_Control_components_layout_ModuleDivider.html">Features/Control/components/layout/ModuleDivider</a></li><li><a href="module-Features_Control_components_layout_ModuleGrid.html">Features/Control/components/layout/ModuleGrid</a></li><li><a href="module-Features_Control_components_modules_AdsrModule.html">Features/Control/components/modules/AdsrModule</a></li><li><a href="module-Features_Control_components_modules_ArpModule.html">Features/Control/components/modules/ArpModule</a></li><li><a href="module-Features_Control_components_modules_FxModule.html">Features/Control/components/modules/FxModule</a></li><li><a href="module-Features_Control_components_modules_LfoModule.html">Features/Control/components/modules/LfoModule</a></li><li><a href="module-Features_Control_components_modules_MasterModule.html">Features/Control/components/modules/MasterModule</a></li><li><a href="module-Features_Control_components_modules_ModModule.html">Features/Control/components/modules/ModModule</a></li><li><a href="module-Features_Control_components_modules_OscModule.html">Features/Control/components/modules/OscModule</a></li><li><a href="module-Features_Control_components_ui_IoBend.html">Features/Control/components/ui/IoBend</a></li><li><a href="module-Features_Control_components_ui_IoButton.html">Features/Control/components/ui/IoButton</a></li><li><a href="module-Features_Control_components_ui_IoKnob.html">Features/Control/components/ui/IoKnob</a></li><li><a href="module-Features_Control_components_ui_IoSelector.html">Features/Control/components/ui/IoSelector</a></li><li><a href="module-Features_Control_components_ui_IoSlider.html">Features/Control/components/ui/IoSlider</a></li><li><a href="module-Features_Control_hooks_useModuleGrid.html">Features/Control/hooks/useModuleGrid</a></li><li><a href="module-Features_Firmware_components_FlashFirmware.html">Features/Firmware/components/FlashFirmware</a></li><li><a href="module-Features_Firmware_components_SerialMonitor.html">Features/Firmware/components/SerialMonitor</a></li><li><a href="module-Features_Firmware_components_UploadFirmware.html">Features/Firmware/components/UploadFirmware</a></li><li><a href="module-Features_Firmware_hooks_useFirmware.html">Features/Firmware/hooks/useFirmware</a></li><li><a href="module-Features_Firmware_hooks_useFlashFirmware.html">Features/Firmware/hooks/useFlashFirmware</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Firmware_hooks_useFlashFirmware.html#.useFlashFirmware">useFlashFirmware</a></li></ul></li><li><a href="module-Features_Firmware_hooks_useSerial.html">Features/Firmware/hooks/useSerial</a></li><li><a href="module-Features_Firmware_utils_serialUtils.html">Features/Firmware/utils/serialUtils</a></li><li><a href="module-Features_Shared_components_DeleteModal.html">Features/Shared/components/DeleteModal</a></li><li><a href="module-Features_Shared_components_Icons.html">Features/Shared/components/Icons</a></li><li><a href="module-Features_Shared_components_NavGuardModal.html">Features/Shared/components/NavGuardModal</a></li><li><a href="module-Features_Shared_components_PresetLine.html">Features/Shared/components/PresetLine</a></li><li><a href="module-Features_Shared_components_PresetsBar.html">Features/Shared/components/PresetsBar</a></li><li><a href="module-Features_Shared_components_RenameModal.html">Features/Shared/components/RenameModal</a></li><li><a href="module-Features_Shared_components_StatusBar.html">Features/Shared/components/StatusBar</a></li><li><a href="module-Features_Shared_components_VirtualKeyboard.html">Features/Shared/components/VirtualKeyboard</a></li><li><a href="module-Features_Shared_components_WsConnection.html">Features/Shared/components/WsConnection</a></li><li><a href="module-Features_Shared_hooks_useMidi.html">Features/Shared/hooks/useMidi</a></li><li><a href="module-Features_Shared_hooks_usePresetUpdate.html">Features/Shared/hooks/usePresetUpdate</a></li><li><a href="module-Features_Shared_hooks_usePresetsBar.html">Features/Shared/hooks/usePresetsBar</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_hooks_usePresetsBar.html#.usePresetsBar">usePresetsBar</a></li></ul></li><li><a href="module-Features_Shared_hooks_useVirtualKeyboard.html">Features/Shared/hooks/useVirtualKeyboard</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_hooks_useVirtualKeyboard.html#.useVirtualKeyboard">useVirtualKeyboard</a></li></ul></li><li><a href="module-Features_Shared_hooks_useWebSocket.html">Features/Shared/hooks/useWebSocket</a></li><li><a href="module-Features_Shared_utils_midiCC.html">Features/Shared/utils/midiCC</a></li><li><a href="module-Features_Shared_utils_presetUtils.html">Features/Shared/utils/presetUtils</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.packFlags">packFlags</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.packPresetForBD">packPresetForBD</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.parseCurrentPreset">parseCurrentPreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.parseMetadata">parseMetadata</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseCrc">parseCrc</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseFlags">parseFlags</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseId">parseId</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseName">parseName</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseParams">parseParams</a></li></ul></li><li><a href="module-Features_Shared_utils_showTips.html">Features/Shared/utils/showTips</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_showTips.html#.toggleGlobalTooltips">toggleGlobalTooltips</a></li></ul></li><li><a href="module-Features_Shared_utils_wsMsgHandle.html">Features/Shared/utils/wsMsgHandle</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.handleMsg">handleMsg</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.resetDataStream">resetDataStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendDeletePacket">sendDeletePacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendLoadPacket">sendLoadPacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendPreset">sendPreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendSavePacket">sendSavePacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~parseMeta">parseMeta</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~parsePreset">parsePreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~processDataStream">processDataStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~processPresetStream">processPresetStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~sendNextChunk">sendNextChunk</a></li></ul></li><li><a href="module-Layouts_AppLayout.html">Layouts/AppLayout</a></li><li><a href="module-Layouts_DeviceLayout.html">Layouts/DeviceLayout</a></li><li><a href="module-Pages_About.html">Pages/About</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Pages_About.html#~IconWrapper">IconWrapper</a></li></ul></li><li><a href="module-Pages_Auth_ConfirmPassword.html">Pages/Auth/ConfirmPassword</a></li><li><a href="module-Pages_Auth_ForgotPassword.html">Pages/Auth/ForgotPassword</a></li><li><a href="module-Pages_Auth_LoginForm.html">Pages/Auth/LoginForm</a></li><li><a href="module-Pages_Auth_RegisterForm.html">Pages/Auth/RegisterForm</a></li><li><a href="module-Pages_Auth_ResetPassword.html">Pages/Auth/ResetPassword</a></li><li><a href="module-Pages_Auth_VerifyEmail.html">Pages/Auth/VerifyEmail</a></li><li><a href="module-Pages_Cloud.html">Pages/Cloud</a></li><li><a href="module-Pages_Control.html">Pages/Control</a></li><li><a href="module-Pages_Firmware.html">Pages/Firmware</a></li><li><a href="module-Pages_Landing.html">Pages/Landing</a></li><li><a href="module-Pages_Profile_Edit.html">Pages/Profile/Edit</a></li><li><a href="module-Pages_Profile_Partials_DeleteUserForm.html">Pages/Profile/Partials/DeleteUserForm</a></li><li><a href="module-Pages_Profile_Partials_UpdatePasswordForm.html">Pages/Profile/Partials/UpdatePasswordForm</a></li><li><a href="module-Pages_Profile_Partials_UpdateProfileInformationForm.html">Pages/Profile/Partials/UpdateProfileInformationForm</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Features/Shared/utils/presetUtils</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+                <div class="description usertext">Utilidades para el manejo de la estructura binaria de los presets.
+Incluye lógica para parsear buffers recibidos del hardware a objetos JS y
+serializar objetos JS hacia buffers binarios compatibles con la memoria del dispositivo.</div>
+            
+
+            
+                
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Utilidades para el manejo de la estructura binaria de los presets.
+Incluye lógica para parsear buffers recibidos del hardware a objetos JS y
+serializar objetos JS hacia buffers binarios compatibles con la memoria del dispositivo.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".Cat"><span class="type-signature type-signature-static, constant">(static, constant) </span>Cat<span class="type-signature"> :Object.&lt;number, string></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Categorías disponibles para los presets.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Categorías disponibles para los presets.
+</div>
+
+
+
+    <h5 class="h5-types">Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object.&lt;number, string></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".Slot"><span class="type-signature type-signature-static, constant">(static, constant) </span>Slot<span class="type-signature"> :Object.&lt;string, number></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Mapeo de offsets (posiciones en bytes) dentro de la estructura binaria de un preset completo.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Mapeo de offsets (posiciones en bytes) dentro de la estructura binaria de un preset completo.
+</div>
+
+
+
+    <h5 class="h5-types">Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object.&lt;string, number></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~Flag"><span class="type-signature type-signature-inner, constant">(inner, constant) </span>Flag<span class="type-signature"> :Object.&lt;string, number></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Máscaras de bits para decodificar el byte de flags del preset.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line44">line 44</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Máscaras de bits para decodificar el byte de flags del preset.
+</div>
+
+
+
+    <h5 class="h5-types">Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object.&lt;string, number></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~MetaSlot"><span class="type-signature type-signature-inner, constant">(inner, constant) </span>MetaSlot<span class="type-signature"> :Object.&lt;string, number></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Mapeo de offsets dentro de la estructura reducida de metadatos.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Mapeo de offsets dentro de la estructura reducida de metadatos.
+</div>
+
+
+
+    <h5 class="h5-types">Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object.&lt;string, number></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".packFlags"><span class="type-signature type-signature-static">(static) </span>packFlags<span class="signature">(preset)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Empaqueta las propiedades de un preset en un único byte de flags.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line96">line 96</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>preset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto con las propiedades del preset.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Byte empaquetado.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".packPresetForBD"><span class="type-signature type-signature-static">(static) </span>packPresetForBD<span class="signature">(preset)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Prepara un objeto preset para ser enviado a la base de datos.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line225">line 225</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>preset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto del preset a serializar.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Contiene el buffer binario y los campos formateados para la BD.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".parseCurrentPreset"><span class="type-signature type-signature-static">(static) </span>parseCurrentPreset<span class="signature">(buf)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Parsea un buffer completo a un objeto de preset detallado.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line171">line 171</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>buf</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Uint8Array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Buffer binario de un preset.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Objeto preset completo.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".parseMetadata"><span class="type-signature type-signature-static">(static) </span>parseMetadata<span class="signature">(rawBuffer)</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Parsea un buffer de metadatos (lista de presets) en una colección.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line192">line 192</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>rawBuffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Uint8Array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Buffer conteniendo toda la metadata.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Lista de objetos de metadatos de presets.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;Object></span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~parseCrc"><span class="type-signature type-signature-inner">(inner) </span>parseCrc<span class="signature">(crcBytes)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Devuelve el CRC32 a partir de 4 bytes.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line157">line 157</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>crcBytes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Uint8Array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Valor CRC.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~parseFlags"><span class="type-signature type-signature-inner">(inner) </span>parseFlags<span class="signature">(flagsByte)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Decodifica un byte de flags en un objeto legible.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line72">line 72</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>flagsByte</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Byte de estado del preset.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Estado booleano de las flags y ID de categoría.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~parseId"><span class="type-signature type-signature-inner">(inner) </span>parseId<span class="signature">(rawBuffer)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Extrae el ID del preset desde un buffer.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line148">line 148</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>rawBuffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Uint8Array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    ID del preset.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~parseName"><span class="type-signature type-signature-inner">(inner) </span>parseName<span class="signature">(nameBytes)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Convierte un arreglo de bytes en un string de nombre, eliminando caracteres nulos.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line113">line 113</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nameBytes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Uint8Array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Buffer conteniendo el nombre.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Nombre del preset limpio.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~parseParams"><span class="type-signature type-signature-inner">(inner) </span>parseParams<span class="signature">(rawBuffer)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li>Mapea el buffer de parámetros a un objeto JS usando las constantes MIDI CC.</li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Features_Device_Shared_utils_presetUtils.js.html">Features/Device/Shared/utils/presetUtils.js</a>, <a href="Features_Device_Shared_utils_presetUtils.js.html#line131">line 131</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>rawBuffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Uint8Array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Buffer completo del preset.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    Objeto con valores de parámetros.
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Sat Jun 06 2026 20:44:53 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

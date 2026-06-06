@@ -1,6 +1,31 @@
 // @/Features/Device/Control/components/ui/IoSelector.jsx
 
+/**
+ * @file IoSelector.jsx
+ * @module Features/Control/components/ui/IoSelector
+ * @description Selector discreto que permite ciclar entre un set de opciones.
+ * Mapea automáticamente el número de opciones disponibles al rango MIDI (0-127).
+ * Soporta renderizado de texto simple o componentes SVG (como iconos).
+ */
+
 import { useState, useEffect } from 'react';
+
+/**
+ * @typedef {object} IoSelectorProps
+ * @property {string} label - Etiqueta descriptiva del control.
+ * @property {number} cc - Número de Control Change MIDI.
+ * @property {object} options - Objeto cuyas claves son los valores visibles/seleccionables.
+ * @property {number} [value=0] - Valor MIDI actual (0-127) para sincronización.
+ * @property {Function} send - Callback para enviar el comando MIDI (0xB0, cc, val).
+ * @property {Function} appendLog - Callback para registrar la actividad.
+ * @property {Function} [onChange] - Callback opcional al cambiar la selección.
+ * @property {string} [className] - Clases adicionales de Tailwind.
+ */
+
+/**
+ * Renderiza un botón de selección circular.
+ * @param {IoSelectorProps} props
+ */
 
 export default function IoSelector({ label, cc, options, value = 0, send, appendLog, onChange, className = '' }) {
     const keys = Object.keys(options);

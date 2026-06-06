@@ -1,11 +1,27 @@
 // @/Features/Device/Cloud/hooks/useStars.js
 
+/**
+ * @file useStars.js
+ * @module Features/Cloud/hooks/useStars
+ * @description Hook encargado de la gestión de valoraciones (rating) de los presets.
+ * Proporciona métodos para votar y retirar votos, sincronizando el estado local 
+ * con la respuesta de la API.
+ */
+
 import { useState } from 'react';
 import axios from '@/bootstrap';
 
+/**
+ * @param {Function} setData - Callback para actualizar el estado del listado de presets (padre).
+ */
 export const useStars = (setData) => {
     const [isRating, setIsRating] = useState(false);
 
+    /**
+     * Envía una valoración al servidor.
+     * @param {object} item - El preset a valorar.
+     * @param {number} rateValue - El valor de la puntuación (ej. 1-5).
+     */
     const handleRate = async (item, rateValue) => {
         setIsRating(true);
         try {
@@ -28,6 +44,10 @@ export const useStars = (setData) => {
         }
     };
 
+    /**
+     * Elimina la valoración actual del usuario.
+     * @param {object} item - El preset del cual se eliminará el voto.
+     */
     const handleDeleteRate = async (item) => {
         setIsRating(true);
         try {

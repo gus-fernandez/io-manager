@@ -1,3 +1,11 @@
+/**
+ * @file app.jsx (o index.jsx)
+ * @module App
+ * @description Punto de entrada principal de la aplicación.
+ * Gestiona el ciclo de vida del enrutamiento (Tabs), la autenticación global,
+ * el estado de carga y la persistencia de navegación (Navigation Guards).
+ */
+
 import '../css/app.css';
 import './bootstrap';
 
@@ -14,12 +22,23 @@ import Firmware from './Pages/Firmware';
 import About from './Pages/About';
 import NavGuardModal from '@/Features/Device/Shared/components/NavGuardModal.jsx';
 
+/**
+ * Determina la ruta inicial basada en la URL del navegador.
+ */
 const initialPath = window.location.pathname.replace('/', '');
 
+/**
+ * Obtiene la pestaña inicial basándose en la ruta o por defecto a 'control'.
+ * @returns {string} El nombre de la pestaña actual.
+ */
 const getInitialTab = () => {
     return initialPath || 'control';
 };
 
+/**
+ * Componente principal que gestiona el enrutamiento, la autenticación y la navegación.
+ * Coordina los diferentes layouts y las guardias de navegación (NavGuards).
+ */
 function AppContent() {
     const { user, setUser, loading, logout } = useAuth();
     const [currentTab, setTab] = useState(getInitialTab);
@@ -28,10 +47,18 @@ function AppContent() {
     const [pendingTab, setPendingTab] = useState(null);
     const [showGuardModal, setShowGuardModal] = useState(false);
 
+    /**
+     * Registra una guardia de navegación para evitar cambios de ruta no autorizados.
+     * @param {object} guard - Objeto con los métodos isBlocking, onSave y onDiscard.
+     */
     const registerNavGuard = useCallback((guard) => {
         navGuardRef.current = guard;
     }, []);
 
+    /**
+     * Solicita un cambio de pestaña, comprobando primero si existe una guardia activa.
+     * @param {string} tab - La pestaña a la que se desea navegar.
+     */
     const requestTabChange = useCallback((tab) => {
         if (navGuardRef.current?.isBlocking()) {
             setPendingTab(tab);
@@ -42,6 +69,7 @@ function AppContent() {
         window.history.pushState({}, '', `/${tab}`);
     }, []);
 
+    /** Ejecuta el guardado de la guardia activa y cambia la pestaña. */
     const handleGuardSave = () => {
         navGuardRef.current?.onSave();
         setShowGuardModal(false);
@@ -49,6 +77,7 @@ function AppContent() {
         setPendingTab(null);
     };
 
+    /** Ejecuta el descarte de cambios de la guardia activa y cambia la pestaña. */
     const handleGuardDiscard = () => {
         navGuardRef.current?.onDiscard();
         setShowGuardModal(false);
@@ -56,6 +85,7 @@ function AppContent() {
         setPendingTab(null);
     };
 
+    /** Cancela la navegación bloqueada y cierra el modal. */
     const handleGuardCancel = () => {
         setShowGuardModal(false);
         setPendingTab(null);
@@ -90,6 +120,9 @@ function AppContent() {
         setIsBooted(true);
     }, [user, loading]);
 
+    /**
+     * Renderiza el contenido principal basado en la pestaña activa.
+     */
     const renderContent = () => {
         try {
             if (currentTab === 'profile' && !user) {
@@ -149,6 +182,9 @@ function AppContent() {
     );
 }
 
+/**
+ * Componente raíz que provee el contexto de autenticación a toda la aplicación.
+ */
 function App() {
     return (
         <AuthProvider>

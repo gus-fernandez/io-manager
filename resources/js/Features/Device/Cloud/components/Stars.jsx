@@ -1,5 +1,21 @@
 // @/Features/Device/Cloud/components/Stars.jsx
+
+/**
+ * @file Stars.jsx
+ * @module Features/Cloud/components/Stars
+ * @description Componente visual para la visualización y gestión de valoraciones (ratings).
+ * Permite ver la puntuación promedio o el voto propio del usuario, votar y retirar votos.
+ */
+
 import TextButton from "@/Components/TextButton";
+
+/**
+ * @param {number} value - Valor promedio de la valoración.
+ * @param {Function} onRate - Callback ejecutado al hacer clic en una estrella.
+ * @param {Function} onRemove - Callback ejecutado al hacer clic en el botón de eliminar voto.
+ * @param {boolean} hasVoted - Indica si el usuario actual ya ha emitido un voto.
+ * @param {number} userVote - Valor del voto emitido por el usuario (si existe).
+ */
 
 export const Stars = ({ value, onRate, onRemove, hasVoted, userVote }) => {
     

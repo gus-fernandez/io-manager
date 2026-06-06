@@ -1,7 +1,29 @@
 // @/Features/Device/Control/components/ui/IoBend.jsx
 
+/**
+ * @file IoBend.jsx
+ * @module Features/Control/components/ui/IoBend
+ * @description Control de Pitch Bend de alta resolución (14 bits).
+ * A diferencia de los controles CC estándar (7 bits), el Pitch Bend utiliza 
+ * dos bytes de datos (LSB y MSB) para cubrir un rango de 0 a 16383.
+ * Incluye comportamiento "elástico" (retorno automático al centro al soltar).
+ */
+
 import { useState, useRef, useEffect } from 'react';
 
+/**
+ * @typedef {object} IoBendProps
+ * @property {string} [label="PITCH"] - Etiqueta del control.
+ * @property {number} [channel=0] - Canal MIDI (0-15).
+ * @property {Function} send - Callback para enviar el mensaje (MIDI Status + LSB + MSB).
+ * @property {Function} appendLog - Callback para registrar la actividad.
+ * @property {string} [className] - Clases adicionales de Tailwind.
+ */
+
+/**
+ * Renderiza un deslizador vertical con comportamiento elástico para Pitch Bend.
+ * @param {IoBendProps} props
+ */
 export default function IoBend({ label = "PITCH", channel = 0, send, appendLog, className = "" }) {
     // El centro exacto de 14 bits (0 a 16383) es 8192
     const [value, setValue] = useState(8192);

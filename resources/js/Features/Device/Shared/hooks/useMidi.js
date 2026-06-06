@@ -1,5 +1,13 @@
 // @/Features/Device/Shared/hooks/useMidi.js
 
+/**
+ * @file useMidi.js
+ * @module Features/Shared/hooks/useMidi
+ * @description Hook para el manejo de eventos MIDI. Implementa un sistema de colas 
+ * para agrupar mensajes MIDI (notas y CC) y enviarlos en lotes (batching) 
+ * para optimizar la comunicación WebSocket.
+ */
+
 import { useRef, useCallback, useState, useEffect } from 'react';
 import { CC } from '@/Features/Device/Shared/utils/midiCC';
 
@@ -9,6 +17,22 @@ const NOTE_OFF = 0x80;
 const MS_BATCH = 5; 
 const MAX_MESSAGES_PER_BATCH = 12;
 
+/**
+ * @typedef {object} MidiHookResult
+ * @property {Function} noteOn - Activa una nota MIDI.
+ * @property {Function} noteOff - Desactiva una nota MIDI.
+ * @property {Function} clearAllNotes - Envía mensaje All Notes Off.
+ * @property {Function} sendCC - Envía mensajes de Control Change.
+ * @property {Function} sendBend - Envía mensajes de Pitch Bend.
+ * @property {Function} appendLogMidi - Actualiza el log de actividad MIDI.
+ * @property {string} logMidi - Último mensaje registrado en el log.
+ */
+
+/**
+ * Hook para gestionar la salida de mensajes MIDI hacia el dispositivo.
+ * @param {object} ws - Instancia del WebSocket o manejador de comunicación.
+ * @returns {MidiHookResult} API para interacción MIDI.
+ */
 export default function useMidi(ws) {
     const activeNotes = useRef(new Set());
     const [logMidi, setLogMidi] = useState('');

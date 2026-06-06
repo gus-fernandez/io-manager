@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Features/Device/Firmware/utils/serialUtils.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-App.html#~App">App</a></li><li data-type='method' style='display: none;'><a href="module-App.html#~AppContent">AppContent</a></li><li data-type='method' style='display: none;'><a href="module-App.html#~getInitialTab">getInitialTab</a></li></ul></li><li><a href="module-Components_Checkbox.html">Components/Checkbox</a></li><li><a href="module-Components_DangerButton.html">Components/DangerButton</a></li><li><a href="module-Components_InputError.html">Components/InputError</a></li><li><a href="module-Components_InputLabel.html">Components/InputLabel</a></li><li><a href="module-Components_Modal.html">Components/Modal</a></li><li><a href="module-Components_NavLink.html">Components/NavLink</a></li><li><a href="module-Components_PrimaryButton.html">Components/PrimaryButton</a></li><li><a href="module-Components_ResponsiveNavLink.html">Components/ResponsiveNavLink</a></li><li><a href="module-Components_SecondaryButton.html">Components/SecondaryButton</a></li><li><a href="module-Components_TextButton.html">Components/TextButton</a></li><li><a href="module-Components_TextInput.html">Components/TextInput</a></li><li><a href="module-Contexts_AuthContext.html">Contexts/AuthContext</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Contexts_AuthContext.html#.AuthProvider">AuthProvider</a></li><li data-type='method' style='display: none;'><a href="module-Contexts_AuthContext.html#.useAuth">useAuth</a></li></ul></li><li><a href="module-Contexts_WsContext.html">Contexts/WsContext</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Contexts_WsContext.html#.WsProvider">WsProvider</a></li></ul></li><li><a href="module-Features_Cloud_components_PublishModal.html">Features/Cloud/components/PublishModal</a></li><li><a href="module-Features_Cloud_components_Repo.html">Features/Cloud/components/Repo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Cloud_components_Repo.html#~SortButton">SortButton</a></li></ul></li><li><a href="module-Features_Cloud_components_RepoWrapper.html">Features/Cloud/components/RepoWrapper</a></li><li><a href="module-Features_Cloud_components_Stars.html">Features/Cloud/components/Stars</a></li><li><a href="module-Features_Cloud_components_UploadPresetModal.html">Features/Cloud/components/UploadPresetModal</a></li><li><a href="module-Features_Cloud_hooks_useRepo.html">Features/Cloud/hooks/useRepo</a></li><li><a href="module-Features_Cloud_hooks_useStars.html">Features/Cloud/hooks/useStars</a></li><li><a href="module-Features_Cloud_utils_repoUtils.html">Features/Cloud/utils/repoUtils</a></li><li><a href="module-Features_Cloud_utils_sortUtils.html">Features/Cloud/utils/sortUtils</a></li><li><a href="module-Features_Control_components_WaveIcons.html">Features/Control/components/WaveIcons</a></li><li><a href="module-Features_Control_components_layout_Module.html">Features/Control/components/layout/Module</a></li><li><a href="module-Features_Control_components_layout_ModuleDivider.html">Features/Control/components/layout/ModuleDivider</a></li><li><a href="module-Features_Control_components_layout_ModuleGrid.html">Features/Control/components/layout/ModuleGrid</a></li><li><a href="module-Features_Control_components_modules_AdsrModule.html">Features/Control/components/modules/AdsrModule</a></li><li><a href="module-Features_Control_components_modules_ArpModule.html">Features/Control/components/modules/ArpModule</a></li><li><a href="module-Features_Control_components_modules_FxModule.html">Features/Control/components/modules/FxModule</a></li><li><a href="module-Features_Control_components_modules_LfoModule.html">Features/Control/components/modules/LfoModule</a></li><li><a href="module-Features_Control_components_modules_MasterModule.html">Features/Control/components/modules/MasterModule</a></li><li><a href="module-Features_Control_components_modules_ModModule.html">Features/Control/components/modules/ModModule</a></li><li><a href="module-Features_Control_components_modules_OscModule.html">Features/Control/components/modules/OscModule</a></li><li><a href="module-Features_Control_components_ui_IoBend.html">Features/Control/components/ui/IoBend</a></li><li><a href="module-Features_Control_components_ui_IoButton.html">Features/Control/components/ui/IoButton</a></li><li><a href="module-Features_Control_components_ui_IoKnob.html">Features/Control/components/ui/IoKnob</a></li><li><a href="module-Features_Control_components_ui_IoSelector.html">Features/Control/components/ui/IoSelector</a></li><li><a href="module-Features_Control_components_ui_IoSlider.html">Features/Control/components/ui/IoSlider</a></li><li><a href="module-Features_Control_hooks_useModuleGrid.html">Features/Control/hooks/useModuleGrid</a></li><li><a href="module-Features_Firmware_components_FlashFirmware.html">Features/Firmware/components/FlashFirmware</a></li><li><a href="module-Features_Firmware_components_SerialMonitor.html">Features/Firmware/components/SerialMonitor</a></li><li><a href="module-Features_Firmware_components_UploadFirmware.html">Features/Firmware/components/UploadFirmware</a></li><li><a href="module-Features_Firmware_hooks_useFirmware.html">Features/Firmware/hooks/useFirmware</a></li><li><a href="module-Features_Firmware_hooks_useFlashFirmware.html">Features/Firmware/hooks/useFlashFirmware</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Firmware_hooks_useFlashFirmware.html#.useFlashFirmware">useFlashFirmware</a></li></ul></li><li><a href="module-Features_Firmware_hooks_useSerial.html">Features/Firmware/hooks/useSerial</a></li><li><a href="module-Features_Firmware_utils_serialUtils.html">Features/Firmware/utils/serialUtils</a></li><li><a href="module-Features_Shared_components_DeleteModal.html">Features/Shared/components/DeleteModal</a></li><li><a href="module-Features_Shared_components_Icons.html">Features/Shared/components/Icons</a></li><li><a href="module-Features_Shared_components_NavGuardModal.html">Features/Shared/components/NavGuardModal</a></li><li><a href="module-Features_Shared_components_PresetLine.html">Features/Shared/components/PresetLine</a></li><li><a href="module-Features_Shared_components_PresetsBar.html">Features/Shared/components/PresetsBar</a></li><li><a href="module-Features_Shared_components_RenameModal.html">Features/Shared/components/RenameModal</a></li><li><a href="module-Features_Shared_components_StatusBar.html">Features/Shared/components/StatusBar</a></li><li><a href="module-Features_Shared_components_VirtualKeyboard.html">Features/Shared/components/VirtualKeyboard</a></li><li><a href="module-Features_Shared_components_WsConnection.html">Features/Shared/components/WsConnection</a></li><li><a href="module-Features_Shared_hooks_useMidi.html">Features/Shared/hooks/useMidi</a></li><li><a href="module-Features_Shared_hooks_usePresetUpdate.html">Features/Shared/hooks/usePresetUpdate</a></li><li><a href="module-Features_Shared_hooks_usePresetsBar.html">Features/Shared/hooks/usePresetsBar</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_hooks_usePresetsBar.html#.usePresetsBar">usePresetsBar</a></li></ul></li><li><a href="module-Features_Shared_hooks_useVirtualKeyboard.html">Features/Shared/hooks/useVirtualKeyboard</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_hooks_useVirtualKeyboard.html#.useVirtualKeyboard">useVirtualKeyboard</a></li></ul></li><li><a href="module-Features_Shared_hooks_useWebSocket.html">Features/Shared/hooks/useWebSocket</a></li><li><a href="module-Features_Shared_utils_midiCC.html">Features/Shared/utils/midiCC</a></li><li><a href="module-Features_Shared_utils_presetUtils.html">Features/Shared/utils/presetUtils</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.packFlags">packFlags</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.packPresetForBD">packPresetForBD</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.parseCurrentPreset">parseCurrentPreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.parseMetadata">parseMetadata</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseCrc">parseCrc</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseFlags">parseFlags</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseId">parseId</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseName">parseName</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseParams">parseParams</a></li></ul></li><li><a href="module-Features_Shared_utils_showTips.html">Features/Shared/utils/showTips</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_showTips.html#.toggleGlobalTooltips">toggleGlobalTooltips</a></li></ul></li><li><a href="module-Features_Shared_utils_wsMsgHandle.html">Features/Shared/utils/wsMsgHandle</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.handleMsg">handleMsg</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.resetDataStream">resetDataStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendDeletePacket">sendDeletePacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendLoadPacket">sendLoadPacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendPreset">sendPreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendSavePacket">sendSavePacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~parseMeta">parseMeta</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~parsePreset">parsePreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~processDataStream">processDataStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~processPresetStream">processPresetStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~sendNextChunk">sendNextChunk</a></li></ul></li><li><a href="module-Layouts_AppLayout.html">Layouts/AppLayout</a></li><li><a href="module-Layouts_DeviceLayout.html">Layouts/DeviceLayout</a></li><li><a href="module-Pages_About.html">Pages/About</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Pages_About.html#~IconWrapper">IconWrapper</a></li></ul></li><li><a href="module-Pages_Auth_ConfirmPassword.html">Pages/Auth/ConfirmPassword</a></li><li><a href="module-Pages_Auth_ForgotPassword.html">Pages/Auth/ForgotPassword</a></li><li><a href="module-Pages_Auth_LoginForm.html">Pages/Auth/LoginForm</a></li><li><a href="module-Pages_Auth_RegisterForm.html">Pages/Auth/RegisterForm</a></li><li><a href="module-Pages_Auth_ResetPassword.html">Pages/Auth/ResetPassword</a></li><li><a href="module-Pages_Auth_VerifyEmail.html">Pages/Auth/VerifyEmail</a></li><li><a href="module-Pages_Cloud.html">Pages/Cloud</a></li><li><a href="module-Pages_Control.html">Pages/Control</a></li><li><a href="module-Pages_Firmware.html">Pages/Firmware</a></li><li><a href="module-Pages_Landing.html">Pages/Landing</a></li><li><a href="module-Pages_Profile_Edit.html">Pages/Profile/Edit</a></li><li><a href="module-Pages_Profile_Partials_DeleteUserForm.html">Pages/Profile/Partials/DeleteUserForm</a></li><li><a href="module-Pages_Profile_Partials_UpdatePasswordForm.html">Pages/Profile/Partials/UpdatePasswordForm</a></li><li><a href="module-Pages_Profile_Partials_UpdateProfileInformationForm.html">Pages/Profile/Partials/UpdateProfileInformationForm</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Features/Device/Firmware/utils/serialUtils.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// @/Features/Device/Firmware/utils/serialUtils.js
+
+/**
+ * @file serialUtils.js
+ * @module Features/Firmware/utils/serialUtils
+ * @description Capa de comunicación serial (Bridge) entre la aplicación y el firmware.
+ * Implementa el protocolo de framing para la transmisión de paquetes binarios,
+ * la lógica de encriptación simple (XOR) para credenciales y la máquina de estados
+ * para la configuración de redes WiFi.
+ */
+
+export const WIFI_OP_CODE = 0xFE;
+export const START_PROTOCOL = 0xFD;
+
+/** @enum {number} */
+export const WifiStates = {
+    NEW_WIFI_SKIP:      0x00,
+    NEW_WIFI_START:     0x01,
+    WAITING_FOR_SSID:   0x02,
+    WAITING_FOR_PASS:   0x03,
+    NEW_WIFI_TRY:       0x04,
+    NEW_WIFI_FAIL:      0x05,
+    NEW_WIFI_CANCEL:    0x06,
+    ERASE_CREDENTIALS:  0x07,
+};
+
+export const SerialProtocol = {
+    
+    /**
+     * Parsea un buffer binario buscando marcadores de inicio y fin para extraer un paquete.
+     * @param {Uint8Array} buffer - Buffer de bytes recibido del puerto serial.
+     * @returns {{buffer: Uint8Array, packet: Object|null}} El buffer restante y el paquete extraído si existe.
+     */
+    binReceive: (buffer) => {
+        const START_MARKER = new Uint8Array([0x23, 0x23, 0x23, 0x53, 0x54, 0x41, 0x52, 0x54, 0x23, 0x23, 0x23]);
+        const END_MARKER = new Uint8Array([0x23, 0x23, 0x23, 0x45, 0x4E, 0x44, 0x23, 0x23, 0x23]);
+
+        const matchMarker = (buf, marker, offset) => {
+            if (offset + marker.length > buf.length) return false;
+            for (let i = 0; i &lt; marker.length; i++) {
+                if (buf[offset + i] !== marker[i]) return false;
+            }
+            return true;
+        };
+
+        let startIdx = -1;
+        for (let i = 0; i &lt;= buffer.length - START_MARKER.length; i++) {
+            if (matchMarker(buffer, START_MARKER, i)) {
+                startIdx = i;
+                break;
+            }
+        }
+
+        if (startIdx === -1) return { buffer: buffer, packet: null };
+
+        let endIdx = -1;
+        const searchFrom = startIdx + START_MARKER.length;
+        for (let i = searchFrom; i &lt;= buffer.length - END_MARKER.length; i++) {
+            if (matchMarker(buffer, END_MARKER, i)) {
+                endIdx = i;
+                break;
+            }
+        }
+
+        if (endIdx === -1) return { buffer: buffer, packet: null };
+
+        const packetData = buffer.subarray(searchFrom, endIdx);
+        const nextBuffer = buffer.subarray(endIdx + END_MARKER.length);
+
+        return {
+            buffer: nextBuffer,
+            packet: {
+                opCode: packetData[0],
+                state: packetData[1],
+                payload: packetData.subarray(2)
+            }
+        };
+    },
+
+    /**
+     * Construye un paquete binario listo para enviar al firmware.
+     * @param {number} opCode - Código de operación del protocolo.
+     * @param {Array&lt;number>} payloadBytes - Datos adicionales.
+     * @returns {Uint8Array} Paquete serializado.
+     */
+    binSend: (opCode, payloadBytes = []) => {
+        const packet = new Uint8Array(1 + payloadBytes.length);
+        packet[0] = opCode;
+        packet.set(payloadBytes, 1);
+        return packet;
+    },
+
+    /**
+     * Interpreta comandos de texto y los traduce a operaciones del protocolo serial
+     * basadas en el estado actual de la máquina de estados WiFi.
+     * @param {string} command - Comando enviado por el usuario.
+     * @param {number} currentState - Estado actual de la máquina de estados.
+     * @param {Uint8Array} xorKey - Llave para encriptación XOR.
+     * @param {number} netWorkNum - Cantidad de redes disponibles.
+     * @returns {Uint8Array|null} Paquete resultante o null si no se reconoce.
+     */
+    handleCommand: (
+        command,
+        currentState,
+        xorKey,
+        netWorkNum
+    ) => {
+        const rawCmd = command.trim();
+        const cmd = rawCmd.toLowerCase();
+
+        if (cmd === 'cancel') return SerialProtocol.cancelWifi();
+        if (cmd === 'exit') return SerialProtocol.cancelWifi();
+        if (cmd === 'wifi') return SerialProtocol.newWifiStart();
+        if (cmd === 'start') return SerialProtocol.newWifiStart();
+        if (cmd === 'erase') return SerialProtocol.eraseCreds();
+        if (cmd === 'delete') return SerialProtocol.eraseCreds();
+
+        console.log(`[DEBUG] Cmd: "${cmd}" | Estado: ${currentState} | NetWorks: ${netWorkNum}`);
+
+        switch (currentState) {
+            case WifiStates.NEW_WIFI_SKIP: break;                
+            case WifiStates.WAITING_FOR_SSID: {
+                const index = parseInt(cmd, 10) - 1;
+                if (!isNaN(index) &amp;&amp; index >= 0 &amp;&amp; index &lt; netWorkNum) {
+                    return SerialProtocol.selectSsid(index);
+                }
+                break;
+            }
+            case WifiStates.WAITING_FOR_PASS:
+                if (xorKey &amp;&amp; xorKey.length > 0) {
+                    const passBytes = new TextEncoder().encode(rawCmd);
+                    const encryptedBytes = passBytes.map((byte, i) => byte ^ xorKey[i % xorKey.length]);
+                    return SerialProtocol.sendPassword([passBytes.length, ...Array.from(encryptedBytes)]);
+                }
+                break;
+
+            case WifiStates.NEW_WIFI_FAIL: break;
+            case WifiStates.NEW_WIFI_TRY: break;
+            case WifiStates.NEW_WIFI_CANCEL: break;
+        }
+
+        return null;
+    },
+
+    newWifiStart: () => {
+        return SerialProtocol.binSend(WIFI_OP_CODE, [WifiStates.NEW_WIFI_START]);
+    },
+
+    selectSsid: (index) => {
+        return SerialProtocol.binSend(WIFI_OP_CODE, [WifiStates.WAITING_FOR_SSID, index]);
+    },
+
+    sendPassword: (password) => {
+        return SerialProtocol.binSend(WIFI_OP_CODE, [WifiStates.WAITING_FOR_PASS, ...password]);
+    },
+
+    cancelWifi: () => {
+        return SerialProtocol.binSend(WIFI_OP_CODE, [WifiStates.NEW_WIFI_CANCEL]);
+    },
+
+    eraseCreds: () => {
+        return SerialProtocol.binSend(WIFI_OP_CODE, [WifiStates.ERASE_CREDENTIALS]);
+    },
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Sat Jun 06 2026 20:44:52 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

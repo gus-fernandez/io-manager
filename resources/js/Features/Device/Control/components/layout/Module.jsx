@@ -1,7 +1,27 @@
 // @/Features/Device/Control/components/layout/Module.jsx
 
+/**
+ * @file Module.jsx
+ * @module Features/Control/components/layout/Module
+ * @description Wrapper contenedor para los módulos del sintetizador.
+ * Implementa `useSortable` de dnd-kit para habilitar la reordenación manual
+ * y proporciona un contenedor estilizado consistente.
+ */
+
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+
+/**
+ * @typedef {object} ModuleProps
+ * @property {string} id - Identificador único del módulo.
+ * @property {string} [title] - Título opcional para mostrar en el header del módulo.
+ * @property {React.ReactNode} children - Componentes internos del módulo.
+ */
+
+/**
+ * Renderiza el módulo con un manejador de arrastre integrado.
+ * @param {ModuleProps} props
+ */
 
 export default function Module({ id, title, children }) {
     const {

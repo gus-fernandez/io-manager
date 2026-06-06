@@ -44,6 +44,11 @@ PAGES
 @/Pages/Auth/ResetPassword.jsx
 @/Pages/Auth/VerifyEmail.jsx
 
+@/Pages/Profile/Edit.jsx
+@/Pages/Profile/Partials/DeleteUserForm.jsx
+@/Pages/Profile/Partials/UpdatePasswordForm.jsx
+@/Pages/Profile/Partials/UpdateProfileInformationForm.jsx
+
 COMPONENTS
 @/Components/Checkbox.jsx
 @/Components/DangerButton.jsx
@@ -60,8 +65,6 @@ COMPONENTS
 LAYOUTS
 @/Layouts/AppLayout.jsx
 @/Layouts/DeviceLayout.jsx
-
-AUTH
 
 SHARED
 @/Features/Device/Shared/components/Icons.jsx

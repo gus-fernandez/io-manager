@@ -1,10 +1,25 @@
-// @/Features/Device/Control/components/modules/LfoModule.jsx
+// @/Features/Device/Control/components/modules/MasterModule.jsx
+
+/**
+ * @file MasterModule.jsx
+ * @module Features/Control/components/modules/MasterModule
+ * @description Panel maestro que agrupa parámetros globales de sistema,
+ * configuración de voces, afinación fina y etapa de salida.
+ */
 
 import Module from '@/Features/Device/Control/components/layout/Module';
 import ModuleDivider from '@/Features/Device/Control/components/layout/ModuleDivider';
 import IoButton from '@/Features/Device/Control/components/ui/IoButton';
 import IoKnob from '@/Features/Device/Control/components/ui/IoKnob';
 import { CC } from '@/Features/Device/Shared/utils/midiCC';
+
+/**
+ * @typedef {object} MasterModuleProps
+ * @property {string} id - Identificador del módulo.
+ * @property {Function} sendCC - Callback para envío de mensajes MIDI.
+ * @property {Function} appendLog - Callback para logs.
+ * @property {object} [values] - Estado actual de los parámetros (preset).
+ */
 
 export default function MasterModule({ id, sendCC, appendLog, values = {} }) {
     return (

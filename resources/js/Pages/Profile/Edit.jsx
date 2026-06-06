@@ -1,9 +1,24 @@
+// @/Pages/Profile/Edit.jsx
+
+/**
+ * @file Edit.jsx
+ * @module Pages/Profile/Edit
+ * @description Vista de gestión del perfil de usuario. 
+ * Orquesta la carga de estados de seguridad (verificación de email) y 
+ * despliega formularios atómicos para la gestión de cuenta, autenticación y eliminación.
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from '@/bootstrap';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import DeleteUserForm from './Partials/DeleteUserForm';
 
+/**
+ * @param {object} props
+ * @param {object} props.user - Objeto del usuario autenticado proveniente del contexto.
+ * @param {Function} props.setUser - Callback para actualizar el estado global del usuario (ej. tras cambiar nombre).
+ */
 export default function Profile({ user, setUser }) {
     const [mustVerifyEmail, setMustVerifyEmail] = useState(false);
     const [loading, setLoading] = useState(true);

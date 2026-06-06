@@ -1,9 +1,26 @@
+// @/Pages/Auth/ResetPassword.jsx
+
+/**
+ * @file ResetPassword.jsx
+ * @module Pages/Auth/ResetPassword
+ * @description Formulario de restablecimiento de contraseña. 
+ * Gestiona la validación del token de recuperación, la actualización de credenciales 
+ * mediante peticiones seguras (CSRF protected) y la redirección post-éxito.
+ */
+
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { useState } from 'react';
 import axios from '@/bootstrap';
+
+/**
+ * @param {object} props
+ * @param {string} props.token - Token único de restablecimiento (vía URL search params).
+ * @param {string} props.email - Email del usuario (vía URL search params).
+ * @param {Function} props.onNavigate - Callback para orquestar la navegación hacia 'login' al finalizar.
+ */
 
 export default function ResetPassword({ token, email, onNavigate }) {
     const [values, setValues] = useState({
@@ -16,6 +33,10 @@ export default function ResetPassword({ token, email, onNavigate }) {
     const [processing, setProcessing] = useState(false);
     const [status, setStatus] = useState(null);
 
+    /**
+     * Procesa el restablecimiento.
+     * Incluye handshake de CSRF Cookie antes del POST para seguridad de sesión.
+     */
     const submit = async (e) => {
         e.preventDefault();
         setProcessing(true);

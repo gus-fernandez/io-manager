@@ -1,10 +1,31 @@
 // @/Features/Device/Shared/components/RenameModal.jsx
 
+/**
+ * @file RenameModal.jsx
+ * @module Features/Shared/components/RenameModal
+ * @description Modal de entrada para renombrar presets. 
+ * Incluye validación de nombres duplicados (case-insensitive) y normalización de texto.
+ */
+
 import React from 'react';
 import Modal from '@/Components/Modal';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 
+/**
+ * @typedef {object} RenameModalProps
+ * @property {string} pendingName - Nombre que el usuario está escribiendo.
+ * @property {Function} setPendingName - Función para actualizar el estado del nombre pendiente.
+ * @property {Function} onClose - Callback para cerrar el modal.
+ * @property {Function} onConfirm - Callback para confirmar el cambio.
+ * @property {Array} [metadata=[]] - Lista de presets existentes para validar colisiones.
+ * @property {string} originalName - Nombre actual del preset para ignorar el conflicto consigo mismo.
+ */
+
+/**
+ * Renderiza el modal de renombrado con lógica de validación de conflictos.
+ * @param {RenameModalProps} props
+ */
 export const RenameModal = ({ 
     pendingName, 
     setPendingName, 

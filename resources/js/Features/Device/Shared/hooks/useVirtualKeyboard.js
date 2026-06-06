@@ -1,7 +1,19 @@
 // @/Features/Device/Shared/hooks/useVirtualKeyboard.js
 
+/**
+ * @file useVirtualKeyboard.js
+ * @module Features/Shared/hooks/useVirtualKeyboard
+ * @description Hook para convertir el teclado físico del ordenador en un teclado MIDI virtual.
+ * Implementa mapeo de teclas, control de octava/velocidad y una capa de seguridad
+ * para liberar notas en caso de pérdida de foco o cambio de visibilidad.
+ */
+
 import { useEffect, useState, useRef } from 'react';
 
+/**
+ * Mapeo de teclas.
+ * Valores: [semitono, offset_octava]
+ */
 const KEY_MAP = {
     'z': [0, 0], 's': [1, 0], 'x': [2, 0], 'd': [3, 0], 'c': [4, 0], 'v': [5, 0],
     'g': [6, 0], 'b': [7, 0], 'h': [8, 0], 'n': [9, 0], 'j': [10, 0], 'm': [11, 0],
@@ -10,6 +22,14 @@ const KEY_MAP = {
     'i': [12, 1]
 };
 
+/**
+ * Hook para gestionar el teclado virtual.
+ * @param {object} props
+ * @param {object} props.midi - Instancia del hook useMidi.
+ * @param {Function} props.appendLog - Callback para registrar logs de actividad.
+ * @param {boolean} props.isConnected - Estado de conexión del dispositivo.
+ * @returns {object} API del teclado virtual (active, toggleActive).
+ */
 export function useVirtualKeyboard({ midi, appendLog, isConnected }) {
     const [active, setActive] = useState(false);
     const [octave, setOctave] = useState(4);
@@ -28,7 +48,7 @@ export function useVirtualKeyboard({ midi, appendLog, isConnected }) {
         midi.clearAllNotes();
     }, [octave, active]);
 
-    // Escudo antibugs: Limpieza total ante cualquier cambio de contexto o foco
+    // Limpieza ante cualquier cambio de contexto o foco
     useEffect(() => {
         const killNotes = () => {
             if (stateRef.current.active) midi.clearAllNotes();

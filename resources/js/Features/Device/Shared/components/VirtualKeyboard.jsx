@@ -1,10 +1,28 @@
 // @/Features/Device/Shared/components/VirtualKeyboard.jsx
 
+/**
+ * @file VirtualKeyboard.jsx
+ * @module Features/Shared/components/VirtualKeyboard
+ * @description Botón de control de alternancia (toggle) para habilitar o deshabilitar 
+ * la funcionalidad de teclado MIDI virtual.
+ */
+
 import React from 'react';
 import { useVirtualKeyboard } from '@/Features/Device/Shared/hooks/useVirtualKeyboard.js';
 import { KeyboardIcon } from '@/Features/Device/Shared/components/Icons';
 import TextButton from '@/Components/TextButton';
 
+/**
+ * @typedef {object} VirtualKeyboardProps
+ * @property {object} midi - Instancia o interfaz del hook MIDI.
+ * @property {Function} appendLog - Callback para registrar logs de actividad.
+ * @property {boolean} isConnected - Estado actual de la conexión WebSocket.
+ */
+
+/**
+ * Renderiza un botón para activar/desactivar el teclado virtual.
+ * @param {VirtualKeyboardProps} props
+ */
 export default function VirtualKeyboard({ midi, appendLog, isConnected }) {
     const { active, toggleActive } = useVirtualKeyboard({ midi, appendLog, isConnected });
 

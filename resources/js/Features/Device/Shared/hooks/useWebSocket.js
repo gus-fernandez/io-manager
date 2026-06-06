@@ -1,5 +1,13 @@
 // @/Features/Device/Shared/hooks/useWebSocket.js
 
+/**
+ * @file useWebSocket.js
+ * @module Features/Shared/hooks/useWebSocket
+ * @description Hook especializado en la comunicación bidireccional con el hardware mediante WebSockets.
+ * Gestiona el ciclo de vida completo de la conexión, incluyendo latido (heartbeat), reintento
+ * automático y normalización de datos binarios (presets y metadatos).
+ */
+
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { resetDataStream } from '@/Features/Device/Shared/utils/wsMsgHandle';
 
@@ -8,6 +16,40 @@ const CONN_TIMEOUT_MS    = 8000;
 const HEARTBEAT_INTERVAL = 1000;
 const HEARTBEAT_TIMEOUT  = 4000;
 
+/**
+ * @typedef {object} WebSocketHookResult
+ * @property {string} status - Estado de la conexión ('Disconnected', 'Connecting...', 'Connected').
+ * @property {Function} connect - Inicia manualmente la conexión al socket.
+ * @property {Function} disconnect - Cierra la conexión, limpia timers y restablece estados.
+ * @property {React.RefObject} ws - Referencia al objeto WebSocket nativo.
+ * @property {Function} send - Envía datos binarios (Uint8Array) al hardware.
+ * @property {Function} onParsed - Callback para procesar mensajes recibidos y sincronizar el estado local.
+ * @property {Object|null} metadata - Objeto con la metadata de los presets del dispositivo.
+ * @property {Object|null} currentPreset - Estado del preset actualmente seleccionado/cargado.
+ * @property {Object|null} snapshot - Copia de seguridad del preset para comparación.
+ * @property {boolean} presetModified - Indica si el preset actual tiene cambios sin guardar.
+ * @property {boolean} reloadPreset - Flag para forzar recarga del preset en UI.
+ * @property {Function} setMetadata - Setter de metadata.
+ * @property {Function} setCurrentPreset - Setter de preset actual.
+ * @property {Function} setPresetModified - Setter de estado de modificación.
+ * @property {Function} setReloadPreset - Setter de flag de recarga.
+ * @property {Function} triggerAfterSave - Ejecuta callback post-guardado y actualiza snapshot.
+ * @property {Function} registerSaveCallback - Registra función a ejecutar tras guardar.
+ * @property {Function} registerLoadCallback - Registra función a ejecutar tras cargar.
+ * @property {boolean} isSaving - Estado de carga durante persistencia.
+ * @property {Function} setIsSaving - Setter de estado de guardado.
+ * @property {boolean} isParsed - Indica si el stream inicial fue procesado exitosamente.
+ */
+
+/**
+ * Hook para manejar la comunicación WebSocket con el dispositivo IO.
+ * @param {object} [handlers] - Callbacks opcionales para eventos de socket.
+ * @param {Function} [handlers.onOpen] - Callback ejecutado al establecer conexión.
+ * @param {Function} [handlers.onClose] - Callback ejecutado al cerrar conexión.
+ * @param {Function} [handlers.onError] - Callback ejecutado en caso de error.
+ * @param {Function} [handlers.onMessage] - Callback ejecutado al recibir mensaje (raw).
+ * @returns {WebSocketHookResult} API completa para interactuar con la conexión y el hardware.
+ */
 export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {}) {
     const ws = useRef(null);
     const connTimeoutRef = useRef(null);
@@ -37,7 +79,10 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         currentPresetRef.current = currentPreset;
     }, [currentPreset]);
 
-    // Core
+    /**
+     * Procesa los datos entrantes. Sincroniza metadata o actualiza el preset cargado.
+     * Gestiona la creación de snapshots para detectar cambios (dirty state).
+     */
     const onParsed = useCallback(({ metadata, ...preset }) => {
         if (metadata) {
             setMetadata(metadata);
@@ -68,18 +113,21 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         //console.table(preset);
     }, []);
 
+    /** Limpia todos los temporizadores activos (reconexión y latido). */
     const cleanTimers = useCallback(() => {
         clearTimeout(connTimeoutRef.current);
         clearInterval(heartbeatIntervalRef.current);
         clearTimeout(heartbeatTimeoutRef.current);
     }, []);
 
+    /** Envía datos binarios crudos al WebSocket abierto. */
     const send = useCallback((data) => {
         if (ws.current?.readyState === WebSocket.OPEN) {
             ws.current.send(new Uint8Array(data));
         }
     }, []);
 
+    /** Cierra la conexión, resetea el estado y envía comando de silencio MIDI. */
     const disconnect = useCallback(() => {
         cleanTimers();
         hasRetriedRef.current = false;
@@ -96,8 +144,10 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         setIsParsed(false);
     }, [cleanTimers]);
 
+    /** * Inicia el latido (Heartbeat). Envía paquetes periódicos y 
+     * monitorea la respuesta del hardware para detectar desconexiones silenciosas.
+     */
     const startHeartbeat = useCallback((socket) => {
-        
         heartbeatIntervalRef.current = setInterval(() => {
             if (socket.readyState !== WebSocket.OPEN) return;
 
@@ -115,6 +165,9 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         }, HEARTBEAT_INTERVAL);
     }, [cleanTimers]);
 
+    /**
+     * Orquestador de la conexión. Gestiona timeouts, eventos de socket y reconexión automática.
+     */
     const connect = useCallback(() => {
         if (ws.current?.readyState === WebSocket.OPEN || ws.current?.readyState === WebSocket.CONNECTING) return;
         
@@ -176,6 +229,7 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
 
     }, [startHeartbeat, cleanTimers]);
 
+    /** Sincroniza el snapshot con el estado actual tras una operación de guardado exitosa. */
     const triggerAfterSave = useCallback(() => {
         if (currentPresetRef.current) {
             const { flags, ...finalNoFlagsByte } = currentPresetRef.current;
@@ -185,10 +239,12 @@ export default function useWebSocket({ onOpen, onClose, onError, onMessage } = {
         onAfterSaveRef.current?.();
     }, []);
 
+    /** Registra handler para post-guardado. */
     const registerSaveCallback = useCallback((cb) => {
         onAfterSaveRef.current = cb;
     }, []);
 
+    /** Registra handler para post-carga. */
     const registerLoadCallback = useCallback((cb) => {
         onAfterLoadRef.current = cb;
     }, []);

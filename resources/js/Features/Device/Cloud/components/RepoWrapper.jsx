@@ -1,8 +1,29 @@
 // @/Features/Device/Cloud/components/RepoWrapper.jsx
 
+/**
+ * @file RepoWrapper.jsx
+ * @module Features/Cloud/components/RepoWrapper
+ * @description Wrapper visual genérico para mostrar listas de presets (nube o dispositivo).
+ * Gestiona estados de carga, lógica visual de sincronización (mute/active) y el renderizado 
+ * de acciones mediante render props.
+ */
+
 import { Cat } from '@/Features/Device/Shared/utils/presetUtils.js';
 import { needsSync } from '@/Features/Device/Cloud/utils/repoUtils.js';
 import { Stars } from '@/Features/Device/Cloud/components/Stars';
+
+/**
+ * @param {string} title - Título de la sección.
+ * @param {JSX.Element} [titleAction] - Elemento opcional para mostrar en el encabezado (ej. botones de filtro).
+ * @param {Array} items - Lista de presets a renderizar.
+ * @param {boolean} loading - Estado de carga global de la lista.
+ * @param {Function} renderActions - Render prop para inyectar acciones específicas por item (ej. botones de borrar/editar).
+ * @param {object} currentPreset - Preset activo actualmente para resaltar selección.
+ * @param {boolean} [isPrivate=true] - Define si el repositorio es privado (afecta lógica de sync).
+ * @param {Array<string>} [deviceNames=[]] - Lista de nombres en el hardware para validar presencia.
+ * @param {Function} onRate - Callback para valorar un preset.
+ * @param {Function} onRemove - Callback para borrar una valoración.
+ */
 
 export const RepoWrapper = ({ 
     title,

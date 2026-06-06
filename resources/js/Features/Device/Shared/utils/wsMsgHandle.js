@@ -1,5 +1,13 @@
 // @/Features/Device/Shared/utils/wsMsgHandle.js
 
+/**
+ * @file wsMsgHandle.jsç
+ * @module Features/Shared/utils/wsMsgHandle
+ * @description Manejador de comunicaciones WebSocket para la interacción con el hardware.
+ * Procesa opcodes para la sincronización de presets, carga de datos y streaming.
+ * Gestiona buffers internos para reensamblar mensajes fragmentados recibidos en chunks.
+ */
+
 import {
     parseMetadata,
     parseCurrentPreset,
@@ -33,6 +41,9 @@ let uploadOffset = 0;
 let cachedSendFn = null;
 let cachedWsState = null;
 
+/**
+ * Reinicia los buffers de recepción para limpiar el estado de la comunicación.
+ */
 export function resetDataStream() {
     totalBytesReceived = 0;
     presetBytesReceived = 0;
@@ -40,6 +51,11 @@ export function resetDataStream() {
     presetBuffer = new Uint8Array(EXPECTED_PRESET);
 }
 
+/**
+ * Manejador principal de mensajes WebSocket.
+ * @param {MessageEvent} event - Evento de recepción del WebSocket.
+ * @param {object} wsState - Estado del contexto WebSocket para actualizar la UI.
+ */
 export function handleMsg(event, wsState) {
     if (!(event.data instanceof ArrayBuffer)) return;
 
@@ -80,6 +96,10 @@ export function handleMsg(event, wsState) {
     }
 }
 
+/**
+ * Procesa el stream de datos completo (Metadata + Preset actual).
+ * Reensambla los chunks hasta completar el buffer total.
+ */
 function processDataStream(buffer, wsState) {
     const chunkData = new Uint8Array(buffer, 1);
     const remainingBytes = TOTAL_RAW_DATA - totalBytesReceived;
@@ -99,6 +119,9 @@ function processDataStream(buffer, wsState) {
     }
 }
 
+/**
+ * Procesa el stream de un preset individual (carga específica).
+ */
 function processPresetStream(buffer, wsState) {
     const chunkData = new Uint8Array(buffer, 1);
     const remainingBytes = EXPECTED_PRESET - presetBytesReceived;
@@ -115,12 +138,21 @@ function processPresetStream(buffer, wsState) {
     }
 }
 
+/**
+ * Parsea y registra la metadata global.
+ */
 function parseMeta(metaBuf, wsState) {
     const metadata = parseMetadata(metaBuf);
     console.log("Metadata Parse: Ok");
     wsState.tempMetadata = metadata;
 }
 
+/**
+ * Parsea un preset y actualiza el estado de la aplicación.
+ * @param {Uint8Array} presetBuf - Buffer del preset.
+ * @param {object} wsState - Estado global.
+ * @param {boolean} isInitStream - Indica si es la carga inicial de datos.
+ */
 function parsePreset(presetBuf, wsState, isInitStream) {
     const preset = parseCurrentPreset(presetBuf);
     
@@ -140,6 +172,12 @@ function parsePreset(presetBuf, wsState, isInitStream) {
     }
 }
 
+/**
+ * Envía una solicitud de guardado al hardware.
+ * @param {Function} sendFn - Función de envío WebSocket.
+ * @param {string} name - Nombre del preset.
+ * @param {number} [flags=0] - Flags del preset.
+ */
 export function sendSavePacket(sendFn, name, flags = 0) {
     if (!sendFn) return;
 
@@ -155,18 +193,30 @@ export function sendSavePacket(sendFn, name, flags = 0) {
     sendFn(payload.buffer);
 }
 
+/**
+ * Envía una solicitud de carga de preset al hardware por ID.
+ */
 export function sendLoadPacket(sendFn, presetId) {
     if (!sendFn) return;
     const payload = new Uint8Array([MSG_LOAD, presetId]);
     sendFn(payload.buffer);
 }
 
+/**
+ * Envía una solicitud de borrado al hardware.
+ */
 export function sendDeletePacket(sendFn, presetId) {
     if (!sendFn) return;
     const payload = new Uint8Array([MSG_DELETE, presetId]);
     sendFn(payload.buffer);
 }
 
+/**
+ * Inicia el proceso de carga de un preset hacia el hardware mediante chunking.
+ * @param {Function} sendFn 
+ * @param {Uint8Array} presetBuffer 
+ * @param {object} wsState 
+ */
 export function sendPreset(sendFn, presetBuffer, wsState) {
     if (!sendFn || !(presetBuffer instanceof Uint8Array)) return;
 
@@ -179,6 +229,9 @@ export function sendPreset(sendFn, presetBuffer, wsState) {
     sendNextChunk();
 }
 
+/**
+ * Envía el siguiente fragmento del preset. Lógica recursiva controlada por opcode.
+ */
 function sendNextChunk() {
 
     if (!uploadBuffer || uploadOffset >= uploadBuffer.length) {

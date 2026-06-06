@@ -1,5 +1,15 @@
 // @/Features/Device/Control/components/modules/OscModule.jsx
 
+/**
+ * @file OscModule.jsx
+ * @module Features/Control/components/modules/OscModule
+ * @description Módulo de osciladores (OSC). Gestiona tres canales de oscilación
+ * independientes (OSC 1, 2, 3). El tercer oscilador (Master) incluye modos
+ * extendidos como Ruido (NZ) y modulación en anillo.
+ * * Utiliza una arquitectura basada en sub-componentes (OscSection) para renderizar
+ * dinámicamente los controles según el tipo de oscilador.
+ */
+
 import { useState, useEffect } from 'react';
 import Module from '@/Features/Device/Control/components/layout/Module';
 import ModuleDivider from '@/Features/Device/Control/components/layout/ModuleDivider';
@@ -11,6 +21,14 @@ import { WaveIcons } from '@/Features/Device/Control/components/WaveIcons.jsx';
 
 const OscWaves = { "SIN": WaveIcons.OSC_SIN, "TRI": WaveIcons.OSC_TRI, "SAW": WaveIcons.OSC_SAW, "SQR": WaveIcons.OSC_SQR, "PLS": WaveIcons.OSC_PLS };
 const OscWavesMaster = { "SIN": WaveIcons.OSC_SIN, "TRI": WaveIcons.OSC_TRI, "SAW": WaveIcons.OSC_SAW, "SQR": WaveIcons.OSC_SQR, "NZ": WaveIcons.OSC_NZ };
+
+/**
+ * @typedef {object} OscModuleProps
+ * @property {string} id - Identificador del módulo.
+ * @property {Function} sendCC - Callback para envío de mensajes MIDI.
+ * @property {Function} appendLog - Callback para logs.
+ * @property {object} [values] - Estado actual de los parámetros (preset).
+ */
 
 function OscSection({ prefix, label, isMaster = false, sendCC, appendLog, values }) {
 

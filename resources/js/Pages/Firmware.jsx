@@ -1,5 +1,14 @@
 // @/Pages/Firmware.jsx
 
+/**
+ * @file Firmware.jsx
+ * @module Pages/Firmware
+ * @description Página de gestión de Firmware y comunicación Serial. 
+ * Esta vista actúa como orquestador de bajo nivel, permitiendo al usuario conectar el dispositivo 
+ * vía USB-Serial, monitorizar logs de consola, flashear nuevas versiones y, 
+ * exclusivamente para administradores, subir nuevos firmwares al servidor.
+ */
+
 import React from 'react';
 import { useFirmware } from '@/Features/Device/Firmware/hooks/useFirmware';
 import SerialMonitor from '@/Features/Device/Firmware/components/SerialMonitor';
@@ -8,6 +17,11 @@ import { useAuth } from '@/Contexts/AuthContext';
 import UploadFirmware from '@/Features/Device/Firmware/components/UploadFirmware';
 import TextButton from '@/Components/TextButton';
 
+/**
+ * Componente Firmware.
+ * Gestiona el estado de conexión USB, la renderización de herramientas de flasheo y 
+ * el acceso a las funciones de subida de archivos.
+ */
 export default function Firmware() {
 
     const { user } = useAuth();

@@ -1,0 +1,15 @@
+{
+    "source": {
+        "include": ["resources/js"],
+        "includePattern": "\\.(js|jsx)$"
+    },
+    "opts": {
+        "recurse": true,
+        "destination": "./public/docs-js",
+        "template": "node_modules/docdash"
+    },
+    "docdash": {
+        "collapse": true,
+        "sort": true
+    }
+}

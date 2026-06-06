@@ -1,8 +1,15 @@
+// @/Pages/Auth/RegisterForm.jsx
 
+/**
+ * @file RegisterForm.jsx
+ * @module Pages/Auth/RegisterForm
+ * @description Formulario de registro de usuario. Implementa el flujo de autenticación 
+ * de Laravel Sanctum, gestionando la obtención del token CSRF, la validación de 
+ * formulario y la persistencia de estado global tras un registro exitoso.
+ */
 
 import React, { useState } from 'react';
 import axios from '@/bootstrap';
-
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -11,6 +18,11 @@ import TextInput from '@/Components/TextInput';
 axios.defaults.baseURL = 'http://localhost';
 axios.defaults.withCredentials = true;
 
+/**
+ * @param {object} props
+ * @param {Function} props.setTab - Handler para la redirección de navegación tras registro.
+ * @param {Function} props.setUser - Callback para actualizar el contexto de usuario global.
+ */
 export default function RegisterForm({ setTab, setUser }) {
     const [values, setValues] = useState({
         name: '',
@@ -22,6 +34,12 @@ export default function RegisterForm({ setTab, setUser }) {
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
+    /**
+     * Lógica de registro:
+     * 1. Obtiene la cookie CSRF (requerida por Sanctum).
+     * 2. Envía los datos al endpoint /register.
+     * 3. Actualiza el estado global si es exitoso.
+     */
     const handleRegister = async (e) => {
         e.preventDefault();
 

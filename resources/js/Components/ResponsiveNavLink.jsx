@@ -1,5 +1,21 @@
+// @/Components/ResponsiveNavLink.jsx
+
+/**
+ * @file ResponsiveNavLink.jsx
+ * @module Components/ResponsiveNavLink
+ * @description Enlace de navegación adaptable para menús responsive.
+ * Gestiona automáticamente los estilos visuales de estado activo (borde lateral)
+ * integrándose con el sistema de rutas de Inertia.js.
+ */
+
 import { Link } from '@inertiajs/react';
 
+/**
+ * @param {boolean} [active=false] - Indica si el enlace está activo, aplicando un borde izquierdo y color de fondo.
+ * @param {string} [className=''] - Clases CSS adicionales para personalizar el estilo.
+ * @param {ReactNode} children - Contenido del enlace.
+ * @param {object} props - Atributos nativos de Inertia Link (href, method, etc.).
+ */
 export default function ResponsiveNavLink({
     active = false,
     className = '',

@@ -1,5 +1,16 @@
 // @/Features/Device/Shared/utils/midiCC.js
 
+/**
+ * @file midiCC.js
+ * @module Features/Shared/utils/midiCC
+ * @description Mapeo de constantes de MIDI Control Change (CC) para la comunicación con el hardware.
+ * Centraliza los números de CC asignados a cada parámetro del sintetizador (Osciladores, LFOs, Envolventes, Efectos, etc.).
+ */
+
+/**
+ * Objeto que contiene los números de MIDI CC mapeados a los parámetros del sintetizador.
+ * @type {Object.<string, number>}
+ */
 export const CC = {
     MODWHEEL        : 1,  // 0.0f to 1.0f
     MOD_RATE        : 2,

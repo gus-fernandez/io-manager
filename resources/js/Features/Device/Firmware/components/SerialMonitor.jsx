@@ -1,9 +1,32 @@
+// @/Features/Device/Firmware/components/SerialMonitor.jsx
+
+/**
+ * @file SerialMonitor.jsx
+ * @module Features/Firmware/components/SerialMonitor
+ * @description Interfaz de usuario para la monitorización serial.
+ * Muestra el log de salida del firmware y proporciona una entrada de comandos.
+ * Incluye lógica de seguridad para ocultar contraseñas durante la configuración Wi-Fi.
+ */
+
 import TextInput from '@/Components/TextInput';
 import React, { useState } from 'react';
 import { WifiStates } from '@/Features/Device/Firmware/utils/serialUtils';
 import TextButton from '@/Components/TextButton';
 import SecondaryButton from '@/Components/SecondaryButton';
 
+/**
+ * @typedef {object} SerialMonitorProps
+ * @property {Array} log - Lista de mensajes de log para mostrar.
+ * @property {Function} clearLog - Función para vaciar el historial de logs.
+ * @property {object} logRef - Referencia al contenedor de logs (para scroll automático).
+ * @property {Function} onCommand - Callback para enviar comandos al dispositivo.
+ * @property {string} currentState - Estado actual de conexión/configuración (para lógica de entrada).
+ */
+
+/**
+ * Renderiza la consola serial.
+ * @param {SerialMonitorProps} props
+ */
 export default function SerialMonitor({ log, clearLog, logRef, onCommand, currentState }) {
     const [inputValue, setInputValue] = useState('');
 

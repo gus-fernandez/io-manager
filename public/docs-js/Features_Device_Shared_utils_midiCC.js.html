@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Features/Device/Shared/utils/midiCC.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-App.html#~App">App</a></li><li data-type='method' style='display: none;'><a href="module-App.html#~AppContent">AppContent</a></li><li data-type='method' style='display: none;'><a href="module-App.html#~getInitialTab">getInitialTab</a></li></ul></li><li><a href="module-Components_Checkbox.html">Components/Checkbox</a></li><li><a href="module-Components_DangerButton.html">Components/DangerButton</a></li><li><a href="module-Components_InputError.html">Components/InputError</a></li><li><a href="module-Components_InputLabel.html">Components/InputLabel</a></li><li><a href="module-Components_Modal.html">Components/Modal</a></li><li><a href="module-Components_NavLink.html">Components/NavLink</a></li><li><a href="module-Components_PrimaryButton.html">Components/PrimaryButton</a></li><li><a href="module-Components_ResponsiveNavLink.html">Components/ResponsiveNavLink</a></li><li><a href="module-Components_SecondaryButton.html">Components/SecondaryButton</a></li><li><a href="module-Components_TextButton.html">Components/TextButton</a></li><li><a href="module-Components_TextInput.html">Components/TextInput</a></li><li><a href="module-Contexts_AuthContext.html">Contexts/AuthContext</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Contexts_AuthContext.html#.AuthProvider">AuthProvider</a></li><li data-type='method' style='display: none;'><a href="module-Contexts_AuthContext.html#.useAuth">useAuth</a></li></ul></li><li><a href="module-Contexts_WsContext.html">Contexts/WsContext</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Contexts_WsContext.html#.WsProvider">WsProvider</a></li></ul></li><li><a href="module-Features_Cloud_components_PublishModal.html">Features/Cloud/components/PublishModal</a></li><li><a href="module-Features_Cloud_components_Repo.html">Features/Cloud/components/Repo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Cloud_components_Repo.html#~SortButton">SortButton</a></li></ul></li><li><a href="module-Features_Cloud_components_RepoWrapper.html">Features/Cloud/components/RepoWrapper</a></li><li><a href="module-Features_Cloud_components_Stars.html">Features/Cloud/components/Stars</a></li><li><a href="module-Features_Cloud_components_UploadPresetModal.html">Features/Cloud/components/UploadPresetModal</a></li><li><a href="module-Features_Cloud_hooks_useRepo.html">Features/Cloud/hooks/useRepo</a></li><li><a href="module-Features_Cloud_hooks_useStars.html">Features/Cloud/hooks/useStars</a></li><li><a href="module-Features_Cloud_utils_repoUtils.html">Features/Cloud/utils/repoUtils</a></li><li><a href="module-Features_Cloud_utils_sortUtils.html">Features/Cloud/utils/sortUtils</a></li><li><a href="module-Features_Control_components_WaveIcons.html">Features/Control/components/WaveIcons</a></li><li><a href="module-Features_Control_components_layout_Module.html">Features/Control/components/layout/Module</a></li><li><a href="module-Features_Control_components_layout_ModuleDivider.html">Features/Control/components/layout/ModuleDivider</a></li><li><a href="module-Features_Control_components_layout_ModuleGrid.html">Features/Control/components/layout/ModuleGrid</a></li><li><a href="module-Features_Control_components_modules_AdsrModule.html">Features/Control/components/modules/AdsrModule</a></li><li><a href="module-Features_Control_components_modules_ArpModule.html">Features/Control/components/modules/ArpModule</a></li><li><a href="module-Features_Control_components_modules_FxModule.html">Features/Control/components/modules/FxModule</a></li><li><a href="module-Features_Control_components_modules_LfoModule.html">Features/Control/components/modules/LfoModule</a></li><li><a href="module-Features_Control_components_modules_MasterModule.html">Features/Control/components/modules/MasterModule</a></li><li><a href="module-Features_Control_components_modules_ModModule.html">Features/Control/components/modules/ModModule</a></li><li><a href="module-Features_Control_components_modules_OscModule.html">Features/Control/components/modules/OscModule</a></li><li><a href="module-Features_Control_components_ui_IoBend.html">Features/Control/components/ui/IoBend</a></li><li><a href="module-Features_Control_components_ui_IoButton.html">Features/Control/components/ui/IoButton</a></li><li><a href="module-Features_Control_components_ui_IoKnob.html">Features/Control/components/ui/IoKnob</a></li><li><a href="module-Features_Control_components_ui_IoSelector.html">Features/Control/components/ui/IoSelector</a></li><li><a href="module-Features_Control_components_ui_IoSlider.html">Features/Control/components/ui/IoSlider</a></li><li><a href="module-Features_Control_hooks_useModuleGrid.html">Features/Control/hooks/useModuleGrid</a></li><li><a href="module-Features_Firmware_components_FlashFirmware.html">Features/Firmware/components/FlashFirmware</a></li><li><a href="module-Features_Firmware_components_SerialMonitor.html">Features/Firmware/components/SerialMonitor</a></li><li><a href="module-Features_Firmware_components_UploadFirmware.html">Features/Firmware/components/UploadFirmware</a></li><li><a href="module-Features_Firmware_hooks_useFirmware.html">Features/Firmware/hooks/useFirmware</a></li><li><a href="module-Features_Firmware_hooks_useFlashFirmware.html">Features/Firmware/hooks/useFlashFirmware</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Firmware_hooks_useFlashFirmware.html#.useFlashFirmware">useFlashFirmware</a></li></ul></li><li><a href="module-Features_Firmware_hooks_useSerial.html">Features/Firmware/hooks/useSerial</a></li><li><a href="module-Features_Firmware_utils_serialUtils.html">Features/Firmware/utils/serialUtils</a></li><li><a href="module-Features_Shared_components_DeleteModal.html">Features/Shared/components/DeleteModal</a></li><li><a href="module-Features_Shared_components_Icons.html">Features/Shared/components/Icons</a></li><li><a href="module-Features_Shared_components_NavGuardModal.html">Features/Shared/components/NavGuardModal</a></li><li><a href="module-Features_Shared_components_PresetLine.html">Features/Shared/components/PresetLine</a></li><li><a href="module-Features_Shared_components_PresetsBar.html">Features/Shared/components/PresetsBar</a></li><li><a href="module-Features_Shared_components_RenameModal.html">Features/Shared/components/RenameModal</a></li><li><a href="module-Features_Shared_components_StatusBar.html">Features/Shared/components/StatusBar</a></li><li><a href="module-Features_Shared_components_VirtualKeyboard.html">Features/Shared/components/VirtualKeyboard</a></li><li><a href="module-Features_Shared_components_WsConnection.html">Features/Shared/components/WsConnection</a></li><li><a href="module-Features_Shared_hooks_useMidi.html">Features/Shared/hooks/useMidi</a></li><li><a href="module-Features_Shared_hooks_usePresetUpdate.html">Features/Shared/hooks/usePresetUpdate</a></li><li><a href="module-Features_Shared_hooks_usePresetsBar.html">Features/Shared/hooks/usePresetsBar</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_hooks_usePresetsBar.html#.usePresetsBar">usePresetsBar</a></li></ul></li><li><a href="module-Features_Shared_hooks_useVirtualKeyboard.html">Features/Shared/hooks/useVirtualKeyboard</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_hooks_useVirtualKeyboard.html#.useVirtualKeyboard">useVirtualKeyboard</a></li></ul></li><li><a href="module-Features_Shared_hooks_useWebSocket.html">Features/Shared/hooks/useWebSocket</a></li><li><a href="module-Features_Shared_utils_midiCC.html">Features/Shared/utils/midiCC</a></li><li><a href="module-Features_Shared_utils_presetUtils.html">Features/Shared/utils/presetUtils</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.packFlags">packFlags</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.packPresetForBD">packPresetForBD</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.parseCurrentPreset">parseCurrentPreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.parseMetadata">parseMetadata</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseCrc">parseCrc</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseFlags">parseFlags</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseId">parseId</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseName">parseName</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseParams">parseParams</a></li></ul></li><li><a href="module-Features_Shared_utils_showTips.html">Features/Shared/utils/showTips</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_showTips.html#.toggleGlobalTooltips">toggleGlobalTooltips</a></li></ul></li><li><a href="module-Features_Shared_utils_wsMsgHandle.html">Features/Shared/utils/wsMsgHandle</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.handleMsg">handleMsg</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.resetDataStream">resetDataStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendDeletePacket">sendDeletePacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendLoadPacket">sendLoadPacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendPreset">sendPreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendSavePacket">sendSavePacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~parseMeta">parseMeta</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~parsePreset">parsePreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~processDataStream">processDataStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~processPresetStream">processPresetStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~sendNextChunk">sendNextChunk</a></li></ul></li><li><a href="module-Layouts_AppLayout.html">Layouts/AppLayout</a></li><li><a href="module-Layouts_DeviceLayout.html">Layouts/DeviceLayout</a></li><li><a href="module-Pages_About.html">Pages/About</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Pages_About.html#~IconWrapper">IconWrapper</a></li></ul></li><li><a href="module-Pages_Auth_ConfirmPassword.html">Pages/Auth/ConfirmPassword</a></li><li><a href="module-Pages_Auth_ForgotPassword.html">Pages/Auth/ForgotPassword</a></li><li><a href="module-Pages_Auth_LoginForm.html">Pages/Auth/LoginForm</a></li><li><a href="module-Pages_Auth_RegisterForm.html">Pages/Auth/RegisterForm</a></li><li><a href="module-Pages_Auth_ResetPassword.html">Pages/Auth/ResetPassword</a></li><li><a href="module-Pages_Auth_VerifyEmail.html">Pages/Auth/VerifyEmail</a></li><li><a href="module-Pages_Cloud.html">Pages/Cloud</a></li><li><a href="module-Pages_Control.html">Pages/Control</a></li><li><a href="module-Pages_Firmware.html">Pages/Firmware</a></li><li><a href="module-Pages_Landing.html">Pages/Landing</a></li><li><a href="module-Pages_Profile_Edit.html">Pages/Profile/Edit</a></li><li><a href="module-Pages_Profile_Partials_DeleteUserForm.html">Pages/Profile/Partials/DeleteUserForm</a></li><li><a href="module-Pages_Profile_Partials_UpdatePasswordForm.html">Pages/Profile/Partials/UpdatePasswordForm</a></li><li><a href="module-Pages_Profile_Partials_UpdateProfileInformationForm.html">Pages/Profile/Partials/UpdateProfileInformationForm</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Features/Device/Shared/utils/midiCC.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// @/Features/Device/Shared/utils/midiCC.js
+
+/**
+ * @file midiCC.js
+ * @module Features/Shared/utils/midiCC
+ * @description Mapeo de constantes de MIDI Control Change (CC) para la comunicación con el hardware.
+ * Centraliza los números de CC asignados a cada parámetro del sintetizador (Osciladores, LFOs, Envolventes, Efectos, etc.).
+ */
+
+/**
+ * Objeto que contiene los números de MIDI CC mapeados a los parámetros del sintetizador.
+ * @type {Object.&lt;string, number>}
+ */
+export const CC = {
+    MODWHEEL        : 1,  // 0.0f to 1.0f
+    MOD_RATE        : 2,
+    MOD_TO_FREQ     : 3,
+    MOD_TO_CUT      : 4,
+    MOD_TO_PAN      : 5,
+
+    LFO_WAVEFORM    : 6,   // LFO Waveform Table (0.0f to 1.0f)
+    LFO_RATE        : 7,   // 0 to 40000
+    LFO_AMOUNT      : 8,   // -1.0f to 1.0f
+    LFO_PHASE       : 9,   // -1.0f to 1.0f
+    LFO_DELAY       : 10,  // 0 to 10000
+    LFO_DEST        : 11,  // LFO Dest Table (0.0f to 1.0f)
+    LFO_SYNC        : 12,  // Button
+    LFO_TRIGGER     : 13,  // Button
+    LFO_INV_DELAY   : 14,  // Button
+
+    OSC1_WAVEFORM     : 15,  // OSC Waveform Table (0.0f to 1.0f)
+    OSC1_VOLUME       : 16,  // 0.0f to 1.0f
+    OSC1_PHASE        : 17,  // -1.0f to 1.0f
+    OSC1_OCT          : 18,  // Octaves Table (0.0f to 1.0f)
+    OSC1_TUNE         : 19,  // Semitones Table (0.0f to 1.0f)
+    OSC1_FINE         : 20,  // 0.943874f to 1.0f to 1.059463f
+    OSC1_HARDSYNC     : 21,  // Button
+    OSC1_LFO_ACTIVE   : 22,  // Button
+    OSC1_AD_ACTIVE    : 23,  // Button
+
+    OSC2_WAVEFORM     : 24,
+    OSC2_VOLUME       : 25,
+    OSC2_PHASE        : 26,
+    OSC2_OCT          : 27,
+    OSC2_TUNE         : 28,
+    OSC2_FINE         : 29,
+    OSC2_HARDSYNC     : 30, // Button
+    OSC2_LFO_ACTIVE   : 31, // Button
+    OSC2_AD_ACTIVE    : 32, // Button
+
+    OSC3_WAVEFORM     : 33,
+    OSC3_VOLUME       : 34,
+    OSC3_OCT          : 36,
+    OSC3_TUNE         : 37,
+    OSC3_FINE         : 38,
+    OSC3_LFO_ACTIVE   : 39, // Button
+    OSC3_AD_ACTIVE    : 40,  // Button
+
+    FX_CRUSH_LPF      : 41,
+    FX_DELAY_X2       : 42,
+
+    VCF_FILTER_TYPE   : 43,  // VCF Table (0.0f - 1.0f)
+    VCF_CUTOFF        : 44,  // 0.0f to 1.0f
+    VCF_RESONANCE     : 45,  // 0.0f to 1.0f
+
+    VCF_A        : 46,  // 0 to 40000
+    VCF_D        : 47,  // 0 to 40000
+    VCF_S        : 48,  // 0.0f to 1.0f
+    VCF_R        : 49,  // 0 to 40000
+    VCF_ENV      : 50,  // -1.0f to 1.0f
+
+    AMP_A        : 51,  // 0 to 40000
+    AMP_D        : 52,  // 0 to 40000
+    AMP_S        : 53,  // 0.0f to 1.0f
+    AMP_R        : 54,  // 0 to 40000
+
+    AD_ATTACK         : 55,  // 0 to 40000
+    AD_DECAY          : 56,  // 0 to 40000
+    AD_AMOUNT         : 57,  // -1.0f to 1.0f
+    AD_DEST           : 58,  // AD Dest Table (0.0f to 1.0f)
+    AD_RESET          : 59, // Button
+    AD_SYNC           : 60,  // Button
+
+    FX_SATURATION     : 61,  // 0.0f to 1.0f
+    FX_HPF_CUT        : 62, // 0.0f to 0.1f &lt;- Check
+    FX_BITCRUSH       : 63,
+    FX_RATECRUSH      : 64,
+    FX_RATE_MIX       : 65,
+    FX_CHORUS_WET     : 66, // 0.0f to 1.0f
+    FX_CHORUS_RATE    : 67,  // 0.0f to 0.2f
+    FX_CHORUS_DEPTH   : 68,  // 0.0f to 1.0f
+    FX_DELAY_WET      : 69,  // 0.0f to 1.0f
+    FX_DELAY_TIME     : 70,  // 0.0f to 1.0f
+    FX_DELAY_FEED     : 71,  // 0.0f to 1.0f
+    FX_DELAY_LPF      : 72,  // 0.0f to 1.0f
+
+    RING_AMOUNT       : 73,  // 0.0f to 1.0f
+    OSC_SPREAD        : 74,  // 0.0f to 1.0f
+    OSC_DRIFT         : 75,
+    GLOBAL_DETUNE     : 76,
+    MASTER_VOLUME     : 77,  // 0.0f to 1.0f
+    PRE_GAIN          : 78,
+    VOICE_MODE        : 79,  // POLY MONO
+    UNI_VOICES        : 80,  //1 - 8
+    GLIDE_TIME        : 81,  // Millis
+    GLIDE_AUTO        : 82,  //0 1
+    HOLD              : 83,  //0 1
+
+    BPM               : 84,
+    CLK_DIVIDER       : 85,
+    EXT               : 86,
+
+    SELECT_BEND       : 87,  // Pitch: 0.125f to 1.0f to 4.0f. VCF: 0.0f to VCFcutoff to 1.0f
+    SELECT_VEL        : 88,  // 0.0f to 1.0
+    SELECT_MODWHEEL   : 89,
+    MODWHEEL_SYNC     : 90,
+
+    BEND_TO_FREQ      : 91,
+    BEND_TO_CUT       : 92,
+    VEL_TO_CUT        : 93,
+    VEL_TO_VOL        : 94,
+
+    OSC3_NOISE_COLOR  : 95,
+    OSC3_NOISE_RATE   : 96,
+    OSC3_NOISE_RESO   : 97,
+
+    VCF_KEYFOLLOW     : 98, // 0.0f to 1.0f not
+
+    ARP_SYNC          : 99,
+    ARP_TYPE          : 100,
+    ARP_RATE          : 101,
+    ARP_LEN           : 102,
+    ARP_STEPS         : 103
+};
+
+if (import.meta.hot) {
+    import.meta.hot.accept();
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Sat Jun 06 2026 20:44:52 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

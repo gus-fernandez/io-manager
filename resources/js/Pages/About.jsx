@@ -1,6 +1,23 @@
 // @/Pages/About.jsx
+
+/**
+ * @file About.jsx
+ * @module Pages/About
+ * @description Página informativa "About". Presenta la filosofía del proyecto "IO" 
+ * y sirve como hub de contacto, utilizando `IconWrapper` para estandarizar 
+ * el comportamiento visual de los enlaces sociales.
+ */
+
 import { AboutIcons } from "@/Features/Device/Shared/components/Icons";
 
+/**
+ * Componente envoltorio para los iconos de navegación.
+ * Aplica estilos de hover, foco y transiciones a los enlaces sociales.
+ * @param {object} props
+ * @param {React.ReactNode} props.children - El elemento icono a renderizar.
+ * @param {string} props.href - La URL de destino del enlace.
+ * @param {string} props.tt - Texto descriptivo para el atributo title y accesibilidad.
+ */
 const IconWrapper = ({ children, href, tt }) => (
     <div className="w-14 h-14 block shrink-0 hover:text-neutral-200 transition-all duration-150 cursor-pointer hover:scale-125">
         <a  
@@ -16,6 +33,11 @@ const IconWrapper = ({ children, href, tt }) => (
     </div>
 );
 
+/**
+ * Página "About" (Acerca de).
+ * Muestra el contexto y propósito del proyecto "IO", además de proporcionar
+ * enlaces de contacto y redes sociales.
+ */
 export default function About() {
     return (
         <>

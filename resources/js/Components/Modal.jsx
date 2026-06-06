@@ -1,5 +1,21 @@
+// @/Components/Modal.jsx
+
+/**
+ * @file Modal.jsx
+ * @module Components/Modal
+ * @description Modal contenedor de alto nivel que utiliza `React Portal` para renderizarse
+ * directamente en el `document.body`. Esto evita problemas de contextos de apilamiento (z-index)
+ * o desbordamiento (overflow) impuestos por contenedores padres.
+ */
+
 import { createPortal } from 'react-dom';
 
+/**
+ * @param {object} props
+ * @param {function} props.onClose - Función callback invocada al hacer clic en el backdrop.
+ * @param {ReactNode} props.children - Contenido del cuerpo del modal.
+ * @param {string} [props.className='w-80'] - Clases CSS adicionales para customizar el contenedor.
+ */
 export default function Modal({ onClose, children, className = "w-80" }) {
     return createPortal(
         <div 

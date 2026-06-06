@@ -1,8 +1,18 @@
 // @/Features/Device/Firmware/utils/serialUtils.js
 
+/**
+ * @file serialUtils.js
+ * @module Features/Firmware/utils/serialUtils
+ * @description Capa de comunicación serial (Bridge) entre la aplicación y el firmware.
+ * Implementa el protocolo de framing para la transmisión de paquetes binarios,
+ * la lógica de encriptación simple (XOR) para credenciales y la máquina de estados
+ * para la configuración de redes WiFi.
+ */
+
 export const WIFI_OP_CODE = 0xFE;
 export const START_PROTOCOL = 0xFD;
 
+/** @enum {number} */
 export const WifiStates = {
     NEW_WIFI_SKIP:      0x00,
     NEW_WIFI_START:     0x01,
@@ -15,7 +25,12 @@ export const WifiStates = {
 };
 
 export const SerialProtocol = {
-
+    
+    /**
+     * Parsea un buffer binario buscando marcadores de inicio y fin para extraer un paquete.
+     * @param {Uint8Array} buffer - Buffer de bytes recibido del puerto serial.
+     * @returns {{buffer: Uint8Array, packet: Object|null}} El buffer restante y el paquete extraído si existe.
+     */
     binReceive: (buffer) => {
         const START_MARKER = new Uint8Array([0x23, 0x23, 0x23, 0x53, 0x54, 0x41, 0x52, 0x54, 0x23, 0x23, 0x23]);
         const END_MARKER = new Uint8Array([0x23, 0x23, 0x23, 0x45, 0x4E, 0x44, 0x23, 0x23, 0x23]);
@@ -62,6 +77,12 @@ export const SerialProtocol = {
         };
     },
 
+    /**
+     * Construye un paquete binario listo para enviar al firmware.
+     * @param {number} opCode - Código de operación del protocolo.
+     * @param {Array<number>} payloadBytes - Datos adicionales.
+     * @returns {Uint8Array} Paquete serializado.
+     */
     binSend: (opCode, payloadBytes = []) => {
         const packet = new Uint8Array(1 + payloadBytes.length);
         packet[0] = opCode;
@@ -69,6 +90,15 @@ export const SerialProtocol = {
         return packet;
     },
 
+    /**
+     * Interpreta comandos de texto y los traduce a operaciones del protocolo serial
+     * basadas en el estado actual de la máquina de estados WiFi.
+     * @param {string} command - Comando enviado por el usuario.
+     * @param {number} currentState - Estado actual de la máquina de estados.
+     * @param {Uint8Array} xorKey - Llave para encriptación XOR.
+     * @param {number} netWorkNum - Cantidad de redes disponibles.
+     * @returns {Uint8Array|null} Paquete resultante o null si no se reconoce.
+     */
     handleCommand: (
         command,
         currentState,

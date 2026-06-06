@@ -1,14 +1,30 @@
 // @/Features/Device/Cloud/hooks/useRepo.js
 
+/**
+ * @file useRepo.js
+ * @module Features/Cloud/hooks/useRepo
+ * @description Hook central que actúa como orquestador de la gestión de presets.
+ * Gestiona la carga, fusión, sincronización y manipulación de presets tanto
+ * del almacenamiento local (dispositivo) como del remoto (nube privada/pública).
+ */
+
 import axios from '@/bootstrap';
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { useAuth } from '@/Contexts/AuthContext'; // <-- Importar Auth
+import { useAuth } from '@/Contexts/AuthContext';
 import { packPresetForBD } from '@/Features/Device/Shared/utils/presetUtils';
 import { mergePresets, hexToUint8Array, getNextFreeSlot, needsSync } from '@/Features/Device/Cloud/utils/repoUtils.js';
 import { sendLoadPacket, sendPreset } from '@/Features/Device/Shared/utils/wsMsgHandle';
 import { Slot } from '@/Features/Device/Shared/utils/presetUtils.js';
 import { sortPresets } from '@/Features/Device/Cloud/utils/sortUtils';
 
+/**
+ * @param {Array} devicePresets - Lista de presets actualmente cargados en el dispositivo.
+ * @param {object} currentPreset - Preset activo actualmente.
+ * @param {Function} send - Función para enviar mensajes vía WebSocket al dispositivo.
+ * @param {Function} registerSaveCallback - Hook para registrar lógica de guardado.
+ * @param {Function} registerLoadCallback - Hook para registrar lógica de carga de presets.
+ * @param {object} wsState - Estado actual de la conexión WebSocket.
+ */
 export const useRepo = (
     devicePresets = [],
     currentPreset,
@@ -40,6 +56,11 @@ export const useRepo = (
         return () => registerSaveCallback(null);
     }, [registerSaveCallback]);
 
+    /**
+     * Recupera los presets privados (del usuario) desde el endpoint de la API.
+     * Gestiona automáticamente el estado de carga (`loadingPrivate`) y maneja
+     * errores de red mediante consola.
+     */
     const fetchPrivate = useCallback(async () => {
         setLoadingPrivate(true);
         try {
@@ -52,6 +73,10 @@ export const useRepo = (
         }
     }, []);
 
+    /**
+     * Recupera los presets públicos (comunidad) desde el endpoint de la API.
+     * Gestiona el estado de carga (`loadingPublic`) y maneja errores de red.
+     */
     const fetchPublic = useCallback(async () => {
         setLoadingPublic(true);
         try {
@@ -74,6 +99,11 @@ export const useRepo = (
         fetchPublic();
     }, [isAuthenticated]);
 
+
+    /**
+     * Elimina un preset privado de la nube.
+     * @param {string|number} id - ID del preset en la nube.
+     */
     const deletePreset = async (id) => {
         if (!isAuthenticated) return;
         try {
@@ -84,6 +114,10 @@ export const useRepo = (
         }
     };
 
+    /**
+     * Sube un preset al servidor. Si ya existe (mismo CRC y nombre), realiza un PUT (update).
+     * @param {object} preset - Objeto de preset local.
+     */
     const uploadPreset = async (preset) => {
         if (!isAuthenticated) return;
         try {
@@ -106,7 +140,12 @@ export const useRepo = (
         }
     };
 
-const publishToPublic = async (item, desc) => {
+    /**
+     * Publica un preset privado en el repositorio público.
+     * @param {object} item - Preset privado (cloudId).
+     * @param {string} desc - Descripción para el preset público.
+     */
+    const publishToPublic = async (item, desc) => {
         if (!isAuthenticated) return;
         
         try {
@@ -140,6 +179,10 @@ const publishToPublic = async (item, desc) => {
         }
     };
 
+    /**
+     * Elimina un preset del repositorio público. (Solo Admin)
+     * @param {string|number} id - ID del preset público.
+     */
     const deleteFromPublic = async (id) => {
         if (!isAuthenticated) return;
         try {
@@ -150,6 +193,11 @@ const publishToPublic = async (item, desc) => {
         }
     };
 
+    /**
+     * Envía un preset desde la nube hacia el hardware.
+     * @param {object} item - Preset a enviar.
+     * @param {string|null} [overrideName] - Nombre opcional para renombrar al subir.
+     */
     const uploadToDevice = async (item, overrideName = null) => {
         const freeSlotId = getNextFreeSlot(devicePresets);
         if (freeSlotId === null) {
@@ -179,6 +227,10 @@ const publishToPublic = async (item, desc) => {
         sendPreset(send, presetBuffer, wsState);
     };
 
+    /**
+     * Inicia un proceso de sincronización secuencial para todos los presets que requieren respaldo.
+     * Utiliza una cola de trabajo y callbacks de carga para extraer datos del hardware.
+     */
     const syncAll = () => {
         if (!isAuthenticated) return;
         const itemsToSync = privatePresets.filter(item => needsSync(item));
@@ -210,6 +262,12 @@ const publishToPublic = async (item, desc) => {
         sendLoadPacket(send, first.deviceId);
     };  
     
+    /**
+     * Procesa y enriquece los presets públicos.
+     * Cruza la data de la nube pública (publicData) con el estado privado y del dispositivo
+     * para determinar estados relacionales (ej. si el usuario ya posee el preset).
+     * * @returns {Array} Lista enriquecida con flags: inCloud, inDevice, deviceId, etc.
+     */
     const rawPublicPresets = useMemo(() => {
         return publicData.map(pub => {
             const pubCrc = pub.crc32 ?? pub.crc;
@@ -239,11 +297,21 @@ const publishToPublic = async (item, desc) => {
         });
     }, [publicData, privateData, devicePresets]);
 
+    /**
+     * Aplica el ordenamiento sobre los presets públicos enriquecidos.
+     * Depende de la configuración de ordenamiento definida en 'publicSort'.
+     */
     const publicPresets = useMemo(() => {
         const sorted = sortPresets(rawPublicPresets, publicSort.key, publicSort.asc, publicSort.activeCat);
         return sorted;
     }, [rawPublicPresets, publicSort]);
 
+    /**
+     * Consolida la librería privada:
+     * 1. Filtra datos si el usuario no está autenticado (seguridad).
+     * 2. Fusiona (merge) datos de la nube con datos locales del dispositivo.
+     * 3. Aplica ordenamiento según 'privateSort'.
+     */
     const privatePresets = useMemo(() => {
         const bdData = isAuthenticated ? privateData : [];
         const merged = mergePresets(bdData, devicePresets);

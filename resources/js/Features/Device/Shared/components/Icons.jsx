@@ -1,5 +1,11 @@
 // @/Features/Device/Shared/components/Icons.jsx
 
+/**
+ * @file waveIcons.jsx
+ * @module Features/Shared/components/Icons
+ * @description Iconos svg.
+ */
+
 export const KeyboardIcon = {
     KEYBOARD: () => (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-full h-full">

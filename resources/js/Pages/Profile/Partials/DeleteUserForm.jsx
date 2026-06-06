@@ -1,14 +1,26 @@
+// @/Pages/Profile/Partials/DeleteUserForm.jsx
+
+/**
+ * @file DeleteUserForm.jsx
+ * @module Pages/Profile/Partials/DeleteUserForm
+ * @description Maneja la eliminación permanente de la cuenta del usuario. 
+ * Implementa un patrón de "Confirmación de Seguridad" mediante un Modal 
+ * y requiere la validación de la contraseña actual antes de ejecutar la petición DELETE.
+ */
+
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import TextInput from '@/Components/TextInput';
-import TextButton from '@/Components/TextButton';
 import DangerButton from '@/Components/DangerButton';
-import SecondaryButton from '@/Components/SecondaryButton';
 import { useRef, useState } from 'react';
 import axios from '@/bootstrap';
 import PrimaryButton from '@/Components/PrimaryButton';
 
+/**
+ * @param {object} props
+ * @param {string} [props.className] - Clases CSS adicionales.
+ */
 export default function DeleteUserForm({ className = '' }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
     const [password, setPassword] = useState('');
@@ -16,6 +28,10 @@ export default function DeleteUserForm({ className = '' }) {
     const [processing, setProcessing] = useState(false);
     const passwordInput = useRef();
 
+    /**
+     * Lógica de eliminación: Requiere re-autenticación via contraseña.
+     * Si el servidor devuelve 422, se mapean los errores al campo password.
+     */
     const deleteUser = async (e) => {
         e.preventDefault();
         setProcessing(true);
@@ -36,6 +52,7 @@ export default function DeleteUserForm({ className = '' }) {
         }
     };
 
+    /** Cierra el modal, limpia errores y el campo de contraseña. */
     const closeModal = () => {
         setConfirmingUserDeletion(false);
         setErrors({});

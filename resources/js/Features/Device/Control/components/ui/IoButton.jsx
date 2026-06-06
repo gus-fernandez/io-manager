@@ -1,7 +1,30 @@
 // @/Features/Device/Control/components/ui/IoButton.jsx
 
+/**
+ * @file IoButton.jsx
+ * @module Features/Control/components/ui/IoButton
+ * @description Botón de control MIDI que soporta estados binarios (On/Off).
+ * Puede operar de forma aislada (Toggle) o en grupo (Exclusive Selection) 
+ * mediante el uso de `activeCc`.
+ */
+
 import { useState, useEffect } from 'react';
 
+/**
+ * @typedef {object} IoButtonProps
+ * @property {string} label - Etiqueta descriptiva del control.
+ * @property {number} cc - Número de Control Change MIDI.
+ * @property {number} [value] - Valor MIDI actual (para sincronización).
+ * @property {Function} send - Callback para enviar el comando MIDI.
+ * @property {Function} appendLog - Callback para registrar la actividad.
+ * @property {number} [activeCc] - (Opcional) CC activo actualmente en el grupo.
+ * @property {Function} [setActiveCc] - (Opcional) Setter para el CC activo en el grupo.
+ */
+
+/**
+ * Renderiza un botón interactivo con indicador visual de estado.
+ * @param {IoButtonProps} props
+ */
 export default function IoButton({ label, cc, value, send, appendLog, activeCc, setActiveCc }) {
     const isGrouped = activeCc !== undefined;
     

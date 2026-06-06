@@ -1,10 +1,27 @@
 // @/Features/Device/Shared/components/StatusBar.jsx
 
+/**
+ * @file StatusBar.jsx
+ * @module Features/Shared/components/StatusBar
+ * @description Barra de estado global de la aplicación.
+ * Muestra el título de la pestaña actual, el estado de la conexión WebSocket,
+ * un log en tiempo real de la actividad MIDI y permite alternar el teclado virtual.
+ */
+
 import React from 'react';
 import { useDevice } from '@/Contexts/WsContext';
 import VirtualKeyboard from '@/Features/Device/Shared/components/VirtualKeyboard.jsx';
 import WsConnection from '@/Features/Device/Shared/components/WsConnection';
 
+/**
+ * @typedef {object} StatusBarProps
+ * @property {string} currentTab - Identificador de la pestaña activa (ej. 'firmware', 'editor').
+ */
+
+/**
+ * Renderiza la barra de estado con indicadores de red, logs y controles de hardware.
+ * @param {StatusBarProps} props
+ */
 export default function StatusBar({ currentTab }) {
     const { ws, midi } = useDevice();
     const isConnected = ws.status === 'Connected' && currentTab !== 'firmware';

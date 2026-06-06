@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Features/Device/Cloud/components/Repo.jsx - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-App.html#~App">App</a></li><li data-type='method' style='display: none;'><a href="module-App.html#~AppContent">AppContent</a></li><li data-type='method' style='display: none;'><a href="module-App.html#~getInitialTab">getInitialTab</a></li></ul></li><li><a href="module-Components_Checkbox.html">Components/Checkbox</a></li><li><a href="module-Components_DangerButton.html">Components/DangerButton</a></li><li><a href="module-Components_InputError.html">Components/InputError</a></li><li><a href="module-Components_InputLabel.html">Components/InputLabel</a></li><li><a href="module-Components_Modal.html">Components/Modal</a></li><li><a href="module-Components_NavLink.html">Components/NavLink</a></li><li><a href="module-Components_PrimaryButton.html">Components/PrimaryButton</a></li><li><a href="module-Components_ResponsiveNavLink.html">Components/ResponsiveNavLink</a></li><li><a href="module-Components_SecondaryButton.html">Components/SecondaryButton</a></li><li><a href="module-Components_TextButton.html">Components/TextButton</a></li><li><a href="module-Components_TextInput.html">Components/TextInput</a></li><li><a href="module-Contexts_AuthContext.html">Contexts/AuthContext</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Contexts_AuthContext.html#.AuthProvider">AuthProvider</a></li><li data-type='method' style='display: none;'><a href="module-Contexts_AuthContext.html#.useAuth">useAuth</a></li></ul></li><li><a href="module-Contexts_WsContext.html">Contexts/WsContext</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Contexts_WsContext.html#.WsProvider">WsProvider</a></li></ul></li><li><a href="module-Features_Cloud_components_PublishModal.html">Features/Cloud/components/PublishModal</a></li><li><a href="module-Features_Cloud_components_Repo.html">Features/Cloud/components/Repo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Cloud_components_Repo.html#~SortButton">SortButton</a></li></ul></li><li><a href="module-Features_Cloud_components_RepoWrapper.html">Features/Cloud/components/RepoWrapper</a></li><li><a href="module-Features_Cloud_components_Stars.html">Features/Cloud/components/Stars</a></li><li><a href="module-Features_Cloud_components_UploadPresetModal.html">Features/Cloud/components/UploadPresetModal</a></li><li><a href="module-Features_Cloud_hooks_useRepo.html">Features/Cloud/hooks/useRepo</a></li><li><a href="module-Features_Cloud_hooks_useStars.html">Features/Cloud/hooks/useStars</a></li><li><a href="module-Features_Cloud_utils_repoUtils.html">Features/Cloud/utils/repoUtils</a></li><li><a href="module-Features_Cloud_utils_sortUtils.html">Features/Cloud/utils/sortUtils</a></li><li><a href="module-Features_Control_components_WaveIcons.html">Features/Control/components/WaveIcons</a></li><li><a href="module-Features_Control_components_layout_Module.html">Features/Control/components/layout/Module</a></li><li><a href="module-Features_Control_components_layout_ModuleDivider.html">Features/Control/components/layout/ModuleDivider</a></li><li><a href="module-Features_Control_components_layout_ModuleGrid.html">Features/Control/components/layout/ModuleGrid</a></li><li><a href="module-Features_Control_components_modules_AdsrModule.html">Features/Control/components/modules/AdsrModule</a></li><li><a href="module-Features_Control_components_modules_ArpModule.html">Features/Control/components/modules/ArpModule</a></li><li><a href="module-Features_Control_components_modules_FxModule.html">Features/Control/components/modules/FxModule</a></li><li><a href="module-Features_Control_components_modules_LfoModule.html">Features/Control/components/modules/LfoModule</a></li><li><a href="module-Features_Control_components_modules_MasterModule.html">Features/Control/components/modules/MasterModule</a></li><li><a href="module-Features_Control_components_modules_ModModule.html">Features/Control/components/modules/ModModule</a></li><li><a href="module-Features_Control_components_modules_OscModule.html">Features/Control/components/modules/OscModule</a></li><li><a href="module-Features_Control_components_ui_IoBend.html">Features/Control/components/ui/IoBend</a></li><li><a href="module-Features_Control_components_ui_IoButton.html">Features/Control/components/ui/IoButton</a></li><li><a href="module-Features_Control_components_ui_IoKnob.html">Features/Control/components/ui/IoKnob</a></li><li><a href="module-Features_Control_components_ui_IoSelector.html">Features/Control/components/ui/IoSelector</a></li><li><a href="module-Features_Control_components_ui_IoSlider.html">Features/Control/components/ui/IoSlider</a></li><li><a href="module-Features_Control_hooks_useModuleGrid.html">Features/Control/hooks/useModuleGrid</a></li><li><a href="module-Features_Firmware_components_FlashFirmware.html">Features/Firmware/components/FlashFirmware</a></li><li><a href="module-Features_Firmware_components_SerialMonitor.html">Features/Firmware/components/SerialMonitor</a></li><li><a href="module-Features_Firmware_components_UploadFirmware.html">Features/Firmware/components/UploadFirmware</a></li><li><a href="module-Features_Firmware_hooks_useFirmware.html">Features/Firmware/hooks/useFirmware</a></li><li><a href="module-Features_Firmware_hooks_useFlashFirmware.html">Features/Firmware/hooks/useFlashFirmware</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Firmware_hooks_useFlashFirmware.html#.useFlashFirmware">useFlashFirmware</a></li></ul></li><li><a href="module-Features_Firmware_hooks_useSerial.html">Features/Firmware/hooks/useSerial</a></li><li><a href="module-Features_Firmware_utils_serialUtils.html">Features/Firmware/utils/serialUtils</a></li><li><a href="module-Features_Shared_components_DeleteModal.html">Features/Shared/components/DeleteModal</a></li><li><a href="module-Features_Shared_components_Icons.html">Features/Shared/components/Icons</a></li><li><a href="module-Features_Shared_components_NavGuardModal.html">Features/Shared/components/NavGuardModal</a></li><li><a href="module-Features_Shared_components_PresetLine.html">Features/Shared/components/PresetLine</a></li><li><a href="module-Features_Shared_components_PresetsBar.html">Features/Shared/components/PresetsBar</a></li><li><a href="module-Features_Shared_components_RenameModal.html">Features/Shared/components/RenameModal</a></li><li><a href="module-Features_Shared_components_StatusBar.html">Features/Shared/components/StatusBar</a></li><li><a href="module-Features_Shared_components_VirtualKeyboard.html">Features/Shared/components/VirtualKeyboard</a></li><li><a href="module-Features_Shared_components_WsConnection.html">Features/Shared/components/WsConnection</a></li><li><a href="module-Features_Shared_hooks_useMidi.html">Features/Shared/hooks/useMidi</a></li><li><a href="module-Features_Shared_hooks_usePresetUpdate.html">Features/Shared/hooks/usePresetUpdate</a></li><li><a href="module-Features_Shared_hooks_usePresetsBar.html">Features/Shared/hooks/usePresetsBar</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_hooks_usePresetsBar.html#.usePresetsBar">usePresetsBar</a></li></ul></li><li><a href="module-Features_Shared_hooks_useVirtualKeyboard.html">Features/Shared/hooks/useVirtualKeyboard</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_hooks_useVirtualKeyboard.html#.useVirtualKeyboard">useVirtualKeyboard</a></li></ul></li><li><a href="module-Features_Shared_hooks_useWebSocket.html">Features/Shared/hooks/useWebSocket</a></li><li><a href="module-Features_Shared_utils_midiCC.html">Features/Shared/utils/midiCC</a></li><li><a href="module-Features_Shared_utils_presetUtils.html">Features/Shared/utils/presetUtils</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.packFlags">packFlags</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.packPresetForBD">packPresetForBD</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.parseCurrentPreset">parseCurrentPreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#.parseMetadata">parseMetadata</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseCrc">parseCrc</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseFlags">parseFlags</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseId">parseId</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseName">parseName</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_presetUtils.html#~parseParams">parseParams</a></li></ul></li><li><a href="module-Features_Shared_utils_showTips.html">Features/Shared/utils/showTips</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_showTips.html#.toggleGlobalTooltips">toggleGlobalTooltips</a></li></ul></li><li><a href="module-Features_Shared_utils_wsMsgHandle.html">Features/Shared/utils/wsMsgHandle</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.handleMsg">handleMsg</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.resetDataStream">resetDataStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendDeletePacket">sendDeletePacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendLoadPacket">sendLoadPacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendPreset">sendPreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#.sendSavePacket">sendSavePacket</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~parseMeta">parseMeta</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~parsePreset">parsePreset</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~processDataStream">processDataStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~processPresetStream">processPresetStream</a></li><li data-type='method' style='display: none;'><a href="module-Features_Shared_utils_wsMsgHandle.html#~sendNextChunk">sendNextChunk</a></li></ul></li><li><a href="module-Layouts_AppLayout.html">Layouts/AppLayout</a></li><li><a href="module-Layouts_DeviceLayout.html">Layouts/DeviceLayout</a></li><li><a href="module-Pages_About.html">Pages/About</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-Pages_About.html#~IconWrapper">IconWrapper</a></li></ul></li><li><a href="module-Pages_Auth_ConfirmPassword.html">Pages/Auth/ConfirmPassword</a></li><li><a href="module-Pages_Auth_ForgotPassword.html">Pages/Auth/ForgotPassword</a></li><li><a href="module-Pages_Auth_LoginForm.html">Pages/Auth/LoginForm</a></li><li><a href="module-Pages_Auth_RegisterForm.html">Pages/Auth/RegisterForm</a></li><li><a href="module-Pages_Auth_ResetPassword.html">Pages/Auth/ResetPassword</a></li><li><a href="module-Pages_Auth_VerifyEmail.html">Pages/Auth/VerifyEmail</a></li><li><a href="module-Pages_Cloud.html">Pages/Cloud</a></li><li><a href="module-Pages_Control.html">Pages/Control</a></li><li><a href="module-Pages_Firmware.html">Pages/Firmware</a></li><li><a href="module-Pages_Landing.html">Pages/Landing</a></li><li><a href="module-Pages_Profile_Edit.html">Pages/Profile/Edit</a></li><li><a href="module-Pages_Profile_Partials_DeleteUserForm.html">Pages/Profile/Partials/DeleteUserForm</a></li><li><a href="module-Pages_Profile_Partials_UpdatePasswordForm.html">Pages/Profile/Partials/UpdatePasswordForm</a></li><li><a href="module-Pages_Profile_Partials_UpdateProfileInformationForm.html">Pages/Profile/Partials/UpdateProfileInformationForm</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Features/Device/Cloud/components/Repo.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// @/Features/Device/Cloud/components/Repo.jsx
+
+/**
+ * @file Repo.jsx
+ * @module Features/Cloud/components/Repo
+ * @description Componente contenedor principal para la gestión de repositorios (privado/público).
+ * Maneja la lógica de estado para modales de seguridad, ordenamiento dinámico de colecciones 
+ * y la renderización condicional de acciones (Sync, Load, Publish, Delete).
+ */
+
+import { useState } from 'react';
+import { useAuth } from '@/Contexts/AuthContext';
+import { RepoWrapper } from './RepoWrapper';
+import { UploadPresetModal } from './UploadPresetModal';
+import NavGuardModal from '@/Features/Device/Shared/components/NavGuardModal.jsx';
+import { PublishModal } from './PublishModal';
+import { canSync, hasItemsToSync } from '@/Features/Device/Cloud/utils/repoUtils.js';
+import { Cat } from '@/Features/Device/Shared/utils/presetUtils';
+import { useStars } from '@/Features/Device/Cloud/hooks/useStars.js';
+import TextButton from '@/Components/TextButton';
+
+/**
+ * @component SortButton
+ * @description Botón auxiliar para la cabecera de ordenamiento.
+ */
+const SortButton = ({ label, sortKey, sortConfig, onSort, title }) => {
+    // Refactor to Components
+    const isActive = sortConfig.key === sortKey;
+    const activeCat = sortConfig.activeCat;
+
+    let indicator = "";
+
+    if (isActive &amp;&amp; sortKey === 'cat' &amp;&amp; activeCat !== null &amp;&amp; activeCat !== undefined) {
+        indicator = `:${activeCat === 0 ? "OTHER" : Cat[activeCat]}`;
+    }
+
+    return (
+        &lt;TextButton 
+            onClick={() => onSort(sortKey)}
+            className={`text-xs uppercase tracking-wide ${isActive ? 'text-neutral-200' : 'text-neutral-500 hover:text-neutral-400'}`}
+            title={title}
+            aria-pressed={isActive}
+            aria-label={`Sort by ${label}`}
+        >
+            [{label}{indicator}]
+        &lt;/TextButton>
+    );
+};
+
+/**
+ * @param {string} type - Define el modo: 'private' o 'public'.
+ * @param {Array} data - Listado de presets a renderizar.
+ * @param {boolean} loading - Estado de carga global del repo.
+ * @param {number} freeSlots - Cantidad de espacios libres en hardware.
+ * @param {boolean} isParsed - Indica si el hardware está listo para comunicación.
+ * @param {Array&lt;string>} deviceNames - Nombres de presets ocupados en el dispositivo.
+ * @param {Function} uploadToDevice - Callback para enviar el preset al hardware.
+ * @param {Function} onDelete - Elimina preset del repo privado.
+ * @param {Function} onUpload - Guarda/Actualiza preset en la nube.
+ * @param {Function} onSyncAll - Inicia la sincronización masiva.
+ * @param {Function} onPublish - Publica un preset privado en la nube pública.
+ * @param {boolean} isSyncing - Indica si hay sincronización en curso.
+ * @param {object} currentPreset - Preset activo en el buffer.
+ * @param {object} snapshot - Estado previo del preset para recuperar en 'discard'.
+ * @param {boolean} presetModified - Flag de cambios pendientes sin guardar.
+ * @param {Function} onSave - Callback para guardar cambios.
+ * @param {Function} onDiscard - Callback para descartar cambios.
+ * @param {object} sortConfig - Configuración de ordenamiento (key, asc, activeCat).
+ * @param {Function} setSortConfig - Setter para el ordenamiento.
+ * @param {Function} setData - Setter para actualizar el estado de los datos.
+ * @param {Function} onDeleteFromPublic - Borrado administrador del repo público.
+ */
+export const Repo = ({
+    type = 'private',
+    data, loading, freeSlots, isParsed, deviceNames = [], uploadToDevice,
+    onDelete, onUpload, onSyncAll, onPublish, isSyncing, currentPreset, snapshot,
+    presetModified, onSave, onDiscard, sortConfig, setSortConfig, setData, onDeleteFromPublic
+}) => {
+    // Needs Refactor
+    const { isAuthenticated, user } = useAuth();
+    const [pendingItem, setPendingItem] = useState(null);
+    const [pendingName, setPendingName] = useState('');
+    const [pendingGuardItem, setPendingGuardItem] = useState(null);
+    const [isPendingSync, setIsPendingSync] = useState(false);
+    const [publishItem, setPublishItem] = useState(null);
+
+    const isPrivate = type === 'private';
+    const isLoadDisabled = freeSlots &lt;= 0 || !isParsed;
+    const isAdmin = Boolean(user?.is_admin) || user?.role === 'admin';
+
+    const { handleRate, handleDeleteRate } = useStars(setData);
+
+    const handleLoad = (item) => {
+        if (presetModified) {
+            setPendingGuardItem(item);
+            return;
+        }
+        proceedToLoad(item);
+    };
+
+    const proceedToLoad = (item) => {
+        const existsInDevice = deviceNames.some(
+            name => name.toUpperCase() === item.name.trim().toUpperCase()
+        );
+        if (existsInDevice) {
+            setPendingItem(item);
+            setPendingName(item.name);
+        } else {
+            uploadToDevice(item);
+        }
+    };
+
+    const handleSync = () => {
+        if (presetModified) {
+            setIsPendingSync(true);
+            return;
+        }
+        onUpload(currentPreset);
+    };
+
+    const handleGuardSave = () => {
+        onSave();
+        
+        if (pendingGuardItem) {
+            const item = pendingGuardItem;
+            setPendingGuardItem(null);
+            proceedToLoad(item);
+        } else if (isPendingSync) {
+            setIsPendingSync(false);
+        }
+    };
+
+    const handleGuardDiscard = () => {
+        onDiscard();
+        
+        if (pendingGuardItem) {
+            const item = pendingGuardItem;
+            setPendingGuardItem(null);
+            proceedToLoad(item);
+        } else if (isPendingSync) {
+            setIsPendingSync(false);
+            if (snapshot) {
+                onUpload(snapshot);
+            }
+        }
+    };
+
+    const handleGuardCancel = () => {
+        setPendingGuardItem(null);
+        setIsPendingSync(false);
+    };
+
+    const handleModalConfirm = () => {
+        uploadToDevice(pendingItem, pendingName);
+        setPendingItem(null);
+    };
+
+    const handleSort = (key) => {
+        setSortConfig(prev => {
+            if (key === 'cat') {
+                if (prev.key !== 'cat' || prev.activeCat === null) {
+                    return { key: 'cat', asc: true, activeCat: 1 };
+                }
+                let nextCat = prev.activeCat + 1;
+                if (nextCat > 7) nextCat = 0;
+                return { ...prev, activeCat: nextCat };
+            }
+            const defaultAsc = key === 'rating' ? false : true;
+            return {
+                key,
+                asc: prev.key === key ? !prev.asc : defaultAsc,
+                activeCat: null
+            };
+        });
+    };
+
+    const handlePublishConfirm = (desc) => {
+        onPublish(publishItem, desc);
+        setPublishItem(null);
+    };
+
+    const syncColor = (item) => canSync(item, currentPreset) &amp;&amp; isParsed ? 'text-emerald-500 hover:text-neutral-200' : 'text-neutral-700';
+    const syncAllColor = () => hasItemsToSync(data) &amp;&amp; !isSyncing &amp;&amp; isParsed ? 'text-emerald-500 hover:text-neutral-200' : 'text-neutral-700';
+
+    return (
+        &lt;>
+        {(pendingGuardItem || isPendingSync) &amp;&amp; (
+            &lt;NavGuardModal
+                onSave={handleGuardSave}
+                onDiscard={handleGuardDiscard}
+                onCancel={handleGuardCancel}
+            />
+        )}
+
+        {pendingItem &amp;&amp; (
+            &lt;UploadPresetModal
+                pendingName={pendingName}
+                setPendingName={setPendingName}
+                onClose={() => setPendingItem(null)}
+                onConfirm={handleModalConfirm}
+                deviceNames={deviceNames}
+            />
+        )}
+
+        {publishItem &amp;&amp; (
+            &lt;PublishModal
+                item={publishItem}
+                onClose={() => setPublishItem(null)}
+                onConfirm={handlePublishConfirm}
+            />
+        )}
+
+        &lt;RepoWrapper
+            title={
+                &lt;div className="flex flex-wrap items-center pt-6 gap-4">
+                    &lt;span>{isPrivate ? "Personal Repository" : "Public Repository"}&lt;/span>
+                    &lt;div className="flex gap-2">
+                        &lt;SortButton label="Name" sortKey="name" sortConfig={sortConfig} onSort={handleSort} 
+                            title="Sort presets by name asc or desc."
+                        />
+                        &lt;SortButton label="Loaded" sortKey="device" sortConfig={sortConfig} onSort={handleSort}
+                            title="Loaded presets first."
+                        />
+                        &lt;SortButton label="Cat" sortKey="cat" sortConfig={sortConfig} onSort={handleSort}
+                            title="Sort presets by category, loop between cats."
+                        />
+                        {isPrivate ? (
+                            &lt;SortButton label="Fav" sortKey="fav" sortConfig={sortConfig} onSort={handleSort}
+                                title="Favorite presets first."
+                            />
+                        ) : (
+                            &lt;SortButton label="Rate" sortKey="rating" sortConfig={sortConfig} onSort={handleSort}
+                                title="Sort presets by rating asc or desc. Voted presets first."
+                            />
+                        )}
+                    &lt;/div>
+                &lt;/div>
+            }
+            titleAction={isPrivate &amp;&amp; (
+                &lt;div className="flex items-center gap-4 pt-6 tracking-widest uppercase self-start">
+                    &lt;span className="whitespace-nowrap text-xs text-neutral-500">{isParsed ? `FREE SLOTS: ${freeSlots}/128` : 'FREE SLOTS: --'}&lt;/span>
+                    {isAuthenticated &amp;&amp; (
+                        &lt;TextButton 
+                            onClick={onSyncAll} 
+                            disabled={!hasItemsToSync(data) || isSyncing || !isParsed}
+                            className={`whitespace-nowrap ${syncAllColor()}`}
+                            title="Upload all to the private database. It may take a while."
+                        >
+                            {isSyncing ? '[SYNCING...]' : '[SYNC ALL]'}
+                        &lt;/TextButton>
+                    )}
+                &lt;/div>
+            )}
+            items={data}
+            loading={loading}
+            currentPreset={currentPreset}
+            isPrivate={isPrivate}
+            deviceNames={deviceNames}
+            onRate={handleRate}
+            onRemove={handleDeleteRate}
+            renderActions={(item) => (
+                &lt;div className="flex gap-2 text-xs" role="group" aria-label={`Actions for ${item.name}`}>
+                    {!isPrivate &amp;&amp; (
+                        &lt;>
+                        &lt;TextButton onClick={() => 
+                            handleLoad(item)} 
+                            disabled={isLoadDisabled}
+                            className={isLoadDisabled ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'}
+                            title="Load a preset from the public database to the instrument."
+                            aria-label={`Load ${item.name} to device`}
+                        >[LOAD]&lt;/TextButton>
+                        {isAdmin &amp;&amp; (
+                            &lt;TextButton onClick={() => onDeleteFromPublic(item.cloudId)}
+                            className="text-neutral-500 hover:text-neutral-200"
+                            title="(Only admin) Delete a preset from the public database."
+                            aria-label={`Delete ${item.name} from database`}
+                            >[DELETE]&lt;/TextButton>
+                        )}
+                        &lt;/>
+                    )}
+                    {isPrivate &amp;&amp; item.inCloud &amp;&amp; (
+                        &lt;>
+                        &lt;TextButton onClick={() =>
+                            handleLoad(item)} 
+                            disabled={isLoadDisabled} 
+                            className={isLoadDisabled ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'}
+                            title="Load a preset from your private database to the instrument."
+                            aria-label={`Load ${item.name} to device`}
+                        >[LOAD]&lt;/TextButton>
+                        &lt;TextButton onClick={() =>
+                            onDelete(item.cloudId)}
+                            className="text-neutral-500 hover:text-neutral-200"
+                            title="Delete preset from your private database."
+                            aria-label={`Delete ${item.name} from private database`}
+                            >[DELETE]&lt;/TextButton>
+                        {isAdmin &amp;&amp; (
+                            &lt;TextButton onClick={() => 
+                                setPublishItem(item)} 
+                                className="text-neutral-500 hover:text-neutral-200"
+                                title="(Only admin) Publish a preset from the private database to the public database."
+                                aria-label={`Publish ${item.name} to public database`}
+                                >[PUBLISH]&lt;/TextButton>
+                        )}
+                        &lt;/>
+                    )}
+                    {isPrivate &amp;&amp; !item.inCloud &amp;&amp; isAuthenticated &amp;&amp; (
+                        &lt;TextButton 
+                            onClick={handleSync}
+                            disabled={!canSync(item, currentPreset) || isSyncing || !isParsed}
+                            className={syncColor(item)}
+                            title="Upload a preset to your private database."
+                            aria-label={`Sync ${item.name} to cloud`}
+                        >[SYNC]&lt;/TextButton>
+                    )}
+                &lt;/div>
+            )}
+        />
+        &lt;/>
+    );
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Sat Jun 06 2026 20:44:52 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

@@ -1,5 +1,13 @@
 // @/Features/Cloud/utils/sortUtils.js
 
+/**
+ * @file sortUtils.js
+ * @module Features/Cloud/utils/sortUtils
+ * @description Utilidades para el ordenamiento de colecciones de presets (nube/local).
+ * Implementa lógica personalizada para categorías, estados de dispositivo y votaciones.
+ */
+
+
 const sortByProperty = (data, key, ascending = true) => {
     return [...data].sort((a, b) => {
         let valA = a[key] ?? '';
@@ -87,6 +95,13 @@ export const sortByDeviceState = (data, asc = true) => {
     });
 };
 
+/**
+ * Función centralizada que actúa como fachada para aplicar diferentes estrategias de ordenamiento.
+ * @param {Array} data - Colección de presets.
+ * @param {string} type - Tipo de ordenamiento ('name', 'device', 'fav', 'cat', 'rating').
+ * @param {boolean} asc - Dirección del ordenamiento.
+ * @param {number|null} activeCat - Categoría activa (para ordenamiento con prioridad).
+ */
 export const sortPresets = (data, type, asc = true, activeCat = null) => {
     switch (type) {
         case 'name':     return sortByName(data, asc);

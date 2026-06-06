@@ -1,10 +1,33 @@
 // @/Features/Device/Firmware/hooks/useSerial.js
 
+/**
+ * @file useSerial.js
+ * @module Features/Firmware/hooks/useSerial
+ * @description Hook principal para la comunicación vía Serial (Web Serial API).
+ * Gestiona el ciclo de vida de la conexión, el parseo de protocolos binarios,
+ * el filtrado de logs de texto y la sincronización de estados de Wi-Fi.
+ */
+
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { SerialProtocol, WifiStates, WIFI_OP_CODE } from '@/Features/Device/Firmware/utils/serialUtils.js';
 
 const MAX_LOG_LINES = 100;
 
+/**
+ * @typedef {object} SerialHookReturn
+ * @property {SerialPort|null} port - Instancia del puerto serial activo.
+ * @property {boolean} connected - Estado de la conexión física.
+ * @property {string|null} error - Mensaje de error si la conexión falla.
+ * @property {Array} log - Array de logs recibidos del dispositivo.
+ * @property {object} logRef - Referencia para scroll automático del contenedor de logs.
+ * @property {string} wifiState - Estado actual del flujo de configuración Wi-Fi.
+ * @property {any} wifiPayload - Datos de configuración Wi-Fi recibidos.
+ * @property {Function} connect - Solicita acceso al puerto serial al usuario.
+ * @property {Function} disconnect - Cierra la conexión y limpia recursos.
+ * @property {Function} send - Envía datos crudos (Uint8Array) al dispositivo.
+ * @property {Function} clearLog - Vacía el registro de logs.
+ * @property {Function} handleCommand - Prepara y envía comandos formateados por el protocolo.
+ */
 export default function useSerial() {
     const [port, setPort]           = useState(null);
     const [connected, setConnected] = useState(false);
@@ -21,12 +44,16 @@ export default function useSerial() {
     const closingPromise = useRef(null);    
     const logIdRef       = useRef(0);       
 
+    // Auto-scroll del log
     useEffect(() => {
         if (logRef.current) {
             logRef.current.scrollTop = logRef.current.scrollHeight;
         }
     }, [log]);
 
+    /**
+     * Limpia los recursos del puerto serial (lector, candados y cierre).
+     */
     const cleanExistingPort = useCallback(async () => {
         if (closingPromise.current) return closingPromise.current;
 
@@ -50,6 +77,10 @@ export default function useSerial() {
         return closingPromise.current;
     }, []);
 
+    /**
+     * Inicializa la comunicación con el puerto seleccionado.
+     * @param {SerialPort} selectedPort 
+     */
     const initPort = useCallback(async (selectedPort) => {
         if (closingPromise.current) await closingPromise.current;
 

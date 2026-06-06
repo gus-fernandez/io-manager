@@ -1,9 +1,29 @@
+// @/Layouts/AppLayout.jsx
+
+/**
+ * @file AppLayout.jsx
+ * @module Layouts/AppLayout
+ * @description Layout principal de la aplicación. Actúa como contenedor envolvente (shell) 
+ * que persiste entre cambios de vista, gestionando la barra de navegación, la visibilidad
+ * de las ayudas contextuales y el centrado del contenido principal.
+ */
+
 import React from 'react';
 import { useState } from 'react';
-import { IoIcon, AboutIcons } from '@/Features/Device/Shared/components/Icons';
+import { IoIcon } from '@/Features/Device/Shared/components/Icons';
 import { globalConfig, toggleGlobalTooltips } from '@/Features/Device/Shared/utils/showTips';
 import TextButton from '@/Components/TextButton';
 
+/**
+ * Layout principal de la aplicación. Gestiona la barra de navegación, la visibilidad 
+ * de los tooltips y renderiza el contenido de las páginas.
+ * * @param {object} props
+ * @param {ReactNode} props.children - Contenido de la página actual a renderizar.
+ * @param {string} props.currentTab - Identificador de la pestaña activa.
+ * @param {Function} props.setTab - Función para cambiar la pestaña activa.
+ * @param {object|null} props.user - Objeto del usuario autenticado (o null si no hay sesión).
+ * @param {Function} props.onLogout - Callback para ejecutar el cierre de sesión.
+ */
 export default function AppLayout({ children, currentTab, setTab, user, onLogout }) {
 
     const [tipsActive, setTipsActive] = useState(globalConfig.showTooltips);

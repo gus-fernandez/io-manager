@@ -1,9 +1,29 @@
 // @/Features/Device/Firmware/components/UploadFirmware.jsx
 
+/**
+ * @file UploadFirmware.jsx
+ * @module Features/Firmware/components/UploadFirmware
+ * @description Interfaz de formulario para la subida de nuevos binarios de firmware.
+ * Gestiona la validación local (archivo presente y versión declarada) y la
+ * comunicación con el servidor mediante el hook useFirmware.
+ */
+
 import PrimaryButton from '@/Components/PrimaryButton';
-import SecondaryButton from '@/Components/SecondaryButton';
 import React, { useState } from 'react';
 
+/**
+ * @typedef {object} UploadFirmwareProps
+ * @property {Function} uploadFirmwareToServer - Callback para ejecutar la petición POST al servidor.
+ * @property {boolean} uploading - Estado de carga actual.
+ * @property {boolean} uploadSuccess - Indica si la subida fue exitosa.
+ * @property {string|null} uploadError - Mensaje de error retornado por la API.
+ * @property {string} instrument - Nombre del instrumento (para etiquetado).
+ */
+
+/**
+ * Renderiza un formulario de subida de archivos con validación.
+ * @param {UploadFirmwareProps} props
+ */
 export default function UploadFirmware({ uploadFirmwareToServer, uploading, uploadSuccess, uploadError, instrument }) {
 
     const [file, setFile]               = useState(null);

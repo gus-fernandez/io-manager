@@ -1,5 +1,13 @@
 // @/Features/Device/Control/components/modules/ModModule.jsx
 
+/**
+ * @file ModModule.jsx
+ * @module Features/Control/components/modules/ModModule
+ * @description Matriz de modulación. Gestiona el enrutamiento de controladores
+ * externos (Bend, Velocity, ModWheel) hacia parámetros específicos del sinte.
+ * Implementa una lógica de selección exclusiva para las fuentes de modulación.
+ */
+
 import { useState, useEffect } from 'react';
 import Module from '@/Features/Device/Control/components/layout/Module';
 import ModuleDivider from '@/Features/Device/Control/components/layout/ModuleDivider';
@@ -8,6 +16,15 @@ import IoBend from '@/Features/Device/Control/components/ui/IoBend';
 import IoKnob from '@/Features/Device/Control/components/ui/IoKnob';
 import IoButton from '@/Features/Device/Control/components/ui/IoButton';
 import { CC } from '@/Features/Device/Shared/utils/midiCC';
+
+/**
+ * @typedef {object} ModModuleProps
+ * @property {string} id - Identificador del módulo.
+ * @property {Function} sendCC - Callback para envío de mensajes MIDI estándar.
+ * @property {Function} sendBend - Callback especializado para mensajes Pitch Bend (14 bits).
+ * @property {Function} appendLog - Callback para registro de actividad.
+ * @property {object} [values] - Estado actual de los parámetros (preset).
+ */
 
 export default function ModModule({ id, sendCC, sendBend, appendLog, values = {} }) {
     // Inicialización del grupo de botones en base al preset activo

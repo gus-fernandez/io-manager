@@ -1,5 +1,12 @@
 // @/Features/Device/Control/components/modules/ArpModule.jsx
 
+/**
+ * @file ArpModule.jsx
+ * @module Features/Control/components/modules/ArpModule
+ * @description Módulo de control para el Arpegiador (ARP). 
+ * Permite configurar patrones de reproducción (Type), sincronización, velocidad y longitud de nota.
+ */
+
 import Module from '@/Features/Device/Control/components/layout/Module';
 import ModuleDivider from '@/Features/Device/Control/components/layout/ModuleDivider';
 import IoSelector from '@/Features/Device/Control/components/ui/IoSelector';
@@ -18,6 +25,15 @@ const ArpType = {
     "RAND1": 7,   // randomize with repeat
     "RAND2": 8    // randomice without repeat
 };
+
+/**
+ * @typedef {object} ArpModuleProps
+ * @property {string} id - Identificador del módulo.
+ * @property {Function} sendCC - Callback para envío de mensajes MIDI.
+ * @property {Function} appendLog - Callback para logs.
+ * @property {object} [values] - Estado actual de los parámetros (preset).
+ */
+
 export default function ArpModule({ id, sendCC, appendLog, values = {} }) {
     return (
         <Module id={id} title="ARP">

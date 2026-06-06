@@ -1,5 +1,22 @@
 // @/Features/Device/Control/components/layout/ModuleDivider.jsx
 
+/**
+ * @file ModuleDivider.jsx
+ * @module Features/Control/components/layout/ModuleDivider
+ * @description Separador visual polimórfico. Renderiza un espaciador, una línea 
+ * divisoria simple o un divisor con texto central según las props.
+ */
+
+/**
+ * @typedef {object} ModuleDividerProps
+ * @property {string} [label] - Texto a mostrar. Si es 'line', renderiza un divisor simple.
+ * @property {string} [className] - Clases adicionales de Tailwind para estilo.
+ */
+
+/**
+ * Renderiza el divisor basado en el modo (espaciador, línea, o etiquetado).
+ * @param {ModuleDividerProps} props
+ */
 export default function ModuleDivider({ label, className = '' }) {
     if (!label) {
         return <div className={`w-full h-6 ${className}`} />;

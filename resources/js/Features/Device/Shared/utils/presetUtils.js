@@ -1,11 +1,23 @@
 // @/Features/Device/Shared/utils/presetUtils.js
 
+/**
+ * @file presetUtils.js
+ * @module Features/Shared/utils/presetUtils
+ * @description Utilidades para el manejo de la estructura binaria de los presets.
+ * Incluye lógica para parsear buffers recibidos del hardware a objetos JS y
+ * serializar objetos JS hacia buffers binarios compatibles con la memoria del dispositivo.
+ */
+
 import { CC } from '@/Features/Device/Shared/utils/midiCC';
 
 export const IOP_NUM = 128;
 export const PRESET_META_SIZE = 21;
 const NAME_SIZE = 16;
 
+/**
+ * Mapeo de offsets (posiciones en bytes) dentro de la estructura binaria de un preset completo.
+ * @type {Object.<string, number>}
+ */
 export const Slot = {
     Header: 0,   // 2 bytes
     Id:     2,   // 1 byte
@@ -15,12 +27,20 @@ export const Slot = {
     Crc:    124  // 4 bytes
 };
 
+/**
+ * Mapeo de offsets dentro de la estructura reducida de metadatos.
+ * @type {Object.<string, number>}
+ */
 const MetaSlot = {
     Flags: 0,
     Name:  1,   // 16 bytes
     Crc:   17   // 4 bytes
 };
 
+/**
+ * Máscaras de bits para decodificar el byte de flags del preset.
+ * @type {Object.<string, number>}
+ */
 const Flag = {
     Empty:    0,
     ReadOnly: 1,
@@ -29,6 +49,10 @@ const Flag = {
     Cat:      5
 };
 
+/**
+ * Categorías disponibles para los presets.
+ * @type {Object.<number, string>}
+ */
 export const Cat = {
     0: "Undef",
     1: "Lead",
@@ -40,6 +64,11 @@ export const Cat = {
     7: "Perc"
 };
 
+/**
+ * Decodifica un byte de flags en un objeto legible.
+ * @param {number} flagsByte - Byte de estado del preset.
+ * @returns {object} Estado booleano de las flags y ID de categoría.
+ */
 function parseFlags(flagsByte) {
     
     const isEmpty    = (flagsByte & (1 << Flag.Empty)) !== 0;
@@ -59,6 +88,11 @@ function parseFlags(flagsByte) {
     };
 }
 
+/**
+ * Empaqueta las propiedades de un preset en un único byte de flags.
+ * @param {object} preset - Objeto con las propiedades del preset.
+ * @returns {number} Byte empaquetado.
+ */
 export function packFlags(preset) {
     
     let flagsByte = 0;
@@ -71,6 +105,11 @@ export function packFlags(preset) {
     return flagsByte;
 }
 
+/**
+ * Convierte un arreglo de bytes en un string de nombre, eliminando caracteres nulos.
+ * @param {Uint8Array} nameBytes - Buffer conteniendo el nombre.
+ * @returns {string} Nombre del preset limpio.
+ */
 function parseName(nameBytes) {
     let name = "";
     
@@ -84,6 +123,11 @@ function parseName(nameBytes) {
     return trimmed === "" ? `NO NAME` : trimmed;
 }
 
+/**
+ * Mapea el buffer de parámetros a un objeto JS usando las constantes MIDI CC.
+ * @param {Uint8Array} rawBuffer - Buffer completo del preset.
+ * @returns {object} Objeto con valores de parámetros.
+ */
 function parseParams(rawBuffer) {
     const mappedValues = {};
     const paramsBuffer = rawBuffer.subarray(Slot.Params, Slot.Crc);
@@ -96,10 +140,20 @@ function parseParams(rawBuffer) {
     return mappedValues;
 }
 
+/**
+ * Extrae el ID del preset desde un buffer.
+ * @param {Uint8Array} rawBuffer 
+ * @returns {number} ID del preset.
+ */
 function parseId(rawBuffer) {
     return rawBuffer[Slot.Id];
 }
 
+/**
+ * Devuelve el CRC32 a partir de 4 bytes.
+ * @param {Uint8Array} crcBytes 
+ * @returns {number} Valor CRC.
+ */
 function parseCrc(crcBytes) {
     return (
         (crcBytes[0] << 24) |
@@ -109,6 +163,11 @@ function parseCrc(crcBytes) {
     ) >>> 0;
 }
 
+/**
+ * Parsea un buffer completo a un objeto de preset detallado.
+ * @param {Uint8Array} buf - Buffer binario de un preset.
+ * @returns {object} Objeto preset completo.
+ */
 export function parseCurrentPreset(buf) {
     let currentId     = parseId(buf);
     let currentFlags  = parseFlags(buf[Slot.Flags]);
@@ -125,6 +184,11 @@ export function parseCurrentPreset(buf) {
     };
 }
 
+/**
+ * Parsea un buffer de metadatos (lista de presets) en una colección.
+ * @param {Uint8Array} rawBuffer - Buffer conteniendo toda la metadata.
+ * @returns {Array<Object>} Lista de objetos de metadatos de presets.
+ */
 export function parseMetadata(rawBuffer) {
     const presets = [];
 
@@ -153,6 +217,11 @@ export function parseMetadata(rawBuffer) {
     return presets;
 }
 
+/**
+ * Prepara un objeto preset para ser enviado a la base de datos.
+ * @param {object} preset - Objeto del preset a serializar.
+ * @returns {object} Contiene el buffer binario y los campos formateados para la BD.
+ */
 export function packPresetForBD(preset) {
 
     // --- Binario ---

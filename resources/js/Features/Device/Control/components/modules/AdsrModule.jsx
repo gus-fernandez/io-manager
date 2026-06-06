@@ -1,5 +1,12 @@
 // @/Features/Device/Control/components/modules/AdsrModule.jsx
 
+/**
+ * @file AdsrModule.jsx
+ * @module Features/Control/components/modules/AdsrModule
+ * @description Módulo de control para generadores de envolvente. 
+ * Gestiona parámetros ADSR para filtro y amplitud, así como ruteo de modulación.
+ */
+
 import Module from '@/Features/Device/Control/components/layout/Module';
 import ModuleDivider from '@/Features/Device/Control/components/layout/ModuleDivider';
 import IoSlider from '@/Features/Device/Control/components/ui/IoSlider';
@@ -18,6 +25,13 @@ const AdDest = {
     "RING": 4, "SPREAD": 5, "LFO\nRATE": 6, "LFO\nAMOUNT": 7
 };
 
+/**
+ * @typedef {object} AdsrModuleProps
+ * @property {string} id - Identificador del módulo.
+ * @property {Function} sendCC - Callback para envío de mensajes MIDI.
+ * @property {Function} appendLog - Callback para logs.
+ * @property {object} [values] - Estado actual de los parámetros (preset).
+ */
 export default function AdsrModule({ id, sendCC, appendLog, values = {} }) {
     return (
         <Module id={id} title="ADSR">

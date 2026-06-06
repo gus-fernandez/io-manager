@@ -1,3 +1,13 @@
+// @/Pages/Profile/Partials/UpdatePasswordForm.jsx
+
+/**
+ * @file UpdatePasswordForm.jsx
+ * @module Pages/Profile/Partials/UpdatePasswordForm
+ * @description Formulario para el cambio de contraseña de usuario.
+ * Gestiona el ciclo de vida completo de actualización: validación, 
+ * envío seguro (incluyendo CSRF protection) y feedback de éxito visual.
+ */
+
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -6,6 +16,10 @@ import { Transition } from '@headlessui/react';
 import { useRef, useState } from 'react';
 import axios from '@/bootstrap';
 
+/**
+ * @param {object} props
+ * @param {string} [props.className] - Clases CSS opcionales para el contenedor.
+ */
 export default function UpdatePasswordForm({ className = '' }) {
     const passwordInput = useRef();
     const currentPasswordInput = useRef();
@@ -20,6 +34,10 @@ export default function UpdatePasswordForm({ className = '' }) {
     const [processing, setProcessing] = useState(false);
     const [recentlySuccessful, setRecentlySuccessful] = useState(false);
 
+    /**
+     * Envía la solicitud de actualización de contraseña al endpoint de API.
+     * Incluye una llamada previa para el CSRF cookie necesaria en acciones de escritura.
+     */
     const updatePassword = async (e) => {
         e.preventDefault();
         setProcessing(true);

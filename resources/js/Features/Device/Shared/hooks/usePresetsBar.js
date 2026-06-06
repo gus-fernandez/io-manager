@@ -1,10 +1,22 @@
 // @/Features/Device/Shared/hooks/usePresetsBar.js
 
+/**
+ * @file usePresetsBar.js
+ * @module Features/Shared/hooks/usePresetsBar
+ * @description Hook de control para la barra de gestión de presets.
+ * Coordina la UI de edición, guardado, carga, borrado y navegación del usuario
+ * con el estado del dispositivo y los servicios de red.
+ */
+
 import { useState, useEffect, useRef } from 'react';
 import { useDevice } from '@/Contexts/WsContext';
 import { sendSavePacket, sendLoadPacket, sendDeletePacket } from '@/Features/Device/Shared/utils/wsMsgHandle.js';
 import { packFlags } from '@/Features/Device/Shared/utils/presetUtils.js';
 
+/**
+ * Hook para gestionar las acciones y el estado de la barra de presets.
+ * @returns {object} API de la barra de presets (estado y funciones de acción).
+ */
 export function usePresetsBar() {
 
     const { ws, registerNavGuard } = useDevice();

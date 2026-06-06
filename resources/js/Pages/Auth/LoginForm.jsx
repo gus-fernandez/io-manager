@@ -1,3 +1,13 @@
+// @/Pages/Auth/LoginForm.jsx
+
+/**
+ * @file LoginForm.jsx
+ * @module Pages/Auth/LoginForm
+ * @description Formulario de inicio de sesión. Gestiona la autenticación mediante
+ * Sanctum (CSRF + POST login), validación de errores de backend (422) y estados
+ * de carga del usuario.
+ */
+
 import React, { useState } from 'react';
 import axios from '@/bootstrap';
 import Checkbox from '@/Components/Checkbox';
@@ -7,6 +17,12 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import TextButton from '@/Components/TextButton';
 
+/**
+ * @param {object} props
+ * @param {Function} props.setTab - Callback para redirección post-login.
+ * @param {Function} props.setUser - Callback para hidratar el estado global de usuario.
+ * @param {Function} props.onNavigate - Handler de navegación (ej. olvidar contraseña).
+ */
 export default function LoginForm({ setTab, setUser, onNavigate }) {
     const [values, setValues] = useState({ 
         email: '', 
@@ -16,6 +32,12 @@ export default function LoginForm({ setTab, setUser, onNavigate }) {
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
+    /**
+     * Gestiona el flujo de autenticación:
+     * 1. Obtiene cookie CSRF para habilitar la sesión.
+     * 2. Envía credenciales vía POST.
+     * 3. Gestiona errores de validación de Laravel (422).
+     */
     const handleLogin = async (e) => {
         e.preventDefault();
         setProcessing(true);

@@ -1,10 +1,29 @@
 // @/Features/Device/Firmware/components/FlashFirmware.jsx
 
+/**
+ * @file FlashFirmware.jsx
+ * @module Features/Firmware/components/FlashFirmware
+ * @description Interfaz de usuario para la selección y ejecución del flasheo de firmware.
+ * Consume `useFlashFirmware` para orquestar la comunicación con el bootloader del dispositivo.
+ */
+
 import React from 'react';
 import { useFlashFirmware } from '@/Features/Device/Firmware/hooks/useFlashFirmware';
 import SecondaryButton from '@/Components/SecondaryButton';
 import PrimaryButton from '@/Components/PrimaryButton';
 
+/**
+ * @typedef {object} FlashFirmwareProps
+ * @property {SerialPort|null} port - Puerto serial activo.
+ * @property {Function} disconnect - Callback para liberar el puerto antes del flasheo.
+ * @property {Function} onFlashStart - Callback disparado al iniciar la secuencia.
+ * @property {Function} onFlashEnd - Callback disparado al terminar la secuencia.
+ */
+
+/**
+ * Renderiza el panel de control de flasheo con selectores de canal y visor de logs.
+ * @param {FlashFirmwareProps} props
+ */
 export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashEnd }) {
     const {
         firmware, selected, setSelected,

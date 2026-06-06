@@ -1,5 +1,13 @@
 // @/Features/Device/Cloud/components/Repo.jsx
 
+/**
+ * @file Repo.jsx
+ * @module Features/Cloud/components/Repo
+ * @description Componente contenedor principal para la gestión de repositorios (privado/público).
+ * Maneja la lógica de estado para modales de seguridad, ordenamiento dinámico de colecciones 
+ * y la renderización condicional de acciones (Sync, Load, Publish, Delete).
+ */
+
 import { useState } from 'react';
 import { useAuth } from '@/Contexts/AuthContext';
 import { RepoWrapper } from './RepoWrapper';
@@ -11,8 +19,12 @@ import { Cat } from '@/Features/Device/Shared/utils/presetUtils';
 import { useStars } from '@/Features/Device/Cloud/hooks/useStars.js';
 import TextButton from '@/Components/TextButton';
 
-// Refactor to Components
+/**
+ * @component SortButton
+ * @description Botón auxiliar para la cabecera de ordenamiento.
+ */
 const SortButton = ({ label, sortKey, sortConfig, onSort, title }) => {
+    // Refactor to Components
     const isActive = sortConfig.key === sortKey;
     const activeCat = sortConfig.activeCat;
 
@@ -35,6 +47,29 @@ const SortButton = ({ label, sortKey, sortConfig, onSort, title }) => {
     );
 };
 
+/**
+ * @param {string} type - Define el modo: 'private' o 'public'.
+ * @param {Array} data - Listado de presets a renderizar.
+ * @param {boolean} loading - Estado de carga global del repo.
+ * @param {number} freeSlots - Cantidad de espacios libres en hardware.
+ * @param {boolean} isParsed - Indica si el hardware está listo para comunicación.
+ * @param {Array<string>} deviceNames - Nombres de presets ocupados en el dispositivo.
+ * @param {Function} uploadToDevice - Callback para enviar el preset al hardware.
+ * @param {Function} onDelete - Elimina preset del repo privado.
+ * @param {Function} onUpload - Guarda/Actualiza preset en la nube.
+ * @param {Function} onSyncAll - Inicia la sincronización masiva.
+ * @param {Function} onPublish - Publica un preset privado en la nube pública.
+ * @param {boolean} isSyncing - Indica si hay sincronización en curso.
+ * @param {object} currentPreset - Preset activo en el buffer.
+ * @param {object} snapshot - Estado previo del preset para recuperar en 'discard'.
+ * @param {boolean} presetModified - Flag de cambios pendientes sin guardar.
+ * @param {Function} onSave - Callback para guardar cambios.
+ * @param {Function} onDiscard - Callback para descartar cambios.
+ * @param {object} sortConfig - Configuración de ordenamiento (key, asc, activeCat).
+ * @param {Function} setSortConfig - Setter para el ordenamiento.
+ * @param {Function} setData - Setter para actualizar el estado de los datos.
+ * @param {Function} onDeleteFromPublic - Borrado administrador del repo público.
+ */
 export const Repo = ({
     type = 'private',
     data, loading, freeSlots, isParsed, deviceNames = [], uploadToDevice,

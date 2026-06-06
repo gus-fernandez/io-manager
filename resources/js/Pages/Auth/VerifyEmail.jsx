@@ -1,11 +1,28 @@
+// @/Pages/Auth/VerifyEmail.jsx
+
+/**
+ * @file VerifyEmail.jsx
+ * @module Pages/Auth/VerifyEmail
+ * @description Vista de bloqueo de acceso para usuarios no verificados. 
+ * Presenta al usuario la opción de reenviar el correo de verificación 
+ * o cerrar sesión si necesita acceder con una cuenta diferente.
+ */
+
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useState } from 'react';
 import axios from '@/bootstrap';
 
+/**
+ * @param {object} props
+ * @param {Function} props.onNavigate - Callback para ejecutar la navegación tras el logout.
+ */
 export default function VerifyEmail({ onNavigate }) {
     const [processing, setProcessing] = useState(false);
     const [status, setStatus] = useState(null);
-
+    
+    /**
+     * Dispara el reenvío del correo de verificación.
+     */
     const submit = async (e) => {
         e.preventDefault();
         setProcessing(true);
@@ -21,6 +38,9 @@ export default function VerifyEmail({ onNavigate }) {
         }
     };
 
+    /**
+     * Finaliza la sesión actual y redirige.
+     */
     const handleLogout = async () => {
         try {
             await axios.post('/logout');

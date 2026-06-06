@@ -1,3 +1,13 @@
+// @/Pages/Landing.jsx
+
+/**
+ * @file Landing.jsx
+ * @module Pages/Landing
+ * @description Punto de entrada para usuarios no autenticados. Gestiona la lógica de
+ * autenticación mediante un sistema de estados (State Machine) que alterna entre
+ * formularios de registro, login y gestión de contraseñas.
+ */
+
 import React, { useState } from 'react';
 import LoginForm from '@/Pages/Auth/LoginForm';
 import ForgotPassword from '@/Pages/Auth/ForgotPassword';
@@ -6,8 +16,16 @@ import RegisterForm from '@/Pages/Auth/RegisterForm';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { IoIcon } from '@/Features/Device/Shared/components/Icons';
 
+/**
+ * @param {object} props
+ * @param {Function} props.setTab - Función global para cambiar la pestaña de la App (ej. a 'control' para Modo Local).
+ * @param {Function} props.setUser - Función global para persistir el objeto de usuario tras el login/registro.
+ */
 export default function Landing({ setTab, setUser }) {
-    
+    /** 
+     * Estado que define la vista actual ('login', 'register', 'forgot', 'reset-password').
+     * Determina qué formulario se renderiza y la lógica de navegación interna.
+     */
     const [view, setView] = useState(() => {
         const path = window.location.pathname.replace('/', '');
         return path === 'reset-password' ? 'reset-password' : 'login';

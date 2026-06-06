@@ -1,5 +1,16 @@
-import React from 'react';
+// @/Components/Checkbox.jsx
 
+/**
+ * @file Checkbox.jsx
+ * @module Components/Checkbox
+ * @description Componente checkbox personalizado que mantiene la identidad visual 
+ * del sistema de diseño (minimalismo, tonos neutros y estados de foco precisos).
+ */
+
+/**
+ * @param {string} [className=''] - Clases CSS adicionales para customizar el aspecto.
+ * @param {object} props - Atributos nativos de input (checked, onChange, disabled, etc.)
+ */
 export default function Checkbox({ className = '', ...props }) {
     return (
         <input

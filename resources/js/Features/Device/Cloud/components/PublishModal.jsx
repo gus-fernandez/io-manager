@@ -1,9 +1,22 @@
 // @/Features/Device/Cloud/components/PublishModal.jsx
 
+/**
+ * @file PublishModal.jsx
+ * @module Features/Cloud/components/PublishModal
+ * @description Modal de interacción que permite al usuario añadir una descripción
+ * antes de publicar un preset privado en el repositorio público comunitario.
+ */
+
 import { useState } from 'react';
 import Modal from '@/Components/Modal';
 import TextInput from '@/Components/TextInput';
 import PrimaryButton from '@/Components/PrimaryButton';
+
+/**
+ * @param {object} item - El objeto preset a publicar (debe contener 'name' y 'desc').
+ * @param {Function} onClose - Callback para cerrar el modal sin publicar.
+ * @param {Function} onConfirm - Callback que devuelve la descripción ingresada para procesar el envío.
+ */
 
 export const PublishModal = ({ item, onClose, onConfirm }) => {
     const [desc, setDesc] = useState(item?.desc || '');

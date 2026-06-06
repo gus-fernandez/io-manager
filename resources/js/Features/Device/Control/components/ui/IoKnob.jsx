@@ -1,6 +1,29 @@
 // @/Features/Device/Control/components/ui/IoKnob.jsx
 
+/**
+ * @file IoKnob.jsx
+ * @module Features/Control/components/ui/IoKnob
+ * @description Control rotativo interactivo para manipulación de valores MIDI.
+ * Convierte el movimiento angular del ratón/touch en valores discretos (0-127).
+ * Incluye lógica de clamping y throttling para asegurar una comunicación fluida.
+ */
+
 import { useState, useRef, useEffect } from 'react';
+
+/**
+ * @typedef {object} IoKnobProps
+ * @property {string} label - Etiqueta descriptiva del control.
+ * @property {number} cc - Número de Control Change MIDI.
+ * @property {number} [value=0] - Valor MIDI actual (0-127).
+ * @property {'unipolar'|'bipolar'} [type='unipolar'] - Determina la posición del notch visual.
+ * @property {Function} send - Callback para enviar el comando MIDI (0xB0, cc, val).
+ * @property {Function} appendLog - Callback para registrar la actividad.
+ */
+
+/**
+ * Renderiza un potenciómetro rotativo.
+ * @param {IoKnobProps} props
+ */
 
 export default function IoKnob({ label, cc, value = 0, type = 'unipolar', send, appendLog }) {
     const [valueState, setValueState] = useState(value);
