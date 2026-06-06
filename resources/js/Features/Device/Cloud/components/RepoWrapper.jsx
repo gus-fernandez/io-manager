@@ -24,15 +24,15 @@ export const RepoWrapper = ({
     );
 
     return (
-        <div className='mx-2'>
+        <div className='mx-2' role="region" aria-labelledby="repo-title">
             <div className="flex items-center justify-between text-sm mb-2">
-                <h2 className="tracking-widest uppercase text-neutral-400">
+                <h2 id="repo-title" className="tracking-widest uppercase text-neutral-400">
                     {title}
                 </h2>
                 {titleAction && titleAction}
             </div>
 
-            <ul className="divide-y divide-neutral-800">
+            <ul className="divide-y divide-neutral-800" role="list">
                 {items.map(item => {
                     const isSelected = currentPreset && 
                         item.name.trim().toUpperCase() === currentPreset.name?.trim().toUpperCase();
@@ -45,19 +45,20 @@ export const RepoWrapper = ({
                         ? needsSync(item) 
                         : (isInDevice || item.inCloud);
                     
-                    const arrowColor = isInDevice ? 'text-emerald-500' : item.inCloud ? 'text-yellow-500' : 'text-neutral-700';
+                    const arrowColor = isInDevice ? 'text-emerald-500' : item.inCloud ? 'text-amber-500' : 'text-neutral-700';
                     const titleColor = isMuted ? 'text-neutral-700' : 'text-neutral-200';
                     const textColor = isMuted ? 'text-neutral-700' : 'text-neutral-500';
                     const favColor = isMuted ? 'text-neutral-700' : 'text-neutral-500';
 
                     return (
                         <li 
-                            key={item.key ?? item.id} 
+                            key={item.key ?? item.id}
                             className={`flex items-center gap-2 py-2 px-2 rounded-sm transition-colors ${
                                 isSelected ? 'bg-neutral-900/80' : ''
                             }`}
+                            role="listitem"
                         >
-                            <span className={`w-4 text-center text-xs ${arrowColor}`}>
+                            <span className={`w-4 text-center text-xs ${arrowColor}`} aria-hidden="true">
                                 ↑
                             </span>
                             <span className={`w-40 truncate uppercase text-sm ${titleColor}`}>
@@ -66,7 +67,7 @@ export const RepoWrapper = ({
                             <span className={`flex-1 truncate text-xs ${textColor}`}>
                                 {item.desc || ''}
                             </span>
-                            <span className={`w-12 text-center text-xs uppercase ${textColor}`}>
+                            <span className={`w-12 text-center text-xs uppercase ${textColor}`} aria-label={`Category: ${Cat[item.cat] || 'Other'}`}>
                                 {Cat[item.cat] && Cat[item.cat] !== "Undef" ? Cat[item.cat] : "OTHER"}
                             </span>
                             {item.rating != null && (

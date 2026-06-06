@@ -34,7 +34,9 @@ export default function SerialMonitor({ log, clearLog, logRef, onCommand, curren
 
                 <div
                     ref={logRef}
-                    className="h-48 overflow-y-auto text-emerald-400 font-mono text-xs p-2 pt-8 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-700"
+                    className="h-48 overflow-y-auto text-emerald-500 font-mono text-xs p-2 pt-8 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-700"
+                    role="log"
+                    aria-live="polite"
                 >
                     {log.map(({ id, text }) => (
                         <div key={id}>{text}</div>
@@ -44,11 +46,13 @@ export default function SerialMonitor({ log, clearLog, logRef, onCommand, curren
 
             <form onSubmit={handleSubmit} className="flex gap-2">
                 <TextInput
+                    id="f-send"
                     type={currentState === WifiStates.WAITING_FOR_PASS ? "password" : "text"}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Write 'WIFI' to begin..."
                     className="flex-1 bg-neutral-900 border border-neutral-800 text-xs font-mono text-neutral-200 px-3 py-1.5 rounded focus:outline-none focus:border-neutral-600"
+                    aria-label="Send console command"
                 />
                 <SecondaryButton
                     type="submit"

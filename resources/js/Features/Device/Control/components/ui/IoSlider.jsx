@@ -76,6 +76,11 @@ export default function IoSlider({ label, cc, value = 0, send, appendLog, classN
                 ref={bodyRef}
                 onMouseDown={handleStart}
                 onTouchStart={handleStart}
+                role="slider"
+                aria-label={label}
+                aria-valuemin="0"
+                aria-valuemax="127"
+                aria-valuenow={valueState}
                 className="w-10 h-[125px] bg-neutral-950 border border-neutral-200 rounded relative cursor-ns-resize overflow-hidden box-border"
             >
                 <div

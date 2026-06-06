@@ -20,7 +20,7 @@ export default function Profile({ user, setUser }) {
 
     if (loading) {
         return (
-            <div className="p-12 text-center text-neutral-400 tracking-wide animate-pulse">
+            <div className="p-12 text-center text-neutral-400 tracking-wide animate-pulse" role="status">
                 Loading configuration...
             </div>
         );

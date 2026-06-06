@@ -7,15 +7,22 @@ export const Stars = ({ value, onRate, onRemove, hasVoted, userVote }) => {
     const stars = Math.max(0, Math.min(5, Math.ceil(displayValue || 0)));
     
     const starColor = hasVoted 
-        ? 'text-yellow-600' 
-        : 'text-neutral-500 hover:text-yellow-600';
+        ? 'text-amber-500' 
+        : 'text-neutral-500 hover:text-amber-500';
 
     return (
         <div className="flex items-center text-xs">
-            <div className="flex transition-colors">
+            <div 
+                className="flex transition-colors"
+                role="radiogroup" 
+                aria-label="Rate this preset"
+            >
                 {[...Array(5)].map((_, i) => (
                     <TextButton
                         key={i}
+                        role="radio"
+                        aria-checked={i < stars}
+                        aria-label={`${i + 1} stars`}
                         type="button"
                         onClick={() => onRate && onRate(i + 1)}
                         className={`focus:outline-none hover:scale-125 transition-transform ${starColor}`}
@@ -34,7 +41,8 @@ export const Stars = ({ value, onRate, onRemove, hasVoted, userVote }) => {
                         ? 'text-neutral-400 hover:text-neutral-200' 
                         : 'text-neutral-700 cursor-default'
                 }`}
-                title="Delete your vote from this preset."
+                title="Remove your vote."
+                aria-label="Remove your vote"
             >
                 [x]
             </TextButton>

@@ -44,6 +44,19 @@ PAGES
 @/Pages/Auth/ResetPassword.jsx
 @/Pages/Auth/VerifyEmail.jsx
 
+COMPONENTS
+@/Components/Checkbox.jsx
+@/Components/DangerButton.jsx
+@/Components/InputError.jsx
+@/Components/InputLabel.jsx
+@/Components/Modal.jsx
+@/Components/NavLink.jsx
+@/Components/PrimaryButton.jsx
+@/Components/ResponsiveNavLink.jsx
+@/Components/SecondaryButton.jsx
+@/Components/TextButton.jsx
+@/Components/TextInput.jsx
+
 LAYOUTS
 @/Layouts/AppLayout.jsx
 @/Layouts/DeviceLayout.jsx
@@ -72,6 +85,7 @@ SHARED
 @/Features/Device/Shared/utils/midiCC.js
 @/Features/Device/Shared/utils/presetUtils.js
 @/Features/Device/Shared/utils/wsMsgHandle.js
+@/Features/Device/Shared/utils/showTips.js
 
 CLOUD
 @/Features/Device/Cloud/components/Repo.jsx

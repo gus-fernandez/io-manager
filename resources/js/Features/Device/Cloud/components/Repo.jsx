@@ -27,6 +27,8 @@ const SortButton = ({ label, sortKey, sortConfig, onSort, title }) => {
             onClick={() => onSort(sortKey)}
             className={`text-xs uppercase tracking-wide ${isActive ? 'text-neutral-200' : 'text-neutral-500 hover:text-neutral-400'}`}
             title={title}
+            aria-pressed={isActive}
+            aria-label={`Sort by ${label}`}
         >
             [{label}{indicator}]
         </TextButton>
@@ -142,8 +144,8 @@ export const Repo = ({
         setPublishItem(null);
     };
 
-    const syncColor = (item) => canSync(item, currentPreset) && isParsed ? 'text-emerald-400 hover:text-neutral-200' : 'text-neutral-700';
-    const syncAllColor = () => hasItemsToSync(data) && !isSyncing && isParsed ? 'text-emerald-400 hover:text-neutral-200' : 'text-neutral-700';
+    const syncColor = (item) => canSync(item, currentPreset) && isParsed ? 'text-emerald-500 hover:text-neutral-200' : 'text-neutral-700';
+    const syncAllColor = () => hasItemsToSync(data) && !isSyncing && isParsed ? 'text-emerald-500 hover:text-neutral-200' : 'text-neutral-700';
 
     return (
         <>
@@ -222,7 +224,7 @@ export const Repo = ({
             onRate={handleRate}
             onRemove={handleDeleteRate}
             renderActions={(item) => (
-                <div className="flex gap-2 text-xs">
+                <div className="flex gap-2 text-xs" role="group" aria-label={`Actions for ${item.name}`}>
                     {!isPrivate && (
                         <>
                         <TextButton onClick={() => 
@@ -230,11 +232,13 @@ export const Repo = ({
                             disabled={isLoadDisabled}
                             className={isLoadDisabled ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'}
                             title="Load a preset from the public database to the instrument."
+                            aria-label={`Load ${item.name} to device`}
                         >[LOAD]</TextButton>
                         {isAdmin && (
                             <TextButton onClick={() => onDeleteFromPublic(item.cloudId)}
                             className="text-neutral-500 hover:text-neutral-200"
                             title="(Only admin) Delete a preset from the public database."
+                            aria-label={`Delete ${item.name} from database`}
                             >[DELETE]</TextButton>
                         )}
                         </>
@@ -246,17 +250,20 @@ export const Repo = ({
                             disabled={isLoadDisabled} 
                             className={isLoadDisabled ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'}
                             title="Load a preset from your private database to the instrument."
+                            aria-label={`Load ${item.name} to device`}
                         >[LOAD]</TextButton>
                         <TextButton onClick={() =>
                             onDelete(item.cloudId)}
                             className="text-neutral-500 hover:text-neutral-200"
                             title="Delete preset from your private database."
+                            aria-label={`Delete ${item.name} from private database`}
                             >[DELETE]</TextButton>
                         {isAdmin && (
                             <TextButton onClick={() => 
                                 setPublishItem(item)} 
                                 className="text-neutral-500 hover:text-neutral-200"
                                 title="(Only admin) Publish a preset from the private database to the public database."
+                                aria-label={`Publish ${item.name} to public database`}
                                 >[PUBLISH]</TextButton>
                         )}
                         </>
@@ -267,6 +274,7 @@ export const Repo = ({
                             disabled={!canSync(item, currentPreset) || isSyncing || !isParsed}
                             className={syncColor(item)}
                             title="Upload a preset to your private database."
+                            aria-label={`Sync ${item.name} to cloud`}
                         >[SYNC]</TextButton>
                     )}
                 </div>

@@ -50,30 +50,33 @@ export default function UploadFirmware({ uploadFirmwareToServer, uploading, uplo
             )}
 
             {(uploadError || localError) && (
-                <p className="text-xs tracking-widest uppercase text-rose-500">
+                <p className="text-xs tracking-widest uppercase text-rose-400">
                     {localError || uploadError}
                 </p>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4 bg-neutral-900 border border-neutral-800 p-4 rounded-lg ">
+            <form onSubmit={handleSubmit} className="space-y-4 bg-neutral-900 border border-neutral-800 p-4 rounded-lg">
                 
             <div className="space-y-1">
-                <label className="text-xs tracking-widest uppercase text-neutral-500">File (.bin)</label>
+                <label htmlFor="f-input" className="text-xs tracking-widest uppercase text-neutral-500">File (.bin)</label>
                 
                 <div className="relative">
                     <input 
-                        id="firmware-input"
+                        id="f-input"
                         type="file" 
                         accept=".bin"
                         disabled={uploading}
                         className="hidden"
                         onChange={(e) => setFile(e.target.files[0])}
+                        aria-labelledby="file-label"
                     />
                     
                     <label 
-                        htmlFor="firmware-input"
+                        htmlFor="f-input"
+                        role="button"
                         className="flex items-center justify-center w-full cursor-pointer py-2 px-4 rounded border border-neutral-700 text-xs tracking-widest uppercase bg-neutral-900 text-neutral-500 hover:border-neutral-500 hover:text-neutral-200 transition-colors"
                         tabIndex="0"
+                        onKeyDown={(e) => { if(e.key === 'Enter' || e.key === ' ') document.getElementById('firmware-input').click() }}
                     >
                         {file ? file.name : 'SELECT FILE'}
                     </label>
@@ -81,24 +84,28 @@ export default function UploadFirmware({ uploadFirmwareToServer, uploading, uplo
             </div>
 
                 <div className="space-y-1">
-                    <label className="text-xs tracking-widest uppercase text-neutral-500">Version</label>
+                    <label htmlFor="f-version" className="text-xs tracking-widest uppercase text-neutral-500">Version</label>
                     <input 
+                        id="f-version"
                         type="text" 
                         placeholder="Ej: 0.6.0"
                         value={version}
                         disabled={uploading}
                         onChange={(e) => setVersion(e.target.value)}
                         className="w-full bg-black border border-neutral-800 rounded p-2 text-xs text-neutral-300 focus:border-neutral-500 focus:ring-0 outline-none placeholder:text-neutral-800"
+                        aria-labelledby="f-version"
                     />
                 </div>
 
                 <div className="space-y-1">
-                    <label className="text-xs tracking-widest uppercase text-neutral-500">Channel</label>
+                    <label htmlFor="f-channel" className="text-xs tracking-widest uppercase text-neutral-500">Channel</label>
                     <select 
+                        id="f-channel"
                         value={channel}
                         disabled={uploading}
                         onChange={(e) => setChannel(e.target.value)}
                         className="w-full bg-black border border-neutral-800 rounded p-2 text-xs tracking-widest uppercase text-neutral-300 focus:border-neutral-500 focus:ring-0 outline-none appearance-none"
+                        aria-labelledby="f-channel"
                     >
                         <option value="stable">Stable</option>
                         <option value="nightly">Nightly</option>
@@ -106,18 +113,20 @@ export default function UploadFirmware({ uploadFirmwareToServer, uploading, uplo
                 </div>
 
                 <div className="space-y-1">
-                    <label className="text-xs tracking-widest uppercase text-neutral-500">Release Notes</label>
+                    <label htmlFor="f-desc" className="text-xs tracking-widest uppercase text-neutral-500">Release Notes</label>
                     <input 
+                        id="f-desc"
                         type="text"
                         placeholder="Cambios o correcciones..."
                         value={description}
                         disabled={uploading}
                         onChange={(e) => setDescription(e.target.value)}
                         className="w-full bg-black border border-neutral-800 rounded p-2 text-xs text-neutral-300 focus:border-neutral-500 focus:ring-0 outline-none placeholder:text-neutral-800"
+                        aria-labelledby="f-desc"
                     />
                 </div>
 
-                <div className="pt-2 flex justify-center">
+                <div className="pt-2 flex justify-center" aria-live="polite">
                     <PrimaryButton 
                         type="submit" 
                         disabled={uploading}

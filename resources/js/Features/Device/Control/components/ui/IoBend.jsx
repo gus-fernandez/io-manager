@@ -80,6 +80,11 @@ export default function IoBend({ label = "PITCH", channel = 0, send, appendLog, 
                 onMouseDown={handleStart}
                 onTouchStart={handleStart}
                 className="w-10 h-[123px] bg-neutral-950 border border-neutral-200 rounded relative cursor-ns-resize overflow-hidden box-border flex items-center justify-center"
+                role="slider"
+                aria-label={label}
+                aria-valuemin="0"
+                aria-valuemax="16383"
+                aria-valuenow={value}
             >
                 <div className="absolute w-full h-[1px] bg-neutral-700 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <div

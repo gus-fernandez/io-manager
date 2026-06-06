@@ -53,7 +53,7 @@ export default function RegisterForm({ setTab, setUser }) {
             <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 font-whiterabbit shadow-2xl">
 
                 {errors.general && (
-                    <p className="text-rose-500 text-xs mb-4">
+                    <p className="text-rose-400 text-xs mb-4" role="alert">
                         {errors.general[0]}
                     </p>
                 )}
@@ -62,11 +62,13 @@ export default function RegisterForm({ setTab, setUser }) {
 
                     <div>
                         <InputLabel
+                            htmlFor="r-name"
                             value="Name"
                             className="text-neutral-500 uppercase text-[10px]"
                         />
 
                         <TextInput
+                            id="r-name"
                             type="text"
                             value={values.name}
                             className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
@@ -84,11 +86,13 @@ export default function RegisterForm({ setTab, setUser }) {
 
                     <div>
                         <InputLabel
+                            htmlFor="r-email"
                             value="Email Address"
                             className="text-neutral-500 uppercase text-[10px]"
                         />
 
                         <TextInput
+                            id="r-email"
                             type="email"
                             value={values.email}
                             className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
@@ -106,11 +110,13 @@ export default function RegisterForm({ setTab, setUser }) {
 
                     <div>
                         <InputLabel
+                            htmlFor="r-password"
                             value="Password"
                             className="text-neutral-500 uppercase text-[10px]"
                         />
 
                         <TextInput
+                            id="r-password"
                             type="password"
                             value={values.password}
                             className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
@@ -128,11 +134,13 @@ export default function RegisterForm({ setTab, setUser }) {
 
                     <div>
                         <InputLabel
+                            htmlFor="r-password-confirm"
                             value="Confirm Password"
                             className="text-neutral-500 uppercase text-[10px]"
                         />
 
                         <TextInput
+                            id="r-password-confirm"
                             type="password"
                             value={values.password_confirmation}
                             className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"

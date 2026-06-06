@@ -39,12 +39,13 @@ export default function LoginForm({ setTab, setUser, onNavigate }) {
 
     return (
         <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 font-whiterabbit">
-            {errors.general && <p className="text-rose-500 text-xs mb-4">{errors.general[0]}</p>}
+            {errors.general && <p className="text-rose-400 text-xs mb-4" role="alert">{errors.general[0]}</p>}
 
             <form onSubmit={handleLogin} className="space-y-4">
                 <div>
-                    <InputLabel value="Email Address" className="text-neutral-200 uppercase text-[10px]" />
+                    <InputLabel htmlFor="l-email" value="Email Address" className="text-neutral-200 uppercase text-[10px]" />
                     <TextInput
+                        id="l-email"
                         type="email"
                         value={values.email}
                         className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
@@ -55,8 +56,9 @@ export default function LoginForm({ setTab, setUser, onNavigate }) {
                 </div>
 
                 <div>
-                    <InputLabel value="Password" className="text-neutral-200 uppercase text-[10px]" />
+                    <InputLabel htmlFor="l-password" value="Password" className="text-neutral-200 uppercase text-[10px]" />
                     <TextInput
+                        id="l-password"
                         type="password"
                         value={values.password}
                         className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
@@ -69,6 +71,7 @@ export default function LoginForm({ setTab, setUser, onNavigate }) {
                 <div className="flex items-center justify-between mt-4">
                     <label className="flex items-center text-neutral-500 text-xs uppercase tracking-widest cursor-pointer">
                         <Checkbox
+                            id="remember-me"
                             checked={values.remember}
                             onChange={e => setValues({...values, remember: e.target.checked})}
                             className="bg-neutral-950 border-neutral-700"

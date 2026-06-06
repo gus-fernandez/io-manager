@@ -43,6 +43,7 @@ export default function PresetLine({
                     disabled={isList}
                     className={`size-[16px] -translate-y-[3px] ${lockColor} ${active ? 'cursor-pointer' : 'cursor-default'}`}
                     title="Lock this preset."
+                    aria-label="Toggle lock status"
                 >
                     <LockIcon.LOCK />
                 </TextButton>
@@ -54,6 +55,7 @@ export default function PresetLine({
                     disabled={isList}
                     className={`text-sm ${favColor} ${active ? 'cursor-pointer' : 'cursor-default'}`}
                     title="Mark this preset as favorite."
+                    aria-label="Toggle favorite status"
                 >♥</TextButton>
                 
                 <TextButton 
@@ -72,6 +74,7 @@ export default function PresetLine({
                             onClick();
                         }
                     }}
+                    title="A preset"
                     >
                     <span className={`${flagsIdColor} truncate`}>{formattedId} </span>
                     <span className={nameColor}> {formattedName} </span>

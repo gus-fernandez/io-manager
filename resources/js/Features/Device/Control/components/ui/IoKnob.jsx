@@ -106,6 +106,11 @@ export default function IoKnob({ label, cc, value = 0, type = 'unipolar', send, 
                 onMouseDown={handleStart}
                 onTouchStart={handleStart}
                 className="w-10 h-10 bg-black rounded-full flex items-center justify-center relative box-border"
+                role="slider"
+                aria-label={label}
+                aria-valuemin="0"
+                aria-valuemax="127"
+                aria-valuenow={valueState}
             >
                 <div
                     className="w-10 h-10 bg-neutral-200 rounded-full cursor-grab relative"

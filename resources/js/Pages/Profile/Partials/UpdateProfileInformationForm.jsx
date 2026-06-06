@@ -81,7 +81,7 @@ export default function UpdateProfileInformation({
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
-                {errors.global && <p className="text-rose-400 text-sm">{errors.global[0]}</p>}
+                {errors.global && <p className="text-rose-400 text-sm" role="alert">{errors.global[0]}</p>}
 
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
@@ -129,7 +129,7 @@ export default function UpdateProfileInformation({
                         </p>
 
                         {verificationStatus === 'verification-link-sent' && (
-                            <div className="mt-2 text-sm font-medium text-emerald-400">
+                            <div className="mt-2 text-sm font-medium text-emerald-500" role="status">
                                 A new verification link has been sent to your email address.
                             </div>
                         )}
@@ -148,7 +148,7 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-neutral-600">
+                        <p className="text-sm text-neutral-600" role="status">
                             Saved.
                         </p>
                     </Transition>

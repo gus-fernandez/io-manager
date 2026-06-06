@@ -1,36 +1,29 @@
-import DangerButton from '@/Components/DangerButton';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
 import TextInput from '@/Components/TextInput';
+import TextButton from '@/Components/TextButton';
+import DangerButton from '@/Components/DangerButton';
+import SecondaryButton from '@/Components/SecondaryButton';
 import { useRef, useState } from 'react';
 import axios from '@/bootstrap';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function DeleteUserForm({ className = '' }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
-    
     const passwordInput = useRef();
-
-    const confirmUserDeletion = () => {
-        setConfirmingUserDeletion(true);
-    };
 
     const deleteUser = async (e) => {
         e.preventDefault();
         setProcessing(true);
         setErrors({});
-
         try {
-            await axios.delete('/api/profile', {
-                data: { password }
-            });
-            
+            await axios.delete('/api/profile', { data: { password } });
             closeModal();
-            window.location.reload(); 
+            window.location.reload();
         } catch (err) {
             if (err.response?.status === 422) {
                 setErrors(err.response.data.errors);
@@ -50,72 +43,50 @@ export default function DeleteUserForm({ className = '' }) {
     };
 
     return (
-        <section className={`space-y-6 ${className}`}>
+        <section className={`space-y-4 ${className}`}>
             <header>
-                <h2 className="text-lg font-medium text-neutral-200">
+                <h2 className="text-sm font-medium text-neutral-200 uppercase tracking-widest">
                     Delete Account
                 </h2>
-
-                <p className="mt-1 text-sm text-neutral-600">
-                    Once your account is deleted, all of its resources and data
-                    will be permanently deleted. Please download any data you
-                    wish to retain before proceeding.
+                <p className="mt-1 text-xs text-neutral-600 uppercase tracking-widest">
+                    Once deleted, all data will be permanently removed.
                 </p>
             </header>
 
-            <DangerButton onClick={confirmUserDeletion}>
+            <DangerButton onClick={() => setConfirmingUserDeletion(true)} aria-haspopup="dialog">
                 Delete Account
             </DangerButton>
 
             {confirmingUserDeletion && (
-                <Modal show={confirmingUserDeletion} onClose={closeModal}>
-                    <form onSubmit={deleteUser} className="p-6">
-                        <h2 className="text-lg font-medium text-neutral-200">
-                            Are you sure you want to delete your account?
+                <Modal onClose={closeModal}>
+                    <form onSubmit={deleteUser} className="font-whiterabbit space-y-4 p-2">
+                        <h2 className="text-neutral-200 uppercase text-xs tracking-widest">
+                            Are you sure?
                         </h2>
-
-                        <p className="mt-1 text-sm text-neutral-500">
-                            Please enter your password to confirm you would like to
-                            permanently delete your account.
-                        </p>
-
-                        <div className="mt-6">
-                            <InputLabel
-                                htmlFor="password"
-                                value="Password"
-                                className="sr-only"
-                            />
-
+                        <div>
+                            <InputLabel htmlFor="password" value="Password" className="text-neutral-200 uppercase text-[10px]" />
                             <TextInput
                                 id="password"
                                 type="password"
-                                name="password"
                                 ref={passwordInput}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="mt-1 block w-3/4"
+                                className="mt-1 block w-full bg-neutral-950 border-neutral-800 text-neutral-200"
                                 isFocused
-                                placeholder="Password"
                             />
-
-                            <InputError
-                                message={errors.password ? errors.password[0] : null}
-                                className="mt-2"
-                            />
+                            <InputError message={errors.password?.[0]} className="mt-1" />
                         </div>
-
-                        <div className="mt-6 flex justify-end">
-                            <SecondaryButton onClick={closeModal}>
+                        <div className="flex justify-end items-center gap-6 pt-2">
+                            <PrimaryButton onClick={closeModal}>
                                 Cancel
-                            </SecondaryButton>
-
-                            <DangerButton className="ms-3" disabled={processing}>
+                            </PrimaryButton>
+                            <DangerButton type="submit" disabled={processing}>
                                 {processing ? 'Deleting...' : 'Delete Account'}
                             </DangerButton>
                         </div>
                     </form>
                 </Modal>
-                )}
+            )}
         </section>
     );
 }

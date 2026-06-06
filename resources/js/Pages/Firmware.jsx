@@ -22,15 +22,15 @@ export default function Firmware() {
     return (
         <div className="py-2 space-y-4 mx-1">
             <div className="flex items-center gap-6 text-xs tracking-widest uppercase mt-2">
-                <span>
+                <span aria-live="polite">
                     <span className="text-neutral-400">USB-SERIAL </span>
                     <span className={connected ? 'text-emerald-500' : 'text-neutral-500'}>
                         {flashing ? 'FLASHING...' : connected ? 'CONNECTED' : 'DISCONNECTED'}
                     </span>
                 </span>
-                {error && <span className="text-rose-300">{error}</span>}
+                {error && <span className="text-rose-400" role="alert">{error}</span>}
                 {flashCompleted && !connected && (
-                    <span className="text-emerald-400">Flash complete. Reconnecting...</span>
+                    <span className="text-emerald-500" role="status">Flash complete. Reconnecting...</span>
                 )}
                 {!connected && !flashing
                     ?   <TextButton 

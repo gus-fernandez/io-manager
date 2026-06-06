@@ -10,15 +10,15 @@ export const PublishModal = ({ item, onClose, onConfirm }) => {
 
     return (
         <Modal onClose={onClose} className="w-[400px]">
-            <h2 className="text-lg text-neutral-200 tracking-widest uppercase">Publish Preset</h2>
+            <h2 id="modal-title" className="text-lg text-neutral-200 tracking-widest uppercase">Publish Preset</h2>
             
             <div className="space-y-4">
                 <div>
                     <label className="block text-xs text-neutral-500 uppercase tracking-widest mb-1">Preset Name</label>
-                    <div className="text-neutral-300 uppercase">{item?.name}</div>
+                    <div className="text-neutral-300 uppercase" aria-label={`Preset name: ${item?.name}`}>{item?.name}</div>
                 </div>
                 <div>
-                    <label className="block text-xs text-neutral-500 uppercase tracking-widest mb-1">Description</label>
+                    <label htmlFor="desc-input" className="block text-xs text-neutral-500 uppercase tracking-widest mb-1">Description</label>
                     <TextInput
                         value={desc}
                         onChange={(e) => setDesc(e.target.value)}
@@ -30,8 +30,8 @@ export const PublishModal = ({ item, onClose, onConfirm }) => {
             </div>
 
             <div className="flex justify-end gap-4 text-xs tracking-widest uppercase mt-2">
-                <PrimaryButton onClick={onClose}>CANCEL</PrimaryButton>
-                <PrimaryButton onClick={() => onConfirm(desc)}>PUBLISH</PrimaryButton>
+                <PrimaryButton onClick={onClose} aria-label="Cancel publishing">CANCEL</PrimaryButton>
+                <PrimaryButton onClick={() => onConfirm(desc)} aria-label="Confirm and publish">PUBLISH</PrimaryButton>
             </div>
         </Modal>
     );

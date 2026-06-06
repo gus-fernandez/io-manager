@@ -48,13 +48,13 @@ export default function ResetPassword({ token, email, onNavigate }) {
     return (
         <>
             {status && (
-                <div className="mb-4 text-sm font-medium text-emerald-500">
+                <div className="mb-4 text-sm font-medium text-emerald-500" role="status">
                     {status} — Redirecting to login...
                 </div>
             )}
 
             {errors.global && (
-                <div className="mb-4 text-sm font-medium text-rose-500">
+                <div className="mb-4 text-sm font-medium text-rose-400" role="alert">
                     {errors.global[0]}
                 </div>
             )}

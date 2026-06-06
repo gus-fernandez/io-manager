@@ -26,12 +26,14 @@ export const UploadPresetModal = ({
                 maxLength={16}
                 value={pendingName}
                 onChange={e => setPendingName(e.target.value)}
+                aria-label="New preset name"
             />
             <div className="flex justify-end gap-4 text-xs tracking-widest uppercase">
                 <PrimaryButton onClick={onClose}>CANCEL</PrimaryButton>
                 <PrimaryButton 
                     onClick={onConfirm}
                     disabled={isConfirmDisabled}
+                    aria-label="Confirm and load preset"
                 >LOAD</PrimaryButton>
             </div>
         </Modal>

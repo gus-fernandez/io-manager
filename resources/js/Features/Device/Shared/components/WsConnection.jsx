@@ -8,22 +8,23 @@ export default function WsConnection({ ws: { status, connect, disconnect } }) {
     const isConnecting = status === 'Connecting...';
 
     const statusColor = isConnected 
-        ? 'text-emerald-600' 
+        ? 'text-emerald-500' 
         : isConnecting 
             ? 'text-[#e1a32a]' 
             : 'text-red-900';   
 
     return (
         <div className="flex items-center gap-1 select-none">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1" role="status">
                 <span className="text-neutral-200 tracking-normal">STATUS:</span>
-                <span className={`${statusColor} ${isConnecting ? 'animate-pulse' : ''}`}>●</span>
+                <span className={`${statusColor} ${isConnecting ? 'animate-pulse' : ''}` } aria-hidden="true">●</span>
             </div>
             
             {isConnected ? (
                 <TextButton
                     onClick={disconnect}
                     title="Connect the instrument via websocket. Make sure your device and your instrument are connected to the same network."
+                    aria-label="Disconnect instrument"
                 >
                 [DISCONNECT]
                 </TextButton>
@@ -33,6 +34,7 @@ export default function WsConnection({ ws: { status, connect, disconnect } }) {
                     disabled={isConnecting} 
                     className="text-neutral-200 hover:text-white active:scale-95 disabled:pointer-events-none disabled:opacity-40 transition-all duration-150"
                     title="Connect the instrument via websocket. Make sure your device and your instrument are connected to the same network."
+                    aria-label="Connect instrument"
                 >
                     {isConnecting ? '[CONNECTING...]' : '[CONNECT]'}
                 </TextButton>

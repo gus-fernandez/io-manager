@@ -9,6 +9,7 @@ const IconWrapper = ({ children, href, tt }) => (
             href={href}
             target="blank" 
             rel="noopener noreferrer" 
+            aria-label={tt}
         >
         {children}
         </a>
@@ -24,7 +25,7 @@ export default function About() {
             <IconWrapper tt="Soon" href="https://discord.gg/"><AboutIcons.Discord /></IconWrapper>
             <IconWrapper tt="Soon" href="https://soundcloud.com/"><AboutIcons.Soundcloud /></IconWrapper>
             <IconWrapper tt="Send me a mail" href="mailto:gusfernandez.lfb@gmail.com"><AboutIcons.Mail /></IconWrapper>
-            <IconWrapper tt="Soon" ><AboutIcons.Help /></IconWrapper>
+            <IconWrapper tt="Soon" href="mailto:gusfernandez.lfb@gmail.com" aria-disabled="true"><AboutIcons.Help /></IconWrapper>
         </div>
         <div className="text-neutral-200 text-xl text-center max-w-[456px] mx-auto items-center">
             <h2 className="py-2">ABOUT:</h2>

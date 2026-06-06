@@ -23,7 +23,7 @@ export const RenameModal = ({
     return (
         <Modal onClose={onClose}>
             <div className="space-y-4">
-                <p className="text-xs tracking-widest uppercase text-neutral-400">
+                <p className="text-xs tracking-widest uppercase text-neutral-400" aria-live="polite">
                     {isConflict ? 'Name already exists' : 'Rename Preset'}
                 </p>
                 <TextInput
@@ -32,6 +32,7 @@ export const RenameModal = ({
                     value={pendingName}
                     onChange={e => setPendingName(e.target.value.toUpperCase())}
                     className="bg-neutral-800 border border-neutral-600 rounded px-3 py-2 text-sm text-neutral-200 uppercase tracking-widest w-full"
+                    aria-label="New preset name"
                 />
                 <div className="flex justify-end gap-4 text-xs tracking-widest uppercase">
                     <PrimaryButton onClick={onClose}>CANCEL</PrimaryButton>

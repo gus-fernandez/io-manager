@@ -40,7 +40,7 @@ export default function PresetsBar(props) {
     }, [isOpen, toggleOpen]);
 
     return (
-        <div ref={containerRef} className="bg-neutral-950 border border-neutral-800 rounded-lg px-2 pt-1 mt-2 min-h-[36px]">
+        <div ref={containerRef} className="bg-neutral-950 border border-neutral-800 rounded-lg px-2 pt-1 mt-2 min-h-[36px]" role="region" aria-label="Preset bar">
             
             {metaNoData && !isLoading ? (
                 <div className="flex items-center select-none min-h-[36px]">
@@ -54,7 +54,7 @@ export default function PresetsBar(props) {
                         <div className="flex items-center uppercase text-xs tracking-widest text-neutral-500 leading-none flex-1 justify-start">
                             
                             <div className="flex items-center text-neutral-200 whitespace-nowrap">
-                                <div className="w-8 h-8 -mt-[2px] mr-1">
+                                <div className="w-8 h-8 -mt-[2px] mr-1" aria-hidden="true">
                                     <Io8Icon.Io8Icon />
            
                                 </div>
@@ -95,6 +95,7 @@ export default function PresetsBar(props) {
                                     onClick={handleStartEdit}
                                     className="text-neutral-500 hover:text-neutral-200"
                                     title="Rename the preset."
+                                    aria-label="Rename preset"
                                 >
                                     [RENAME]
                                 </TextButton>
@@ -124,6 +125,7 @@ export default function PresetsBar(props) {
                                         !presetModified ? 'text-neutral-700' : 'text-neutral-500 hover:text-neutral-200'
                                     }`}
                                     title="Restore preset to the last saved point."
+                                    aria-label="Discard changes"
                                 >[DISCARD]
                                 </TextButton>
                             )}
@@ -138,6 +140,7 @@ export default function PresetsBar(props) {
                                             : 'text-neutral-500 hover:text-neutral-200'
                                     }`}
                                     title="Delete the preset from the instrument flash."
+                                    aria-label="Delete preset"
                                 >[DELETE]
                                 </TextButton>
                             )}
@@ -154,6 +157,7 @@ export default function PresetsBar(props) {
                                     <div 
                                         key={meta.id}
                                         className="px-1 py-1 transition-colors hover:bg-neutral-900/20"
+                                        role="listbox"
                                     >
                                         <PresetLine 
                                             id={meta.id}

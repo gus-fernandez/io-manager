@@ -36,6 +36,8 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
                                 : 'border-neutral-800 text-neutral-500 hover:border-neutral-500'
                         }`}
                         title="Select firmware to flash."
+                        aria-pressed={selected?.channel === channel}
+                        aria-label={`Select ${channel} firmware, version ${firmware[channel].version}`}
                     >
                         <div className="tracking-widest uppercase h-4s">
                             {channel}
@@ -62,6 +64,7 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
                         : 'text-neutral-500 hover:text-neutral-200'
                 }`}
                 title="Flash selected firmware to ESP32."
+                aria-live="polite"
             >
                 {flashing ? 'FLASHING...' : `FLASH v${selected?.version ?? '...'}`}
             </SecondaryButton>
@@ -70,6 +73,8 @@ export default function FlashFirmware({ port, disconnect, onFlashStart, onFlashE
                 <div 
                     className="border border-neutral-800 rounded bg-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-700" 
                     tabIndex="0"
+                    role="log"
+                    aria-live="polite"
                 >
                     <div
                         ref={logRef}

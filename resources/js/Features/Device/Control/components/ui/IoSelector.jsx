@@ -53,6 +53,8 @@ export default function IoSelector({ label, cc, options, value = 0, send, append
             <div
                 onClick={handleNext}
                 className="w-10 h-10 bg-neutral-950 border border-neutral-200 rounded cursor-pointer box-border flex items-center justify-center px-0.5"
+                role="button"
+                aria-label={`${label}: ${currentKey || 'None'}`}
             >
                 {isSvg ? (
                     <div className="text-neutral-200 flex items-center justify-center w-full h-full p-1.5">

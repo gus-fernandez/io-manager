@@ -14,7 +14,7 @@ export default function StatusBar({ currentTab }) {
         <div className="flex flex-row flex-wrap items-center gap-2 rounded-lg bg-neutral-900 px-3 py-1">
             
             <div className="flex items-center gap-2 tracking-widest">
-                <h1 className="text-xs text-neutral-200 uppercase border-r border-neutral-800 pr-2 whitespace-nowrap">
+                <h1 className="text-xs text-neutral-200 uppercase border-r border-neutral-800 pr-2 whitespace-nowrap" aria-live="polite">
                     {pageTitle}
                 </h1>
                 <div className="text-xs uppercase">
@@ -27,7 +27,7 @@ export default function StatusBar({ currentTab }) {
                     {!isConnected || !midi.logMidi ? (
                         <span className="text-neutral-600 whitespace-nowrap truncate block px-1">No MIDI activity</span>
                     ) : (
-                        <div className='text-neutral-600 whitespace-nowrap truncate px-1'>{midi.logMidi}</div>
+                        <div className='text-neutral-600 whitespace-nowrap truncate px-1' role="log" aria-live="polite" aria-atomic="false">{midi.logMidi}</div>
                     )}
                 </div>
                 <div className="flex ml-auto items-center flex-initial">

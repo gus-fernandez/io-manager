@@ -93,7 +93,7 @@ function AppContent() {
     const renderContent = () => {
         try {
             if (currentTab === 'profile' && !user) {
-                return <div className="p-6 text-center text-neutral-500">Loading Profile...</div>;
+                return <div className="p-6 text-center text-neutral-500" role="status">Loading Profile...</div>;
             }
 
             const isDeviceTab = ['control', 'cloud', 'firmware'].includes(currentTab);
@@ -113,13 +113,13 @@ function AppContent() {
             );
         } catch (e) {
             console.error("Error al renderizar:", e);
-            return <div className="p-4 text-rose-400">Error loading App.</div>;
+            return <div className="p-4 text-rose-400" role="alert">Error loading App.</div>;
         }
     };
 
     if (loading || !isBooted) {
         return (
-            <div className="font-whiterabbit flex h-screen items-center justify-center bg-neutral-900 text-neutral-400">
+            <div className="font-whiterabbit flex h-screen items-center justify-center bg-neutral-900 text-neutral-400" role="status" aria-live="polite">
                 Loading...
             </div>
         );

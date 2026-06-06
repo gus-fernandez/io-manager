@@ -62,7 +62,7 @@ export default function UpdatePasswordForm({ className = '' }) {
             </header>
 
             <form onSubmit={updatePassword} className="mt-6 space-y-6">
-                {errors.global && <p className="text-rose-400 text-sm">{errors.global[0]}</p>}
+                {errors.global && <p className="text-rose-400 text-sm" role="alert">{errors.global[0]}</p>}
 
                 <div>
                     <InputLabel
@@ -144,7 +144,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-neutral-200">
+                        <p className="text-sm text-neutral-200" role="status">
                             Saved.
                         </p>
                     </Transition>
