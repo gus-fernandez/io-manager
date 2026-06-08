@@ -10,7 +10,7 @@ IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.
 - ✓ Entorno de desarrollo  
 - ✓ APP  
 - ✓ ESP32  
-- Documentación  
+- ✓ Documentación  
   
 ## ENTORNO DE DESARROLLO
 - ✓ Configurar Docker/Sail  
