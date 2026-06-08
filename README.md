@@ -46,9 +46,11 @@ IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.
 - ✓ Preproyecto  
 - ✓ Cuaderno de bitácora  
 - ✓ Git  
-- Memoria  
-- README (v4) Actualizar  
-- Código  
+- ✓ Memoria  
+- ✓ Presentación  
+- ✓ README (v4)  
+- ✓ Código PHP Scribe  
+- ✓ Código JS JSDoc + docdash  
 - ✓ Paths  
 - TO DO User manual  
   
@@ -65,8 +67,8 @@ IO Instruments es una serie de instrumentos digitales para ESP32 WROOM.
 - ✓ Verificación e-mail  
 - ✓ WiFi en ESP32 (ofuscación XOR en tránsito y guardado)  
 - ✓ Preset Parse CRC32  
-- TO DO 2FA — doble factor de autenticación ???  
-- TO DO HTTPS — en producción forzar siempre HTTPS  
+- TO DO 2FA — doble factor de autenticación  
+- TO DO HTTPS  
   
 ### BD
 - ✓ Auth  
