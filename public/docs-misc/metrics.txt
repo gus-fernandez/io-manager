@@ -1,0 +1,418 @@
+ JS
+
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+JSX                             64            607           1131           4104
+JavaScript                      19            424            583           1918
+Text                             1             21              0            117
+-------------------------------------------------------------------------------
+SUM:                            84           1052           1714           6139
+-------------------------------------------------------------------------------
+
+Reporte de métricas — instability, afferent/efferent coupling por módulo:
+
+type    name                                                                           N     Ca     Ce  I (%)        size   #tls
+------- ------------------------------------------------------------------------- ------ ------ ------ ------ ----------- ------
+folder  resources                                                                     84      0     67   100%
+folder  resources/js                                                                  83      0     68   100%
+module  resources/js/app.jsx                                                           1      0     14   100%
+module  resources/js/Components/NavLink.jsx                                            1      0      1   100%
+module  resources/js/Components/ResponsiveNavLink.jsx                                  1      0      1   100%
+module  resources/js/Pages/Auth/ConfirmPassword.jsx                                    1      0      6   100%
+module  resources/js/Pages/Auth/VerifyEmail.jsx                                        1      0      3   100%
+folder  resources/js/Pages/Profile                                                     4      1     24    96%
+folder  resources/js/Features/Device/Control                                          17      1     22    96%
+folder  resources/js/Features/Device/Control/components                               16      1     20    95%
+folder  resources/js/Features/Device/Cloud/components                                  5      1     18    95%
+folder  resources/js/Pages                                                            15      6     79    93%
+folder  resources/js/Features/Device/Cloud                                             9      2     23    92%
+module  resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx          1      1     11    92%
+module  resources/js/Features/Device/Cloud/components/Repo.jsx                         1      1     10    91%
+folder  resources/js/Pages/Auth                                                        6      4     34    89%
+module  resources/js/Features/Device/Cloud/hooks/useRepo.js                            1      1      8    89%
+module  resources/js/Features/Device/Control/components/modules/ModModule.jsx          1      1      8    89%
+module  resources/js/Features/Device/Control/components/modules/OscModule.jsx          1      1      8    89%
+module  resources/js/Pages/Auth/LoginForm.jsx                                          1      1      8    89%
+module  resources/js/Pages/Profile/Partials/DeleteUserForm.jsx                         1      1      8    89%
+folder  resources/js/Pages/Profile/Partials                                            3      3     22    88%
+module  resources/js/Features/Device/Control/components/modules/AdsrModule.jsx         1      1      7    88%
+module  resources/js/Features/Device/Control/components/modules/LfoModule.jsx          1      1      7    88%
+module  resources/js/Features/Device/Shared/components/PresetsBar.jsx                  1      1      7    88%
+module  resources/js/Pages/Cloud.jsx                                                   1      1      7    88%
+module  resources/js/Pages/Firmware.jsx                                                1      1      7    88%
+module  resources/js/Pages/Landing.jsx                                                 1      1      7    88%
+module  resources/js/Pages/Profile/Partials/UpdatePasswordForm.jsx                     1      1      7    88%
+module  resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.jsx           1      1      7    88%
+folder  resources/js/Features/Device/Control/components/modules                        7      7     46    87%
+module  resources/js/Features/Device/Control/components/modules/ArpModule.jsx          1      1      6    86%
+module  resources/js/Pages/Auth/RegisterForm.jsx                                       1      1      6    86%
+module  resources/js/Pages/Auth/ResetPassword.jsx                                      1      1      6    86%
+folder  resources/js/Features/Device/Cloud/hooks                                       2      2     10    83%
+module  resources/js/Features/Device/Control/components/modules/FxModule.jsx           1      1      5    83%
+module  resources/js/Features/Device/Control/components/modules/MasterModule.jsx       1      1      5    83%
+module  resources/js/Features/Device/Firmware/components/SerialMonitor.jsx             1      1      5    83%
+module  resources/js/Pages/Auth/ForgotPassword.jsx                                     1      1      5    83%
+module  resources/js/Pages/Profile/Edit.jsx                                            1      1      5    83%
+module  resources/js/Features/Device/Cloud/components/PublishModal.jsx                 1      1      4    80%
+module  resources/js/Features/Device/Cloud/components/UploadPresetModal.jsx            1      1      4    80%
+module  resources/js/Features/Device/Firmware/components/FlashFirmware.jsx             1      1      4    80%
+module  resources/js/Features/Device/Shared/components/PresetLine.jsx                  1      1      4    80%
+module  resources/js/Features/Device/Shared/components/RenameModal.jsx                 1      1      4    80%
+module  resources/js/Features/Device/Shared/components/StatusBar.jsx                   1      1      4    80%
+module  resources/js/Features/Device/Shared/components/VirtualKeyboard.jsx             1      1      4    80%
+module  resources/js/Features/Device/Shared/hooks/usePresetsBar.js                     1      1      4    80%
+folder  resources/js/Layouts                                                           2      2      8    80%
+module  resources/js/Layouts/AppLayout.jsx                                             1      1      4    80%
+module  resources/js/Layouts/DeviceLayout.jsx                                          1      1      4    80%
+folder  resources/js/Features/Device/Firmware/components                               3      3     11    79%
+folder  resources/js/Features/Device/Firmware                                          7      4     13    76%
+module  resources/js/Features/Device/Cloud/components/RepoWrapper.jsx                  1      1      3    75%
+folder  resources/js/Features/Device/Control/hooks                                     1      1      3    75%
+module  resources/js/Features/Device/Control/hooks/useModuleGrid.js                    1      1      3    75%
+folder  resources/js/Features/Device/Shared/components                                 9      7     21    75%
+module  resources/js/Pages/Control.jsx                                                 1      1      3    75%
+folder  resources/js/Features                                                         51     23     68    75%
+folder  resources/js/Features/Device                                                  51     23     68    75%
+folder  resources/js/Features/Device/Firmware/hooks                                    3      2      5    71%
+module  resources/js/Features/Device/Cloud/hooks/useStars.js                           1      1      2    67%
+module  resources/js/Features/Device/Firmware/components/UploadFirmware.jsx            1      1      2    67%
+module  resources/js/Features/Device/Firmware/hooks/useFirmware.js                     1      1      2    67%
+module  resources/js/Features/Device/Firmware/hooks/useFlashFirmware.js                1      1      2    67%
+module  resources/js/Features/Device/Firmware/hooks/useSerial.js                       1      1      2    67%
+module  resources/js/Features/Device/Shared/components/DeleteModal.jsx                 1      1      2    67%
+module  resources/js/Features/Device/Shared/components/WsConnection.jsx                1      1      2    67%
+folder  resources/js/Features/Device/Shared/hooks                                      5      5     10    67%
+module  resources/js/Features/Device/Shared/hooks/useMidi.js                           1      1      2    67%
+module  resources/js/Features/Device/Shared/hooks/useWebSocket.js                      1      1      2    67%
+module  resources/js/Components/SecondaryButton.jsx                                    1      2      2    50%
+module  resources/js/Contexts/WsContext.jsx                                            1      5      5    50%
+module  resources/js/Features/Device/Cloud/components/Stars.jsx                        1      1      1    50%
+module  resources/js/Features/Device/Control/components/ui/IoBend.jsx                  1      1      1    50%
+module  resources/js/Features/Device/Shared/components/NavGuardModal.jsx               1      2      2    50%
+module  resources/js/Features/Device/Shared/hooks/usePresetUpdate.js                   1      1      1    50%
+module  resources/js/Features/Device/Shared/hooks/useVirtualKeyboard.js                1      1      1    50%
+module  resources/js/Pages/About.jsx                                                   1      1      1    50%
+folder  resources/js/Features/Device/Control/components/layout                         3     15     13    46%
+folder  resources/js/Features/Device/Shared                                           18     28     23    45%
+folder  resources/js/Contexts                                                          2     10      7    41%
+module  resources/js/Features/Device/Control/components/ui/IoSlider.jsx                1      2      1    33%
+module  resources/js/Contexts/AuthContext.jsx                                          1      5      2    29%
+module  resources/js/Features/Device/Control/components/layout/Module.jsx              1      7      2    22%
+module  resources/js/Features/Device/Control/components/ui/IoSelector.jsx              1      4      1    20%
+folder  resources/js/Features/Device/Control/components/ui                             5     21      5    19%
+module  resources/js/Components/TextButton.jsx                                         1     10      2    17%
+module  resources/js/Features/Device/Shared/utils/wsMsgHandle.js                       1      5      1    17%
+module  resources/js/Components/Modal.jsx                                              1      6      1    14%
+folder  resources/js/Components                                                       11     64     10    14%
+module  resources/js/Features/Device/Control/components/ui/IoButton.jsx                1      7      1    13%
+module  resources/js/Features/Device/Control/components/ui/IoKnob.jsx                  1      7      1    13%
+module  resources/js/Features/Device/Shared/utils/presetUtils.js                       1      8      1    11%
+module  resources/js/Components/PrimaryButton.jsx                                      1     17      2    11%
+module  resources/js/Components/TextInput.jsx                                          1     12      1     8%
+module  resources/js/bootstrap.js                                                      1     14      1     7%
+folder  resources/css                                                                  1      1      0     0%
+module  resources/css/app.css                                                          1      1      0     0%
+module  resources/js/Components/Checkbox.jsx                                           1      1      0     0%
+module  resources/js/Components/DangerButton.jsx                                       1      1      0     0%
+module  resources/js/Components/InputError.jsx                                         1      8      0     0%
+module  resources/js/Components/InputLabel.jsx                                         1      7      0     0%
+folder  resources/js/Features/Device/Cloud/utils                                       2      4      0     0%
+module  resources/js/Features/Device/Cloud/utils/repoUtils.js                          1      3      0     0%
+module  resources/js/Features/Device/Cloud/utils/sortUtils.js                          1      1      0     0%
+module  resources/js/Features/Device/Control/components/layout/ModuleDivider.jsx       1      7      0     0%
+module  resources/js/Features/Device/Control/components/WaveIcons.jsx                  1      2      0     0%
+folder  resources/js/Features/Device/Firmware/utils                                    1      2      0     0%
+module  resources/js/Features/Device/Firmware/utils/serialUtils.js                     1      2      0     0%
+module  resources/js/Features/Device/Shared/components/Icons.jsx                       1      6      0     0%
+folder  resources/js/Features/Device/Shared/utils                                      4     24      0     0%
+module  resources/js/Features/Device/Shared/utils/midiCC.js                            1      9      0     0%
+module  resources/js/Features/Device/Shared/utils/showTips.js                          1      4      0     0%
+
+typefolder o module — si es carpeta o archivonamePath del archivo o carpetaNNúmero de archivos dentro (folders) o 1 (modules)CaAfferent coupling — cuántos módulos importan a esteCeEfferent coupling — cuántos módulos importa esteIInstability — Ce / (Ca + Ce) en % — 100% = muy inestable, 0% = muy establesizeTamaño en bytes#tlsNúmero de dependencias transitivas (lo que importas + lo que importan tus imports)
+
+
+Reporte texto — lista de todas las dependencias:
+resources/js/Components/Modal.jsx → node_modules/react-dom/index.js
+resources/js/Components/NavLink.jsx → node_modules/@inertiajs/react/types/index.d.ts
+resources/js/Components/PrimaryButton.jsx → resources/js/Features/Device/Shared/utils/showTips.js
+resources/js/Components/PrimaryButton.jsx → node_modules/react/index.js
+resources/js/Components/ResponsiveNavLink.jsx → node_modules/@inertiajs/react/types/index.d.ts
+resources/js/Components/SecondaryButton.jsx → resources/js/Features/Device/Shared/utils/showTips.js
+resources/js/Components/SecondaryButton.jsx → node_modules/react/index.js
+resources/js/Components/TextButton.jsx → resources/js/Features/Device/Shared/utils/showTips.js
+resources/js/Components/TextButton.jsx → node_modules/react/index.js
+resources/js/Components/TextInput.jsx → node_modules/react/index.js
+resources/js/Contexts/AuthContext.jsx → resources/js/bootstrap.js
+resources/js/Contexts/AuthContext.jsx → node_modules/react/index.js
+resources/js/bootstrap.js → node_modules/axios/index.d.cts
+resources/js/Contexts/WsContext.jsx → resources/js/Features/Device/Shared/hooks/useMidi.js
+resources/js/Contexts/WsContext.jsx → resources/js/Features/Device/Shared/hooks/usePresetUpdate.js
+resources/js/Contexts/WsContext.jsx → resources/js/Features/Device/Shared/hooks/useWebSocket.js
+resources/js/Contexts/WsContext.jsx → resources/js/Features/Device/Shared/utils/wsMsgHandle.js
+resources/js/Contexts/WsContext.jsx → node_modules/react/index.js
+resources/js/Features/Device/Shared/hooks/useMidi.js → resources/js/Features/Device/Shared/utils/midiCC.js
+resources/js/Features/Device/Shared/hooks/useMidi.js → node_modules/react/index.js
+resources/js/Features/Device/Shared/hooks/usePresetUpdate.js → resources/js/Features/Device/Shared/utils/presetUtils.js
+resources/js/Features/Device/Shared/utils/presetUtils.js → resources/js/Features/Device/Shared/utils/midiCC.js
+resources/js/Features/Device/Shared/hooks/useWebSocket.js → resources/js/Features/Device/Shared/utils/wsMsgHandle.js
+resources/js/Features/Device/Shared/hooks/useWebSocket.js → node_modules/react/index.js
+resources/js/Features/Device/Shared/utils/wsMsgHandle.js → resources/js/Features/Device/Shared/utils/presetUtils.js
+resources/js/Features/Device/Cloud/components/PublishModal.jsx → resources/js/Components/Modal.jsx
+resources/js/Features/Device/Cloud/components/PublishModal.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Features/Device/Cloud/components/PublishModal.jsx → resources/js/Components/TextInput.jsx
+resources/js/Features/Device/Cloud/components/PublishModal.jsx → node_modules/react/index.js
+resources/js/Features/Device/Cloud/components/Repo.jsx → resources/js/Features/Device/Cloud/components/PublishModal.jsx
+resources/js/Features/Device/Cloud/components/Repo.jsx → resources/js/Features/Device/Cloud/components/RepoWrapper.jsx
+resources/js/Features/Device/Cloud/components/Repo.jsx → resources/js/Features/Device/Cloud/components/UploadPresetModal.jsx
+resources/js/Features/Device/Cloud/components/Repo.jsx → resources/js/Components/TextButton.jsx
+resources/js/Features/Device/Cloud/components/Repo.jsx → resources/js/Contexts/AuthContext.jsx
+resources/js/Features/Device/Cloud/components/Repo.jsx → resources/js/Features/Device/Cloud/hooks/useStars.js
+resources/js/Features/Device/Cloud/components/Repo.jsx → resources/js/Features/Device/Cloud/utils/repoUtils.js
+resources/js/Features/Device/Cloud/components/Repo.jsx → resources/js/Features/Device/Shared/components/NavGuardModal.jsx
+resources/js/Features/Device/Cloud/components/Repo.jsx → resources/js/Features/Device/Shared/utils/presetUtils.js
+resources/js/Features/Device/Cloud/components/Repo.jsx → node_modules/react/index.js
+resources/js/Features/Device/Cloud/components/RepoWrapper.jsx → resources/js/Features/Device/Cloud/components/Stars.jsx
+resources/js/Features/Device/Cloud/components/RepoWrapper.jsx → resources/js/Features/Device/Cloud/utils/repoUtils.js
+resources/js/Features/Device/Cloud/components/RepoWrapper.jsx → resources/js/Features/Device/Shared/utils/presetUtils.js
+resources/js/Features/Device/Cloud/components/Stars.jsx → resources/js/Components/TextButton.jsx
+resources/js/Features/Device/Cloud/components/UploadPresetModal.jsx → resources/js/Components/Modal.jsx
+resources/js/Features/Device/Cloud/components/UploadPresetModal.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Features/Device/Cloud/components/UploadPresetModal.jsx → resources/js/Components/TextInput.jsx
+resources/js/Features/Device/Cloud/components/UploadPresetModal.jsx → node_modules/react/index.js
+resources/js/Features/Device/Cloud/hooks/useStars.js → resources/js/bootstrap.js
+resources/js/Features/Device/Cloud/hooks/useStars.js → node_modules/react/index.js
+resources/js/Features/Device/Shared/components/NavGuardModal.jsx → resources/js/Components/Modal.jsx
+resources/js/Features/Device/Shared/components/NavGuardModal.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Features/Device/Cloud/hooks/useRepo.js → resources/js/bootstrap.js
+resources/js/Features/Device/Cloud/hooks/useRepo.js → resources/js/Contexts/AuthContext.jsx
+resources/js/Features/Device/Cloud/hooks/useRepo.js → resources/js/Features/Device/Cloud/utils/repoUtils.js
+resources/js/Features/Device/Cloud/hooks/useRepo.js → resources/js/Features/Device/Cloud/utils/sortUtils.js
+resources/js/Features/Device/Cloud/hooks/useRepo.js → resources/js/Features/Device/Shared/utils/presetUtils.js
+resources/js/Features/Device/Cloud/hooks/useRepo.js → resources/js/Features/Device/Shared/utils/presetUtils.js
+resources/js/Features/Device/Cloud/hooks/useRepo.js → resources/js/Features/Device/Shared/utils/wsMsgHandle.js
+resources/js/Features/Device/Cloud/hooks/useRepo.js → node_modules/react/index.js
+resources/js/Features/Device/Control/components/layout/Module.jsx → node_modules/@dnd-kit/sortable/dist/sortable.esm.js
+resources/js/Features/Device/Control/components/layout/Module.jsx → node_modules/@dnd-kit/utilities/dist/utilities.esm.js
+resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx → resources/js/Features/Device/Control/components/modules/AdsrModule.jsx
+resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx → resources/js/Features/Device/Control/components/modules/ArpModule.jsx
+resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx → resources/js/Features/Device/Control/components/modules/FxModule.jsx
+resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx → resources/js/Features/Device/Control/components/modules/LfoModule.jsx
+resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx → resources/js/Features/Device/Control/components/modules/MasterModule.jsx
+resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx → resources/js/Features/Device/Control/components/modules/ModModule.jsx
+resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx → resources/js/Features/Device/Control/components/modules/OscModule.jsx
+resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx → resources/js/Features/Device/Control/hooks/useModuleGrid.js
+resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx → node_modules/@dnd-kit/core/dist/core.esm.js
+resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx → node_modules/@dnd-kit/sortable/dist/sortable.esm.js
+resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx → node_modules/react/index.js
+resources/js/Features/Device/Control/components/modules/AdsrModule.jsx → resources/js/Features/Device/Control/components/layout/Module.jsx
+resources/js/Features/Device/Control/components/modules/AdsrModule.jsx → resources/js/Features/Device/Control/components/layout/ModuleDivider.jsx
+resources/js/Features/Device/Control/components/modules/AdsrModule.jsx → resources/js/Features/Device/Control/components/ui/IoButton.jsx
+resources/js/Features/Device/Control/components/modules/AdsrModule.jsx → resources/js/Features/Device/Control/components/ui/IoKnob.jsx
+resources/js/Features/Device/Control/components/modules/AdsrModule.jsx → resources/js/Features/Device/Control/components/ui/IoSelector.jsx
+resources/js/Features/Device/Control/components/modules/AdsrModule.jsx → resources/js/Features/Device/Control/components/ui/IoSlider.jsx
+resources/js/Features/Device/Control/components/modules/AdsrModule.jsx → resources/js/Features/Device/Shared/utils/midiCC.js
+resources/js/Features/Device/Control/components/ui/IoButton.jsx → node_modules/react/index.js
+resources/js/Features/Device/Control/components/ui/IoKnob.jsx → node_modules/react/index.js
+resources/js/Features/Device/Control/components/ui/IoSelector.jsx → node_modules/react/index.js
+resources/js/Features/Device/Control/components/ui/IoSlider.jsx → node_modules/react/index.js
+resources/js/Features/Device/Control/components/modules/ArpModule.jsx → resources/js/Features/Device/Control/components/layout/Module.jsx
+resources/js/Features/Device/Control/components/modules/ArpModule.jsx → resources/js/Features/Device/Control/components/layout/ModuleDivider.jsx
+resources/js/Features/Device/Control/components/modules/ArpModule.jsx → resources/js/Features/Device/Control/components/ui/IoButton.jsx
+resources/js/Features/Device/Control/components/modules/ArpModule.jsx → resources/js/Features/Device/Control/components/ui/IoKnob.jsx
+resources/js/Features/Device/Control/components/modules/ArpModule.jsx → resources/js/Features/Device/Control/components/ui/IoSelector.jsx
+resources/js/Features/Device/Control/components/modules/ArpModule.jsx → resources/js/Features/Device/Shared/utils/midiCC.js
+resources/js/Features/Device/Control/components/modules/FxModule.jsx → resources/js/Features/Device/Control/components/layout/Module.jsx
+resources/js/Features/Device/Control/components/modules/FxModule.jsx → resources/js/Features/Device/Control/components/layout/ModuleDivider.jsx
+resources/js/Features/Device/Control/components/modules/FxModule.jsx → resources/js/Features/Device/Control/components/ui/IoButton.jsx
+resources/js/Features/Device/Control/components/modules/FxModule.jsx → resources/js/Features/Device/Control/components/ui/IoKnob.jsx
+resources/js/Features/Device/Control/components/modules/FxModule.jsx → resources/js/Features/Device/Shared/utils/midiCC.js
+resources/js/Features/Device/Control/components/modules/LfoModule.jsx → resources/js/Features/Device/Control/components/layout/Module.jsx
+resources/js/Features/Device/Control/components/modules/LfoModule.jsx → resources/js/Features/Device/Control/components/layout/ModuleDivider.jsx
+resources/js/Features/Device/Control/components/modules/LfoModule.jsx → resources/js/Features/Device/Control/components/ui/IoButton.jsx
+resources/js/Features/Device/Control/components/modules/LfoModule.jsx → resources/js/Features/Device/Control/components/ui/IoKnob.jsx
+resources/js/Features/Device/Control/components/modules/LfoModule.jsx → resources/js/Features/Device/Control/components/ui/IoSelector.jsx
+resources/js/Features/Device/Control/components/modules/LfoModule.jsx → resources/js/Features/Device/Control/components/WaveIcons.jsx
+resources/js/Features/Device/Control/components/modules/LfoModule.jsx → resources/js/Features/Device/Shared/utils/midiCC.js
+resources/js/Features/Device/Control/components/modules/MasterModule.jsx → resources/js/Features/Device/Control/components/layout/Module.jsx
+resources/js/Features/Device/Control/components/modules/MasterModule.jsx → resources/js/Features/Device/Control/components/layout/ModuleDivider.jsx
+resources/js/Features/Device/Control/components/modules/MasterModule.jsx → resources/js/Features/Device/Control/components/ui/IoButton.jsx
+resources/js/Features/Device/Control/components/modules/MasterModule.jsx → resources/js/Features/Device/Control/components/ui/IoKnob.jsx
+resources/js/Features/Device/Control/components/modules/MasterModule.jsx → resources/js/Features/Device/Shared/utils/midiCC.js
+resources/js/Features/Device/Control/components/modules/ModModule.jsx → resources/js/Features/Device/Control/components/layout/Module.jsx
+resources/js/Features/Device/Control/components/modules/ModModule.jsx → resources/js/Features/Device/Control/components/layout/ModuleDivider.jsx
+resources/js/Features/Device/Control/components/modules/ModModule.jsx → resources/js/Features/Device/Control/components/ui/IoBend.jsx
+resources/js/Features/Device/Control/components/modules/ModModule.jsx → resources/js/Features/Device/Control/components/ui/IoButton.jsx
+resources/js/Features/Device/Control/components/modules/ModModule.jsx → resources/js/Features/Device/Control/components/ui/IoKnob.jsx
+resources/js/Features/Device/Control/components/modules/ModModule.jsx → resources/js/Features/Device/Control/components/ui/IoSlider.jsx
+resources/js/Features/Device/Control/components/modules/ModModule.jsx → resources/js/Features/Device/Shared/utils/midiCC.js
+resources/js/Features/Device/Control/components/modules/ModModule.jsx → node_modules/react/index.js
+resources/js/Features/Device/Control/components/ui/IoBend.jsx → node_modules/react/index.js
+resources/js/Features/Device/Control/components/modules/OscModule.jsx → resources/js/Features/Device/Control/components/layout/Module.jsx
+resources/js/Features/Device/Control/components/modules/OscModule.jsx → resources/js/Features/Device/Control/components/layout/ModuleDivider.jsx
+resources/js/Features/Device/Control/components/modules/OscModule.jsx → resources/js/Features/Device/Control/components/ui/IoButton.jsx
+resources/js/Features/Device/Control/components/modules/OscModule.jsx → resources/js/Features/Device/Control/components/ui/IoKnob.jsx
+resources/js/Features/Device/Control/components/modules/OscModule.jsx → resources/js/Features/Device/Control/components/ui/IoSelector.jsx
+resources/js/Features/Device/Control/components/modules/OscModule.jsx → resources/js/Features/Device/Control/components/WaveIcons.jsx
+resources/js/Features/Device/Control/components/modules/OscModule.jsx → resources/js/Features/Device/Shared/utils/midiCC.js
+resources/js/Features/Device/Control/components/modules/OscModule.jsx → node_modules/react/index.js
+resources/js/Features/Device/Control/hooks/useModuleGrid.js → node_modules/@dnd-kit/core/dist/core.esm.js
+resources/js/Features/Device/Control/hooks/useModuleGrid.js → node_modules/@dnd-kit/sortable/dist/sortable.esm.js
+resources/js/Features/Device/Control/hooks/useModuleGrid.js → node_modules/react/index.js
+resources/js/Features/Device/Firmware/components/FlashFirmware.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Features/Device/Firmware/components/FlashFirmware.jsx → resources/js/Components/SecondaryButton.jsx
+resources/js/Features/Device/Firmware/components/FlashFirmware.jsx → resources/js/Features/Device/Firmware/hooks/useFlashFirmware.js
+resources/js/Features/Device/Firmware/components/FlashFirmware.jsx → node_modules/react/index.js
+resources/js/Features/Device/Firmware/hooks/useFlashFirmware.js → node_modules/esptool-js/lib/index.js
+resources/js/Features/Device/Firmware/hooks/useFlashFirmware.js → node_modules/react/index.js
+resources/js/Features/Device/Firmware/components/SerialMonitor.jsx → resources/js/Components/SecondaryButton.jsx
+resources/js/Features/Device/Firmware/components/SerialMonitor.jsx → resources/js/Components/TextButton.jsx
+resources/js/Features/Device/Firmware/components/SerialMonitor.jsx → resources/js/Components/TextInput.jsx
+resources/js/Features/Device/Firmware/components/SerialMonitor.jsx → resources/js/Features/Device/Firmware/utils/serialUtils.js
+resources/js/Features/Device/Firmware/components/SerialMonitor.jsx → node_modules/react/index.js
+resources/js/Features/Device/Firmware/components/UploadFirmware.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Features/Device/Firmware/components/UploadFirmware.jsx → node_modules/react/index.js
+resources/js/Features/Device/Firmware/hooks/useFirmware.js → resources/js/Features/Device/Firmware/hooks/useSerial.js
+resources/js/Features/Device/Firmware/hooks/useFirmware.js → node_modules/react/index.js
+resources/js/Features/Device/Firmware/hooks/useSerial.js → resources/js/Features/Device/Firmware/utils/serialUtils.js
+resources/js/Features/Device/Firmware/hooks/useSerial.js → node_modules/react/index.js
+resources/js/Features/Device/Shared/components/DeleteModal.jsx → resources/js/Components/Modal.jsx
+resources/js/Features/Device/Shared/components/DeleteModal.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Features/Device/Shared/components/PresetLine.jsx → resources/js/Components/TextButton.jsx
+resources/js/Features/Device/Shared/components/PresetLine.jsx → resources/js/Features/Device/Shared/components/Icons.jsx
+resources/js/Features/Device/Shared/components/PresetLine.jsx → resources/js/Features/Device/Shared/utils/presetUtils.js
+resources/js/Features/Device/Shared/components/PresetLine.jsx → node_modules/react/index.js
+resources/js/Features/Device/Shared/components/PresetsBar.jsx → resources/js/Components/TextButton.jsx
+resources/js/Features/Device/Shared/components/PresetsBar.jsx → resources/js/Features/Device/Shared/components/DeleteModal.jsx
+resources/js/Features/Device/Shared/components/PresetsBar.jsx → resources/js/Features/Device/Shared/components/Icons.jsx
+resources/js/Features/Device/Shared/components/PresetsBar.jsx → resources/js/Features/Device/Shared/components/PresetLine.jsx
+resources/js/Features/Device/Shared/components/PresetsBar.jsx → resources/js/Features/Device/Shared/components/RenameModal.jsx
+resources/js/Features/Device/Shared/components/PresetsBar.jsx → resources/js/Features/Device/Shared/hooks/usePresetsBar.js
+resources/js/Features/Device/Shared/components/PresetsBar.jsx → node_modules/react/index.js
+resources/js/Features/Device/Shared/components/RenameModal.jsx → resources/js/Components/Modal.jsx
+resources/js/Features/Device/Shared/components/RenameModal.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Features/Device/Shared/components/RenameModal.jsx → resources/js/Components/TextInput.jsx
+resources/js/Features/Device/Shared/components/RenameModal.jsx → node_modules/react/index.js
+resources/js/Features/Device/Shared/hooks/usePresetsBar.js → resources/js/Contexts/WsContext.jsx
+resources/js/Features/Device/Shared/hooks/usePresetsBar.js → resources/js/Features/Device/Shared/utils/presetUtils.js
+resources/js/Features/Device/Shared/hooks/usePresetsBar.js → resources/js/Features/Device/Shared/utils/wsMsgHandle.js
+resources/js/Features/Device/Shared/hooks/usePresetsBar.js → node_modules/react/index.js
+resources/js/Features/Device/Shared/components/StatusBar.jsx → resources/js/Contexts/WsContext.jsx
+resources/js/Features/Device/Shared/components/StatusBar.jsx → resources/js/Features/Device/Shared/components/VirtualKeyboard.jsx
+resources/js/Features/Device/Shared/components/StatusBar.jsx → resources/js/Features/Device/Shared/components/WsConnection.jsx
+resources/js/Features/Device/Shared/components/StatusBar.jsx → node_modules/react/index.js
+resources/js/Features/Device/Shared/components/VirtualKeyboard.jsx → resources/js/Components/TextButton.jsx
+resources/js/Features/Device/Shared/components/VirtualKeyboard.jsx → resources/js/Features/Device/Shared/components/Icons.jsx
+resources/js/Features/Device/Shared/components/VirtualKeyboard.jsx → resources/js/Features/Device/Shared/hooks/useVirtualKeyboard.js
+resources/js/Features/Device/Shared/components/VirtualKeyboard.jsx → node_modules/react/index.js
+resources/js/Features/Device/Shared/hooks/useVirtualKeyboard.js → node_modules/react/index.js
+resources/js/Features/Device/Shared/components/WsConnection.jsx → resources/js/Components/TextButton.jsx
+resources/js/Features/Device/Shared/components/WsConnection.jsx → node_modules/react/index.js
+resources/js/Layouts/AppLayout.jsx → resources/js/Components/TextButton.jsx
+resources/js/Layouts/AppLayout.jsx → resources/js/Features/Device/Shared/components/Icons.jsx
+resources/js/Layouts/AppLayout.jsx → resources/js/Features/Device/Shared/utils/showTips.js
+resources/js/Layouts/AppLayout.jsx → node_modules/react/index.js
+resources/js/Layouts/DeviceLayout.jsx → resources/js/Contexts/WsContext.jsx
+resources/js/Layouts/DeviceLayout.jsx → resources/js/Features/Device/Shared/components/PresetsBar.jsx
+resources/js/Layouts/DeviceLayout.jsx → resources/js/Features/Device/Shared/components/StatusBar.jsx
+resources/js/Layouts/DeviceLayout.jsx → node_modules/react/index.js
+resources/js/Pages/About.jsx → resources/js/Features/Device/Shared/components/Icons.jsx
+resources/js/Pages/Auth/ConfirmPassword.jsx → resources/js/bootstrap.js
+resources/js/Pages/Auth/ConfirmPassword.jsx → resources/js/Components/InputError.jsx
+resources/js/Pages/Auth/ConfirmPassword.jsx → resources/js/Components/InputLabel.jsx
+resources/js/Pages/Auth/ConfirmPassword.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Pages/Auth/ConfirmPassword.jsx → resources/js/Components/TextInput.jsx
+resources/js/Pages/Auth/ConfirmPassword.jsx → node_modules/react/index.js
+resources/js/Pages/Auth/ForgotPassword.jsx → resources/js/bootstrap.js
+resources/js/Pages/Auth/ForgotPassword.jsx → resources/js/Components/InputError.jsx
+resources/js/Pages/Auth/ForgotPassword.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Pages/Auth/ForgotPassword.jsx → resources/js/Components/TextInput.jsx
+resources/js/Pages/Auth/ForgotPassword.jsx → node_modules/react/index.js
+resources/js/Pages/Auth/LoginForm.jsx → resources/js/bootstrap.js
+resources/js/Pages/Auth/LoginForm.jsx → resources/js/Components/Checkbox.jsx
+resources/js/Pages/Auth/LoginForm.jsx → resources/js/Components/InputError.jsx
+resources/js/Pages/Auth/LoginForm.jsx → resources/js/Components/InputLabel.jsx
+resources/js/Pages/Auth/LoginForm.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Pages/Auth/LoginForm.jsx → resources/js/Components/TextButton.jsx
+resources/js/Pages/Auth/LoginForm.jsx → resources/js/Components/TextInput.jsx
+resources/js/Pages/Auth/LoginForm.jsx → node_modules/react/index.js
+resources/js/Pages/Auth/RegisterForm.jsx → resources/js/bootstrap.js
+resources/js/Pages/Auth/RegisterForm.jsx → resources/js/Components/InputError.jsx
+resources/js/Pages/Auth/RegisterForm.jsx → resources/js/Components/InputLabel.jsx
+resources/js/Pages/Auth/RegisterForm.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Pages/Auth/RegisterForm.jsx → resources/js/Components/TextInput.jsx
+resources/js/Pages/Auth/RegisterForm.jsx → node_modules/react/index.js
+resources/js/Pages/Auth/ResetPassword.jsx → resources/js/bootstrap.js
+resources/js/Pages/Auth/ResetPassword.jsx → resources/js/Components/InputError.jsx
+resources/js/Pages/Auth/ResetPassword.jsx → resources/js/Components/InputLabel.jsx
+resources/js/Pages/Auth/ResetPassword.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Pages/Auth/ResetPassword.jsx → resources/js/Components/TextInput.jsx
+resources/js/Pages/Auth/ResetPassword.jsx → node_modules/react/index.js
+resources/js/Pages/Auth/VerifyEmail.jsx → resources/js/bootstrap.js
+resources/js/Pages/Auth/VerifyEmail.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Pages/Auth/VerifyEmail.jsx → node_modules/react/index.js
+resources/js/Pages/Cloud.jsx → resources/js/Contexts/AuthContext.jsx
+resources/js/Pages/Cloud.jsx → resources/js/Contexts/WsContext.jsx
+resources/js/Pages/Cloud.jsx → resources/js/Features/Device/Cloud/components/Repo.jsx
+resources/js/Pages/Cloud.jsx → resources/js/Features/Device/Cloud/hooks/useRepo.js
+resources/js/Pages/Cloud.jsx → resources/js/Features/Device/Shared/utils/presetUtils.js
+resources/js/Pages/Cloud.jsx → resources/js/Features/Device/Shared/utils/wsMsgHandle.js
+resources/js/Pages/Cloud.jsx → node_modules/react/index.js
+resources/js/Pages/Control.jsx → resources/js/Contexts/WsContext.jsx
+resources/js/Pages/Control.jsx → resources/js/Features/Device/Control/components/layout/ModuleGrid.jsx
+resources/js/Pages/Control.jsx → node_modules/react/index.js
+resources/js/Pages/Firmware.jsx → resources/js/Components/TextButton.jsx
+resources/js/Pages/Firmware.jsx → resources/js/Contexts/AuthContext.jsx
+resources/js/Pages/Firmware.jsx → resources/js/Features/Device/Firmware/components/FlashFirmware.jsx
+resources/js/Pages/Firmware.jsx → resources/js/Features/Device/Firmware/components/SerialMonitor.jsx
+resources/js/Pages/Firmware.jsx → resources/js/Features/Device/Firmware/components/UploadFirmware.jsx
+resources/js/Pages/Firmware.jsx → resources/js/Features/Device/Firmware/hooks/useFirmware.js
+resources/js/Pages/Firmware.jsx → node_modules/react/index.js
+resources/js/Pages/Landing.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Pages/Landing.jsx → resources/js/Features/Device/Shared/components/Icons.jsx
+resources/js/Pages/Landing.jsx → resources/js/Pages/Auth/ForgotPassword.jsx
+resources/js/Pages/Landing.jsx → resources/js/Pages/Auth/LoginForm.jsx
+resources/js/Pages/Landing.jsx → resources/js/Pages/Auth/RegisterForm.jsx
+resources/js/Pages/Landing.jsx → resources/js/Pages/Auth/ResetPassword.jsx
+resources/js/Pages/Landing.jsx → node_modules/react/index.js
+resources/js/Pages/Profile/Edit.jsx → resources/js/Pages/Profile/Partials/DeleteUserForm.jsx
+resources/js/Pages/Profile/Edit.jsx → resources/js/Pages/Profile/Partials/UpdatePasswordForm.jsx
+resources/js/Pages/Profile/Edit.jsx → resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.jsx
+resources/js/Pages/Profile/Edit.jsx → resources/js/bootstrap.js
+resources/js/Pages/Profile/Edit.jsx → node_modules/react/index.js
+resources/js/Pages/Profile/Partials/DeleteUserForm.jsx → resources/js/bootstrap.js
+resources/js/Pages/Profile/Partials/DeleteUserForm.jsx → resources/js/Components/DangerButton.jsx
+resources/js/Pages/Profile/Partials/DeleteUserForm.jsx → resources/js/Components/InputError.jsx
+resources/js/Pages/Profile/Partials/DeleteUserForm.jsx → resources/js/Components/InputLabel.jsx
+resources/js/Pages/Profile/Partials/DeleteUserForm.jsx → resources/js/Components/Modal.jsx
+resources/js/Pages/Profile/Partials/DeleteUserForm.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Pages/Profile/Partials/DeleteUserForm.jsx → resources/js/Components/TextInput.jsx
+resources/js/Pages/Profile/Partials/DeleteUserForm.jsx → node_modules/react/index.js
+resources/js/Pages/Profile/Partials/UpdatePasswordForm.jsx → resources/js/bootstrap.js
+resources/js/Pages/Profile/Partials/UpdatePasswordForm.jsx → resources/js/Components/InputError.jsx
+resources/js/Pages/Profile/Partials/UpdatePasswordForm.jsx → resources/js/Components/InputLabel.jsx
+resources/js/Pages/Profile/Partials/UpdatePasswordForm.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Pages/Profile/Partials/UpdatePasswordForm.jsx → resources/js/Components/TextInput.jsx
+resources/js/Pages/Profile/Partials/UpdatePasswordForm.jsx → node_modules/@headlessui/react/dist/index.d.ts
+resources/js/Pages/Profile/Partials/UpdatePasswordForm.jsx → node_modules/react/index.js
+resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.jsx → resources/js/bootstrap.js
+resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.jsx → resources/js/Components/InputError.jsx
+resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.jsx → resources/js/Components/InputLabel.jsx
+resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.jsx → resources/js/Components/PrimaryButton.jsx
+resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.jsx → resources/js/Components/TextInput.jsx
+resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.jsx → node_modules/@headlessui/react/dist/index.d.ts
+resources/js/Pages/Profile/Partials/UpdateProfileInformationForm.jsx → node_modules/react/index.js
+resources/js/app.jsx → resources/css/app.css
+resources/js/app.jsx → resources/js/bootstrap.js
+resources/js/app.jsx → resources/js/Layouts/AppLayout.jsx
+resources/js/app.jsx → resources/js/Layouts/DeviceLayout.jsx
+resources/js/app.jsx → resources/js/Pages/About.jsx
+resources/js/app.jsx → resources/js/Pages/Cloud.jsx
+resources/js/app.jsx → resources/js/Pages/Control.jsx
+resources/js/app.jsx → resources/js/Pages/Firmware.jsx
+resources/js/app.jsx → resources/js/Pages/Landing.jsx
+resources/js/app.jsx → resources/js/Pages/Profile/Edit.jsx
+resources/js/app.jsx → resources/js/Contexts/AuthContext.jsx
+resources/js/app.jsx → resources/js/Features/Device/Shared/components/NavGuardModal.jsx
+resources/js/app.jsx → node_modules/react/index.js
+resources/js/app.jsx → node_modules/react-dom/client.js
